@@ -14,7 +14,8 @@ class ExpandColumnProcessor implements ColumnProcessorInterface
      */
     private $evaluator;
 
-    public function __construct(ExpressionBridge $evaluator) {
+    public function __construct(ExpressionBridge $evaluator)
+    {
         $this->evaluator = $evaluator;
     }
 
@@ -42,7 +43,7 @@ class ExpandColumnProcessor implements ColumnProcessorInterface
         }
         $iterable = $this->evaluator->evaluatePhpValue($definition['each'], $params);
 
-        if (!is_iterable($iterable )) {
+        if (!is_iterable($iterable)) {
             throw new RuntimeException(sprintf(
                 'Evaluated value for "expand" column must evaluate to a list got "%s"',
                 gettype($iterable)
@@ -53,6 +54,7 @@ class ExpandColumnProcessor implements ColumnProcessorInterface
             $iterationParams = array_merge($params, [
                 (string)$definition['param'] => $item,
             ]);
+
             foreach ($definition['cols'] as $template => $expression) {
                 $row[$this->evaluator->renderTemplate($template, $iterationParams)] = $this->evaluator->evaluate($expression, $iterationParams);
             }

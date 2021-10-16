@@ -18,6 +18,7 @@ class TableAggregateComponentTest extends ComponentGeneratorTestCase
     public function createGenerator(): ComponentGeneratorInterface
     {
         $evaluator = $this->container()->get(ExpressionBridge::class);
+
         return new TableAggregateComponent($evaluator, [
             'expression' => new ExpressionColumnProcessor($evaluator),
             'expand' => new ExpandColumnProcessor($evaluator),

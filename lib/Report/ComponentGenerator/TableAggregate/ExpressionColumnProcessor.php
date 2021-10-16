@@ -2,7 +2,6 @@
 
 namespace PhpBench\Report\ComponentGenerator\TableAggregate;
 
-use PhpBench\Expression\Ast\Node;
 use PhpBench\Report\Bridge\ExpressionBridge;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -13,7 +12,8 @@ class ExpressionColumnProcessor implements ColumnProcessorInterface
      */
     private $evaluator;
 
-    public function __construct(ExpressionBridge $evaluator) {
+    public function __construct(ExpressionBridge $evaluator)
+    {
         $this->evaluator = $evaluator;
     }
 
@@ -21,11 +21,13 @@ class ExpressionColumnProcessor implements ColumnProcessorInterface
      * @param parameters $params
      * @param tableRow $row
      * @param tableColumnDefinition $definition
+     *
      * @return tableRow $row
      */
     public function process(array $row, array $definition, array $params): array
     {
         $row[(string)$definition['name']] = $this->evaluator->evaluate($definition['expression'], $params);
+
         return $row;
     }
 

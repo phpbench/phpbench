@@ -2,7 +2,6 @@
 
 namespace PhpBench\Tests\Unit\Report\ComponentGenerator\TableAggregate;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Report\Bridge\ExpressionBridge;
 use PhpBench\Report\ComponentGenerator\TableAggregate\ColumnProcessorInterface;
 use PhpBench\Report\ComponentGenerator\TableAggregate\ExpandColumnProcessor;

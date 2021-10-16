@@ -79,6 +79,7 @@ class TableAggregateComponent implements ComponentGeneratorInterface
 
                 if (is_array($expression)) {
                     $row = $this->processColumnDefinition($row, $expression, $dataFrameRow, $dataFrame);
+
                     continue;
                 }
 
@@ -107,6 +108,7 @@ class TableAggregateComponent implements ComponentGeneratorInterface
     /**
      * @param array<string,mixed> $row
      * @param array<string,mixed> $definition
+     *
      * @return parameters
      */
     private function processColumnDefinition(array $row, array $definition, DataFrame $partition, DataFrame $frame): array
@@ -123,7 +125,8 @@ class TableAggregateComponent implements ComponentGeneratorInterface
         if (!isset($this->columnProcessors[$type])) {
             throw new RuntimeException(sprintf(
                 'Unknown column processor "%s", known column proccessors: "%s"',
-                $type, implode('", "', array_keys($this->columnProcessors))
+                $type,
+                implode('", "', array_keys($this->columnProcessors))
             ));
         }
 

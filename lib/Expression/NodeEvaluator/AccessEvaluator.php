@@ -51,12 +51,14 @@ class AccessEvaluator implements NodeEvaluator
         }
 
         $accessValue = $this->resolveAccess($evaluator, $node, $params);
+
         try {
             $arrayValue = $this->resolveArray($evaluator, $value);
         } catch (\Exception $e) {
             throw new ExpressionError(sprintf(
                 'Could not get value for key "%s": %s',
-                $accessValue, $e->getMessage()
+                $accessValue,
+                $e->getMessage()
             ));
         }
 
