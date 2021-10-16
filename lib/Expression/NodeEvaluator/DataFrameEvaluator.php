@@ -34,18 +34,13 @@ final class DataFrameEvaluator
             }
         }
 
-        return new DataFrameNode($this->filterDataFrame($evaluator, $frameNode->dataFrame(), $accessNode, $params));
+        return new DataFrameNode($this->filterDataFrame($evaluator, $frameNode->dataFrame(), $accessNode));
     }
 
-    /**
-     * @param parameters $params
-     */
-    private function filterDataFrame(Evaluator $evaluator, DataFrame $dataFrame, Node $accessNode, array $params): DataFrame
+    private function filterDataFrame(Evaluator $evaluator, DataFrame $dataFrame, Node $accessNode): DataFrame
     {
-        return $dataFrame->filter(function (Row $row) use ($evaluator, $accessNode, $params) {
-            $result = $evaluator->evaluate($accessNode, array_merge($row->toRecord(), [
-                '_params' => $params
-            ]));
+        return $dataFrame->filter(function (Row $row) use ($evaluator, $accessNode) {
+            $result = $evaluator->evaluate($accessNode, $row->toRecord());
 
             if (!$result instanceof BooleanNode) {
                 return false;
