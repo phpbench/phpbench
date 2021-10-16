@@ -4,6 +4,15 @@ CHANGELOG
 master
 ------
 
+Features:
+
+- Added simple data frame printer.
+- Ability to expand table columns dynamically.
+
+Bug fixes:
+
+- Fix property (`.`) access precedence, it is now the same as `[` array
+  access.
 - Safely removed non-functioning config option `report.html_output_dir`
 
 1.1.2 (2021-09-25)
