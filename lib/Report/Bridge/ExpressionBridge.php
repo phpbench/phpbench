@@ -63,23 +63,4 @@ class ExpressionBridge
             return implode('-', $hash);
         });
     }
-
-    /**
-     * @return scalar[]
-     *
-     * @param parameters $params
-     */
-    public function evaluateColumns(string $colName, array $params): array
-    {
-        $colNames = [];
-
-        if (substr($colName, 0, 2) !== '@=') {
-            return [$colName];
-        }
-
-        $expression = substr($colName, 2);
-        $colNames = (array)$this->evaluator->evaluatePhpValue($expression, $params);
-
-        return $colNames;
-    }
 }
