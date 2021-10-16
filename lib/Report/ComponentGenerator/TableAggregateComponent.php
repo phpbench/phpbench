@@ -68,26 +68,10 @@ class TableAggregateComponent implements ComponentGeneratorInterface
         foreach ($this->evaluator->partition($dataFrame, (array)$config[self::PARAM_PARTITION]) as $dataFrameRow) {
             $row = [];
 
-            foreach ($config[self::PARAM_ROW] as $colName => $expression) {
-                if (is_string($expression)) {
-                    $expression = [
-                        'type' => 'expression',
-                        'expression' => $expression,
-                        'name' => $colName,
-                    ];
-                }
-
-                if (is_array($expression)) {
-                    $row = $this->processColumnDefinition($row, $expression, $dataFrameRow, $dataFrame);
-
-                    continue;
-                }
-
-                throw new RuntimeException(sprintf(
-                    'Got "%s" as type for expression, but must either be a string or a column defintion',
-                    gettype($expression)
-                ));
+            foreach ($this->columnDefinitions($config[self::PARAM_ROW]) as $colName => $expression) {
+                $row = $this->processColumnDefinition($row, $expression, $dataFrameRow, $dataFrame);
             }
+
             $rows[] = $row;
         }
 
@@ -140,5 +124,36 @@ class TableAggregateComponent implements ComponentGeneratorInterface
             'frame' => $frame,
             'partition' => $partition,
         ]);
+    }
+
+    /**
+     * @param parameters $definitions
+     * @return parameters
+     */
+    private function columnDefinitions(array $definitions): array
+    {
+        $normalizedDefinitions = [];
+        foreach ($definitions as $colName => $definition) {
+            if (is_string($definition)) {
+                $normalizedDefinitions[$colName] = [
+                    'type' => 'expression',
+                    'expression' => $definition,
+                    'name' => $colName,
+                ];
+                continue;
+            }
+
+            if (is_array($definition)) {
+                $normalizedDefinitions[$colName] = $definition;
+                continue;
+            }
+
+            throw new RuntimeException(sprintf(
+                'Got "%s" as type for expression, but must either be a string or a column defintion',
+                gettype($definition)
+            ));
+        }
+
+        return $normalizedDefinitions;
     }
 }
