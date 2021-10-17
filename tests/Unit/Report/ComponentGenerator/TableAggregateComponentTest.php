@@ -148,4 +148,39 @@ class TableAggregateComponentTest extends ComponentGeneratorTestCase
         self::assertCount(3, $table->columnNames());
         self::assertEquals(['one', 'bench1', 'bench2'], $table->columnNames());
     }
+
+    public function testGroups(): void
+    {
+        $frame = DataFrame::fromRowSeries([
+            ['bench1', 'subject1', 1],
+            ['bench1', 'subject2', 1],
+            ['bench2', 'subject1', 1],
+            ['bench2', 'subject2', 1],
+        ], ['name', 'subject', 'time']);
+
+        $table = $this->generate($frame, [
+            'groups' => [
+                'time' => [
+                    'cols' => ['by_time'],
+                    'label' => 'Time',
+                ],
+            ],
+            TableAggregateComponent::PARAM_ROW => [
+                'one' => 'first(partition["subject"])',
+                'by_time' => [
+                    'type' => 'expand',
+                    'partition' => 'name',
+                    'cols' => [
+                        '{{ key }}' => 'mode(partition["time"])',
+                    ]
+                ]
+            ],
+            TableAggregateComponent::PARAM_PARTITION => ['subject'],
+        ]);
+        assert($table instanceof Table);
+        self::assertCount(2, $table->rows());
+        self::assertCount(3, $table->columnNames());
+        self::assertEquals(2, count($table->columnGroups()));
+        self::assertEquals(['one', 'bench1', 'bench2'], $table->columnNames());
+    }
 }

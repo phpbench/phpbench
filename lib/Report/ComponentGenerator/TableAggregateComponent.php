@@ -9,6 +9,7 @@ use PhpBench\Report\ComponentGeneratorInterface;
 use PhpBench\Report\ComponentGenerator\TableAggregate\ColumnProcessorInterface;
 use PhpBench\Report\ComponentInterface;
 use PhpBench\Report\Model\Builder\TableBuilder;
+use PhpBench\Report\Model\TableColumnGroup;
 use RuntimeException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -17,6 +18,8 @@ class TableAggregateComponent implements ComponentGeneratorInterface
     public const PARAM_TITLE = 'title';
     public const PARAM_PARTITION = 'partition';
     public const PARAM_ROW = 'row';
+    public const GROUP_DEFAULT = 'default';
+    public const PARAM_GROUPS = 'groups';
 
     /**
      * @var ExpressionBridge
@@ -47,14 +50,17 @@ class TableAggregateComponent implements ComponentGeneratorInterface
             self::PARAM_PARTITION => [],
             self::PARAM_ROW => [
             ],
+            self::PARAM_GROUPS => [],
         ]);
         $options->setAllowedTypes(self::PARAM_TITLE, ['string', 'null']);
         $options->setAllowedTypes(self::PARAM_PARTITION, ['string', 'string[]']);
         $options->setAllowedTypes(self::PARAM_ROW, 'array');
+        $options->setAllowedTypes(self::PARAM_GROUPS, 'array');
         SymfonyOptionsResolverCompat::setInfos($options, [
             self::PARAM_TITLE => 'Caption for the table',
             self::PARAM_PARTITION => 'Partition the data using these column names - the row expressions will to aggregate the data in each partition',
             self::PARAM_ROW => 'Set of expressions used to evaluate the partitions, the key is the column name, the value is the expression',
+            self::PARAM_GROUPS => 'Group columns together',
         ]);
     }
 
@@ -63,20 +69,25 @@ class TableAggregateComponent implements ComponentGeneratorInterface
      */
     public function generateComponent(DataFrame $dataFrame, array $config): ComponentInterface
     {
-        $rows = [];
+        $columnDefinitions = $this->columnDefinitions($config[self::PARAM_ROW]);
+        $expanded = [];
 
+        $rows = [];
         foreach ($this->evaluator->partition($dataFrame, (array)$config[self::PARAM_PARTITION]) as $dataFrameRow) {
             $row = [];
-
-            foreach ($this->columnDefinitions($config[self::PARAM_ROW]) as $colName => $expression) {
-                $row = $this->processColumnDefinition($row, $expression, $dataFrameRow, $dataFrame);
+            foreach ($columnDefinitions as $colName => $definition) {
+                $newRow = $this->processColumnDefinition($row, $definition, $dataFrameRow, $dataFrame);
+                if (!isset($expanded[$colName])) {
+                    $expanded[$colName] = array_diff(array_keys($newRow), array_keys($row));
+                }
+                $row = $newRow;
             }
-
             $rows[] = $row;
         }
 
         $builder = TableBuilder::create()
-            ->addRowsFromArray($rows);
+            ->addRowsFromArray($rows)
+            ->addGroups($this->resolveGroups($expanded, $config['groups']));
 
         if ($config[self::PARAM_TITLE]) {
             $builder = $builder->withTitle(
@@ -155,5 +166,55 @@ class TableAggregateComponent implements ComponentGeneratorInterface
         }
 
         return $normalizedDefinitions;
+    }
+
+    /**
+     * @return TableColumnGroup[]
+     */
+    private function resolveGroups(array $expanded, array $groupDefinitions): array
+    {
+        $groupsByColumn = $this->groupsByColumn($groupDefinitions);
+        $lastGroup = null;
+        $resolvedGroups = [];
+        $colBuffer = [];
+
+        foreach ($expanded as $originalColName => $colNames) {
+            $definition = $groupsByColumn[$originalColName] ?? null;
+            $groupName = $definition ? $definition['id'] : 'default';
+
+            if (null === $lastGroup) {
+                $lastGroup = $groupName;
+                $colBuffer = $colNames;
+                continue;
+            }
+
+            if ($lastGroup === $groupName) {
+                $colBuffer = array_merge($colBuffer, $colNames);
+                continue;
+            }
+
+            $resolvedGroups[] = new TableColumnGroup($lastGroup, count($colBuffer));
+            $colBuffer = $colNames;
+            $lastGroup = $groupName;
+        }
+
+        if (count($colBuffer)) {
+            $resolvedGroups[] = new TableColumnGroup($lastGroup, count($colBuffer));
+        }
+
+        return $resolvedGroups;
+    }
+
+    private function groupsByColumn(array $groupDefinitions): array
+    {
+        $d = [];
+        foreach ($groupDefinitions as $id => $definition) {
+            $definition['id'] = $id;
+            foreach ($definition['cols'] as $col) {
+                $d[$col] = $definition;
+            }
+        }
+
+        return $d;
     }
 }
