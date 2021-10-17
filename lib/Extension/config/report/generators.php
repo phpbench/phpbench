@@ -170,20 +170,28 @@ return [
                         "component" => "table_aggregate",
                         "title" => "{{ first(frame.suite_tag) }}",
                         "partition" => ["subject_name", "variant_name"],
+                        'groups' => [
+                            'time' => [
+                                'cols' => ['time'],
+                            ],
+                            'memory' => [
+                                'cols' => ['memory'],
+                            ],
+                        ],
                         "row" => [
                             "subject" => "first(partition[\"subject_name\"]) ~ \" (\" ~ first(partition[\"variant_name\"]) ~ \")\"",
                             "time" => [
                                 'type' => 'expand',
                                 'partition' => 'suite_tag',
                                 'cols' => [
-                                    '{{ key }} (t)' => "mode(partition[\"result_time_avg\"]) as time ~ ' (' ~ rstdev(partition['result_time_avg']) ~ ')'",
+                                    '{{ key }}' => "mode(partition[\"result_time_avg\"]) as time ~ ' (' ~ rstdev(partition['result_time_avg']) ~ ')'",
                                 ],
                             ],
                             "memory" => [
                                 'type' => 'expand',
                                 'partition' => 'suite_tag',
                                 'cols' => [
-                                    '{{ key }} (m)' => "mode(partition[\"result_mem_peak\"]) as memory",
+                                    '{{ key }} ' => "mode(partition[\"result_mem_peak\"]) as memory",
                                 ],
                             ]
                         ]

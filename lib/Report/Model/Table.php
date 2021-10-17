@@ -107,6 +107,9 @@ final class Table implements IteratorAggregate, ComponentInterface
         return $this->headers;
     }
 
+    /**
+     * @retrun TableColumnGroup[]
+     */
     public function columnGroups(): array
     {
         return $this->columnGroups;

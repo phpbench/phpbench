@@ -28,4 +28,9 @@ final class TableColumnGroup
     {
         return $this->label;
     }
+
+    public function isDefault(): bool
+    {
+        return $this->label === 'default';
+    }
 }
