@@ -168,10 +168,9 @@ return [
                     ],
                     [
                         "component" => "table_aggregate",
-                        "title" => "{{ first(frame.suite_tag) }}",
                         "partition" => ["subject_name", "variant_name"],
                         'groups' => [
-                            'time' => [
+                            'time (kde mode)' => [
                                 'cols' => ['time'],
                             ],
                             'memory' => [
@@ -184,16 +183,16 @@ return [
                                 'type' => 'expand',
                                 'partition' => 'suite_tag',
                                 'cols' => [
-                                    '{{ key }}' => "mode(partition[\"result_time_avg\"]) as time ~ ' (' ~ rstdev(partition['result_time_avg']) ~ ')'",
+                                    'PHP {{ key }}' => "mode(partition[\"result_time_avg\"]) as time ~ ' (' ~ rstdev(partition['result_time_avg']) ~ ')'",
                                 ],
                             ],
                             "memory" => [
                                 'type' => 'expand',
                                 'partition' => 'suite_tag',
                                 'cols' => [
-                                    '{{ key }} ' => "mode(partition[\"result_mem_peak\"]) as memory",
+                                    'PHP {{ key }} ' => "mode(partition[\"result_mem_peak\"]) as memory",
                                 ],
-                            ]
+                            ],
                         ]
                     ],
                 ]
