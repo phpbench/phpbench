@@ -53,13 +53,6 @@ class ExpandColumnProcessor implements ColumnProcessorInterface
 
         $iterable = $this->evaluator->partition($frame, (array)$definition[self::PARAM_PARTITION]);
 
-        if (!is_iterable($iterable)) {
-            throw new RuntimeException(sprintf(
-                'Evaluated value for "expand" column must evaluate to a list got "%s"',
-                gettype($iterable)
-            ));
-        }
-
         foreach ($iterable as $itemKey => $itemPartition) {
             $iterationParams = array_merge($params, [
                 (string)$definition[self::PARAM_KEY_VAR] => $itemKey,
