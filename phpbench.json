@@ -2,6 +2,12 @@
     "$schema": "./phpbench.schema.json",
     "$include-glob": "examples/Benchmark/*/*.json",
     "runner.file_pattern": "*Bench.php",
+    "report.outputs": {
+        "ci": {
+            "renderer": "html",
+            "path": "path/to/phpbench.html"
+        }
+    },
     "core.extensions": [
         "PhpBench\\Extension\\DevelopmentExtension"
     ],
