@@ -1,5 +1,4 @@
 {
-    "runner.path": "NothingBench.php",
     "report.generators": {
          "my-report": {
              "generator": "expression",
@@ -9,7 +8,7 @@
     }
 }
 ---
-phpbench run --report=my-report --executor=debug --progress=none
+phpbench run --report=my-report --executor=debug . --progress=none
 ---
 NothingBench
 +--------------+-----+------+-----+----------+----------+--------+
@@ -17,4 +16,13 @@ NothingBench
 +--------------+-----+------+-----+----------+----------+--------+
 | benchNothing |     | 1    | 1   | 100b     | 10.000μs | ±0.00% |
 +--------------+-----+------+-----+----------+----------+--------+
+
+MultipleSubjectBench
++---------------+-----+------+-----+----------+----------+--------+
+| subject       | set | revs | its | mem_peak | mode     | rstdev |
++---------------+-----+------+-----+----------+----------+--------+
+| benchSubject1 |     | 1    | 1   | 100b     | 10.000μs | ±0.00% |
+| benchSubject2 |     | 1    | 1   | 100b     | 10.000μs | ±0.00% |
+| benchSubject3 |     | 1    | 1   | 100b     | 10.000μs | ±0.00% |
++---------------+-----+------+-----+----------+----------+--------+
 

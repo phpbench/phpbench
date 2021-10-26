@@ -7,6 +7,7 @@ use PhpBench\Data\DataFrame;
 use PhpBench\Report\Bridge\ExpressionBridge;
 use PhpBench\Report\ComponentGeneratorInterface;
 use PhpBench\Report\ComponentGenerator\TableAggregate\ColumnProcessorInterface;
+use PhpBench\Report\ComponentGenerator\TableAggregate\GroupHelper;
 use PhpBench\Report\ComponentInterface;
 use PhpBench\Report\Model\Builder\TableBuilder;
 use PhpBench\Report\Model\TableColumnGroup;
@@ -70,15 +71,15 @@ class TableAggregateComponent implements ComponentGeneratorInterface
     public function generateComponent(DataFrame $dataFrame, array $config): ComponentInterface
     {
         $columnDefinitions = $this->columnDefinitions($config[self::PARAM_ROW]);
-        $expanded = [];
+        $resolvedColumns = [];
 
         $rows = [];
         foreach ($this->evaluator->partition($dataFrame, (array)$config[self::PARAM_PARTITION]) as $dataFrameRow) {
             $row = [];
             foreach ($columnDefinitions as $colName => $definition) {
                 $newRow = $this->processColumnDefinition($row, $definition, $dataFrameRow, $dataFrame);
-                if (!isset($expanded[$colName])) {
-                    $expanded[$colName] = array_diff(array_keys($newRow), array_keys($row));
+                if (!isset($resolvedColumns[$colName])) {
+                    $resolvedColumns[$colName] = array_diff(array_keys($newRow), array_keys($row));
                 }
                 $row = $newRow;
             }
@@ -87,7 +88,7 @@ class TableAggregateComponent implements ComponentGeneratorInterface
 
         $builder = TableBuilder::create()
             ->addRowsFromArray($rows)
-            ->addGroups($this->resolveGroups($expanded, $config['groups']));
+            ->addGroups($this->resolveGroups($resolvedColumns, $config['groups']));
 
         if ($config[self::PARAM_TITLE]) {
             $builder = $builder->withTitle(
@@ -171,50 +172,28 @@ class TableAggregateComponent implements ComponentGeneratorInterface
     /**
      * @return TableColumnGroup[]
      */
-    private function resolveGroups(array $expanded, array $groupDefinitions): array
+    private function resolveGroups(array $colDefs, array $groupDefinitions): array
     {
         $groupsByColumn = $this->groupsByColumn($groupDefinitions);
-        $lastGroup = null;
-        $resolvedGroups = [];
-        $colBuffer = [];
 
-        foreach ($expanded as $originalColName => $colNames) {
-            $definition = $groupsByColumn[$originalColName] ?? null;
-            $groupName = $definition ? $definition['id'] : 'default';
+        $colSizes = array_map(function (array $def) {
+            return count($def);
+        }, $colDefs);
 
-            if (null === $lastGroup) {
-                $lastGroup = $groupName;
-                $colBuffer = $colNames;
-                continue;
-            }
-
-            if ($lastGroup === $groupName) {
-                $colBuffer = array_merge($colBuffer, $colNames);
-                continue;
-            }
-
-            $resolvedGroups[] = new TableColumnGroup($lastGroup, count($colBuffer));
-            $colBuffer = $colNames;
-            $lastGroup = $groupName;
-        }
-
-        if (count($colBuffer)) {
-            $resolvedGroups[] = new TableColumnGroup($lastGroup, count($colBuffer));
-        }
-
-        return $resolvedGroups;
+        return array_map(function (array $groupSize) {
+            return new TableColumnGroup($groupSize[0], $groupSize[1]);
+        }, GroupHelper::resolveGroupSizes($colSizes, $groupsByColumn));
     }
 
-    private function groupsByColumn(array $groupDefinitions): array
+    private function groupsByColumn(array $groupDefs): array
     {
-        $d = [];
-        foreach ($groupDefinitions as $id => $definition) {
-            $definition['id'] = $id;
-            foreach ($definition['cols'] as $col) {
-                $d[$col] = $definition;
+        $groupsByColName = [];
+        foreach ($groupDefs as $id => $groupDef) {
+            foreach ($groupDef['cols'] as $colName) {
+                $groupsByColName[$colName] = $id;
             }
         }
 
-        return $d;
+        return $groupsByColName;
     }
 }

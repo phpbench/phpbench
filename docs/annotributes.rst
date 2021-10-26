@@ -32,6 +32,8 @@ Revolutions can be specified using the ``@Revs`` annotation:
 
     .. tab:: Annotations
 
+        Hello Alex
+
         .. codeimport:: ../examples/Annotations/AnnotatedBench.php
           :language: php
           :sections: all,revs,benchTime
