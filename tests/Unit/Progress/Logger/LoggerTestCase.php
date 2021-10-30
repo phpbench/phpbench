@@ -31,7 +31,7 @@ class LoggerTestCase extends TestCase
         $this->output = new BufferedOutput();
 
         $this->timeUnit = new TimeUnit(TimeUnit::MICROSECONDS, TimeUnit::MILLISECONDS);
-        $this->variantFormatter = new class() implements VariantFormatter {
+        $this->variantFormatter = new class () implements VariantFormatter {
             public function formatVariant(Variant $variant): string
             {
                 return 'summary';
