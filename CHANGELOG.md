@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+master
+------
+
+- Safely removed non-functioning config option `report.html_output_dir`
+
 1.1.2 (2021-09-25)
 ------------------
 
