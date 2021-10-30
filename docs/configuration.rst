@@ -52,7 +52,7 @@ core.working_dir
 
 Working directory to use
 
-Default: ``/home/daniel/www/phpbench``
+Default: ``/home/daniel/www/phpbench/phpbench``
 
 Types: ``["string"]``
 
@@ -489,20 +489,9 @@ report.template_paths
 
 List of paths to load templates from
 
-Default: ``["\/home\/daniel\/www\/phpbench\/lib\/Extension\/..\/..\/templates"]``
+Default: ``["\/home\/daniel\/www\/phpbench\/phpbench\/lib\/Extension\/..\/..\/templates"]``
 
 Types: ``["array"]``
-
-.. _configuration_report_html_output_dir:
-
-report.html_output_dir
-~~~~~~~~~~~~~~~~~~~~~~
-
-Path in which to render HTML reports
-
-Default: ``.phpbench/html``
-
-Types: ``["string"]``
 
 .. _configuration_report_template_map:
 

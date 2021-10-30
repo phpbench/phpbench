@@ -38,7 +38,7 @@ class HtmlRendererTest extends AbstractRendererCase
         return new HtmlRenderer(
             $this->output,
             $this->container()->get(ObjectRenderer::class),
-            $this->workspace()->path()
+            $this->workspace()->path(),
         );
     }
 
