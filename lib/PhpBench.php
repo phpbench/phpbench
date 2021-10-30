@@ -193,6 +193,10 @@ class PhpBench
             $config[CoreExtension::PARAM_EXTENSIONS][] = $extension;
         }
 
+        if (isset($config[ReportExtension::PARAM_OUTPUT_DIR_HTML])) {
+            unset($config[ReportExtension::PARAM_OUTPUT_DIR_HTML]);
+        }
+
         return $config;
     }
 

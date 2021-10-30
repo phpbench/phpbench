@@ -26,7 +26,7 @@ class ObjectRendererTest extends IntegrationTestCase
     {
         $this->workspace()->put('foo.html', 'Hello <?php echo $this->foobar->hello() ?>');
         self::assertEquals('Hello Hello', $this->createRenderer([
-            'foobar' => new class() {
+            'foobar' => new class () {
                 public function hello()
                 {
                     return 'Hello';

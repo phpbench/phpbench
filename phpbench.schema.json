@@ -289,12 +289,6 @@
                 "object"
             ]
         },
-        "report.html_output_dir": {
-            "description": "Path in which to render HTML reports",
-            "type": [
-                "string"
-            ]
-        },
         "report.template_map": {
             "description": "Namespace prefix to template path map for object rendering",
             "type": [

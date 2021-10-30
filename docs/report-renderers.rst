@@ -41,3 +41,22 @@ Options:
 .. include:: ./report-renderers/options/_html.rst
 
 .. _GNUPlot: http://www.gnuplot.info/
+
+Given the following configuration:
+
+.. approved:: ../examples/Command/report-output-html
+  :language: bash
+  :section: 0
+
+When we run PHPBench with the configured report above:
+
+.. approved:: ../examples/Command/report-output-html
+  :language: bash
+  :section: 1
+
+Then it will generate a HTML report to the configured path with the given
+title:
+
+.. approved:: ../examples/Command/report-output-html
+  :language: bash
+  :section: 2

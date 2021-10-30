@@ -1,0 +1,13 @@
+{
+    "report.outputs": {
+         "build-artifact": {
+             "renderer": "html",
+             "path": "path/to/something.html",
+             "title": "All Your Benchmark Are Belong to Us"
+         }
+    }
+}
+---
+phpbench run --report=aggregate --executor=debug --output=build-artifact NothingBench.php
+---
+Written report to: /path/to/tests/Workspace/path/to/something.html
