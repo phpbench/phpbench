@@ -493,17 +493,6 @@ Default: ``["\/home\/daniel\/www\/phpbench\/phpbench\/lib\/Extension\/..\/..\/te
 
 Types: ``["array"]``
 
-.. _configuration_report_html_output_dir:
-
-report.html_output_dir
-~~~~~~~~~~~~~~~~~~~~~~
-
-Path in which to render HTML reports
-
-Default: ``.phpbench/html``
-
-Types: ``["string"]``
-
 .. _configuration_report_template_map:
 
 report.template_map
