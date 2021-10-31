@@ -4,6 +4,7 @@ namespace PhpBench\Development;
 
 use PhpBench\DependencyInjection\ExtensionInterface;
 use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
+use Symfony\Component\OptionsResolver\Exception\NoConfigurationException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use function json_encode;
 use function method_exists;
@@ -57,10 +58,16 @@ class ConfigSchemaDumper
             $inspector = new OptionsResolverIntrospector($optionsResolver);
 
             foreach ($optionsResolver->getDefinedOptions() as $option) {
-                $schema['properties'][$option] = [
+                $meta = [
                     'description' => $optionsResolver->getInfo($option),
                     'type' => $this->mapTypes($inspector->getAllowedTypes($option)),
                 ];
+                try {
+                    $values = $inspector->getAllowedValues($option);
+                    $meta['enum'] = $values;
+                } catch (NoConfigurationException $e) {
+                }
+                $schema['properties'][$option] = $meta;
             }
         }
 
