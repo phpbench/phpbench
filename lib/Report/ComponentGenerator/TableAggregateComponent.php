@@ -172,11 +172,13 @@ class TableAggregateComponent implements ComponentGeneratorInterface
     }
 
     /**
+     * @param array<string, array<string,mixed>> $colDefs
+     * @param array<string,array{cols: string[]}> $groupDefs
      * @return TableColumnGroup[]
      */
-    private function resolveGroups(array $colDefs, array $groupDefinitions): array
+    private function resolveGroups(array $colDefs, array $groupDefs): array
     {
-        $groupsByColumn = $this->groupsByColumn($groupDefinitions);
+        $groupsByColumn = $this->groupsByColumn($groupDefs);
 
         $colSizes = array_map(function (array $def) {
             return count($def);
@@ -187,6 +189,10 @@ class TableAggregateComponent implements ComponentGeneratorInterface
         }, GroupHelper::resolveGroupSizes($colSizes, $groupsByColumn));
     }
 
+    /**
+     * @param array<string,array{cols: string[]}> $groupDefs
+     * @return array<string, string>
+     */
     private function groupsByColumn(array $groupDefs): array
     {
         $groupsByColName = [];
