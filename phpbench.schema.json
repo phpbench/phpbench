@@ -307,10 +307,10 @@
                 "string"
             ]
         },
-        "expression.memory_unit_as_binary": {
-            "description": "Show memory using binary IEC units, i.e. 1KiB = 1024 bytes",
+        "expression.memory_unit_prefix": {
+            "description": "By default use ``decimal`` (1kb = 1000 bytes) or ``binary`` (1KiB = 1024 bytes) when displaying memory",
             "type": [
-                "boolean"
+                "string"
             ]
         },
         "storage.driver": {

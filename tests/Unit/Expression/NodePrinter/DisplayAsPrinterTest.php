@@ -23,7 +23,7 @@ class DisplayAsPrinterTest extends NodePrinterTestCase
                 new UnitNode(new StringNode('memory'))
             ),
             [],
-            [ExpressionExtension::PARAM_MEMORY_UNIT_AS_BINARY => true]
+            [ExpressionExtension::PARAM_MEMORY_UNIT_PREFIX => 'binary']
         ));
     }
 }

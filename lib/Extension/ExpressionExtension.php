@@ -124,9 +124,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ExpressionExtension implements ExtensionInterface
 {
+    private const PREFIX_BINARY = 'binary';
+    private const PREFIX_DECIMAL = 'decimal';
+
     public const PARAM_SYNTAX_HIGHLIGHTING = 'expression.syntax_highlighting';
     public const PARAM_THEME = 'expression.theme';
-    public const PARAM_MEMORY_UNIT_AS_BINARY = 'expression.memory_unit_as_binary';
+    public const PARAM_MEMORY_UNIT_PREFIX = 'expression.memory_unit_prefix';
 
     public const SERVICE_PLAIN_PRINTER = 'expression.printer.plain';
     public const SERVICE_BARE_PRINTER = 'expression.printer.bare';
@@ -291,7 +294,10 @@ class ExpressionExtension implements ExtensionInterface
                 new TolerablePrinter(),
                 new PercentagePrinter(),
                 new ValueWithUnitPrinter(),
-                new DisplayAsPrinter($container->get(TimeUnit::class), $container->getParameter(self::PARAM_MEMORY_UNIT_AS_BINARY)),
+                new DisplayAsPrinter(
+                    $container->get(TimeUnit::class),
+                    $container->getParameter(self::PARAM_MEMORY_UNIT_PREFIX) === self::PREFIX_BINARY
+                ),
                 new ParameterPrinter(),
                 new StringPrinter(),
                 new LabelPrinter(),
@@ -383,15 +389,20 @@ class ExpressionExtension implements ExtensionInterface
         $resolver->setDefaults([
             self::PARAM_SYNTAX_HIGHLIGHTING => true,
             self::PARAM_THEME => self::THEME_SOLARIZED,
-            self::PARAM_MEMORY_UNIT_AS_BINARY => false,
+            self::PARAM_MEMORY_UNIT_PREFIX => self::PREFIX_DECIMAL,
         ]);
         $resolver->setAllowedTypes(self::PARAM_SYNTAX_HIGHLIGHTING, 'bool');
         $resolver->setAllowedTypes(self::PARAM_THEME, 'string');
-        $resolver->setAllowedTypes(self::PARAM_MEMORY_UNIT_AS_BINARY, ['bool']);
+        $resolver->setAllowedTypes(self::PARAM_MEMORY_UNIT_PREFIX, ['string']);
+        $resolver->setAllowedValues(self::PARAM_MEMORY_UNIT_PREFIX, [self::PREFIX_BINARY, self::PREFIX_DECIMAL]);
         SymfonyOptionsResolverCompat::setInfos($resolver, [
             self::PARAM_SYNTAX_HIGHLIGHTING => 'Enable syntax highlighting',
             self::PARAM_THEME => 'Select a theme to use',
-            self::PARAM_MEMORY_UNIT_AS_BINARY => 'Show memory using binary IEC units, i.e. 1KiB = 1024 bytes',
+            self::PARAM_MEMORY_UNIT_PREFIX => sprintf(
+                'By default use ``%s`` (1kb = 1000 bytes) or ``%s`` (1KiB = 1024 bytes) when displaying memory',
+                self::PREFIX_DECIMAL,
+                self::PREFIX_BINARY,
+            ),
         ]);
     }
 }
