@@ -11,7 +11,6 @@ use PhpBench\Report\Model\Table;
 use PhpBench\Report\Model\TableRow;
 use Symfony\Component\Console\Helper\Table as SymfonyTable;
 use Symfony\Component\Console\Helper\TableCell;
-use Symfony\Component\Console\Helper\TableSeparator;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class TableRenderer implements ObjectRendererInterface
@@ -69,6 +68,7 @@ class TableRenderer implements ObjectRendererInterface
         }
 
         $groups = [];
+
         foreach ($object->columnGroups() as $colGroup) {
             $label = $colGroup->label();
             $label = $label === GroupHelper::DEFAULT_GROUP_NAME ? '' : $label;
