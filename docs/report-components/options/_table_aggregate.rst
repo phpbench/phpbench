@@ -25,4 +25,4 @@
 **groups**:
   Type(s): ``array``, Default: ``[]``
 
-  Group columns together
+  Group columns together, e.g. ``{"groups":{"group_name": {"cols": ["col1", "col2"]}}}``

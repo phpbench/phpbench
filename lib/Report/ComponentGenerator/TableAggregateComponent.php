@@ -61,7 +61,9 @@ class TableAggregateComponent implements ComponentGeneratorInterface
             self::PARAM_TITLE => 'Caption for the table',
             self::PARAM_PARTITION => 'Partition the data using these column names - the row expressions will to aggregate the data in each partition',
             self::PARAM_ROW => 'Set of expressions used to evaluate the partitions, the key is the column name, the value is the expression',
-            self::PARAM_GROUPS => 'Group columns together',
+            self::PARAM_GROUPS => <<<'EOT'
+Group columns together, e.g. ``{"groups":{"group_name": {"cols": ["col1", "col2"]}}}``
+EOT
         ]);
     }
 
