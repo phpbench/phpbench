@@ -55,12 +55,6 @@
                 "object"
             ]
         },
-        "core.memory_unit_system_as_binary": {
-            "description": "Show memory using binary IEC units, i.e. 1KiB = 1024 bytes",
-            "type": [
-                "boolean"
-            ]
-        },
         "runner.annotations": {
             "description": "Read metadata from annotations",
             "type": [
@@ -311,6 +305,12 @@
             "description": "Select a theme to use",
             "type": [
                 "string"
+            ]
+        },
+        "expression.memory_unit_as_binary": {
+            "description": "Show memory using binary IEC units, i.e. 1KiB = 1024 bytes",
+            "type": [
+                "boolean"
             ]
         },
         "storage.driver": {

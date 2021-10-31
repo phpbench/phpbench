@@ -6,7 +6,7 @@ use PhpBench\Expression\Ast\DisplayAsNode;
 use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Ast\UnitNode;
-use PhpBench\Extension\CoreExtension;
+use PhpBench\Extension\ExpressionExtension;
 use PhpBench\Tests\Unit\Expression\NodePrinterTestCase;
 
 class DisplayAsPrinterTest extends NodePrinterTestCase
@@ -23,7 +23,7 @@ class DisplayAsPrinterTest extends NodePrinterTestCase
                 new UnitNode(new StringNode('memory'))
             ),
             [],
-            [CoreExtension::PARAM_MEMORY_UNIT_AS_BINARY => true]
+            [ExpressionExtension::PARAM_MEMORY_UNIT_AS_BINARY => true]
         ));
     }
 }

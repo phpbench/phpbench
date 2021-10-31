@@ -92,17 +92,6 @@ Default: ``[]``
 
 Types: ``["array"]``
 
-.. _configuration_core_memory_unit_system_as_binary:
-
-core.memory_unit_system_as_binary
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Show memory using binary IEC units, i.e. 1KiB = 1024 bytes
-
-Default: ``false``
-
-Types: ``["bool"]``
-
 Runner
 ------
 
@@ -541,6 +530,17 @@ Select a theme to use
 Default: ``solarized``
 
 Types: ``["string"]``
+
+.. _configuration_expression_memory_unit_as_binary:
+
+expression.memory_unit_as_binary
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Show memory using binary IEC units, i.e. 1KiB = 1024 bytes
+
+Default: ``false``
+
+Types: ``["bool"]``
 
 Storage
 -------

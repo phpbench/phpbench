@@ -34,9 +34,9 @@ class MemoryUnit
         'kb' => self::KILOBYTES,
         'mb' => self::MEGABYTES,
         'gb' => self::GIGABYTES,
-        'ki' => self::KIBIBYTES,
-        'mi' => self::MEBIBYTES,
-        'gi' => self::GIBIBYTES
+        'kib' => self::KIBIBYTES,
+        'mib' => self::MEBIBYTES,
+        'gib' => self::GIBIBYTES
     ];
 
     private static $suffixes = [

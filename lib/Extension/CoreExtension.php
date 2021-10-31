@@ -33,7 +33,6 @@ class CoreExtension implements ExtensionInterface
     public const PARAM_WORKING_DIR = 'core.working_dir';
 
     public const PARAM_TIME_UNIT = 'core.time_unit';
-    public const PARAM_MEMORY_UNIT_AS_BINARY = 'core.memory_unit_system_as_binary';
     public const PARAM_SCHEMA = '$schema';
 
     public function configure(OptionsResolver $resolver): void
@@ -45,10 +44,8 @@ class CoreExtension implements ExtensionInterface
             self::PARAM_WORKING_DIR => getcwd(),
             self::PARAM_CONFIG_PATH => null,
             self::PARAM_PROFILES => [],
-            self::PARAM_MEMORY_UNIT_AS_BINARY => false,
         ]);
 
-        $resolver->setAllowedTypes(self::PARAM_MEMORY_UNIT_AS_BINARY, ['bool']);
         $resolver->setAllowedTypes(self::PARAM_SCHEMA, ['string', 'null']);
         $resolver->setAllowedTypes(self::PARAM_PROFILES, ['array']);
         $resolver->setAllowedTypes(self::PARAM_DEBUG, ['bool']);
@@ -79,7 +76,6 @@ EOT
             self::PARAM_CONFIG_PATH => 'Alternative path to a PHPBench configuration file (default is ``phpbench.json``',
             self::PARAM_WORKING_DIR => 'Working directory to use',
             self::PARAM_SCHEMA => 'JSON schema location, e.g. ``./vendor/phpbench/phpbench/phpbench.schema.json``',
-            self::PARAM_MEMORY_UNIT_AS_BINARY => 'Show memory using binary IEC units, i.e. 1KiB = 1024 bytes',
         ]);
     }
 
