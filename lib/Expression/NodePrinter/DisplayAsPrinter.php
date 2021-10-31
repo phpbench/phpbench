@@ -82,8 +82,8 @@ class DisplayAsPrinter implements NodePrinter
         }
 
         if (MemoryUnit::isMemoryUnit($unit)) {
-            $unit = $this->memoryAsBinary ? 
-                MemoryUnit::resolveSuitableBinaryUnit($unit, $value->value()) : 
+            $unit = $this->memoryAsBinary ?
+                MemoryUnit::resolveSuitableBinaryUnit($unit, $value->value()) :
                 MemoryUnit::resolveSuitableUnit($unit, $value->value());
 
             return $this->memoryUnit(

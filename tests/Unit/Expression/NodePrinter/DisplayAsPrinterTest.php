@@ -2,8 +2,6 @@
 
 namespace PhpBench\Tests\Unit\Expression\NodePrinter;
 
-use PhpBench\Data\DataFrame;
-use PhpBench\Expression\Ast\DataFrameNode;
 use PhpBench\Expression\Ast\DisplayAsNode;
 use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\StringNode;

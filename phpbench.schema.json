@@ -55,6 +55,12 @@
                 "object"
             ]
         },
+        "core.memory_unit_system_as_binary": {
+            "description": "Show memory using binary units (e.g. 1024KiB vs. 1000k)",
+            "type": [
+                "boolean"
+            ]
+        },
         "runner.annotations": {
             "description": "Read metadata from annotations",
             "type": [

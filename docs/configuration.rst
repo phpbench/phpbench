@@ -92,6 +92,17 @@ Default: ``[]``
 
 Types: ``["array"]``
 
+.. _configuration_core_memory_unit_system_as_binary:
+
+core.memory_unit_system_as_binary
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Show memory using binary units (e.g. 1024KiB vs. 1000k)
+
+Default: ``false``
+
+Types: ``["bool"]``
+
 Runner
 ------
 

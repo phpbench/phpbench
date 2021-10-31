@@ -62,19 +62,19 @@ class MemoryUnitTest extends TestCase
         yield [
                 1,
                 MemoryUnit::KIBIBYTES,
-                pow(2,10)
+                pow(2, 10)
             ];
 
         yield [
                 1,
                 MemoryUnit::MEBIBYTES,
-                pow(2,20)
+                pow(2, 20)
             ];
 
         yield [
                 1,
                 MemoryUnit::GIBIBYTES,
-                pow(2,30)
+                pow(2, 30)
             ];
     }
 
