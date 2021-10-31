@@ -62,6 +62,7 @@ class ConfigSchemaDumper
                     'description' => $optionsResolver->getInfo($option),
                     'type' => $this->mapTypes($inspector->getAllowedTypes($option)),
                 ];
+
                 try {
                     $values = $inspector->getAllowedValues($option);
                     $meta['enum'] = $values;
