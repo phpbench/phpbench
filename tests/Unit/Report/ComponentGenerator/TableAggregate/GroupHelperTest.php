@@ -49,7 +49,7 @@ class GroupHelperTest extends TestCase
             ['one' => 'group_1'],
             [
                 ['group_1', 2],
-                ['default', 2],
+                [GroupHelper::DEFAULT_GROUP_NAME, 2],
             ]
         ];
 
@@ -58,7 +58,7 @@ class GroupHelperTest extends TestCase
             ['one' => 'group_1'],
             [
                 ['group_1', 2],
-                ['default', 2],
+                [GroupHelper::DEFAULT_GROUP_NAME, 2],
             ]
         ];
 
@@ -67,7 +67,7 @@ class GroupHelperTest extends TestCase
             ['one' => 'group_1', 'two' => 'group_1'],
             [
                 ['group_1', 2],
-                ['default', 2],
+                [GroupHelper::DEFAULT_GROUP_NAME, 2],
                 ['group_1', 2],
             ]
         ];

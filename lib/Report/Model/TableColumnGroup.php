@@ -2,6 +2,8 @@
 
 namespace PhpBench\Report\Model;
 
+use PhpBench\Report\ComponentGenerator\TableAggregate\GroupHelper;
+
 final class TableColumnGroup
 {
     /**
@@ -31,6 +33,6 @@ final class TableColumnGroup
 
     public function isDefault(): bool
     {
-        return $this->label === 'default';
+        return $this->label === GroupHelper::DEFAULT_GROUP_NAME;
     }
 }

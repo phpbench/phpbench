@@ -4,7 +4,6 @@ namespace PhpBench\Report\Console\Renderer;
 
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Printer;
-use PhpBench\Report\ComponentGenerator\TableAggregate\GroupHelper;
 use PhpBench\Report\Console\ObjectRenderer;
 use PhpBench\Report\Console\ObjectRendererInterface;
 use PhpBench\Report\Model\Table;
@@ -71,7 +70,7 @@ class TableRenderer implements ObjectRendererInterface
 
         foreach ($object->columnGroups() as $colGroup) {
             $label = $colGroup->label();
-            $label = $label === GroupHelper::DEFAULT_GROUP_NAME ? '' : $label;
+            $label = $colGroup->isDefault() ? '' : $label;
             $groups[] = new TableCell($label, ['colspan' => $colGroup->size()]);
         }
 
