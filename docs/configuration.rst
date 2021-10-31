@@ -97,7 +97,7 @@ Types: ``["array"]``
 core.memory_unit_system_as_binary
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Show memory using binary units (e.g. 1024KiB vs. 1000k)
+Show memory using binary IEC units, i.e. 1KiB = 1024 bytes
 
 Default: ``false``
 

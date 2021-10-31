@@ -79,7 +79,7 @@ EOT
             self::PARAM_CONFIG_PATH => 'Alternative path to a PHPBench configuration file (default is ``phpbench.json``',
             self::PARAM_WORKING_DIR => 'Working directory to use',
             self::PARAM_SCHEMA => 'JSON schema location, e.g. ``./vendor/phpbench/phpbench/phpbench.schema.json``',
-            self::PARAM_MEMORY_UNIT_AS_BINARY => 'Show memory using binary units (e.g. 1024KiB vs. 1000k)',
+            self::PARAM_MEMORY_UNIT_AS_BINARY => 'Show memory using binary IEC units, i.e. 1KiB = 1024 bytes',
         ]);
     }
 
