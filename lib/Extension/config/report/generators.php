@@ -239,14 +239,14 @@ return [
                                 'type' => 'expand',
                                 'partition' => 'suite_tag',
                                 'cols' => [
-                                    'PHP {{ key }}' => "mode(partition[\"result_time_avg\"]) as time ~ ' (' ~ rstdev(partition['result_time_avg']) ~ ')'",
+                                    'Tag: {{ key }}' => "mode(partition[\"result_time_avg\"]) as time ~ ' (' ~ rstdev(partition['result_time_avg']) ~ ')'",
                                 ],
                             ],
                             "memory" => [
                                 'type' => 'expand',
                                 'partition' => 'suite_tag',
                                 'cols' => [
-                                    'PHP {{ key }} ' => "mode(partition[\"result_mem_peak\"]) as memory",
+                                    'Tag: {{ key }} ' => "mode(partition[\"result_mem_peak\"]) as memory",
                                 ],
                             ],
                         ]

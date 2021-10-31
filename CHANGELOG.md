@@ -8,6 +8,7 @@ Features:
 
 - [reporting] Ability to expand table columns dynamically #928
 - [reporting] Ability to group columns #928
+- [reporting] Added `benchmark_compare` default report #928
 
 Bug fixes:
 
