@@ -44,9 +44,9 @@ class MemoryUnit
         self::KILOBYTES => 'kb',
         self::MEGABYTES => 'mb',
         self::GIGABYTES => 'gb',
-        self::KIBIBYTES => 'ki',
-        self::MEBIBYTES => 'mi',
-        self::GIBIBYTES => 'gi'
+        self::KIBIBYTES => 'KiB',
+        self::MEBIBYTES => 'MiB',
+        self::GIBIBYTES => 'GiB'
     ];
 
     /**
