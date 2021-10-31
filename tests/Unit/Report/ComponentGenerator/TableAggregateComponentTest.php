@@ -12,6 +12,7 @@ use PhpBench\Report\ComponentGenerator\TableAggregate\ExpandColumnProcessor;
 use PhpBench\Report\ComponentGenerator\TableAggregate\ExpressionColumnProcessor;
 use PhpBench\Report\Model\Builder\TableBuilder;
 use PhpBench\Report\Model\Table;
+use PhpBench\Report\Model\TableColumnGroup;
 
 class TableAggregateComponentTest extends ComponentGeneratorTestCase
 {
@@ -118,7 +119,7 @@ class TableAggregateComponentTest extends ComponentGeneratorTestCase
                 'hello' => new ListNode([new StringNode('goodbye')]),
                 'goodbye' => new ListNode([new StringNode('hello'), new StringNode('goodbye')]),
             ]
-        ])->build(), $table);
+        ])->addGroups([new TableColumnGroup('default', 2)])->build(), $table);
     }
 
     public function testExpandKey(): void
