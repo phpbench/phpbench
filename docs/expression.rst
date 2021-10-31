@@ -117,8 +117,11 @@ Memory Units:
 
     "byte", "1 byte"
     "kilobyte", "1,000 bytes"
+    "kibibyte", "1,024 bytes"
     "megabyte", "1,000,000 bytes"
+    "mibibyte", "1,048,576 bytes"
     "gigabyte", "1,000,000,000 bytes"
+    "gibibyte", "1,073,741,824 bytes"
     "memory", "Automatic"
 
 For example:
