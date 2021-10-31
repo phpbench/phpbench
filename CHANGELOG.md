@@ -6,6 +6,7 @@ master
 
 Features:
 
+- [expression] Support binary memory units #934
 - [reporting] Ability to expand table columns dynamically #928
 - [reporting] Ability to group columns #928
 - [reporting] Added `benchmark_compare` default report #928

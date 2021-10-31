@@ -10,7 +10,8 @@ use RuntimeException;
 class MemoryUnitTest extends TestCase
 {
     /**
-     * @dataProvider provideConvertToBytes
+     * @dataProvider provideSiUnits
+     * @dataProvider provideBinaryUnits
      */
     public function testConvertToBytes(float $value, string $unit, int $expected): void
     {
@@ -20,7 +21,7 @@ class MemoryUnitTest extends TestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideConvertToBytes(): Generator
+    public function provideSiUnits(): Generator
     {
         yield [
                 1,
@@ -50,6 +51,30 @@ class MemoryUnitTest extends TestCase
                 2,
                 MemoryUnit::GIGABYTES,
                 2000000000
+            ];
+    }
+
+    /**
+     * @return Generator<mixed>
+     */
+    public function provideBinaryUnits(): Generator
+    {
+        yield [
+                1,
+                MemoryUnit::KIBIBYTES,
+                pow(2, 10)
+            ];
+
+        yield [
+                1,
+                MemoryUnit::MEBIBYTES,
+                pow(2, 20)
+            ];
+
+        yield [
+                1,
+                MemoryUnit::GIBIBYTES,
+                pow(2, 30)
             ];
     }
 
@@ -95,7 +120,7 @@ class MemoryUnitTest extends TestCase
      */
     public function testResolveSuitableUnit(float $value, string $expectedUnit): void
     {
-        self::assertEquals($expectedUnit, MemoryUnit::resolveSuitableUnit(MemoryUnit::AUTO, $value));
+        self::assertEquals($expectedUnit, MemoryUnit::resolveSuitableUnit(MemoryUnit::AUTO, $value, true));
     }
 
     /**
@@ -116,5 +141,33 @@ class MemoryUnitTest extends TestCase
         yield [1000000, MemoryUnit::MEGABYTES];
 
         yield [1000000000, MemoryUnit::GIGABYTES];
+    }
+
+    /**
+     * @dataProvider provideSuitableBinaryUnit
+     */
+    public function testResolveSuitableBinaryUnit(float $value, string $expectedUnit): void
+    {
+        self::assertEquals($expectedUnit, MemoryUnit::resolveSuitableBinaryUnit(MemoryUnit::AUTO, $value));
+    }
+
+    /**
+     * @return Generator<mixed>
+     */
+    public function provideSuitableBinaryUnit(): Generator
+    {
+        yield [1, MemoryUnit::BYTES];
+
+        yield [100, MemoryUnit::BYTES];
+
+        yield [1024, MemoryUnit::KIBIBYTES];
+
+        yield [10000, MemoryUnit::KIBIBYTES];
+
+        yield [100000, MemoryUnit::KIBIBYTES];
+
+        yield [1000000, MemoryUnit::MEBIBYTES];
+
+        yield [1000000000, MemoryUnit::GIBIBYTES];
     }
 }

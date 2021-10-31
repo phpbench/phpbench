@@ -531,6 +531,19 @@ Default: ``solarized``
 
 Types: ``["string"]``
 
+.. _configuration_expression_memory_unit_prefix:
+
+expression.memory_unit_prefix
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+By default use ``decimal`` (1kb = 1000 bytes) or ``binary`` (1KiB = 1024 bytes) when displaying memory
+
+Default: ``decimal``
+
+Types: ``["string"]``
+
+Allowed values: ``["binary","decimal"]``
+
 Storage
 -------
 

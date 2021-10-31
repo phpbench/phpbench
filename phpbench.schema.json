@@ -307,6 +307,16 @@
                 "string"
             ]
         },
+        "expression.memory_unit_prefix": {
+            "description": "By default use ``decimal`` (1kb = 1000 bytes) or ``binary`` (1KiB = 1024 bytes) when displaying memory",
+            "type": [
+                "string"
+            ],
+            "enum": [
+                "binary",
+                "decimal"
+            ]
+        },
         "storage.driver": {
             "description": "Storage driver to use",
             "type": [

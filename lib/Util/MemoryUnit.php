@@ -10,6 +10,9 @@ class MemoryUnit
     public const KILOBYTES = 'kilobytes';
     public const MEGABYTES = 'megabytes';
     public const GIGABYTES = 'gigabytes';
+    public const KIBIBYTES = 'kibibytes';
+    public const MEBIBYTES = 'mebibytes';
+    public const GIBIBYTES = 'gibibytes';
     public const AUTO = 'memory';
 
     /**
@@ -20,6 +23,9 @@ class MemoryUnit
         self::KILOBYTES => 1000,
         self::MEGABYTES => 1000000,
         self::GIGABYTES => 1000000000,
+        self::KIBIBYTES => 1024,
+        self::MEBIBYTES => 1048576,
+        self::GIBIBYTES => 1073741824,
     ];
 
     private static $aliases = [
@@ -27,7 +33,10 @@ class MemoryUnit
         'k' => self::KILOBYTES,
         'kb' => self::KILOBYTES,
         'mb' => self::MEGABYTES,
-        'gb' => self::GIGABYTES
+        'gb' => self::GIGABYTES,
+        'kib' => self::KIBIBYTES,
+        'mib' => self::MEBIBYTES,
+        'gib' => self::GIBIBYTES
     ];
 
     private static $suffixes = [
@@ -35,6 +44,9 @@ class MemoryUnit
         self::KILOBYTES => 'kb',
         self::MEGABYTES => 'mb',
         self::GIGABYTES => 'gb',
+        self::KIBIBYTES => 'KiB',
+        self::MEBIBYTES => 'MiB',
+        self::GIBIBYTES => 'GiB'
     ];
 
     /**
@@ -72,6 +84,37 @@ class MemoryUnit
         return $byteValue / self::$multipliers[$toUnit];
     }
 
+    /**
+     * Resolve an binary unit
+     */
+    public static function resolveSuitableBinaryUnit(?string $unit, ?float $value): string
+    {
+        if ($unit !== self::AUTO) {
+            return $unit;
+        }
+
+        if (null === $value) {
+            return self::BYTES;
+        }
+
+        if (($value / 1E9) >= 1) {
+            return self::GIBIBYTES;
+        }
+
+        if (($value / 1E6) >= 1) {
+            return self::MEBIBYTES;
+        }
+
+        if (($value / 1E3) >= 1) {
+            return self::KIBIBYTES;
+        }
+
+        return self::BYTES;
+    }
+
+    /**
+     * Resolve an SI unit
+     */
     public static function resolveSuitableUnit(?string $unit, ?float $value): string
     {
         if ($unit !== self::AUTO) {
