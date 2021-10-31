@@ -164,7 +164,7 @@ class MemoryUnitTest extends TestCase
 
         yield [10000, MemoryUnit::KIBIBYTES];
 
-        yield [100_000, MemoryUnit::KIBIBYTES];
+        yield [100000, MemoryUnit::KIBIBYTES];
 
         yield [1000000, MemoryUnit::MEBIBYTES];
 
