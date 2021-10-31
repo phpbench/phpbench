@@ -67,7 +67,7 @@ class TableBuilder
     }
 
     /**
-     * @param tableRow[] $rows
+     * @param tableRowArray[] $rows
      */
     public function addRowsFromArray(array $rows): self
     {

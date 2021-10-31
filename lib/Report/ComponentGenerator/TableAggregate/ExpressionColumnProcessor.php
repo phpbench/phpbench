@@ -19,11 +19,11 @@ class ExpressionColumnProcessor implements ColumnProcessorInterface
     }
 
     /**
-     * @param tableRow $row
+     * @param tableRowArray $row
      * @param tableColumnDefinition $definition
      * @param parameters $params
      *
-     * @return tableRow $row
+     * @return tableRowArray $row
      */
     public function process(array $row, array $definition, DataFrame $frame, array $params): array
     {

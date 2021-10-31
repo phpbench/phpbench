@@ -9,10 +9,10 @@ interface ColumnProcessorInterface extends RegistrableInterface
 {
     /**
      * @param parameters $params
-     * @param tableRow $row
+     * @param tableRowArray $row
      * @param tableColumnDefinition $definition
      *
-     * @return tableRow $row
+     * @return tableRowArray $row
      */
     public function process(array $row, array $definition, DataFrame $frame, array $params): array;
 }
