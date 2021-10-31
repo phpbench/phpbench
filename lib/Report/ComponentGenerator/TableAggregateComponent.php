@@ -129,6 +129,8 @@ class TableAggregateComponent implements ComponentGeneratorInterface
         unset($definition['type']);
 
         $processor = $this->columnProcessors[$type];
+
+        // could memoize this but it makes no practical difference
         $resolver = new OptionsResolver();
         $processor->configure($resolver);
 
