@@ -14,6 +14,7 @@ Bug fixes:
 
 - Fix property (`.`) access precedence, it is now the same as `[` array
   access #928
+- Fix bug with misassigned labels in bar chart #931
 - Safely removed non-functioning config option `report.html_output_dir` #930
 
 1.1.2 (2021-09-25)

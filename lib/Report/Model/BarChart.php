@@ -67,12 +67,12 @@ class BarChart implements ComponentInterface
             return [];
         }
 
+        // use all unique discreet points as the X axes values
         $xAxes = array_unique(array_merge(...array_map(function (BarChartDataSet $dataSet) {
             return $dataSet->xSeries();
         }, $this->dataSets)));
-        sort($xAxes);
 
-        return $xAxes;
+        return array_values($xAxes);
     }
 
     public function isEmpty(): bool
