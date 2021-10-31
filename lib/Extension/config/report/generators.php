@@ -178,6 +178,7 @@ return [
                                 "row" => [
                                     "subject" => "first(partition[\"subject_name\"]) ~ \" (\" ~ first(partition[\"variant_name\"]) ~ \")\"",
                                     "memory" => "first(partition[\"result_mem_peak\"]) as memory",
+                                    "memory_bin" => "first(partition[\"result_mem_peak\"]) as mebibytes",
                                     "mode" => "mode(partition[\"result_time_avg\"]) as time",
                                     "rstdev" => "rstdev(partition[\"result_time_avg\"])",
                                     "stdev" => "stdev(partition[\"result_time_avg\"]) as time"

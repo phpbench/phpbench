@@ -84,6 +84,37 @@ class MemoryUnit
         return $byteValue / self::$multipliers[$toUnit];
     }
 
+    /**
+     * Resolve an binary unit
+     */
+    public static function resolveSuitableBinaryUnit(?string $unit, ?float $value): string
+    {
+        if ($unit !== self::AUTO) {
+            return $unit;
+        }
+
+        if (null === $value) {
+            return self::BYTES;
+        }
+
+        if (($value / 1E9) >= 1) {
+            return self::GIBIBYTES;
+        }
+
+        if (($value / 1E6) >= 1) {
+            return self::MEBIBYTES;
+        }
+
+        if (($value / 1E3) >= 1) {
+            return self::KIBIBYTES;
+        }
+
+        return self::BYTES;
+    }
+
+    /**
+     * Resolve an SI unit
+     */
     public static function resolveSuitableUnit(?string $unit, ?float $value): string
     {
         if ($unit !== self::AUTO) {
