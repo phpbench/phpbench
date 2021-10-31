@@ -10,6 +10,9 @@ class MemoryUnit
     public const KILOBYTES = 'kilobytes';
     public const MEGABYTES = 'megabytes';
     public const GIGABYTES = 'gigabytes';
+    public const KIBIBYTES = 'kibibytes';
+    public const MEBIBYTES = 'mebibytes';
+    public const GIBIBYTES = 'gibibytes';
     public const AUTO = 'memory';
 
     /**
@@ -20,6 +23,9 @@ class MemoryUnit
         self::KILOBYTES => 1000,
         self::MEGABYTES => 1000000,
         self::GIGABYTES => 1000000000,
+        self::KIBIBYTES => 1024,
+        self::MEBIBYTES => 1048576,
+        self::GIBIBYTES => 1073741824,
     ];
 
     private static $aliases = [
@@ -27,7 +33,10 @@ class MemoryUnit
         'k' => self::KILOBYTES,
         'kb' => self::KILOBYTES,
         'mb' => self::MEGABYTES,
-        'gb' => self::GIGABYTES
+        'gb' => self::GIGABYTES,
+        'ki' => self::KIBIBYTES,
+        'mi' => self::MEBIBYTES,
+        'gi' => self::GIBIBYTES
     ];
 
     private static $suffixes = [
@@ -35,6 +44,9 @@ class MemoryUnit
         self::KILOBYTES => 'kb',
         self::MEGABYTES => 'mb',
         self::GIGABYTES => 'gb',
+        self::KIBIBYTES => 'ki',
+        self::MEBIBYTES => 'mi',
+        self::GIBIBYTES => 'gi'
     ];
 
     /**

@@ -10,7 +10,8 @@ use RuntimeException;
 class MemoryUnitTest extends TestCase
 {
     /**
-     * @dataProvider provideConvertToBytes
+     * @dataProvider provideSiUnits
+     * @dataProvider provideBinaryUnits
      */
     public function testConvertToBytes(float $value, string $unit, int $expected): void
     {
@@ -20,7 +21,7 @@ class MemoryUnitTest extends TestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideConvertToBytes(): Generator
+    public function provideSiUnits(): Generator
     {
         yield [
                 1,
@@ -50,6 +51,30 @@ class MemoryUnitTest extends TestCase
                 2,
                 MemoryUnit::GIGABYTES,
                 2000000000
+            ];
+    }
+
+    /**
+     * @return Generator<mixed>
+     */
+    public function provideBinaryUnits(): Generator
+    {
+        yield [
+                1,
+                MemoryUnit::KIBIBYTES,
+                pow(2,10)
+            ];
+
+        yield [
+                1,
+                MemoryUnit::MEBIBYTES,
+                pow(2,20)
+            ];
+
+        yield [
+                1,
+                MemoryUnit::GIBIBYTES,
+                pow(2,30)
             ];
     }
 
