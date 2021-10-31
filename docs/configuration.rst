@@ -542,6 +542,8 @@ Default: ``decimal``
 
 Types: ``["string"]``
 
+Allowed values: ``["binary","decimal"]``
+
 Storage
 -------
 
