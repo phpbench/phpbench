@@ -59,9 +59,11 @@ class ExpandColumnProcessor implements ColumnProcessorInterface
 
             foreach ($definition[self::PARAM_COLS] as $template => $expression) {
                 $colName = $this->evaluator->renderTemplate($template, $iterationParams);
+
                 if (isset($row[$colName])) {
                     throw new \RuntimeException(sprintf(
-                        'Column name "%s" has already been set. All column keys must currently be unique (regardless of grouping)', $colName
+                        'Column name "%s" has already been set. All column keys must currently be unique (regardless of grouping)',
+                        $colName
                     ));
                 }
                 $row[$colName] = $this->evaluator->evaluate($expression, $iterationParams);
