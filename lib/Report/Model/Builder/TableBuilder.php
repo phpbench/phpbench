@@ -88,6 +88,7 @@ class TableBuilder
             return $value;
         }, $row);
         $this->rows[] = TableRow::fromArray($row);
+
         return $this;
     }
 
@@ -99,6 +100,7 @@ class TableBuilder
         foreach ($groups as $group) {
             $this->columnGroups[] = $group;
         }
+
         return $this;
     }
 

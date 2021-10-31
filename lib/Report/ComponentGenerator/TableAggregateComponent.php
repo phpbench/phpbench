@@ -74,10 +74,13 @@ class TableAggregateComponent implements ComponentGeneratorInterface
         $resolvedColumns = [];
 
         $rows = [];
+
         foreach ($this->evaluator->partition($dataFrame, (array)$config[self::PARAM_PARTITION]) as $dataFrameRow) {
             $row = [];
+
             foreach ($columnDefinitions as $colName => $definition) {
                 $newRow = $this->processColumnDefinition($row, $definition, $dataFrameRow, $dataFrame);
+
                 if (!isset($resolvedColumns[$colName])) {
                     $resolvedColumns[$colName] = array_diff(array_keys($newRow), array_keys($row));
                 }
@@ -142,11 +145,13 @@ class TableAggregateComponent implements ComponentGeneratorInterface
 
     /**
      * @param parameters $definitions
+     *
      * @return parameters
      */
     private function columnDefinitions(array $definitions): array
     {
         $normalizedDefinitions = [];
+
         foreach ($definitions as $colName => $definition) {
             if (is_string($definition)) {
                 $normalizedDefinitions[$colName] = [
@@ -154,11 +159,13 @@ class TableAggregateComponent implements ComponentGeneratorInterface
                     'expression' => $definition,
                     'name' => $colName,
                 ];
+
                 continue;
             }
 
             if (is_array($definition)) {
                 $normalizedDefinitions[$colName] = $definition;
+
                 continue;
             }
 
@@ -174,6 +181,7 @@ class TableAggregateComponent implements ComponentGeneratorInterface
     /**
      * @param array<string, array<string,mixed>> $colDefs
      * @param array<string,array{cols: string[]}> $groupDefs
+     *
      * @return TableColumnGroup[]
      */
     private function resolveGroups(array $colDefs, array $groupDefs): array
@@ -191,11 +199,13 @@ class TableAggregateComponent implements ComponentGeneratorInterface
 
     /**
      * @param array<string,array{cols: string[]}> $groupDefs
+     *
      * @return array<string, string>
      */
     private function groupsByColumn(array $groupDefs): array
     {
         $groupsByColName = [];
+
         foreach ($groupDefs as $id => $groupDef) {
             foreach ($groupDef['cols'] as $colName) {
                 $groupsByColName[$colName] = $id;

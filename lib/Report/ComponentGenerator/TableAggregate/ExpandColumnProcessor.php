@@ -4,9 +4,7 @@ namespace PhpBench\Report\ComponentGenerator\TableAggregate;
 
 use PhpBench\Data\DataFrame;
 use PhpBench\Report\Bridge\ExpressionBridge;
-use RuntimeException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use function is_iterable;
 
 class ExpandColumnProcessor implements ColumnProcessorInterface
 {
