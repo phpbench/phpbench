@@ -29,9 +29,15 @@ class DisplayAsPrinter implements NodePrinter
      */
     private $timeUnit;
 
-    public function __construct(TimeUnit $timeUnit)
+    /**
+     * @var bool
+     */
+    private $memoryAsBinary;
+
+    public function __construct(TimeUnit $timeUnit, bool $memoryAsBinary)
     {
         $this->timeUnit = $timeUnit;
+        $this->memoryAsBinary = $memoryAsBinary;
     }
 
     public function print(Printer $printer, Node $node): ?string
@@ -76,7 +82,9 @@ class DisplayAsPrinter implements NodePrinter
         }
 
         if (MemoryUnit::isMemoryUnit($unit)) {
-            $unit = MemoryUnit::resolveSuitableUnit($unit, $value->value());
+            $unit = $this->memoryAsBinary ? 
+                MemoryUnit::resolveSuitableBinaryUnit($unit, $value->value()) : 
+                MemoryUnit::resolveSuitableUnit($unit, $value->value());
 
             return $this->memoryUnit(
                 $value->value(),

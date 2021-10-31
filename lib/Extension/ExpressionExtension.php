@@ -290,7 +290,7 @@ class ExpressionExtension implements ExtensionInterface
                 new TolerablePrinter(),
                 new PercentagePrinter(),
                 new ValueWithUnitPrinter(),
-                new DisplayAsPrinter($container->get(TimeUnit::class)),
+                new DisplayAsPrinter($container->get(TimeUnit::class), $container->getParameter(CoreExtension::PARAM_MEMORY_UNIT_AS_BINARY)),
                 new ParameterPrinter(),
                 new StringPrinter(),
                 new LabelPrinter(),
