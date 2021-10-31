@@ -79,7 +79,7 @@ class TableAggregateComponent implements ComponentGeneratorInterface
             $row = [];
 
             foreach ($columnDefinitions as $colName => $definition) {
-                $newRow = $this->processColumnDefinition($row, $definition, $dataFrameRow, $dataFrame);
+                $newRow = $this->generateRow($row, $definition, $dataFrameRow, $dataFrame);
 
                 if (!isset($resolvedColumns[$colName])) {
                     $resolvedColumns[$colName] = array_diff(array_keys($newRow), array_keys($row));
@@ -110,7 +110,7 @@ class TableAggregateComponent implements ComponentGeneratorInterface
      *
      * @return parameters
      */
-    private function processColumnDefinition(array $row, array $definition, DataFrame $partition, DataFrame $frame): array
+    private function generateRow(array $row, array $definition, DataFrame $partition, DataFrame $frame): array
     {
         if (!isset($definition['type'])) {
             throw new RuntimeException(sprintf(

@@ -6,6 +6,7 @@ use PhpBench\Data\DataFrame;
 use PhpBench\Report\Bridge\ExpressionBridge;
 use PhpBench\Report\ComponentGenerator\TableAggregate\ColumnProcessorInterface;
 use PhpBench\Report\ComponentGenerator\TableAggregate\ExpandColumnProcessor;
+use RuntimeException;
 
 class ExpandColumnProcessorTest extends ColumnProcessorTestCase
 {
@@ -121,6 +122,32 @@ class ExpandColumnProcessorTest extends ColumnProcessorTestCase
                     'key_var' => 'foobar',
                     'cols' => [
                         'Item: {{ foobar }}' => 'first(partition["fruit"])'
+                    ],
+                ],
+                DataFrame::fromRowSeries([
+                    [ 'apples' ],
+                    [ 'bannanas' ],
+                ], ['fruit']),
+                []
+            )
+        );
+    }
+
+    public function testThrowsExceptionIfColumnNameIsDuplicated(): void
+    {
+        $this->expectException(RuntimeException::class);
+        $this->expectErrorMessage('already been set');
+        self::assertEquals(
+            [
+                'Item: apples' => 'apples',
+                'Item: bannanas' => 'bannanas',
+            ],
+            $this->processRow(
+                [
+                    'partition' => ['fruit'],
+                    'key_var' => 'foobar',
+                    'cols' => [
+                        'item' => 'first(partition["fruit"])'
                     ],
                 ],
                 DataFrame::fromRowSeries([
