@@ -179,7 +179,7 @@ class TableAggregateComponent implements ComponentGeneratorInterface
     }
 
     /**
-     * @param array<string, array<string,mixed>> $colDefs
+     * @param array<string, array<int,mixed>> $colDefs
      * @param array<string,array{cols: string[]}> $groupDefs
      *
      * @return TableColumnGroup[]
