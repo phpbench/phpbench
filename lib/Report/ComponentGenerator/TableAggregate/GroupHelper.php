@@ -4,7 +4,7 @@ namespace PhpBench\Report\ComponentGenerator\TableAggregate;
 
 use RuntimeException;
 
-class GroupHelper
+final class GroupHelper
 {
     const DEFAULT_GROUP_NAME = 'default';
 
