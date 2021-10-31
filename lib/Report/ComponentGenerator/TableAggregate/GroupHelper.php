@@ -4,7 +4,7 @@ namespace PhpBench\Report\ComponentGenerator\TableAggregate;
 
 final class GroupHelper
 {
-    public const DEFAULT_GROUP_NAME = 'default';
+    public const DEFAULT_GROUP_NAME = '__default__';
 
     /**
      * @param array<string,int> $colSizes Ordered column definition sizes
