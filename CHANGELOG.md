@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+1.1.3 (2021-10-31)
+------------------
+
+- Fix bug with misassigned labels in bar chart #931
+
 1.1.2 (2021-09-25)
 ------------------
 

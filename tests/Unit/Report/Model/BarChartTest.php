@@ -31,7 +31,7 @@ class BarChartTest extends TestCase
             new BarChartDataSet('one', [12, 26, 31, 46], [1, 1, 1, 1], [1, 1, 1, 1]),
         ], 'Bar Chart One', 'foo');
 
-        self::assertEquals([12, 26, 31, 46], $chart->xAxes());
+        self::assertEquals([12, 31, 46, 26], $chart->xAxes());
     }
 
     public function testKnowsIfItsEmpty(): void
@@ -58,5 +58,21 @@ class BarChartTest extends TestCase
         );
 
         self::assertEquals(['one', 2, 3], $chart->xLabels());
+    }
+
+    public function testXLabelReplacementWithLabels(): void
+    {
+        $chart = new BarChart(
+            [
+                new BarChartDataSet('one', ['bench_one', 'bench_two', 'bench_three'], [1,2,3], [1,2,3]),
+            ],
+            'Bar Chart One',
+            'foo',
+            [
+                1 => 'five',
+            ]
+        );
+
+        self::assertEquals(['bench_one', 'five', 'bench_three'], $chart->xLabels());
     }
 }
