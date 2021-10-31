@@ -63,6 +63,12 @@ class ComparisonParseletTest extends ParseletTestCase
         yield ['10 as ms <= 10 as ms', [], 'true'];
 
         yield ['"10" = "10"', [], 'true'];
+
+        yield ['"10" = foobar["baz"]', [
+            'foobar' => [
+                'baz' => '10',
+            ],
+        ], 'true'];
     }
 
     public function testErrorOnUnsupportedOperator(): void

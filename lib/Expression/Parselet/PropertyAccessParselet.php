@@ -28,6 +28,6 @@ class PropertyAccessParselet implements InfixParselet
 
     public function precedence(): int
     {
-        return Precedence::COMPARISON_EQUALITY;
+        return Precedence::ACCESS;
     }
 }

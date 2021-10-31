@@ -24,19 +24,27 @@ final class Table implements IteratorAggregate, ComponentInterface
     private $title;
 
     /**
-     * @var array
+     * @var string[]
      */
     private $headers;
 
     /**
+     * @var array<string,TableColumnGroup>
+     */
+    private $columnGroups;
+
+    /**
      * @param Node[]|string[]|null $headers
      * @param TableRow[] $rows
+     * @param TableColumnGroup[] $columnGroups
+     * @param string[] $headers
      */
-    public function __construct(array $rows, ?array $headers, ?string $title)
+    public function __construct(array $rows, ?array $headers, ?string $title, array $columnGroups = [])
     {
         $this->rows = $rows;
         $this->title = $title;
         $this->headers = $headers;
+        $this->columnGroups = $columnGroups;
     }
 
     /**
@@ -91,8 +99,19 @@ final class Table implements IteratorAggregate, ComponentInterface
         return $this->rows;
     }
 
+    /**
+     * @return string[]
+     */
     public function headers(): ?array
     {
         return $this->headers;
+    }
+
+    /**
+     * @retrun TableColumnGroup[]
+     */
+    public function columnGroups(): array
+    {
+        return $this->columnGroups;
     }
 }

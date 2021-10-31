@@ -1,11 +1,24 @@
-<table class="table table-striped">
+<?php assert($object instanceof \PhpBench\Report\Model\Table) ?>
+<?php $i = 0 ?>
+<table class="table table-striped table-bordered table-hover">
     <?php if ($object->title()): ?>
         <caption><?php echo htmlspecialchars($object->title()) ?></caption>
     <?php endif ?>
     <thead class="thead-light">
-        <?php foreach ($object->columnNames() as $columnName): ?>
-            <th><?php echo htmlspecialchars($columnName) ?></th>
+        <tr>
+        <?php foreach($object->columnGroups() as $group): ?>
+            <?php if ($group->isDefault()): ?>
+                <th colspan=<?php echo $group->size() ?>></th>
+                <?php continue ?>
+            <?php endif ?>
+            <th class="table-<?php echo $i++ % 2 === 0 ? 'info' : 'warning' ?>" colspan=<?php echo $group->size() ?>><?php echo $group->label() ?></th>
         <?php endforeach ?>
+        </tr>
+        <tr>
+            <?php foreach ($object->columnNames() as $columnName): ?>
+                <th><?php echo htmlspecialchars($columnName) ?></th>
+            <?php endforeach ?>
+        </tr>
     </thead>
     <tbody>
         <?php foreach ($object->rows() as $row): ?>

@@ -65,6 +65,7 @@ use PhpBench\Expression\NodePrinter\BooleanPrinter;
 use PhpBench\Expression\NodePrinter\ComparisonPrinter;
 use PhpBench\Expression\NodePrinter\ConcatenatedNodePrinter;
 use PhpBench\Expression\NodePrinter\ConcatPrinter;
+use PhpBench\Expression\NodePrinter\DataFramePrinter;
 use PhpBench\Expression\NodePrinter\DisplayAsPrinter;
 use PhpBench\Expression\NodePrinter\FunctionPrinter;
 use PhpBench\Expression\NodePrinter\HighlightingNodePrinter;
@@ -300,6 +301,7 @@ class ExpressionExtension implements ExtensionInterface
                 new VariablePrinter(),
                 new ArrayAccessPrinter(),
                 new NullSafePrinter(),
+                new DataFramePrinter(),
             ]);
         });
 

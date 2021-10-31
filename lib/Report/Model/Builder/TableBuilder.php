@@ -5,6 +5,7 @@ namespace PhpBench\Report\Model\Builder;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\PhpValueFactory;
 use PhpBench\Report\Model\Table;
+use PhpBench\Report\Model\TableColumnGroup;
 use PhpBench\Report\Model\TableRow;
 
 class TableBuilder
@@ -23,6 +24,11 @@ class TableBuilder
      * @var Node[]|string[]|null
      */
     private $headers;
+
+    /**
+     * @var TableColumnGroup[]
+     */
+    private $columnGroups = [];
 
 
     final private function __construct()
@@ -60,6 +66,9 @@ class TableBuilder
         return $this;
     }
 
+    /**
+     * @param tableRowArray[] $rows
+     */
     public function addRowsFromArray(array $rows): self
     {
         foreach ($rows as $row) {
@@ -83,8 +92,20 @@ class TableBuilder
         return $this;
     }
 
+    /**
+     * @param TableColumnGroup[] $groups
+     */
+    public function addGroups(array $groups): self
+    {
+        foreach ($groups as $group) {
+            $this->columnGroups[] = $group;
+        }
+
+        return $this;
+    }
+
     public function build(): Table
     {
-        return new Table($this->rows, $this->headers, $this->title);
+        return new Table($this->rows, $this->headers, $this->title, $this->columnGroups);
     }
 }

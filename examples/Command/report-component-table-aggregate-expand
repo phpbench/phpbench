@@ -1,0 +1,47 @@
+{
+    "runner.path": "MultipleSubjects.php",
+    "runner.executor": "debug-example",
+    "runner.iterations": 5,
+    "runner.executors": {
+        "debug-example": {
+            "executor": "debug",
+            "times":[10, 20, 30, 40, 50],
+            "spread": [4, 5, 2, 3]
+        }
+    },
+    "runner.env_enabled_providers": ["test"],
+    "report.generators": {
+        "expanded": {
+            "generator": "component",
+            "components": [
+                {
+                    "component": "table_aggregate",
+                    "title": "Table with rows per iteration",
+                    "partition": "subject_name",
+                    "row": {
+                        "benchmark": "first(partition['subject_name'])",
+                        "by_iteration": {
+                            "type": "expand",
+                            "partition": ["iteration_index"],
+                            "cols": {
+                                "Iteration #{{ key }}": "mode(partition['result_time_avg'])"
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}
+---
+phpbench run --report=expanded
+---
+Table with rows per iteration
++---------------+--------------+--------------+--------------+--------------+--------------+
+| benchmark     | Iteration #0 | Iteration #1 | Iteration #2 | Iteration #3 | Iteration #4 |
++---------------+--------------+--------------+--------------+--------------+--------------+
+| benchSubject1 | 14           | 25           | 32           | 43           | 54           |
+| benchSubject2 | 14           | 25           | 32           | 43           | 54           |
+| benchSubject3 | 14           | 25           | 32           | 43           | 54           |
++---------------+--------------+--------------+--------------+--------------+--------------+
+

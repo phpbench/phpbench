@@ -19,3 +19,10 @@
   Type(s): ``array``, Default: ``[]``
 
   Set of expressions used to evaluate the partitions, the key is the column name, the value is the expression
+
+.. _component_table_aggregate_option_groups:
+
+**groups**:
+  Type(s): ``array``, Default: ``[]``
+
+  Group columns together, e.g. ``{"groups":{"group_name": {"cols": ["col1", "col2"]}}}``

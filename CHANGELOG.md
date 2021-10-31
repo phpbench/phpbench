@@ -4,7 +4,17 @@ CHANGELOG
 master
 ------
 
-- Safely removed non-functioning config option `report.html_output_dir`
+Features:
+
+- [reporting] Ability to expand table columns dynamically #928
+- [reporting] Ability to group columns #928
+- [reporting] Added `benchmark_compare` default report #928
+
+Bug fixes:
+
+- Fix property (`.`) access precedence, it is now the same as `[` array
+  access #928
+- Safely removed non-functioning config option `report.html_output_dir` #930
 
 1.1.2 (2021-09-25)
 ------------------

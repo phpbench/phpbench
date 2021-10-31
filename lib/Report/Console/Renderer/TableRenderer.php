@@ -9,6 +9,7 @@ use PhpBench\Report\Console\ObjectRendererInterface;
 use PhpBench\Report\Model\Table;
 use PhpBench\Report\Model\TableRow;
 use Symfony\Component\Console\Helper\Table as SymfonyTable;
+use Symfony\Component\Console\Helper\TableCell;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class TableRenderer implements ObjectRendererInterface
@@ -36,7 +37,7 @@ class TableRenderer implements ObjectRendererInterface
         }
 
         $consoleTable = new SymfonyTable($output);
-        $consoleTable->setHeaders($object->columnNames());
+        $consoleTable->setHeaders($this->buildHeaders($object));
         $consoleTable->setRows($this->buildRows($object));
         $consoleTable->render();
         $output->writeln('');
@@ -54,5 +55,28 @@ class TableRenderer implements ObjectRendererInterface
                 return $this->printer->print($node);
             }, $row->cells());
         }, $table->rows());
+    }
+
+    /**
+     * @return array<mixed>
+     */
+    private function buildHeaders(Table $object): array
+    {
+        if (count($object->columnGroups()) <= 1) {
+            return $object->columnNames();
+        }
+
+        $groups = [];
+
+        foreach ($object->columnGroups() as $colGroup) {
+            $label = $colGroup->label();
+            $label = $colGroup->isDefault() ? '' : $label;
+            $groups[] = new TableCell($label, ['colspan' => $colGroup->size()]);
+        }
+
+        return [
+            $groups,
+            $object->columnNames(),
+        ];
     }
 }

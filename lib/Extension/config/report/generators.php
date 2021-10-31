@@ -188,5 +188,71 @@ return [
                 ]
             ]
         ]
+    ],
+    'benchmark_compare' => [
+        "generator" => "component",
+        "partition" => ["benchmark_name"],
+        "components" => [
+            [
+                "component" => "section",
+                "title" => "{{ first(frame[\"benchmark_name\"]) }}",
+                "components" => [
+                    [
+                        "component" => "section",
+                        "tabbed" => true,
+                        "tab_labels" => ["Time", "Memory"],
+                        "components" => [
+                            [
+                                "title" => "Average iteration times by variant",
+                                "component" => "bar_chart_aggregate",
+                                "x_partition" => ["subject_name", "variant_name"],
+                                "bar_partition" => ["suite_tag"],
+                                "y_expr" => "mode(partition[\"result_time_avg\"])",
+                                "y_error_margin" => "stdev(partition[\"result_time_avg\"])",
+                                "y_axes_label" => "yValue as time precision 1"
+                            ],
+                            [
+                                "title" => "Memory by variant",
+                                "component" => "bar_chart_aggregate",
+                                "x_partition" => ["subject_name", "variant_name"],
+                                "bar_partition" => ["suite_tag"],
+                                "y_expr" => "mode(partition[\"result_mem_peak\"])",
+                                "y_error_margin" => "stdev(partition[\"result_mem_peak\"])",
+                                "y_axes_label" => "yValue as memory precision 1"
+                            ]
+                        ]
+                    ],
+                    [
+                        "component" => "table_aggregate",
+                        "partition" => ["subject_name", "variant_name"],
+                        'groups' => [
+                            'time (kde mode)' => [
+                                'cols' => ['time'],
+                            ],
+                            'memory' => [
+                                'cols' => ['memory'],
+                            ],
+                        ],
+                        "row" => [
+                            "subject" => "first(partition[\"subject_name\"]) ~ \" (\" ~ first(partition[\"variant_name\"]) ~ \")\"",
+                            "time" => [
+                                'type' => 'expand',
+                                'partition' => 'suite_tag',
+                                'cols' => [
+                                    'Tag: {{ key }}' => "mode(partition[\"result_time_avg\"]) as time ~ ' (' ~ rstdev(partition['result_time_avg']) ~ ')'",
+                                ],
+                            ],
+                            "memory" => [
+                                'type' => 'expand',
+                                'partition' => 'suite_tag',
+                                'cols' => [
+                                    'Tag: {{ key }} ' => "mode(partition[\"result_mem_peak\"]) as memory",
+                                ],
+                            ],
+                        ]
+                    ],
+                ]
+            ]
+        ]
     ]
 ];
