@@ -38,6 +38,8 @@ class TagTest extends TestCase
         yield ['foo42'];
 
         yield ['foo_42'];
+
+        yield ['php7.2'];
     }
 
     /**
@@ -58,6 +60,6 @@ class TagTest extends TestCase
 
         yield ['foo&#!$bar'];
 
-        yield ['foo4.2'];
+        yield ['best tag'];
     }
 }

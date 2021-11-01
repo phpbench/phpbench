@@ -11,6 +11,10 @@ Features:
 - [reporting] Ability to group columns #928
 - [reporting] Added `benchmark_compare` default report #928
 
+Improvements:
+
+- [storage] Allow `.` in tag names
+
 Bug fixes:
 
 - Fix property (`.`) access precedence, it is now the same as `[` array
