@@ -259,4 +259,25 @@ class Subject
 
         return $new;
     }
+
+    /**
+     * @param string[] $patterns
+     */
+    public static function matchesPatterns(string $benchmark, string $subject, array $patterns): bool
+    {
+        if (empty($patterns)) {
+            return true;
+        }
+
+        foreach ($patterns as $pattern) {
+            if (preg_match(
+                sprintf('{^.*?%s.*?$}', $pattern),
+                sprintf('%s::%s', $benchmark, $subject)
+            )) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

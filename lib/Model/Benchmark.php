@@ -46,27 +46,6 @@ class Benchmark implements \IteratorAggregate
         $this->class = $class;
     }
 
-    /**
-     * @param string[] $patterns
-     */
-    public static function matchesPatterns(string $benchmark, string $subject, array $patterns): bool
-    {
-        if (empty($patterns)) {
-            return true;
-        }
-
-        foreach ($patterns as $pattern) {
-            if (preg_match(
-                sprintf('{^.*?%s.*?$}', $pattern),
-                sprintf('%s::%s', $benchmark, $subject)
-            )) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     public function createSubjectFromMetadataAndExecutor(SubjectMetadata $metadata, ResolvedExecutor $executor): Subject
     {
         $subject = new Subject($this, $metadata->getName());
@@ -161,7 +140,7 @@ class Benchmark implements \IteratorAggregate
     public function filter(array $subjectPatterns, array $variantPatterns): self
     {
         $subjects = array_filter($this->subjects, function (Subject $subject) use ($subjectPatterns) {
-            return Benchmark::matchesPatterns($this->class, $subject->getName(), $subjectPatterns);
+            return Subject::matchesPatterns($this->class, $subject->getName(), $subjectPatterns);
         });
         $subjects = array_map(function (Subject $subject) use ($variantPatterns) {
             return $subject->filterVariants($variantPatterns);
