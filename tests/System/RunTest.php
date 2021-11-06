@@ -258,6 +258,17 @@ class RunTest extends SystemTestCase
         $this->assertXPathExpression(666, $output, 'number(//subject[@name="benchDoNothing"]//variant/@revs)');
     }
 
+    public function testFilterByVariant(): void
+    {
+        $process = $this->phpbench(
+            'run --filter=ByVariant --variant="cats" --progress=none --dump --iterations=10 benchmarks/set1/ParamProviderBench.php'
+        );
+
+        $this->assertExitCode(0, $process);
+        $output = $process->getOutput();
+        $this->assertXPathCount(10, $output, '//subject[@name="benchSubject"]//iteration');
+    }
+
     /**
      * Its should allow the time unit to be specified.
      */

@@ -13,11 +13,25 @@
 namespace PhpBench\Tests\Unit\Benchmark\Metadata;
 
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
+use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Tests\TestCase;
 
 class BenchmarkMetadataTest extends TestCase
 {
+    /**
+     * @var BenchmarkMetadata
+     */
     private $metadata;
+
+    /**
+     * @var SubjectMetadata
+     */
+    private $subject1;
+
+    /**
+     * @var SubjectMetadata
+     */
+    private $subject2;
 
     protected function setUp(): void
     {
@@ -52,6 +66,13 @@ class BenchmarkMetadataTest extends TestCase
      */
     public function testFilterRegex(): void
     {
+        $this->metadata->filterSubjectNames(['.*One*']);
+        $this->assertCount(1, $this->metadata->getSubjects());
+    }
+
+    public function testFilterByVariantName(): void
+    {
+        $this->metadata->
         $this->metadata->filterSubjectNames(['.*One*']);
         $this->assertCount(1, $this->metadata->getSubjects());
     }
