@@ -10,7 +10,8 @@ Features:
 - [reporting] Ability to expand table columns dynamically #928
 - [reporting] Ability to group columns #928
 - [reporting] Added `benchmark_compare` default report #928
-- [runner] Ability to filter by variant #938
+- [cli] Ability to filter by variant #938
+- [cli] Ability to filter reports #940
 
 Improvements:
 

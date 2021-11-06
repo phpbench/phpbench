@@ -15,7 +15,7 @@ final class SuiteBuilder
     /**
      * @var BenchmarkBuilder[]
      */
-    private $benchmarkBuilders;
+    private $benchmarkBuilders = [];
 
     public function __construct(string $name)
     {
