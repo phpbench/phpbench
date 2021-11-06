@@ -86,7 +86,7 @@ class RunnerHandler
     {
         $command->addArgument(self::ARG_PATH, InputArgument::OPTIONAL | InputArgument::IS_ARRAY, 'Path to benchmark(s)');
         $command->addOption(self::OPT_FILTER, [], InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Include benchmark subjects matching this filter. Matched against <fg=cyan>Fullly\Qualified\BenchmarkName::benchSubjectName</>. Can be a regex. Multiple filters combined with OR');
-        $command->addOption(self::OPT_VARIANT_FILTER, [], InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Include variants matching this filter. Matched against parameter provider keys. Can be a regex). Multiple values combined with OR');
+        $command->addOption(self::OPT_VARIANT_FILTER, [], InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Include variants matching this filter. Matched against parameter set names. Can be a regex). Multiple values combined with OR');
         $command->addOption(self::OPT_GROUP, [], InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Group to run (can be specified multiple times)');
         $command->addOption(self::OPT_PARAMETERS, null, InputOption::VALUE_REQUIRED, 'Override parameters to use in (all) benchmarks');
         $command->addOption(self::OPT_ASSERT, null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Override assertions');
