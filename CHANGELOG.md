@@ -1,8 +1,8 @@
 CHANGELOG
 =========
 
-master
-------
+1.2.0
+-----
 
 Features:
 
