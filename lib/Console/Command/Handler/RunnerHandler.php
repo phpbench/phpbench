@@ -41,6 +41,7 @@ class RunnerHandler
     public const OPT_PHP_WRAPPER = 'php-wrapper';
     public const OPT_PHP_DISABLE_INI = 'php-disable-ini';
     public const OPT_FORMAT = 'format';
+    const OPT_VARIANT = 'variant';
 
     /**
      * @var LoggerRegistry
@@ -84,7 +85,8 @@ class RunnerHandler
     public static function configure(Command $command): void
     {
         $command->addArgument(self::ARG_PATH, InputArgument::OPTIONAL | InputArgument::IS_ARRAY, 'Path to benchmark(s)');
-        $command->addOption(self::OPT_FILTER, [], InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Ignore all benchmarks not matching command filter (can be a regex)');
+        $command->addOption(self::OPT_FILTER, [], InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Include benchmark subjects matching this filter (matched against <fg=cyan>Fullly\Qualified\BenchmarkName::benchSubjectName</>, can be a regex)');
+        $command->addOption(self::OPT_VARIANT, [], InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Include variants matching this filter (matched against <fg=cyan>this is a parameter provider key</>, can be a regex)');
         $command->addOption(self::OPT_GROUP, [], InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Group to run (can be specified multiple times)');
         $command->addOption(self::OPT_PARAMETERS, null, InputOption::VALUE_REQUIRED, 'Override parameters to use in (all) benchmarks');
         $command->addOption(self::OPT_ASSERT, null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Override assertions');
