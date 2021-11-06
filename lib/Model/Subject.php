@@ -13,6 +13,7 @@
 namespace PhpBench\Model;
 
 use PhpBench\Util\TimeUnit;
+use RuntimeException;
 
 /**
  * Subject representation.
@@ -116,6 +117,16 @@ class Subject
         $this->variants[$parameterSet->getName()] = $variant;
 
         return $variant;
+    }
+
+    public function setVariant(Variant $variant): void
+    {
+        if ($variant->getSubject() !== $this) {
+            throw new RuntimeException(
+                'Adding variant to subject to which it does not belong'
+            );
+        }
+        $this->variants[$variant->getParameterSet()->getName()] = $variant;
     }
 
     /**
@@ -234,5 +245,18 @@ class Subject
     public function getFormat(): ?string
     {
         return $this->format;
+    }
+
+    /**
+     * @param string[] $variantPatterns
+     */
+    public function filterVariants(array $variantPatterns): self
+    {
+        $new = clone $this;
+        $new->variants = array_filter($this->variants, function (Variant $variant) use ($variantPatterns) {
+            return $variant->getParameterSet()->nameMatches($variantPatterns);
+        });
+
+        return $new;
     }
 }

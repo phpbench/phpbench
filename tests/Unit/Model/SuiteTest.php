@@ -22,6 +22,7 @@ use PhpBench\Model\Subject;
 use PhpBench\Model\Suite;
 use PhpBench\Model\Variant;
 use PhpBench\Tests\TestCase;
+use PhpBench\Tests\Util\SuiteBuilder;
 
 class SuiteTest extends TestCase
 {
@@ -136,6 +137,68 @@ class SuiteTest extends TestCase
             'barfoo',
             'one'
         ));
+    }
+
+    public function testFilterBySubjectNames(): void
+    {
+        $suite = SuiteBuilder::create('test')
+            ->benchmark('Foobar')
+                ->subject('subject_one')->end()
+                ->subject('subject_two')->end()
+            ->end()
+            ->build();
+
+        self::assertCount(2, $suite->getSubjects());
+        $suite = $suite->filter(['subject_one'], []);
+        self::assertCount(1, $suite->getSubjects());
+    }
+
+    public function testFilterByBenchmarkNames(): void
+    {
+        $suite = SuiteBuilder::create('test')
+            ->benchmark('Foobar')
+                ->subject('subject_one')->end()
+                ->subject('subject_two')->end()
+            ->end()
+            ->benchmark('Bazboo')
+                ->subject('subject_one')->end()
+                ->subject('subject_two')->end()
+            ->end()
+            ->build();
+
+        self::assertCount(4, $suite->getSubjects(), 'Pre filter');
+        $suite = $suite->filter(['Foobar'], []);
+        self::assertCount(2, $suite->getSubjects(), 'Post filter');
+    }
+
+    public function testFilterByVariants(): void
+    {
+        $suite = SuiteBuilder::create('test')
+            ->benchmark('Foobar')
+                ->subject('subject_one')
+                    ->variant('variant one')->end()
+                    ->variant('variant two')->end()
+                ->end()
+                ->subject('subject_two')
+                    ->variant('variant one')->end()
+                    ->variant('variant two')->end()
+                ->end()
+            ->end()
+            ->benchmark('Bazboo')
+                ->subject('subject_one')
+                    ->variant('variant one')->end()
+                    ->variant('variant two')->end()
+                ->end()
+                ->subject('subject_two')
+                    ->variant('variant one')->end()
+                    ->variant('variant two')->end()
+                ->end()
+            ->end()
+            ->build();
+
+        self::assertCount(8, $suite->getVariants(), 'Pre filter');
+        $suite = $suite->filter(['Bazboo'], ['variant one']);
+        self::assertCount(2, $suite->getVariants(), 'Post filter');
     }
 
     private function createSuite(array $benchmarks = [], array $informations = []): Suite

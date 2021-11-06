@@ -60,6 +60,9 @@ class SuiteCollectionHandler
         assert(is_array($files));
         assert(is_array($refs));
 
+        $subjectPatterns = $input->hasOption('filter') ? $input->getOption('filter') : [];
+        $variantPatterns = $input->hasOption('variant') ? $input->getOption('variant') : [];
+
         if (!$files && !$refs) {
             throw new \InvalidArgumentException(
                 'You must specify at least one of `--file` and/or `--ref`'
@@ -78,7 +81,7 @@ class SuiteCollectionHandler
             foreach ($refs as $ref) {
                 $collection->mergeCollection($this->storage->getService()->fetch(
                     $this->refResolver->resolve($ref)
-                ));
+                )->filter($subjectPatterns, $variantPatterns));
             }
         }
 
