@@ -100,6 +100,11 @@ class RunnerConfig
      */
     private $baselines;
 
+    /**
+     * @var string[]
+     */
+    private $variantFilters;
+
     private function __construct()
     {
         $this->baselines = new SuiteCollection();
@@ -389,6 +394,17 @@ class RunnerConfig
     {
         $new = clone($this);
         $new->baselines = $baselines;
+
+        return $new;
+    }
+
+    /**
+     * @param string[] $variantFilters
+     */
+    public function withVariantFilters(array $variantFilters): self
+    {
+        $new = clone($this);
+        $new->variantFilters = $variantFilters;
 
         return $new;
     }
