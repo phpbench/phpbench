@@ -261,7 +261,7 @@ class RunTest extends SystemTestCase
     public function testFilterByVariant(): void
     {
         $process = $this->phpbench(
-            'run --filter=ByVariant --variant="cats" --progress=none --dump --iterations=10 benchmarks/set1/ParamProviderBench.php'
+            'run --variant="cats" --progress=none --dump --iterations=10 benchmarks/set1/ParamProviderBench.php'
         );
 
         $this->assertExitCode(0, $process);

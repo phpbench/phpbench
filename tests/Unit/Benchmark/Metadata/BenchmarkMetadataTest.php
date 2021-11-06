@@ -70,13 +70,6 @@ class BenchmarkMetadataTest extends TestCase
         $this->assertCount(1, $this->metadata->getSubjects());
     }
 
-    public function testFilterByVariantName(): void
-    {
-        $this->metadata->
-        $this->metadata->filterSubjectNames(['.*One*']);
-        $this->assertCount(1, $this->metadata->getSubjects());
-    }
-
     /**
      * It should say if it has subjects or not.
      *

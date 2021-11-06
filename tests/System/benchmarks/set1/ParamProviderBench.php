@@ -11,11 +11,11 @@ class ParamProviderBench
 
     public function provideParams()
     {
-        yield [
+        yield 'cats' => [
             'cats' => 'two',
         ];
 
-        yield [
+        yield 'dogs' => [
             'dogs' => 'two',
         ];
     }

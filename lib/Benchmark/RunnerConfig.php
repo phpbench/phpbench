@@ -21,7 +21,7 @@ use PhpBench\Model\SuiteCollection;
 class RunnerConfig
 {
     /**
-     * @var string|array
+     * @var string|array<string,mixed>
      */
     private $executor = 'remote';
 
@@ -412,6 +412,14 @@ class RunnerConfig
     public function getBaselines(): SuiteCollection
     {
         return $this->baselines;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getVariantFilters(): array
+    {
+        return $this->variantFilters;
     }
 
     private function assertArrayValuesGreaterThanZero($field, array $values = []): void

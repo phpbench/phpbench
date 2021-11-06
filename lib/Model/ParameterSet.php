@@ -101,4 +101,25 @@ final class ParameterSet
             return $container->getValue();
         }, $this->parameters);
     }
+
+    /**
+     * @param string[] $patterns
+     */
+    public function nameMatches(array $patterns): bool
+    {
+        if (empty($patterns)) {
+            return true;
+        }
+
+        foreach ($patterns as $name) {
+            if (preg_match(
+                sprintf('{^.*?%s.*?$}', $name),
+                $this->getName()
+            )) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
