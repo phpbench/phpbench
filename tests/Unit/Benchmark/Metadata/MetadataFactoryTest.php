@@ -21,8 +21,10 @@ use PhpBench\Reflection\ReflectionClass;
 use PhpBench\Reflection\ReflectionHierarchy;
 use PhpBench\Reflection\ReflectorInterface;
 use PhpBench\Tests\TestCase;
+use PhpBench\Tests\Unit\Benchmark\Metadata\Exception\CouldNotLoadMetadataException;
 use PhpBench\Tests\Util\TestUtil;
 use Prophecy\Prophecy\ObjectProphecy;
+use Psr\Log\Test\TestLogger;
 
 class MetadataFactoryTest extends TestCase
 {
@@ -92,6 +94,55 @@ class MetadataFactoryTest extends TestCase
         TestUtil::configureBenchmarkMetadata($this->metadata);
         $metadata = $this->factory->getMetadataForFile(self::FNAME);
         $this->assertInstanceOf('PhpBench\Benchmark\Metadata\BenchmarkMetadata', $metadata);
+    }
+
+    public function testWarnOnCouldNotLoadMetadata(): void
+    {
+        $this->hierarchy->isEmpty()->willReturn(false);
+        $logger = new TestLogger();
+        $factory = new MetadataFactory(
+            $this->reflector->reveal(),
+            $this->driver->reveal(),
+            $logger,
+            true
+        );
+        $this->driver->getMetadataForHierarchy($this->hierarchy->reveal())->willThrow(new CouldNotLoadMetadataException('no'));
+
+        $factory->getMetadataForFile(self::FNAME);
+        self::assertCount(1, $logger->records);
+    }
+
+    public function testNoWarnOnCouldNotLoadMetadataByDefault(): void
+    {
+        $this->expectException(CouldNotLoadMetadataException::class);
+        $this->expectExceptionMessage('no');
+        $this->hierarchy->isEmpty()->willReturn(false);
+        $logger = new TestLogger();
+        $factory = new MetadataFactory(
+            $this->reflector->reveal(),
+            $this->driver->reveal(),
+            $logger
+        );
+        $this->driver->getMetadataForHierarchy($this->hierarchy->reveal())->willThrow(new CouldNotLoadMetadataException('no'));
+
+        $factory->getMetadataForFile(self::FNAME);
+        self::assertCount(1, $logger->records);
+    }
+
+    public function testExceptionIfDriverDoesNotThrowCouldNotLoadMetadata(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('no');
+        $this->hierarchy->isEmpty()->willReturn(false);
+        $logger = new TestLogger();
+        $factory = new MetadataFactory(
+            $this->reflector->reveal(),
+            $this->driver->reveal(),
+            $logger,
+            true
+        );
+        $this->driver->getMetadataForHierarchy($this->hierarchy->reveal())->willThrow(new \RuntimeException('no'));
+        $factory->getMetadataForFile(self::FNAME);
     }
 
     /**

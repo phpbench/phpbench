@@ -594,7 +594,8 @@ class RunnerExtension implements ExtensionInterface
             return new MetadataFactory(
                 $container->get(RemoteReflector::class),
                 $container->get(ConfigDriver::class),
-                $container->get(LoggerInterface::class)
+                $container->get(LoggerInterface::class),
+                $container->getParameter(self::PARAM_FILE_PATTERN) === null
             );
         });
 

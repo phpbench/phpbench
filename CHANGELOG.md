@@ -16,6 +16,8 @@ Features:
 Improvements:
 
 - [storage] Allow `.` in tag names
+- [runner] Do not show warning when unable to load metadata for benchmark IF
+  the `runner.file_pattern` is specified #941
 
 Bug fixes:
 

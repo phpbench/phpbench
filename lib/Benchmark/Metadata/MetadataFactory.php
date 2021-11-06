@@ -41,11 +41,17 @@ class MetadataFactory
      */
     private $logger;
 
-    public function __construct(ReflectorInterface $reflector, DriverInterface $driver, LoggerInterface $logger = null)
+    /**
+     * @var bool
+     */
+    private $warnOnMetadataError = false;
+
+    public function __construct(ReflectorInterface $reflector, DriverInterface $driver, LoggerInterface $logger = null, bool $warnOnMetadataError = false)
     {
         $this->reflector = $reflector;
         $this->driver = $driver;
         $this->logger = $logger ?: new NullLogger();
+        $this->warnOnMetadataError = $warnOnMetadataError;
     }
 
     /**
@@ -74,6 +80,9 @@ class MetadataFactory
         try {
             $metadata = $this->driver->getMetadataForHierarchy($hierarchy);
         } catch (CouldNotLoadMetadataException $couldNotLoad) {
+            if (false === $this->warnOnMetadataError) {
+                throw $couldNotLoad;
+            }
             $this->logger->warning(sprintf(
                 'Could not load metadata for file "%s" - is this file intended to be a benchmark? Perhaps setting the `runner.file_pattern` to `*Bench.php` will help: %s',
                 $file,
