@@ -595,7 +595,7 @@ class RunnerExtension implements ExtensionInterface
                 $container->get(RemoteReflector::class),
                 $container->get(ConfigDriver::class),
                 $container->get(LoggerInterface::class),
-                $container->getParameter(self::PARAM_FILE_PATTERN)
+                $container->getParameter(self::PARAM_FILE_PATTERN) === null
             );
         });
 

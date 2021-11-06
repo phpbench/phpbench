@@ -42,16 +42,16 @@ class MetadataFactory
     private $logger;
 
     /**
-     * @var string
+     * @var bool
      */
-    private $benchmarkFilePattern;
+    private $warnOnMetadataError = false;
 
-    public function __construct(ReflectorInterface $reflector, DriverInterface $driver, LoggerInterface $logger = null, string $benchmarkFilePattern = null)
+    public function __construct(ReflectorInterface $reflector, DriverInterface $driver, LoggerInterface $logger = null, bool $warnOnMetadataError = false)
     {
         $this->reflector = $reflector;
         $this->driver = $driver;
         $this->logger = $logger ?: new NullLogger();
-        $this->benchmarkFilePattern = $benchmarkFilePattern;
+        $this->warnOnMetadataError = $warnOnMetadataError;
     }
 
     /**
@@ -80,7 +80,7 @@ class MetadataFactory
         try {
             $metadata = $this->driver->getMetadataForHierarchy($hierarchy);
         } catch (CouldNotLoadMetadataException $couldNotLoad) {
-            if ($this->benchmarkFilePattern) {
+            if (false === $this->warnOnMetadataError) {
                 throw $couldNotLoad;
             }
             $this->logger->warning(sprintf(
