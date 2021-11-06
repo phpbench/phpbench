@@ -246,4 +246,17 @@ class Subject
     {
         return $this->format;
     }
+
+    /**
+     * @param string[] $variantPatterns
+     */
+    public function filterVariants(array $variantPatterns): self
+    {
+        $new = clone $this;
+        $new->variants = array_filter($this->variants, function (Variant $variant) use ($variantPatterns) {
+            return $variant->getParameterSet()->nameMatches($variantPatterns);
+        });
+
+        return $new;
+    }
 }

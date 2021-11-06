@@ -160,10 +160,15 @@ class Benchmark implements \IteratorAggregate
      */
     public function filter(array $subjectPatterns, array $variantPatterns): self
     {
-        $new = clone $this;
-        $new->subjects = array_filter($this->subjects, function (Subject $subject) use ($subjectPatterns) {
+        $subjects = array_filter($this->subjects, function (Subject $subject) use ($subjectPatterns) {
             return Benchmark::matchesPatterns($this->class, $subject->getName(), $subjectPatterns);
         });
+        $subjects = array_map(function (Subject $subject) use ($variantPatterns) {
+            return $subject->filterVariants($variantPatterns);
+        }, $subjects);
+
+        $new = clone $this;
+        $new->subjects = $subjects;
 
         return $new;
     }
