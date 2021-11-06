@@ -73,5 +73,7 @@ class ParameterSetTest extends TestCase
         yield 'partial match start' => ['one two', ['one'], true];
         yield 'partial match end' => ['one two', ['two'], true];
         yield 'non match' => ['one two', ['twothree'], false];
+        yield 'regex non-match' => ['one two', ['^one$'], false];
+        yield 'regex match' => ['one two', ['^one two$'], true];
     }
 }
