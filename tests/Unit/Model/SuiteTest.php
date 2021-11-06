@@ -12,37 +12,24 @@
 
 namespace PhpBench\Tests\Unit\Model;
 
-use PhpBench\Assertion\VariantAssertionResults;
-use PhpBench\Environment\Information;
 use PhpBench\Model\Benchmark;
+use PhpBench\Model\Error;
 use PhpBench\Model\ErrorStack;
-use PhpBench\Model\Iteration;
 use PhpBench\Model\ParameterSet;
-use PhpBench\Model\Subject;
+use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\Suite;
-use PhpBench\Model\Variant;
 use PhpBench\Tests\TestCase;
+use PhpBench\Tests\Util\SuiteBuilder;
 
 class SuiteTest extends TestCase
 {
-    private $env1;
-    private $bench1;
-
-    protected function setUp(): void
-    {
-        $this->env1 = $this->prophesize(Information::class);
-        $this->bench1 = $this->prophesize(Benchmark::class);
-        $this->subject1 = $this->prophesize(Subject::class);
-        $this->variant1 = $this->prophesize(Variant::class);
-        $this->iteration1 = $this->prophesize(Iteration::class);
-    }
-
     /**
      * It should add a benchmark.
      */
     public function testCreateBenchmark(): void
     {
-        $benchmark = $this->createSuite([])->createBenchmark('FooBench');
+        $suite = SuiteBuilder::create('foo')->build();
+        $benchmark = $suite->createBenchmark('FooBench');
         $this->assertInstanceOf('PhpBench\Model\Benchmark', $benchmark);
     }
 
@@ -53,23 +40,28 @@ class SuiteTest extends TestCase
      */
     public function testGetIterations(): void
     {
-        $this->bench1->getSubjects()->willReturn([$this->subject1->reveal()]);
-        $this->subject1->getVariants()->willReturn([$this->variant1->reveal()]);
-        $this->variant1->getIterator()->willReturn(new \ArrayIterator([$this->iteration1->reveal()]));
+        $suite = SuiteBuilder::create('suite1')
+            ->benchmark('one')
+                ->subject('one')
+                    ->variant('1')
+                        ->iteration()->setResult(new TimeResult(1, 1))->end()
+                        ->iteration()->setResult(new TimeResult(2, 2))->end()
+                    ->end()
+                    ->variant('2')
+                        ->iteration()->setResult(new TimeResult(10, 1))->end()
+                    ->end()
+                ->end()
+            ->end()
+            ->benchmark('two')
+                ->subject('one')
+                    ->variant('1')->iteration()->setResult(new TimeResult(10, 1))->end()->end()
+                    ->variant('2')->iteration()->setResult(new TimeResult(10, 1))->end()->end()
+                ->end()
+            ->end()
+            ->build();
 
-        $suite = $this->createSuite([
-            $this->bench1->reveal(),
-        ], [
-            $this->env1->reveal(),
-        ]);
 
-        $this->assertSame([$this->iteration1->reveal()], $suite->getIterations());
-        $this->assertSame([
-            $this->variant1->reveal(),
-        ], $suite->getVariants());
-        $this->assertSame([
-            $this->subject1->reveal(),
-        ], $suite->getSubjects());
+        self::assertCount(5, $suite->getIterations());
     }
 
     /**
@@ -77,21 +69,21 @@ class SuiteTest extends TestCase
      */
     public function testGetErrorStacks(): void
     {
-        $errorStack = $this->prophesize(ErrorStack::class);
-        $this->bench1->getSubjects()->willReturn([$this->subject1->reveal()]);
-        $this->subject1->getVariants()->willReturn([$this->variant1->reveal()]);
-        $this->variant1->hasErrorStack()->willReturn(true);
-        $this->variant1->getErrorStack()->willReturn($errorStack->reveal());
+        $suite = SuiteBuilder::create('suite1')
+            ->benchmark('one')
+                ->subject('one')
+                    ->variant('1')
+                        ->withError(Error::fromException(new \Exception('Hello')))
+                    ->end()
+                ->end()
+            ->end()
+            ->build();
 
-        $suite = $this->createSuite([
-            $this->bench1->reveal(),
-        ], [
-            $this->env1->reveal(),
-        ]);
-
-        $this->assertSame([
-            $errorStack->reveal(),
-        ], $suite->getErrorStacks());
+        $stacks = $suite->getErrorStacks();
+        self::assertCount(1, $stacks);
+        $stack = reset($stacks);
+        assert($stack instanceof ErrorStack);
+        self::assertEquals('Hello', $stack->getTop()->getMessage());
     }
 
     /**
@@ -99,24 +91,21 @@ class SuiteTest extends TestCase
      */
     public function testGetSummary(): void
     {
-        $errorStack = $this->prophesize(ErrorStack::class);
-        $this->bench1->getSubjects()->willReturn([$this->subject1->reveal()]);
-        $this->subject1->getVariants()->willReturn([$this->variant1->reveal()]);
-        $this->variant1->hasErrorStack()->willReturn(true);
-        $this->variant1->count()->willReturn(1);
-        $this->variant1->getSubject()->willReturn($this->subject1->reveal());
-        $this->variant1->getRevolutions()->willReturn(10);
-        $this->variant1->getRejectCount()->willReturn(0);
-        $this->variant1->getRejectCount()->willReturn(0);
-        $this->variant1->getAssertionResults()->willReturn(new VariantAssertionResults($this->variant1->reveal(), []));
-        $this->variant1->getErrorStack()->willReturn($errorStack->reveal());
-        $errorStack->count()->willReturn(0);
+        $suite = SuiteBuilder::create('suite1')
+            ->benchmark('one')
+                ->subject('one')
+                    ->variant('1')->iteration()->setResult(new TimeResult(10, 1))->end()->end()
+                    ->variant('2')->iteration()->setResult(new TimeResult(10, 1))->end()->end()
+                ->end()
+            ->end()
+            ->benchmark('two')
+                ->subject('one')
+                    ->variant('1')->iteration()->setResult(new TimeResult(10, 1))->end()->end()
+                    ->variant('2')->iteration()->setResult(new TimeResult(10, 1))->end()->end()
+                ->end()
+            ->end()
+            ->build();
 
-        $suite = $this->createSuite([
-            $this->bench1->reveal(),
-        ], [
-            $this->env1->reveal(),
-        ]);
 
         $summary = $suite->getSummary();
         $this->assertInstanceOf('PhpBench\Model\Summary', $summary);
@@ -136,6 +125,68 @@ class SuiteTest extends TestCase
             'barfoo',
             'one'
         ));
+    }
+
+    public function testFilterBySubjectNames(): void
+    {
+        $suite = SuiteBuilder::create('test')
+            ->benchmark('Foobar')
+                ->subject('subject_one')->end()
+                ->subject('subject_two')->end()
+            ->end()
+            ->build();
+
+        self::assertCount(2, $suite->getSubjects());
+        $suite = $suite->filter(['subject_one'], []);
+        self::assertCount(1, $suite->getSubjects());
+    }
+
+    public function testFilterByBenchmarkNames(): void
+    {
+        $suite = SuiteBuilder::create('test')
+            ->benchmark('Foobar')
+                ->subject('subject_one')->end()
+                ->subject('subject_two')->end()
+            ->end()
+            ->benchmark('Bazboo')
+                ->subject('subject_one')->end()
+                ->subject('subject_two')->end()
+            ->end()
+            ->build();
+
+        self::assertCount(4, $suite->getSubjects(), 'Pre filter');
+        $suite = $suite->filter(['Foobar'], []);
+        self::assertCount(2, $suite->getSubjects(), 'Post filter');
+    }
+
+    public function testFilterByVariants(): void
+    {
+        $suite = SuiteBuilder::create('test')
+            ->benchmark('Foobar')
+                ->subject('subject_one')
+                    ->variant('variant one')->end()
+                    ->variant('variant two')->end()
+                ->end()
+                ->subject('subject_two')
+                    ->variant('variant one')->end()
+                    ->variant('variant two')->end()
+                ->end()
+            ->end()
+            ->benchmark('Bazboo')
+                ->subject('subject_one')
+                    ->variant('variant one')->end()
+                    ->variant('variant two')->end()
+                ->end()
+                ->subject('subject_two')
+                    ->variant('variant one')->end()
+                    ->variant('variant two')->end()
+                ->end()
+            ->end()
+            ->build();
+
+        self::assertCount(8, $suite->getVariants(), 'Pre filter');
+        $suite = $suite->filter(['Bazboo'], ['variant one']);
+        self::assertCount(2, $suite->getVariants(), 'Post filter');
     }
 
     private function createSuite(array $benchmarks = [], array $informations = []): Suite

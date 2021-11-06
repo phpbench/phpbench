@@ -82,17 +82,22 @@ class RunnerHandler
         $this->finder = $finder;
     }
 
+    public static function configureFilters(Command $command): void
+    {
+        $command->addOption(self::OPT_FILTER, [], InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Include benchmark subjects matching this filter. Matched against <fg=cyan>Fullly\Qualified\BenchmarkName::benchSubjectName</>. Can be a regex. Multiple filters combined with OR');
+        $command->addOption(self::OPT_VARIANT_FILTER, [], InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Include variants matching this filter. Matched against parameter set names. Can be a regex). Multiple values combined with OR');
+    }
+
     public static function configure(Command $command): void
     {
         $command->addArgument(self::ARG_PATH, InputArgument::OPTIONAL | InputArgument::IS_ARRAY, 'Path to benchmark(s)');
-        $command->addOption(self::OPT_FILTER, [], InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Include benchmark subjects matching this filter. Matched against <fg=cyan>Fullly\Qualified\BenchmarkName::benchSubjectName</>. Can be a regex. Multiple filters combined with OR');
-        $command->addOption(self::OPT_VARIANT_FILTER, [], InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Include variants matching this filter. Matched against parameter set names. Can be a regex). Multiple values combined with OR');
         $command->addOption(self::OPT_GROUP, [], InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Group to run (can be specified multiple times)');
         $command->addOption(self::OPT_PARAMETERS, null, InputOption::VALUE_REQUIRED, 'Override parameters to use in (all) benchmarks');
         $command->addOption(self::OPT_ASSERT, null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Override assertions');
         $command->addOption(self::OPT_FORMAT, null, InputOption::VALUE_REQUIRED, 'Set progress logger format');
         $command->addOption(self::OPT_REVS, null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Override number of revs (revolutions) on (all) benchmarks');
         $command->addOption(self::OPT_PROGRESS, 'l', InputOption::VALUE_REQUIRED, 'Progress logger to use');
+        self::configureFilters($command);
 
         // command option is parsed before the container is compiled.
         $command->addOption(self::OPT_BOOTSTRAP, 'b', InputOption::VALUE_REQUIRED, 'Set or override the bootstrap file.');

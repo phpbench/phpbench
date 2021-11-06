@@ -13,6 +13,7 @@
 namespace PhpBench\Benchmark\Metadata;
 
 use PhpBench\Model\Benchmark;
+use PhpBench\Model\Subject;
 
 /**
  * Benchmark metadata class.
@@ -98,20 +99,7 @@ class BenchmarkMetadata
     public function filterSubjectNames(array $filters): void
     {
         foreach (array_keys($this->subjects) as $subjectName) {
-            $unset = true;
-
-            foreach ($filters as $filter) {
-                if (preg_match(
-                    sprintf('{^.*?%s.*?$}', $filter),
-                    sprintf('%s::%s', $this->getClass(), $subjectName)
-                )) {
-                    $unset = false;
-
-                    break;
-                }
-            }
-
-            if (true === $unset) {
+            if (false === Subject::matchesPatterns($this->class, $subjectName, $filters)) {
                 unset($this->subjects[$subjectName]);
             }
         }

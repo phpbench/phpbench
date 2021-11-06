@@ -14,6 +14,7 @@ namespace PhpBench\Model;
 
 use ArrayIterator;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
+use RuntimeException;
 
 /**
  * Benchmark metadata class.
@@ -74,6 +75,17 @@ class Benchmark implements \IteratorAggregate
         return $subject;
     }
 
+    public function addSubject(Subject $subject): void
+    {
+        if ($subject->getBenchmark() !== $this) {
+            throw new RuntimeException(
+                'Adding subject to benchmark to which it does not belong'
+            );
+        }
+
+        $this->subjects[$subject->getName()] = $subject;
+    }
+
     /**
      * Get the subject metadata instances for this benchmark metadata.
      *
@@ -119,5 +131,24 @@ class Benchmark implements \IteratorAggregate
     public function getSubject(string $subjectName): ?Subject
     {
         return $this->subjects[$subjectName] ?? null;
+    }
+
+    /**
+     * @param string[] $subjectPatterns
+     * @param string[] $variantPatterns
+     */
+    public function filter(array $subjectPatterns, array $variantPatterns): self
+    {
+        $subjects = array_filter($this->subjects, function (Subject $subject) use ($subjectPatterns) {
+            return Subject::matchesPatterns($this->class, $subject->getName(), $subjectPatterns);
+        });
+        $subjects = array_map(function (Subject $subject) use ($variantPatterns) {
+            return $subject->filterVariants($variantPatterns);
+        }, $subjects);
+
+        $new = clone $this;
+        $new->subjects = $subjects;
+
+        return $new;
     }
 }

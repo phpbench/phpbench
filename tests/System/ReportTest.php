@@ -43,6 +43,18 @@ class ReportTest extends SystemTestCase
         $this->assertStringContainsString('benchNothing', $output);
     }
 
+    public function testGenerateFilteredReport(): void
+    {
+        $document = $this->getBenchResult(null, ' --store');
+        $ref = $document->evaluate('string(./suite/@uuid)');
+        $process = $this->phpbench(
+            'report --ref=' . $ref . ' --report=default --filter=Anything --variant=nothing'
+        );
+        $this->assertEquals(0, $process->getExitCode());
+        $output = $process->getOutput();
+        $this->assertEmpty($output);
+    }
+
     /**
      * It should allow the mode, precision and time-unit to be specified.
      */
