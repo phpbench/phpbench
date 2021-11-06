@@ -68,12 +68,19 @@ class ParameterSetTest extends TestCase
     public function provideMatches(): Generator
     {
         yield 'empty string and empty patterns always matches' => ['', [], true];
+
         yield 'empty list of patterns always matches' => ['one', [], true];
+
         yield 'full match' => ['one', ['one'], true];
+
         yield 'partial match start' => ['one two', ['one'], true];
+
         yield 'partial match end' => ['one two', ['two'], true];
+
         yield 'non match' => ['one two', ['twothree'], false];
+
         yield 'regex non-match' => ['one two', ['^one$'], false];
+
         yield 'regex match' => ['one two', ['^one two$'], true];
     }
 }
