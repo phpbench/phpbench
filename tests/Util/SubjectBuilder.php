@@ -41,7 +41,8 @@ final class SubjectBuilder
         return new self($builder, $name);
     }
 
-    public function variant(string $name): VariantBuilder {
+    public function variant(string $name): VariantBuilder
+    {
         $builder = VariantBuilder::forSubjectBuilder($this, $name);
         $this->variantBuilders[] = $builder;
 
@@ -59,6 +60,7 @@ final class SubjectBuilder
         }
 
         $subject = new Subject($benchmark, $this->name);
+
         foreach ($this->variantBuilders as $builder) {
             $subject->setVariant($builder->build($subject));
         }

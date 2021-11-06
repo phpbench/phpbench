@@ -35,9 +35,11 @@ final class BenchmarkBuilder
         return new self(null, $name);
     }
 
-    public function subject(string $name): SubjectBuilder {
+    public function subject(string $name): SubjectBuilder
+    {
         $builder = SubjectBuilder::forBenchmarkBuilder($this, $name);
         $this->subjectBuilders[] = $builder;
+
         return $builder;
     }
 
@@ -50,6 +52,7 @@ final class BenchmarkBuilder
             );
         }
         $benchmark = new Benchmark($suite, $this->name);
+
         foreach ($this->subjectBuilders as $builder) {
             $benchmark->addSubject($builder->build($benchmark));
         }

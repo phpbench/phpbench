@@ -3,7 +3,6 @@
 namespace PhpBench\Tests\Util;
 
 use DateTime;
-use PhpBench\Model\Benchmark;
 use PhpBench\Model\Suite;
 
 final class SuiteBuilder
@@ -28,9 +27,11 @@ final class SuiteBuilder
         return new self($name);
     }
 
-    public function benchmark(string $name): BenchmarkBuilder {
+    public function benchmark(string $name): BenchmarkBuilder
+    {
         $builder = BenchmarkBuilder::forSuiteBuilder($this, $name);
         $this->benchmarkBuilders[] = $builder;
+
         return $builder;
     }
 
@@ -40,6 +41,7 @@ final class SuiteBuilder
             $this->name,
             new DateTime()
         );
+
         foreach ($this->benchmarkBuilders as $builder) {
             $suite->addBenchmark($builder->build($suite));
         }

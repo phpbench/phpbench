@@ -59,8 +59,9 @@ class SuiteCollectionHandler
         $refs = $input->getOption('ref');
         assert(is_array($files));
         assert(is_array($refs));
-        $subjectPatterns = $input->getOption('filter');
-        $variantPatterns = $input->getOption('variant');
+
+        $subjectPatterns = $input->hasOption('filter') ? $input->getOption('filter') : [];
+        $variantPatterns = $input->hasOption('variant') ? $input->getOption('variant') : [];
 
         if (!$files && !$refs) {
             throw new \InvalidArgumentException(
