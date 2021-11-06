@@ -41,6 +41,7 @@ class RunnerHandler
     public const OPT_PHP_WRAPPER = 'php-wrapper';
     public const OPT_PHP_DISABLE_INI = 'php-disable-ini';
     public const OPT_FORMAT = 'format';
+    public const OPT_VARIANT_FILTER = 'variant';
 
     /**
      * @var LoggerRegistry
@@ -84,7 +85,8 @@ class RunnerHandler
     public static function configure(Command $command): void
     {
         $command->addArgument(self::ARG_PATH, InputArgument::OPTIONAL | InputArgument::IS_ARRAY, 'Path to benchmark(s)');
-        $command->addOption(self::OPT_FILTER, [], InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Ignore all benchmarks not matching command filter (can be a regex)');
+        $command->addOption(self::OPT_FILTER, [], InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Include benchmark subjects matching this filter. Matched against <fg=cyan>Fullly\Qualified\BenchmarkName::benchSubjectName</>. Can be a regex. Multiple filters combined with OR');
+        $command->addOption(self::OPT_VARIANT_FILTER, [], InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Include variants matching this filter. Matched against parameter set names. Can be a regex). Multiple values combined with OR');
         $command->addOption(self::OPT_GROUP, [], InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Group to run (can be specified multiple times)');
         $command->addOption(self::OPT_PARAMETERS, null, InputOption::VALUE_REQUIRED, 'Override parameters to use in (all) benchmarks');
         $command->addOption(self::OPT_ASSERT, null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Override assertions');
@@ -111,6 +113,7 @@ class RunnerHandler
             ->withExecutor($input->getOption(self::OPT_EXECUTOR))
             ->withStopOnError($input->getOption(self::OPT_STOP_ON_ERROR))
             ->withAssertions($input->getOption(self::OPT_ASSERT))
+            ->withVariantFilters($input->getOption(self::OPT_VARIANT_FILTER))
             ->withFormat($input->getOption(self::OPT_FORMAT));
 
         $parameters = $this->getParameters($input->getOption(self::OPT_PARAMETERS));

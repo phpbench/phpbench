@@ -52,6 +52,13 @@ valid:
     $ phpbench run /path/to --filter=HashBench::benchFoo
     $ phpbench run /path/to --filter=Hash.*
 
+In addition the ``--variant`` option allows you to filter by a specific
+parameter set name:
+
+.. code-block:: bash
+
+    $ phpbench run /path/to --filter=Hash.* --variant=md5
+
 .. _overriding_iterations_and_revolutions:
 
 Overriding Iterations and Revolutions
