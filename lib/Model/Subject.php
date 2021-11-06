@@ -13,6 +13,7 @@
 namespace PhpBench\Model;
 
 use PhpBench\Util\TimeUnit;
+use RuntimeException;
 
 /**
  * Subject representation.
@@ -116,6 +117,16 @@ class Subject
         $this->variants[$parameterSet->getName()] = $variant;
 
         return $variant;
+    }
+
+    public function setVariant(Variant $variant): void
+    {
+        if ($variant->getSubject() !== $this) {
+            throw new RuntimeException(
+                'Adding variant to subject to which it does not belong'
+            );
+        }
+        $this->variants[$variant->getParameterSet()->getName()] = $variant;
     }
 
     /**

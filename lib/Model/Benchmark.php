@@ -14,6 +14,7 @@ namespace PhpBench\Model;
 
 use ArrayIterator;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
+use RuntimeException;
 
 /**
  * Benchmark metadata class.
@@ -45,6 +46,27 @@ class Benchmark implements \IteratorAggregate
         $this->class = $class;
     }
 
+    /**
+     * @param string[] $patterns
+     */
+    public static function matchesPatterns(string $benchmark, string $subject, array $patterns): bool
+    {
+        if (empty($patterns)) {
+            return true;
+        }
+
+        foreach ($patterns as $pattern) {
+            if (preg_match(
+                sprintf('{^.*?%s.*?$}', $pattern),
+                sprintf('%s::%s', $benchmark, $subject)
+            )) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function createSubjectFromMetadataAndExecutor(SubjectMetadata $metadata, ResolvedExecutor $executor): Subject
     {
         $subject = new Subject($this, $metadata->getName());
@@ -72,6 +94,17 @@ class Benchmark implements \IteratorAggregate
         $this->subjects[$name] = $subject;
 
         return $subject;
+    }
+
+    public function addSubject(Subject $subject): void
+    {
+        if ($subject->getBenchmark() !== $this) {
+            throw new RuntimeException(
+                'Adding subject to benchmark to which it does not belong'
+            );
+        }
+
+        $this->subjects[$subject->getName()] = $subject;
     }
 
     /**
@@ -119,5 +152,19 @@ class Benchmark implements \IteratorAggregate
     public function getSubject(string $subjectName): ?Subject
     {
         return $this->subjects[$subjectName] ?? null;
+    }
+
+    /**
+     * @param string[] $subjectPatterns
+     * @param string[] $variantPatterns
+     */
+    public function filter(array $subjectPatterns, array $variantPatterns): self
+    {
+        $new = clone $this;
+        $new->subjects = array_filter($this->subjects, function (Subject $subject) use ($subjectPatterns) {
+            return Benchmark::matchesPatterns($this->class, $subject->getName(), $subjectPatterns);
+        });
+
+        return $new;
     }
 }

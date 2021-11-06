@@ -59,6 +59,8 @@ class SuiteCollectionHandler
         $refs = $input->getOption('ref');
         assert(is_array($files));
         assert(is_array($refs));
+        $subjectPatterns = $input->getOption('filter');
+        $variantPatterns = $input->getOption('variant');
 
         if (!$files && !$refs) {
             throw new \InvalidArgumentException(
@@ -78,7 +80,7 @@ class SuiteCollectionHandler
             foreach ($refs as $ref) {
                 $collection->mergeCollection($this->storage->getService()->fetch(
                     $this->refResolver->resolve($ref)
-                ));
+                )->filter($subjectPatterns, $variantPatterns));
             }
         }
 

@@ -17,6 +17,7 @@ use DateTime;
 use IteratorAggregate;
 use PhpBench\Assertion\VariantAssertionResults;
 use PhpBench\Environment\Information;
+use RuntimeException;
 
 /**
  * Represents a Suite.
@@ -31,6 +32,10 @@ class Suite implements IteratorAggregate
     private $date;
     private $configPath;
     private $envInformations = [];
+
+    /**
+     * @var Benchmark[]
+     */
     private $benchmarks = [];
     private $uuid;
 
@@ -71,6 +76,21 @@ class Suite implements IteratorAggregate
     }
 
     /**
+     * @param string[] $subjectPatterns
+     * @param string[] $variantPatterns
+     */
+    public function filter(array $subjectPatterns, array $variantPatterns): self
+    {
+        $new = clone $this;
+        $benchmarks = array_map(function (Benchmark $benchmark) use ($subjectPatterns, $variantPatterns) {
+            return $benchmark->filter($subjectPatterns, $variantPatterns);
+        }, $this->benchmarks);
+        $new->benchmarks = $benchmarks;
+
+        return $new;
+    }
+
+    /**
      * Create and add a benchmark.
      *
      */
@@ -80,6 +100,17 @@ class Suite implements IteratorAggregate
         $this->benchmarks[$class] = $benchmark;
 
         return $benchmark;
+    }
+
+    public function addBenchmark(Benchmark $benchmark): void
+    {
+        if ($benchmark->getSuite() !== $this) {
+            throw new RuntimeException(
+                'Adding benchmark to suite to which it does not belong'
+            );
+        }
+
+        $this->benchmarks[$benchmark->getClass()] = $benchmark;
     }
 
     /**

@@ -99,4 +99,18 @@ use IteratorAggregate;
             $this->suites[0]
         ]);
     }
+
+    /**
+     * @param string[] $subjectPatterns
+     * @param string[] $variantPatterns
+     */
+    public function filter(array $subjectPatterns, array $variantPatterns): self
+    {
+        $new = clone $this;
+        $new->suites = array_map(function (Suite $suite) use ($subjectPatterns, $variantPatterns) {
+            return $suite->filter($subjectPatterns, $variantPatterns);
+        }, $this->suites);
+
+        return $new;
+    }
 }
