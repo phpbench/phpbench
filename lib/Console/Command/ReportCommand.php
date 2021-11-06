@@ -14,6 +14,7 @@ namespace PhpBench\Console\Command;
 
 use PhpBench\Console\Command\Handler\DumpHandler;
 use PhpBench\Console\Command\Handler\ReportHandler;
+use PhpBench\Console\Command\Handler\RunnerHandler;
 use PhpBench\Console\Command\Handler\SuiteCollectionHandler;
 use PhpBench\Console\Command\Handler\TimeUnitHandler;
 use Symfony\Component\Console\Command\Command;
@@ -87,6 +88,7 @@ EOT
         TimeUnitHandler::configure($this);
         SuiteCollectionHandler::configure($this);
         DumpHandler::configure($this);
+        RunnerHandler::configureFilters($this);
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int
