@@ -5,7 +5,7 @@ class ParamProviderBench
     /**
      * @ParamProviders({"provideParams"})
      */
-    public function benchSubject(array $params)
+    public function benchSubject(array $params): void
     {
     }
 

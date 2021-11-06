@@ -103,7 +103,7 @@ class RunnerConfig
     /**
      * @var string[]
      */
-    private $variantFilters;
+    private $variantFilters = [];
 
     private function __construct()
     {

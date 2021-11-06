@@ -257,6 +257,7 @@ final class Runner
             if (false === $parameterSet->nameMatches($config->getVariantFilters())) {
                 continue;
             }
+
             foreach ($subjectMetadata->getIterations() as $nbIterations) {
                 foreach ($subjectMetadata->getRevs() as $revolutions) {
                     foreach ($subjectMetadata->getWarmup() as $warmup) {
