@@ -8,7 +8,7 @@
     }
 }
 ---
-phpbench run --report=my-report --executor=debug . --progress=none
+phpbench run --report=my-report --executor=debug MultipleSubjects.php NothingBench.php --progress=none
 ---
 MultipleSubjectBench
 +---------------+-----+------+-----+----------+----------+--------+
