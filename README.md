@@ -35,7 +35,7 @@ Installation
 ------------
 
 ```bash
-$ composer require phpbench/phpbench --dev
+composer require phpbench/phpbench --dev
 ```
 
 See the [installation instructions](http://phpbench.readthedocs.io/en/latest/installing.html) for more options.
