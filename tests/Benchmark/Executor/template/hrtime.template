@@ -1,0 +1,37 @@
+<?php
+
+$class = '{{ class }}';
+$file = '{{ file }}';
+
+require_once($file);
+
+$benchmark = new $class();
+
+// warmup
+$benchmark->{{ subject }}();
+
+$totalTime = 0;
+for ($i = 0; $i < {{ revolutions }}; $i++) {
+    $startTime = hrtime(true);
+    $benchmark->{{ subject }}();
+    $endTime = hrtime(true);
+    $totalTime += ($endTime - $startTime);
+}
+
+echo serialize([
+    'mem' => [
+        // observer effect - getting memory usage affects memory usage. order
+        // counts, peak is probably the best metric.
+        'peak' => memory_get_peak_usage(),
+        'final' => memory_get_usage(),
+        'real' => memory_get_usage(true),
+    ],
+    'time' => [
+        'revs' => {{ revolutions }} * 1000,
+        'net' => $totalTime,
+    ],
+    'buffer' => $buffer,
+]);
+
+exit(0);
+

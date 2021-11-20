@@ -1,0 +1,50 @@
+{
+    "runner.executors": {
+        "sample_inside": {
+            "executor": "remote",
+            "template": "./tests/Benchmark/Executor/template/sample_inside_the_loop.template"
+        },
+        "hrtime": {
+            "executor": "remote",
+            "template": "./tests/Benchmark/Executor/template/hrtime.template"
+        }
+    },
+    "report.generators": {
+        "executor_comp": {
+            "title": "Executor Comparison",
+            "generator": "component",
+            "filter": "benchmark_name = 'TemplateBench'",
+            "components": [
+                {
+                    "component": "bar_chart_aggregate",
+                    "x_partition": "'Revs: ' ~ variant_revs",
+                    "bar_partition": "suite_tag",
+                    "y_expr": "mode(partition['result_time_avg']) as time",
+                    "y_axes_label": "yValue as time"
+                },
+                {
+                    "component": "section",
+                    "partition": ["subject_name"],
+                    "title": "Executor Comparison",
+                    "components": [
+                        {
+                            "component": "table_aggregate",
+                            "title": "{{ first(frame['subject_name']) }}",
+                            "partition": ["benchmark_name", "subject_name", "variant_name", "variant_revs"],
+                            "row": {
+                                "revs": "first(partition['variant_revs'])",
+                                "by_executor": {
+                                    "type": "expand",
+                                    "partition": "suite_tag",
+                                    "cols": {
+                                        "{{ key }}": "mode(partition['result_time_avg']) as microseconds ~ '(' ~ sum(partition['result_time_net']) as microseconds ~ ' net) ' ~ rstdev(partition['result_time_avg'])"
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}
