@@ -17,6 +17,8 @@ final class SuiteBuilder
      */
     private $benchmarkBuilders = [];
 
+    private ?DateTime $date = null;
+
     public function __construct(string $name)
     {
         $this->name = $name;
@@ -25,6 +27,13 @@ final class SuiteBuilder
     public static function create(string $name): self
     {
         return new self($name);
+    }
+
+    public function withDateString(string $date): SuiteBuilder
+    {
+        $this->date = new DateTime($date);
+
+        return $this;
     }
 
     public function benchmark(string $name): BenchmarkBuilder
@@ -39,7 +48,7 @@ final class SuiteBuilder
     {
         $suite = new Suite(
             $this->name,
-            new DateTime()
+            $this->date ?? new DateTime()
         );
 
         foreach ($this->benchmarkBuilders as $builder) {
