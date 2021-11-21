@@ -36,7 +36,7 @@ final class SuiteCollectionTransformer
             assert($suite instanceof Suite);
 
             foreach ($suite->getSubjects() as $subject) {
-                foreach ($subject->getVariants() as $variant) {
+                foreach ($subject->getVariants() as $variantIndex => $variant) {
                     $nbIterations = (function (Variant $variant, ?Variant $baseline) {
                         if (null === $baseline) {
                             return count($variant->getIterations());
@@ -55,7 +55,7 @@ final class SuiteCollectionTransformer
                                 [
                                     self::COL_HAS_BASELINE => false
                                 ],
-                                $this->createRow($baseline->getSubject(), $baseline, $baseline->getSubject()->getBenchmark()->getSuite(), $itNum),
+                                $this->createRow($baseline->getSubject(), $baseline, $baseline->getSubject()->getBenchmark()->getSuite(), $itNum, $variantIndex),
                                 $this->resultData($baselineIteration, 'result')
                             );
                         }
@@ -64,7 +64,7 @@ final class SuiteCollectionTransformer
                             [
                                 self::COL_HAS_BASELINE => $baseline ? true : false
                             ],
-                            $this->createRow($subject, $variant, $suite, $itNum),
+                            $this->createRow($subject, $variant, $suite, $itNum, $variantIndex),
                             $this->resultData($iteration, 'result'),
                             $this->resultData($baselineIteration, 'baseline')
                         );
@@ -122,7 +122,7 @@ final class SuiteCollectionTransformer
     /**
      * @return array<string,mixed>
      */
-    private function createRow(Subject $subject, Variant $variant, Suite $suite, int $itNum): array
+    private function createRow(Subject $subject, Variant $variant, Suite $suite, int $itNum, int $variantIndex): array
     {
         return array_merge([
             'benchmark_name' => $subject->getBenchmark()->getName(),
@@ -132,6 +132,7 @@ final class SuiteCollectionTransformer
             'subject_time_unit' => $subject->getOutputTimeUnit(),
             'subject_time_precision' => $subject->getOutputTimePrecision(),
             'subject_time_mode' => $subject->getOutputMode(),
+            'variant_index' => $variantIndex,
             'variant_name' => $variant->getParameterSet()->getName(),
             'variant_params' => $variant->getParameterSet()->toUnserializedParameters(),
             'variant_revs' => $variant->getRevolutions(),

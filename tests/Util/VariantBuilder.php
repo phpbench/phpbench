@@ -6,6 +6,7 @@ use DateTime;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\Error;
 use PhpBench\Model\ParameterSet;
+use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\Subject;
 use PhpBench\Model\Suite;
 use PhpBench\Model\Variant;
@@ -64,6 +65,12 @@ final class VariantBuilder
         return $this;
     }
 
+    public function addIterationWithTimeResult(int $netTime, int $revs): VariantBuilder
+    {
+        $this->iteration()->setResult(new TimeResult($netTime, $revs));
+        return $this;
+    }
+
     public function iteration(): IterationBuilder
     {
         return (function (IterationBuilder $builder) {
@@ -95,7 +102,7 @@ final class VariantBuilder
         }
         $variant = new Variant(
             $subject,
-            $this->parameterSet ?? ParameterSet::fromSerializedParameters($this->name, []),
+            $this->parameterSet ?? ParameterSet::fromSerializedParameters($this->name ?? '0', []),
             $this->revs,
             1,
             []

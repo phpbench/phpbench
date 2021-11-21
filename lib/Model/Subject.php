@@ -142,7 +142,7 @@ class Subject
      */
     public function getVariants(): array
     {
-        return $this->variants;
+        return array_values($this->variants);
     }
 
     /**

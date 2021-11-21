@@ -23,9 +23,7 @@ class SuiteCollectionTransformerTest extends TestCase
                         ->variant()
                             ->setRevs(5)
                             ->withParameterSet('one', ['one' => 1, 'two' => 2])
-                            ->iteration()
-                                ->setResult(new TimeResult(100, 2))
-                            ->end()
+                            ->addIterationWithTimeResult(100, 2)
                         ->end()
                     ->end()
                 ->end()
@@ -44,6 +42,7 @@ class SuiteCollectionTransformerTest extends TestCase
                     'subject_time_unit' => 'microseconds',
                     'subject_time_precision' => null,
                     'subject_time_mode' => 'time',
+                    'variant_index' => 0,
                     'variant_name' => 'one',
                     'variant_params' => ['one' => 1, 'two' => 2],
                     'variant_revs' => 5,
@@ -59,7 +58,50 @@ class SuiteCollectionTransformerTest extends TestCase
                     'result_comp_deviation' => 0.0,
                 ]
             ],
-            (new SuiteCollectionTransformer())->suiteToFrame($suite)->toRecords()
+            $this->createSuiteTransformer()->suiteToFrame($suite)->toRecords()
         );
+    }
+
+    public function testVariantIndexResetForEachSubject(): void
+    {
+        $collection = new SuiteCollection([
+            SuiteBuilder::create('suite_one')
+                ->withDateString('2021-11-21T00:00:00')
+                ->benchmark('1st')
+                    ->subject('subjectOne')
+                        ->withGroups(['one', 'two'])
+                        ->variant()
+                            ->addIterationWithTimeResult(100, 2)
+                        ->end()
+                        ->variant()
+                           ->addIterationWithTimeResult(100, 2)
+                        ->end()
+                    ->end()
+                    ->subject('subjectTwo')
+                        ->withGroups(['one', 'two'])
+                        ->variant()
+                            ->addIterationWithTimeResult(100, 2)
+                        ->end()
+                        ->variant()
+                             ->addIterationWithTimeResult(100, 2)
+                        ->end()
+                    ->end()
+                ->end()
+                ->build()
+
+        ]);
+
+        $frame = $this->createSuiteTransformer()->suiteToFrame($collection);
+        $records = $frame->toRecords();
+        self::assertCount(4, $records);
+        self::assertEquals(0, $records[0]['variant_index']);
+        self::assertEquals(1, $records[1]['variant_index']);
+        self::assertEquals(0, $records[2]['variant_index']);
+        self::assertEquals(1, $records[3]['variant_index']);
+    }
+
+    private function createSuiteTransformer(): SuiteCollectionTransformer
+    {
+        return new SuiteCollectionTransformer();
     }
 }
