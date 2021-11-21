@@ -15,6 +15,7 @@ phpbench run --report='extends:bare,vertical:true' --executor=debug NothingBench
 | subject_time_unit      | null          |
 | subject_time_precision | null          |
 | subject_time_mode      | null          |
+| variant_index          | 0             |
 | variant_name           |               |
 | variant_params         | []            |
 | variant_revs           | 1             |

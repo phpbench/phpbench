@@ -9,6 +9,7 @@
 | subject_time_unit      | microseconds      |
 | subject_time_precision | 7                 |
 | subject_time_mode      | time              |
+| variant_index          | 0                 |
 | variant_name           | 0                 |
 | variant_params         | [value1]          |
 | variant_revs           | 5                 |
@@ -39,6 +40,7 @@
 | subject_time_unit      | microseconds      |
 | subject_time_precision | 7                 |
 | subject_time_mode      | time              |
+| variant_index          | 0                 |
 | variant_name           | 0                 |
 | variant_params         | [value1]          |
 | variant_revs           | 5                 |
