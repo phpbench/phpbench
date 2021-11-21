@@ -12,9 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Subject;
 
-use PhpBench\Model\Benchmark;
 use PhpBench\Model\ParameterSet;
-use PhpBench\Model\Subject;
 use PhpBench\Tests\TestCase;
 use PhpBench\Tests\Util\SubjectBuilder;
 

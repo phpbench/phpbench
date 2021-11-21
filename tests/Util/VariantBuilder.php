@@ -68,6 +68,7 @@ final class VariantBuilder
     public function addIterationWithTimeResult(int $netTime, int $revs): VariantBuilder
     {
         $this->iteration()->setResult(new TimeResult($netTime, $revs));
+
         return $this;
     }
 

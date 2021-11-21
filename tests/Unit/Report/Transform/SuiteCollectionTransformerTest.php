@@ -2,10 +2,7 @@
 
 namespace PhpBench\Tests\Unit\Report\Transform;
 
-use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
-use PhpBench\Data\DataFrame;
-use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Report\Transform\SuiteCollectionTransformer;
 use PhpBench\Tests\Util\SuiteBuilder;

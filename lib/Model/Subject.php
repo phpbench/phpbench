@@ -103,6 +103,7 @@ class Subject
 
     /**
      * Create and add a new variant based on this subject.
+     *
      * @param array<string,mixed> $computedStats
      */
     public function createVariant(ParameterSet $parameterSet, int $revolutions, int $warmup, array $computedStats = []): Variant
