@@ -3,9 +3,10 @@
 namespace PhpBench\Executor\Stage;
 
 use PhpBench\Executor\ExecutionContext;
+use PhpBench\Executor\StageInterface;
 use PhpBench\Executor\StageRenderer;
 
-class BootstrapStage
+class RootStage implements StageInterface
 {
     /**
      * @var string|null
@@ -17,10 +18,15 @@ class BootstrapStage
         $this->bootstrap = $bootstrap;
     }
 
+    public function name(): string
+    {
+        return 'root';
+    }
+
     /**
-     * @return string[]
+     * {@inheritDoc}
      */
-    public function render(ExecutionContext $context, StageRenderer $renderer): array
+    public function start(ExecutionContext $context): array
     {
         $lines = [
             'gc_disable();',
@@ -35,7 +41,21 @@ class BootstrapStage
         }
 
         $lines[] = sprintf('require_once("%s")', $context->getClassPath());
+        $lines[] = '$results = []';
 
         return $lines;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function end(ExecutionContext $context): array
+    {
+        return [
+            '$results["buffer"] = ob_get_contents();',
+            'ob_end_clean();',
+            'echo serialize($results);',
+            'exit(0)',
+        ];
     }
 }

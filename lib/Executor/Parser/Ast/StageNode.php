@@ -7,12 +7,12 @@ class StageNode
     /**
      * @var string
      */
-    private $name;
+    public $name;
 
     /**
      * @var StageNode[]
      */
-    private $children;
+    public $children;
 
     /**
      * @param StageNode[] $children
