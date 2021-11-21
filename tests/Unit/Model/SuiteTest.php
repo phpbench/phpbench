@@ -120,7 +120,7 @@ class SuiteTest extends TestCase
             1
         );
 
-        self::assertSame($variant, $suite->findVariant(
+        self::assertSame($variant, $suite->findVariantByParameterSetName(
             'Foobar',
             'barfoo',
             'one'

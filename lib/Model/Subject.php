@@ -103,7 +103,6 @@ class Subject
 
     /**
      * Create and add a new variant based on this subject.
-     *
      */
     public function createVariant(ParameterSet $parameterSet, int $revolutions, int $warmup, array $computedStats = []): Variant
     {
@@ -114,12 +113,12 @@ class Subject
             $warmup,
             $computedStats
         );
-        $this->variants[$parameterSet->getName()] = $variant;
+        $this->variants[$variant->getParameterSet()->getName()] = $variant;
 
         return $variant;
     }
 
-    public function setVariant(Variant $variant): void
+    public function addVariant(Variant $variant): void
     {
         if ($variant->getSubject() !== $this) {
             throw new RuntimeException(
@@ -127,6 +126,14 @@ class Subject
             );
         }
         $this->variants[$variant->getParameterSet()->getName()] = $variant;
+    }
+
+    /**
+     * @deprecated Use addVariant. To be removed in 2.0
+     */
+    public function setVariant(Variant $variant): void
+    {
+        $this->addVariant($variant);
     }
 
     /**
@@ -232,9 +239,30 @@ class Subject
         });
     }
 
+    /**
+     * Returns the _first_ variant that matches the given parameter set name.
+     * Note that there may be multiple variants with the same parameter set as
+     * they can also vary by the number of revs/iterations.
+     */
+    public function getVariantByParameterSetName(string $parameterSetName): ?Variant
+    {
+        foreach ($this->variants as $variant) {
+            if ($variant->getParameterSet()->getName() !== $parameterSetName) {
+                continue;
+            }
+
+            return $variant;
+        }
+
+        return null;
+    }
+
+    /**
+     * @deprecated use getVariantByParameterSetName. will be removed in 2.0
+     */
     public function getVariant(string $parameterSetName): ?Variant
     {
-        return $this->variants[$parameterSetName] ?? null;
+        return $this->getVariantByParameterSetName($parameterSetName);
     }
 
     public function setFormat(?string $format): void
