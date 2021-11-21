@@ -103,6 +103,7 @@ class Subject
 
     /**
      * Create and add a new variant based on this subject.
+     * @param array<string,mixed> $computedStats
      */
     public function createVariant(ParameterSet $parameterSet, int $revolutions, int $warmup, array $computedStats = []): Variant
     {
@@ -152,16 +153,25 @@ class Subject
         return $this->benchmark;
     }
 
+    /**
+     * @return string[]
+     */
     public function getGroups(): array
     {
         return $this->groups;
     }
 
+    /**
+     * @param string[] $groups
+     */
     public function inGroups(array $groups): bool
     {
         return 0 !== count(array_intersect($this->groups, $groups));
     }
 
+    /**
+     * @param string[] $groups
+     */
     public function setGroups(array $groups): void
     {
         $this->groups = $groups;
