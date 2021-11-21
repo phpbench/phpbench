@@ -37,7 +37,7 @@
 .. _generator_expression_option_aggregate:
 
 **aggregate**:
-  Type(s): ``array``, Default: ``[suite_tag, benchmark_class, subject_name, variant_name]``
+  Type(s): ``array``, Default: ``[suite_tag, benchmark_class, subject_name, variant_index]``
 
   Group rows by these columns
 
