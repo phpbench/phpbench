@@ -25,6 +25,11 @@ final class SubjectBuilder
      */
     private $benchmarkBuilder;
 
+    /**
+     * @var string[]
+     */
+    private $groups = [];
+
     public function __construct(?BenchmarkBuilder $benchmarkBuilder, string $name)
     {
         $this->name = $name;
@@ -49,7 +54,7 @@ final class SubjectBuilder
         return $builder;
     }
 
-    public function build(?Benchmark $benchmark): Subject
+    public function build(?Benchmark $benchmark = null): Subject
     {
         if (null === $benchmark) {
             $suite = new Suite(
@@ -60,12 +65,23 @@ final class SubjectBuilder
         }
 
         $subject = new Subject($benchmark, $this->name);
+        $subject->setGroups($this->groups);
 
         foreach ($this->variantBuilders as $builder) {
             $subject->setVariant($builder->build($subject));
         }
 
         return $subject;
+    }
+
+    /**
+     * @param string[] $groups
+     */
+    public function withGroups(array $groups): SubjectBuilder
+    {
+        $this->groups = $groups;
+
+        return $this;
     }
 
     public function end(): BenchmarkBuilder
