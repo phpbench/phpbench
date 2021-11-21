@@ -42,11 +42,11 @@ return [
             'comp_z_value' => 'format("%+.2fσ", first(result_comp_z_value))',
             'comp_deviation' => 'format("%+.2f%%", first(result_comp_deviation))',
         ],
-        'aggregate' => ['benchmark_class', 'subject_name', 'variant_name', 'iteration_index'],
+        'aggregate' => ['benchmark_class', 'subject_name', 'variant_index', 'iteration_index'],
     ],
     'memory' => [
         'generator' => 'expression',
-        'aggregate' => ['benchmark_class', 'subject_name', 'variant_name', 'iteration_index'],
+        'aggregate' => ['benchmark_class', 'subject_name', 'variant_index', 'iteration_index'],
         'cols' => [
             'iter' => 'first(iteration_index)',
             'benchmark' => 'first(subject_name)',
