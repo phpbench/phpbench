@@ -46,7 +46,7 @@ final class SubjectBuilder
         return new self($builder, $name);
     }
 
-    public function variant(string $name): VariantBuilder
+    public function variant(?string $name = null): VariantBuilder
     {
         $builder = VariantBuilder::forSubjectBuilder($this, $name);
         $this->variantBuilders[] = $builder;

@@ -52,4 +52,31 @@ class SubjectTest extends TestCase
         self::assertEquals(10, $variant->getRevolutions());
         self::assertEquals(20, $variant->getWarmup());
     }
+
+    public function testCreateMultipleVariantsWithSameParameterSetName(): void
+    {
+        $subject = SubjectBuilder::create('one')
+            ->build();
+
+        $parameterSet = ParameterSet::fromSerializedParameters('foo', []);
+        $variant = $subject->createVariant($parameterSet, 10, 20);
+        $parameterSet = ParameterSet::fromSerializedParameters('foo', []);
+        $variant = $subject->createVariant($parameterSet, 10, 20);
+
+        self::assertCount(2, $subject->getVariants());
+    }
+
+    public function testAddMultipleVariantsWithSameParameterSetName(): void
+    {
+        $subject = SubjectBuilder::create('one')
+            ->variant()
+                ->withParameterSet('foo', [])
+            ->end()
+            ->variant()
+                ->withParameterSet('foo', [])
+            ->end()
+            ->build();
+
+        self::assertCount(2, $subject->getVariants());
+    }
 }

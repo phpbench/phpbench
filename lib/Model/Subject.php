@@ -114,7 +114,7 @@ class Subject
             $warmup,
             $computedStats
         );
-        $this->variants[$variant->getParameterSet()->getName()] = $variant;
+        $this->variants[] = $variant;
 
         return $variant;
     }
@@ -126,7 +126,7 @@ class Subject
                 'Adding variant to subject to which it does not belong'
             );
         }
-        $this->variants[$variant->getParameterSet()->getName()] = $variant;
+        $this->variants[] = $variant;
     }
 
     /**
