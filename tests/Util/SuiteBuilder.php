@@ -17,7 +17,10 @@ final class SuiteBuilder
      */
     private $benchmarkBuilders = [];
 
-    private ?DateTime $date = null;
+    /**
+     * @var DateTime
+     */
+    private $date = null;
 
     public function __construct(string $name)
     {
