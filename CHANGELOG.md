@@ -1,6 +1,14 @@
 CHANGELOG
 =========
 
+master
+------
+
+Bug fixes:
+
+- Do not index variants by parameter set name (as they vary by number of
+  revs/iterations etc also) #947
+
 1.2.0
 -----
 

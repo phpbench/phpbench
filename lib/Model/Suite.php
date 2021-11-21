@@ -296,7 +296,7 @@ class Suite implements IteratorAggregate
         return $this;
     }
 
-    public function findVariant(string $benchmarkClass, string $subjectName, string $variantName): ?Variant
+    public function findVariantByParameterSetName(string $benchmarkClass, string $subjectName, string $variantName): ?Variant
     {
         if (!$benchmark = $this->getBenchmark($benchmarkClass)) {
             return null;
@@ -307,6 +307,14 @@ class Suite implements IteratorAggregate
         }
 
         return $subject->getVariant($variantName);
+    }
+
+    /**
+     * @deprecated use findVariantByParameterSetName. will be removed in 2.0
+     */
+    public function findVariant(string $benchmarkClass, string $subjectName, string $variantName): ?Variant
+    {
+        return $this->findVariantByParameterSetName($benchmarkClass, $subjectName, $variantName);
     }
 
     public function getBaseline(): ?self

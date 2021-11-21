@@ -6,6 +6,7 @@ use DateTime;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\Error;
 use PhpBench\Model\ParameterSet;
+use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\Subject;
 use PhpBench\Model\Suite;
 use PhpBench\Model\Variant;
@@ -29,7 +30,7 @@ final class VariantBuilder
     private $subjectBuilder;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $name;
 
@@ -38,7 +39,15 @@ final class VariantBuilder
      */
     private $errors;
 
-    public function __construct(?SubjectBuilder $subjectBuilder, string $name)
+    /**
+     * @var ParameterSet
+     */
+    private $parameterSet = null;
+
+    /**
+     * @param string $name @deprecated Variants are not named, and this was used as the parameter set name.
+     */
+    public function __construct(?SubjectBuilder $subjectBuilder, ?string $name = null)
     {
         $this->subjectBuilder = $subjectBuilder;
         $this->name = $name;
@@ -56,6 +65,13 @@ final class VariantBuilder
         return $this;
     }
 
+    public function addIterationWithTimeResult(int $netTime, int $revs): VariantBuilder
+    {
+        $this->iteration()->setResult(new TimeResult($netTime, $revs));
+
+        return $this;
+    }
+
     public function iteration(): IterationBuilder
     {
         return (function (IterationBuilder $builder) {
@@ -63,6 +79,16 @@ final class VariantBuilder
 
             return $builder;
         })(new IterationBuilder($this));
+    }
+
+    /**
+     * @param array<string,mixed> $parameters
+     */
+    public function withParameterSet(string $name, array $parameters): VariantBuilder
+    {
+        $this->parameterSet = ParameterSet::fromUnserializedValues($name, $parameters);
+
+        return $this;
     }
 
     public function build(?Subject $subject = null): Variant
@@ -75,7 +101,13 @@ final class VariantBuilder
             $benchmark = new Benchmark($suite, 'testBenchmark');
             $subject = new Subject($benchmark, 'foo');
         }
-        $variant = new Variant($subject, ParameterSet::fromSerializedParameters($this->name, []), $this->revs, 1, []);
+        $variant = new Variant(
+            $subject,
+            $this->parameterSet ?? ParameterSet::fromSerializedParameters($this->name ?? '0', []),
+            $this->revs,
+            1,
+            []
+        );
 
         foreach ($this->iterations as $iteration) {
             $iteration->build($variant);
@@ -101,7 +133,7 @@ final class VariantBuilder
         return $this->subjectBuilder;
     }
 
-    public static function forSubjectBuilder(SubjectBuilder $subjectBuilder, string $name): self
+    public static function forSubjectBuilder(SubjectBuilder $subjectBuilder, ?string $name = null): self
     {
         return new self($subjectBuilder, $name);
     }

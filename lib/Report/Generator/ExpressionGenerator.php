@@ -95,7 +95,7 @@ EOT
             self::PARAM_COLS => null,
             self::PARAM_EXPRESSIONS => [],
             self::PARAM_BASELINE_EXPRESSIONS => [],
-            self::PARAM_AGGREGATE => ['suite_tag', 'benchmark_class', 'subject_name', 'variant_name'],
+            self::PARAM_AGGREGATE => ['suite_tag', 'benchmark_class', 'subject_name', 'variant_index'],
             self::PARAM_BREAK => [],
             self::PARAM_INCLUDE_BASELINE => false,
         ]);
