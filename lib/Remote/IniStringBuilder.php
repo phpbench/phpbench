@@ -14,18 +14,32 @@ namespace PhpBench\Remote;
 
 class IniStringBuilder
 {
+    /**
+     * @deprecated use buildList instead
+     * @param array<string,mixed> $config
+     */
     public function build(array $config): string
     {
-        $string = [];
+
+        return implode(' ', $this->buildList($config));
+    }
+
+    /**
+     * @param array<string,mixed> $config
+     * @return string[]
+     */
+    public function buildList(array $config): array
+    {
+        $args = [];
 
         foreach ($config as $key => $values) {
             $values = (array) $values;
 
             foreach ($values as $value) {
-                $string[] = sprintf('-d%s=%s', $key, $value);
+                $args[] = sprintf('-d%s=%s', $key, $value);
             }
         }
 
-        return implode(' ', $string);
+        return $args;
     }
 }

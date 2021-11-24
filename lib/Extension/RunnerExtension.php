@@ -27,11 +27,19 @@ use PhpBench\Environment\Supplier;
 use PhpBench\Executor\Benchmark\DebugExecutor;
 use PhpBench\Executor\Benchmark\LocalExecutor;
 use PhpBench\Executor\Benchmark\MemoryCentricMicrotimeExecutor;
+use PhpBench\Executor\Benchmark\ProgramExecutor;
 use PhpBench\Executor\Benchmark\RemoteExecutor;
 use PhpBench\Executor\CompositeExecutor;
 use PhpBench\Executor\Method\ErrorHandlingExecutorDecorator;
 use PhpBench\Executor\Method\LocalMethodExecutor;
 use PhpBench\Executor\Method\RemoteMethodExecutor;
+use PhpBench\Executor\Parser\StageLexer;
+use PhpBench\Executor\Parser\StageParser;
+use PhpBench\Executor\PhpProcessFactory;
+use PhpBench\Executor\PhpProcessOptions;
+use PhpBench\Executor\ScriptBuilder;
+use PhpBench\Executor\ScriptExecutor;
+use PhpBench\Executor\Stage\RootStage;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\ExpressionLanguage;
 use PhpBench\Expression\Printer;
@@ -369,6 +377,31 @@ class RunnerExtension implements ExtensionInterface
             return new DebugExecutor();
         }, [
             self::TAG_EXECUTOR => ['name' => 'debug']
+        ]);
+
+        $container->register(ProgramExecutor::class, function (Container $container) {
+            return new ProgramExecutor(
+                new StageLexer(),
+                new StageParser(),
+                new ScriptBuilder([
+                    new RootStage($container->getParameter('runner.bootstrap'))
+                ]),
+                new ScriptExecutor(
+                    new PhpProcessFactory(
+                        new PhpProcessOptions(
+                            $container->getParameter(self::PARAM_PHP_BINARY) ?? PHP_BINARY,
+                            $container->getParameter(self::PARAM_PHP_CONFIG),
+                            $container->getParameter(self::PARAM_PHP_DISABLE_INI),
+                            $container->getParameter(self::PARAM_PHP_WRAPPER),
+                            $container->getParameter(self::PARAM_RUNNER_TIMEOUT),
+                        )
+                    ),
+                    $container->getParameter(self::PARAM_REMOTE_SCRIPT_PATH),
+                    $container->getParameter(self::PARAM_REMOTE_SCRIPT_REMOVE),
+                )
+            );
+        }, [
+            self::TAG_EXECUTOR => ['name' => 'program']
         ]);
 
         $container->register(Finder::class, function (Container $container) {

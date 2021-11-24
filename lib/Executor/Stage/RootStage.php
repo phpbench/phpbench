@@ -36,12 +36,12 @@ class RootStage implements StageInterface
 
         if ($this->bootstrap) {
             $lines[] = 'call_user_func(function () {';
-            $lines[] = sprintf('  require_once(%s);', $this->bootstrap);
+            $lines[] = sprintf('  require_once("%s");', $this->bootstrap);
             $lines[] = '});';
         }
 
-        $lines[] = sprintf('require_once("%s")', $context->getClassPath());
-        $lines[] = '$results = []';
+        $lines[] = sprintf('require_once("%s");', $context->getClassPath());
+        $lines[] = '$results = [];';
 
         return $lines;
     }
@@ -55,7 +55,7 @@ class RootStage implements StageInterface
             '$results["buffer"] = ob_get_contents();',
             'ob_end_clean();',
             'echo serialize($results);',
-            'exit(0)',
+            'exit(0);',
         ];
     }
 }

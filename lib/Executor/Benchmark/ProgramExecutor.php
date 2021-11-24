@@ -7,10 +7,12 @@ use PhpBench\Executor\ExecutionContext;
 use PhpBench\Executor\ExecutionResults;
 use PhpBench\Executor\Parser\StageLexer;
 use PhpBench\Executor\Parser\StageParser;
+use PhpBench\Executor\ScriptBuilder;
+use PhpBench\Executor\ScriptExecutor;
 use PhpBench\Registry\Config;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class StageExecutor implements BenchmarkExecutorInterface
+class ProgramExecutor implements BenchmarkExecutorInterface
 {
     /**
      * @var StageLexer
@@ -22,16 +24,34 @@ class StageExecutor implements BenchmarkExecutorInterface
      */
     private $parser;
 
-    public function __construct(StageLexer $lexer, StageParser $parser)
+    /**
+     * @var ScriptBuilder
+     */
+    private $builder;
+
+    /**
+     * @var ScriptExecutor
+     */
+    private $executor;
+
+    public function __construct(
+        StageLexer $lexer,
+        StageParser $parser,
+        ScriptBuilder $builder,
+        ScriptExecutor $executor
+    )
     {
         $this->lexer = $lexer;
         $this->parser = $parser;
+        $this->builder = $builder;
+        $this->executor = $executor;
     }
     /**
      * {@inheritDoc}
      */
     public function configure(OptionsResolver $options): void
     {
+        $options->setDefault('program', '');
         $options->setRequired('program');
     }
 
@@ -41,7 +61,9 @@ class StageExecutor implements BenchmarkExecutorInterface
     public function execute(ExecutionContext $context, Config $config): ExecutionResults
     {
         $program = $this->parser->parse($this->lexer->lex($config['program']));
-        $script = $this->scriptBuilder->build($program);
-        dd($script);
+        $script = $this->builder->build($context, $program);
+        dump($this->executor->execute($script));
+
+        return ExecutionResults::fromResults();
     }
 }
