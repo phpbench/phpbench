@@ -56,7 +56,7 @@ class RootUnit implements UnitInterface
     public function end(ExecutionContext $context): array
     {
         return [
-            '$results["buffer"] = ob_get_contents();',
+            '$results["buffer"] = [\'buffer\' => ob_get_contents()];',
             'ob_end_clean();',
             'echo serialize($results);',
             'exit(0);',

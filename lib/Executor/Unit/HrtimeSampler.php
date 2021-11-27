@@ -33,10 +33,9 @@ class HrtimeSampler implements UnitInterface
      */
     public function end(ExecutionContext $context): array
     {
-        $this->varName = sprintf('hrtime_%s', uniqid());
         return [
             sprintf('$%s_time = hrtime(true) - $%s;', $this->varName, $this->varName),
-            sprintf('$results[\'hrtime\'] = $%s_time;', $this->varName),
+            sprintf('$results[\'hrtime\'] = [\'net\' => $%s_time, \'revs\' => %d];', $this->varName, $context->getRevolutions()),
         ];
     }
 }

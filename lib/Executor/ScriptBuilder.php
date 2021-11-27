@@ -9,12 +9,12 @@ use function str_repeat;
 class ScriptBuilder
 {
     /**
-     * @var array<string, StageInterface>
+     * @var array<string, UnitInterface>
      */
     private $scriptStages;
 
     /**
-     * @param StageInterface[] $scriptStages
+     * @param UnitInterface[] $scriptStages
      */
     public function __construct(array $scriptStages)
     {
@@ -42,7 +42,6 @@ class ScriptBuilder
 
         $stage = $this->scriptStages[$node->name];
         $lines = $this->indent(array_merge([
-            sprintf('// >>> %s', $node->name),
         ], $stage->start($context)), $indentation);
         foreach ($node->children as $child) {
             $lines = array_merge(
@@ -53,7 +52,6 @@ class ScriptBuilder
         $lines = array_merge(
             $lines,
             $this->indent(array_merge($stage->end($context), [
-                sprintf('// <<< %s', $node->name)
             ]), $indentation),
         );
 

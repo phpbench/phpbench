@@ -9,6 +9,7 @@ use PhpBench\Executor\Parser\StageLexer;
 use PhpBench\Executor\Parser\StageParser;
 use PhpBench\Executor\ScriptBuilder;
 use PhpBench\Executor\ScriptExecutor;
+use PhpBench\Model\MainResultFactory;
 use PhpBench\Registry\Config;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -34,24 +35,31 @@ class ProgramExecutor implements BenchmarkExecutorInterface
      */
     private $executor;
 
+    /**
+     * @var MainResultFactory
+     */
+    private $resultFactory;
+
     public function __construct(
         StageLexer $lexer,
         StageParser $parser,
         ScriptBuilder $builder,
-        ScriptExecutor $executor
+        ScriptExecutor $executor,
+        MainResultFactory $resultFactory
     )
     {
         $this->lexer = $lexer;
         $this->parser = $parser;
         $this->builder = $builder;
         $this->executor = $executor;
+        $this->resultFactory = $resultFactory;
     }
     /**
      * {@inheritDoc}
      */
     public function configure(OptionsResolver $options): void
     {
-        $options->setDefault('program', 'hrtime_sampler{call_before_methods;call_subject}');
+        $options->setDefault('program', 'call_before_methods;hrtime_sampler{call_subject}');
         $options->setRequired('program');
     }
 
@@ -62,8 +70,10 @@ class ProgramExecutor implements BenchmarkExecutorInterface
     {
         $program = $this->parser->parse($this->lexer->lex($config['program']));
         $script = $this->builder->build($context, $program);
-        dd($this->executor->execute($script));
+        $results = $this->executor->execute($script);
 
-        return ExecutionResults::fromResults();
+        return ExecutionResults::fromResults(...array_map(function (string $type, array $resultData) {
+            return $this->resultFactory->create($type, $resultData);
+        }, array_keys($results), array_values($results)));
     }
 }

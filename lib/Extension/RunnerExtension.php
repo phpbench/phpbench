@@ -48,6 +48,9 @@ use PhpBench\Expression\ExpressionLanguage;
 use PhpBench\Expression\Printer;
 use PhpBench\Expression\Printer\EvaluatingPrinter;
 use PhpBench\Json\JsonDecoder;
+use PhpBench\Model\MainResultFactory;
+use PhpBench\Model\Result\BufferResultFactory;
+use PhpBench\Model\Result\HrTimeResultFactory;
 use PhpBench\Progress\Logger\BlinkenLogger;
 use PhpBench\Progress\Logger\DotsLogger;
 use PhpBench\Progress\Logger\HistogramLogger;
@@ -404,7 +407,11 @@ class RunnerExtension implements ExtensionInterface
                     ),
                     $container->getParameter(self::PARAM_REMOTE_SCRIPT_PATH),
                     $container->getParameter(self::PARAM_REMOTE_SCRIPT_REMOVE),
-                )
+                ),
+                new MainResultFactory([
+                    'hrtime' => new HrTimeResultFactory(),
+                    'buffer' => new BufferResultFactory(),
+                ]),
             );
         }, [
             self::TAG_EXECUTOR => ['name' => 'program']
