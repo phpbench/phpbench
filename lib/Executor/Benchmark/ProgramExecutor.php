@@ -51,7 +51,7 @@ class ProgramExecutor implements BenchmarkExecutorInterface
      */
     public function configure(OptionsResolver $options): void
     {
-        $options->setDefault('program', '');
+        $options->setDefault('program', 'hrtime_sampler{call_before_methods;call_subject}');
         $options->setRequired('program');
     }
 
@@ -62,7 +62,7 @@ class ProgramExecutor implements BenchmarkExecutorInterface
     {
         $program = $this->parser->parse($this->lexer->lex($config['program']));
         $script = $this->builder->build($context, $program);
-        dump($this->executor->execute($script));
+        dd($this->executor->execute($script));
 
         return ExecutionResults::fromResults();
     }

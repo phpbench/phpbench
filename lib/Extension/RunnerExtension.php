@@ -39,7 +39,10 @@ use PhpBench\Executor\PhpProcessFactory;
 use PhpBench\Executor\PhpProcessOptions;
 use PhpBench\Executor\ScriptBuilder;
 use PhpBench\Executor\ScriptExecutor;
-use PhpBench\Executor\Stage\RootStage;
+use PhpBench\Executor\Unit\CallSubjectUnit;
+use PhpBench\Executor\Unit\HrtimeSampler;
+use PhpBench\Executor\Unit\RootUnit;
+use PhpBench\Executor\Unit\SetupUnit;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\ExpressionLanguage;
 use PhpBench\Expression\Printer;
@@ -384,7 +387,10 @@ class RunnerExtension implements ExtensionInterface
                 new StageLexer(),
                 new StageParser(),
                 new ScriptBuilder([
-                    new RootStage($container->getParameter('runner.bootstrap'))
+                    new RootUnit($container->getParameter('runner.bootstrap')),
+                    new SetupUnit(),
+                    new CallSubjectUnit(),
+                    new HrtimeSampler(),
                 ]),
                 new ScriptExecutor(
                     new PhpProcessFactory(

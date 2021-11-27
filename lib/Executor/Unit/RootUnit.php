@@ -1,12 +1,12 @@
 <?php
 
-namespace PhpBench\Executor\Stage;
+namespace PhpBench\Executor\Unit;
 
 use PhpBench\Executor\ExecutionContext;
-use PhpBench\Executor\StageInterface;
+use PhpBench\Executor\UnitInterface;
 use PhpBench\Executor\StageRenderer;
 
-class RootStage implements StageInterface
+class RootUnit implements UnitInterface
 {
     /**
      * @var string|null
@@ -31,7 +31,6 @@ class RootStage implements StageInterface
         $lines = [
             'gc_disable();',
             'ob_start();',
-            sprintf('$class = %s::class;', $context->getClassName()),
         ];
 
         if ($this->bootstrap) {
@@ -40,7 +39,12 @@ class RootStage implements StageInterface
             $lines[] = '});';
         }
 
+        $lines[] = '$parameters = array_map(function (string $serialized) {';
+        $lines[] = '    return unserialize($serialized);';
+        $lines[] = sprintf('}, %s);', var_export($context->getParameterSet()->toSerializedParameters(), true));
+
         $lines[] = sprintf('require_once("%s");', $context->getClassPath());
+        $lines[] = sprintf('$benchmark = new %s;', $context->getClassName());
         $lines[] = '$results = [];';
 
         return $lines;

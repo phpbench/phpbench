@@ -18,7 +18,7 @@ class ScriptBuilder
      */
     public function __construct(array $scriptStages)
     {
-        $this->scriptStages = array_combine(array_map(static function (StageInterface $stage): string {
+        $this->scriptStages = array_combine(array_map(static function (UnitInterface $stage): string {
             return $stage->name();
         }, $scriptStages), array_values($scriptStages));
     }

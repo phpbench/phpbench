@@ -2,7 +2,7 @@
 
 namespace PhpBench\Executor;
 
-interface StageInterface
+interface UnitInterface
 {
     public function name(): string;
 

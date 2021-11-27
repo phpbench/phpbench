@@ -1,11 +1,11 @@
 <?php
 
-namespace PhpBench\Executor\Stage;
+namespace PhpBench\Executor\Unit;
 
 use PhpBench\Executor\ExecutionContext;
-use PhpBench\Executor\StageInterface;
+use PhpBench\Executor\UnitInterface;
 
-class TestStage implements StageInterface
+class TestUnit implements UnitInterface
 {
     /**
      * @var string
