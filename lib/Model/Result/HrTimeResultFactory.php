@@ -11,7 +11,6 @@ final class HrTimeResultFactory implements ResultFactory
 {
     public function create(array $data): ResultInterface
     {
-        // TODO: This scales up to Microseconds but loses precision
-        return new TimeResult(($data['net'] / 1000), $data['revs']);
+        return new TimeResult(($data['net']), $data['revs'], 'nanoseconds');
     }
 }
