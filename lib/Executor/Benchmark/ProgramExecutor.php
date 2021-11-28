@@ -59,6 +59,7 @@ class ProgramExecutor implements BenchmarkExecutorInterface
     public function configure(OptionsResolver $options): void
     {
         $options->setDefault('program', 'call_before_methods;hrtime_sampler{call_subject}memory_sampler');
+        $options->setAllowedTypes('program', ['string']);
         $options->setRequired('program');
     }
 

@@ -66,3 +66,16 @@ Execute benchmarks and enable XDebug profiling.
 Options:
 
 .. include:: ./executors/options/_xdebug_profile.rst
+
+.. _executor_program:
+
+``program``
+-----------
+
+EXPERIMENTAL!
+
+Generate a custom script based on a "program"
+
+Options:
+
+.. include:: ./executors/options/_program.rst

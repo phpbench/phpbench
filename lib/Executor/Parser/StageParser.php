@@ -6,7 +6,6 @@ use PhpBench\Executor\Parser\Ast\StageNode;
 use PhpBench\Expression\Exception\SyntaxError;
 use PhpBench\Expression\Token;
 use PhpBench\Expression\Tokens;
-use RuntimeException;
 
 class StageParser
 {
@@ -21,8 +20,8 @@ class StageParser
     private function parseStages(Tokens $tokens): array
     {
         $stages = [];
-        while ($tokens->current()->type !== Token::T_EOF) {
 
+        while ($tokens->current()->type !== Token::T_EOF) {
             if ($tokens->current()->type !== Token::T_NAME) {
                 throw SyntaxError::forToken($tokens, $tokens->current(), 'Unexpected token');
             }
@@ -56,7 +55,5 @@ class StageParser
         }
 
         return new StageNode($name->value, []);
-
-
     }
 }

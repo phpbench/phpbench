@@ -36,7 +36,8 @@ class ScriptBuilder
         if (!isset($this->scriptStages[$node->name])) {
             throw new RuntimeException(sprintf(
                 'Unknown stage "%s", known stages: "%s"',
-                $node->name, implode('", "', array_keys($this->scriptStages))
+                $node->name,
+                implode('", "', array_keys($this->scriptStages))
             ));
         }
 
@@ -44,6 +45,7 @@ class ScriptBuilder
         $lines = $this->indent(array_merge([
             sprintf('// >>> %s', $node->name),
         ], $stage->start($context)), $indentation);
+
         foreach ($node->children as $child) {
             $lines = array_merge(
                 $lines,
@@ -62,7 +64,8 @@ class ScriptBuilder
 
     /**
      * @param string[] $lines
-     * @return string[] 
+     *
+     * @return string[]
      */
     private function indent(array $lines, int $indentation): array
     {
