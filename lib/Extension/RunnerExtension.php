@@ -41,6 +41,7 @@ use PhpBench\Executor\ScriptBuilder;
 use PhpBench\Executor\ScriptExecutor;
 use PhpBench\Executor\Unit\CallSubjectUnit;
 use PhpBench\Executor\Unit\HrtimeSampler;
+use PhpBench\Executor\Unit\MemorySampler;
 use PhpBench\Executor\Unit\RootUnit;
 use PhpBench\Executor\Unit\SetupUnit;
 use PhpBench\Expression\Evaluator;
@@ -51,6 +52,7 @@ use PhpBench\Json\JsonDecoder;
 use PhpBench\Model\MainResultFactory;
 use PhpBench\Model\Result\BufferResultFactory;
 use PhpBench\Model\Result\HrTimeResultFactory;
+use PhpBench\Model\Result\MemoryResultFactory;
 use PhpBench\Progress\Logger\BlinkenLogger;
 use PhpBench\Progress\Logger\DotsLogger;
 use PhpBench\Progress\Logger\HistogramLogger;
@@ -394,6 +396,7 @@ class RunnerExtension implements ExtensionInterface
                     new SetupUnit(),
                     new CallSubjectUnit(),
                     new HrtimeSampler(),
+                    new MemorySampler(),
                 ]),
                 new ScriptExecutor(
                     new PhpProcessFactory(
@@ -411,6 +414,7 @@ class RunnerExtension implements ExtensionInterface
                 new MainResultFactory([
                     'hrtime' => new HrTimeResultFactory(),
                     'buffer' => new BufferResultFactory(),
+                    'mem' => new MemoryResultFactory(),
                 ]),
             );
         }, [
