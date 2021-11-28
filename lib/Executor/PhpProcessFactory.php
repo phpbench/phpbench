@@ -68,5 +68,4 @@ class PhpProcessFactory
 
         return $this->iniStringBuilder->buildList($this->options->phpConfig);
     }
-
 }

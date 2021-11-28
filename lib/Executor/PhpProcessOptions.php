@@ -34,8 +34,7 @@ class PhpProcessOptions
         bool $disablePhpIni = false,
         ?string $phpWrapper = null,
         ?int $timeout = null,
-    )
-    {
+    ) {
         $this->phpPath = $phpPath;
         $this->phpConfig = $phpConfig;
         $this->disablePhpIni = $disablePhpIni;

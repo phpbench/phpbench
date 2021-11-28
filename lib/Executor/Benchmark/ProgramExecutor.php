@@ -46,8 +46,7 @@ class ProgramExecutor implements BenchmarkExecutorInterface
         ScriptBuilder $builder,
         ScriptExecutor $executor,
         MainResultFactory $resultFactory
-    )
-    {
+    ) {
         $this->lexer = $lexer;
         $this->parser = $parser;
         $this->builder = $builder;

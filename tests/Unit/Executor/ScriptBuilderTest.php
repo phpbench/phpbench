@@ -45,6 +45,7 @@ EOT
     {
         $node = (new StageParser())->parse((new StageLexer())->lex($program));
         $context = new ExecutionContext('foo', 'path', 'method');
+
         return (new ScriptBuilder($testStages))->build($context, $node);
     }
 }

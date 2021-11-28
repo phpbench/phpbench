@@ -5,7 +5,6 @@ namespace PhpBench\Expression\NodeEvaluator;
 use PhpBench\Expression\Ast\DisplayAsNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\NullNode;
-use PhpBench\Expression\Ast\NumberNode;
 use PhpBench\Expression\Ast\PhpValue;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Ast\UnitNode;
@@ -24,6 +23,7 @@ class DisplayAsEvaluator implements NodeEvaluator
         }
 
         $value = $evaluator->evaluate($node->node(), $params);
+
         if ($value instanceof NullNode) {
             return null;
         }

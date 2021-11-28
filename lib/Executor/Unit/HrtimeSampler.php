@@ -23,6 +23,7 @@ class HrtimeSampler implements UnitInterface
     public function start(ExecutionContext $context): array
     {
         $this->varName = sprintf('hrtime_%s', uniqid());
+
         return [
             sprintf('$%s = hrtime(true);', $this->varName),
         ];

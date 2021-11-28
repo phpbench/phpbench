@@ -4,7 +4,6 @@ namespace PhpBench\Executor\Unit;
 
 use PhpBench\Executor\ExecutionContext;
 use PhpBench\Executor\UnitInterface;
-use PhpBench\Executor\StageRenderer;
 
 class CallSubjectUnit implements UnitInterface
 {
@@ -34,4 +33,3 @@ class CallSubjectUnit implements UnitInterface
         ];
     }
 }
-

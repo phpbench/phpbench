@@ -3,9 +3,6 @@
 namespace PhpBench\Executor;
 
 use PhpBench\Remote\Exception\ScriptErrorException;
-use PhpBench\Remote\IniStringBuilder;
-use PhpBench\Remote\ProcessFactory;
-use PhpBench\Remote\ProcessFactoryInterface;
 use RuntimeException;
 use Symfony\Component\Process\Process;
 use function uniqid;

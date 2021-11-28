@@ -32,6 +32,7 @@ phpbench run --report='extends:bare,vertical:true' --executor=debug NothingBench
 | result_time_net        | 10            |
 | result_time_revs       | 1             |
 | result_time_avg        | 10            |
+| result_time_unit       | microseconds  |
 | result_comp_z_value    | 0             |
 | result_comp_deviation  | 0             |
 +------------------------+---------------+

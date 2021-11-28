@@ -4,7 +4,6 @@ namespace PhpBench\Executor\Unit;
 
 use PhpBench\Executor\ExecutionContext;
 use PhpBench\Executor\UnitInterface;
-use PhpBench\Executor\StageRenderer;
 
 class RootUnit implements UnitInterface
 {

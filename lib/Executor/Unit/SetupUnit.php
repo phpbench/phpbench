@@ -18,9 +18,11 @@ class SetupUnit implements UnitInterface
     public function start(ExecutionContext $context): array
     {
         $lines = [];
+
         foreach ($context->getBeforeMethods() as $beforeMethod) {
             $lines[] = sprintf('$benchmark->%s($parameters);', $beforeMethod);
         }
+
         return $lines;
     }
 
