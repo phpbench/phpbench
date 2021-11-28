@@ -22,7 +22,7 @@ use PhpBench\Util\TimeUnit;
 class TimeResult implements ResultInterface
 {
     /**
-     * @var int
+     * @var int|float
      */
     private $netTime;
 
@@ -46,7 +46,8 @@ class TimeResult implements ResultInterface
             throw new InvalidArgumentException(sprintf('Revs cannot be less than zero, got "%s"', $revs));
         }
 
-        $this->netTime = TimeUnit::convert($netTime, $unit, TimeUnit::MICROSECONDS, TimeUnit::MODE_TIME);
+
+        $this->netTime = $unit === TimeUnit::MICROSECONDS ? $netTime : TimeUnit::convert($netTime, $unit, TimeUnit::MICROSECONDS, TimeUnit::MODE_TIME);
         $this->revs = $revs;
         $this->unit = $unit;
     }
@@ -60,11 +61,13 @@ class TimeResult implements ResultInterface
     }
 
     /**
+     * TODO: This is downcasting to an int
+     *
      * Return the net-time for this iteration.
      */
     public function getNet(): int
     {
-        return $this->netTime;
+        return (int)$this->netTime;
     }
 
     /**
