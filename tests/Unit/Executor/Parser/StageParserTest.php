@@ -7,7 +7,6 @@ use PHPUnit\Framework\TestCase;
 use PhpBench\Executor\Parser\Ast\StageNode;
 use PhpBench\Executor\Parser\StageLexer;
 use PhpBench\Executor\Parser\StageParser;
-use PhpBench\Expression\Tokens;
 
 class StageParserTest extends TestCase
 {
@@ -30,6 +29,7 @@ class StageParserTest extends TestCase
             new StageNode('root', [
             ])
         ];
+
         yield [
             'stage',
             new StageNode('root', [
@@ -53,7 +53,7 @@ class StageParserTest extends TestCase
                 new StageNode('three'),
             ])
         ];
- 
+
         yield [
             'stage;two{three}',
             new StageNode('root', [
@@ -63,9 +63,9 @@ class StageParserTest extends TestCase
                 ])
             ])
         ];
- 
+
         yield [
-            'stage;two{three};four',
+            'stage;two{three}four',
             new StageNode('root', [
                 new StageNode('stage'),
                 new StageNode('two', [

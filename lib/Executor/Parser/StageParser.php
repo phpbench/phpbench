@@ -3,6 +3,7 @@
 namespace PhpBench\Executor\Parser;
 
 use PhpBench\Executor\Parser\Ast\StageNode;
+use PhpBench\Expression\Exception\SyntaxError;
 use PhpBench\Expression\Token;
 use PhpBench\Expression\Tokens;
 use RuntimeException;
@@ -23,7 +24,7 @@ class StageParser
         while ($tokens->current()->type !== Token::T_EOF) {
 
             if ($tokens->current()->type !== Token::T_NAME) {
-                return $stages;
+                throw SyntaxError::forToken($tokens, $tokens->current(), 'Unexpected token');
             }
 
             $stages[] = $this->parseStage($tokens);
@@ -38,8 +39,12 @@ class StageParser
 
         if ($tokens->current()->type === Token::T_OPEN_BRACE) {
             $tokens->chomp();
+            $children = [];
 
-            $children = $this->parseStages($tokens);
+            /** @phpstan-ignore-next-line */
+            while ($tokens->current()->type === Token::T_NAME) {
+                $children[] = $this->parseStage($tokens);
+            }
 
             $tokens->chomp(Token::T_CLOSE_BRACE);
 
