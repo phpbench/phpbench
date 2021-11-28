@@ -63,6 +63,17 @@ class StageParserTest extends TestCase
                 ])
             ])
         ];
+ 
+        yield [
+            'stage;two{three};four',
+            new StageNode('root', [
+                new StageNode('stage'),
+                new StageNode('two', [
+                    new StageNode('three'),
+                ]),
+                new StageNode('four'),
+            ])
+        ];
 
         yield [
             'warmup;hrtime{memory{revsIteration{beforeMethods;callSubject;afterMethods}}}',
