@@ -51,6 +51,7 @@ class SuiteCollectionTransformerTest extends TestCase
                     'result_time_net' => 100,
                     'result_time_revs' => 2,
                     'result_time_avg' => 50,
+                    'result_time_unit' => 'microseconds',
                     'result_comp_z_value' => 0.0,
                     'result_comp_deviation' => 0.0,
                 ]

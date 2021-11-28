@@ -34,6 +34,7 @@
 | result_time_net        | 1                 |
 | result_time_revs       | 1                 |
 | result_time_avg        | 1                 |
+| result_time_unit       | microseconds      |
 | result_mem_peak        | 200               |
 | result_mem_real        | 200               |
 | result_mem_final       | 200               |
