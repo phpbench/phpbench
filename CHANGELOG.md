@@ -11,7 +11,7 @@ Bug fixes:
 
 Improvements:
 
-- Symfony 6 support - @julianboudry
+- Symfony 6 support - @julien-boudry
 - Allow globs in benchmark path specification - @ricardoboss
 
 1.2.0
