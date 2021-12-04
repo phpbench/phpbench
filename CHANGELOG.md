@@ -9,6 +9,11 @@ Bug fixes:
 - Do not index variants by parameter set name (as they vary by number of
   revs/iterations etc also) #947
 
+Improvements:
+
+- Symfony 6 support - @julien-boudry
+- Allow globs in benchmark path specification - @ricardoboss
+
 1.2.0
 -----
 
