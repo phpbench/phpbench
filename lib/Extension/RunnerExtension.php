@@ -51,6 +51,7 @@ use PhpBench\Registry\ConfigurableRegistry;
 use PhpBench\Remote\Launcher;
 use PhpBench\Remote\PayloadFactory;
 use PhpBench\Remote\ProcessFactory;
+use PhpBench\Util\PathUtil;
 use PhpBench\Util\TimeUnit;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
@@ -518,36 +519,10 @@ class RunnerExtension implements ExtensionInterface
             return;
         }
 
-        $normalizedPaths = array_map(static function (string $path) use ($container) {
-            if (Path::isAbsolute($path)) {
-                return [$path];
-            }
-
-            if (str_contains($path, '*') || str_contains($path, '?')) {
-                $globPaths = glob($path, GLOB_NOSORT);
-
-                if (empty($globPaths)) {
-                    return [];
-                }
-
-                return array_map(static function (string $path) use ($container) {
-                    return Path::join([
-                        dirname($container->getParameter(CoreExtension::PARAM_CONFIG_PATH)),
-                        $path
-                    ]);
-                }, $globPaths);
-            }
-
-            return [
-                Path::join([
-                    dirname($container->getParameter(CoreExtension::PARAM_CONFIG_PATH)),
-                    $path
-                ])
-            ];
-        }, $paths);
-        $flattenedPaths = array_merge(...$normalizedPaths);
-
-        $container->setParameter(self::PARAM_PATH, $flattenedPaths);
+        $container->setParameter(self::PARAM_PATH, PathUtil::normalizePaths(
+            dirname($container->getParameter(CoreExtension::PARAM_CONFIG_PATH)),
+            $paths
+        ));
     }
 
     private function registerExecutors(Container $container): void
