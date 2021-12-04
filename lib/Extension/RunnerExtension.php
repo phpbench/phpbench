@@ -518,16 +518,36 @@ class RunnerExtension implements ExtensionInterface
             return;
         }
 
-        $container->setParameter(self::PARAM_PATH, array_map(function (string $path) use ($container) {
+        $normalizedPaths = array_map(static function (string $path) use ($container) {
             if (Path::isAbsolute($path)) {
-                return $path;
+                return [$path];
             }
 
-            return Path::join([
-                dirname($container->getParameter(CoreExtension::PARAM_CONFIG_PATH)),
-                $path
-            ]);
-        }, $paths));
+            if (str_contains($path, '*') || str_contains($path, '?')) {
+                $globPaths = glob($path, GLOB_NOSORT);
+
+                if (empty($globPaths)) {
+                    return [];
+                }
+
+                return array_map(static function (string $path) use ($container) {
+                    return Path::join([
+                        dirname($container->getParameter(CoreExtension::PARAM_CONFIG_PATH)),
+                        $path
+                    ]);
+                }, $globPaths);
+            }
+
+            return [
+                Path::join([
+                    dirname($container->getParameter(CoreExtension::PARAM_CONFIG_PATH)),
+                    $path
+                ])
+            ];
+        }, $paths);
+        $flattenedPaths = array_merge(...$normalizedPaths);
+
+        $container->setParameter(self::PARAM_PATH, $flattenedPaths);
     }
 
     private function registerExecutors(Container $container): void

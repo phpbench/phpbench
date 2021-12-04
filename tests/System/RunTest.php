@@ -17,7 +17,7 @@ use PhpBench\Extension\RunnerExtension;
 class RunTest extends SystemTestCase
 {
     /**
-     * It should use a speified, valid, configuration.
+     * It should use a specified, valid, configuration.
      */
     public function testSpecifiedConfig(): void
     {
@@ -76,6 +76,17 @@ class RunTest extends SystemTestCase
         $process = $this->phpbench('run');
         $this->assertExitCode(1, $process);
         $this->assertStringContainsString('You must either specify', $process->getErrorOutput());
+    }
+
+    /**
+     * It should resolve glob paths to match multiple files.
+     */
+    public function testCommandWithGlobPath(): void
+    {
+        $process = $this->phpbench('run benchmarks/set7/*/');
+        $this->assertExitCode(0, $process);
+        $this->assertStringContainsString('benchNothing2', $process->getErrorOutput());
+        $this->assertStringContainsString('benchNothing3', $process->getErrorOutput());
     }
 
     public function testCommandWithMultiplePaths(): void
