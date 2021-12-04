@@ -51,7 +51,7 @@ use PhpBench\Registry\ConfigurableRegistry;
 use PhpBench\Remote\Launcher;
 use PhpBench\Remote\PayloadFactory;
 use PhpBench\Remote\ProcessFactory;
-use PhpBench\Util\PathUtil;
+use PhpBench\Util\PathNormalizer;
 use PhpBench\Util\TimeUnit;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
@@ -519,7 +519,7 @@ class RunnerExtension implements ExtensionInterface
             return;
         }
 
-        $container->setParameter(self::PARAM_PATH, PathUtil::normalizePaths(
+        $container->setParameter(self::PARAM_PATH, PathNormalizer::normalizePaths(
             dirname($container->getParameter(CoreExtension::PARAM_CONFIG_PATH)),
             $paths
         ));

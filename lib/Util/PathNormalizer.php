@@ -4,7 +4,7 @@ namespace PhpBench\Util;
 
 use Webmozart\PathUtil\Path;
 
-class PathUtil
+class PathNormalizer
 {
     /**
      * @param string[] $paths

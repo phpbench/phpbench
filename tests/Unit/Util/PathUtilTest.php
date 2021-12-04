@@ -4,7 +4,7 @@ namespace PhpBench\Tests\Unit\Util;
 
 use Generator;
 use PhpBench\Tests\IntegrationTestCase;
-use PhpBench\Util\PathUtil;
+use PhpBench\Util\PathNormalizer;
 
 class PathUtilTest extends IntegrationTestCase
 {
@@ -13,7 +13,7 @@ class PathUtilTest extends IntegrationTestCase
      */
     public function testNormalizePath(string $baseDir, array $paths, array $expected): void
     {
-        self::assertEquals($expected, PathUtil::normalizePaths($baseDir, $paths));
+        self::assertEquals($expected, PathNormalizer::normalizePaths($baseDir, $paths));
     }
 
     /**
@@ -47,7 +47,7 @@ class PathUtilTest extends IntegrationTestCase
         self::assertEquals([
             $this->workspace()->path('foobar/bom/foo'),
             $this->workspace()->path('foobar/baz/foo'),
-        ], PathUtil::normalizePaths($this->workspace()->path(), [
+        ], PathNormalizer::normalizePaths($this->workspace()->path(), [
             'foobar/*/foo',
         ]));
     }
@@ -60,7 +60,7 @@ class PathUtilTest extends IntegrationTestCase
         self::assertEquals([
             $this->workspace()->path('foobar/bom/foo'),
             $this->workspace()->path('foobar/baz/foo'),
-        ], PathUtil::normalizePaths($this->workspace()->path(), [
+        ], PathNormalizer::normalizePaths($this->workspace()->path(), [
             $this->workspace()->path('foobar/*/foo'),
         ]));
     }
