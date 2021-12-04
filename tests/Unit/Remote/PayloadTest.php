@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Remote;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PhpBench\Remote\Payload;
 use PhpBench\Remote\ProcessFactoryInterface;
 use PhpBench\Tests\IntegrationTestCase;
@@ -21,14 +22,20 @@ use Symfony\Component\Process\Process;
 
 class PayloadTest extends IntegrationTestCase
 {
+    /**
+     * @var MockObject
+     */
     private $process;
+    /**
+     * @var MockObject
+     */
     private $processFactory;
 
     protected function setUp(): void
     {
         $this->workspace()->reset();
-        $this->process = $this->prophesize(Process::class);
-        $this->processFactory = $this->prophesize(ProcessFactoryInterface::class);
+        $this->process = $this->createMock(Process::class);
+        $this->processFactory = $this->createMock(ProcessFactoryInterface::class);
     }
 
     /**
@@ -92,12 +99,12 @@ class PayloadTest extends IntegrationTestCase
     {
         $payload = $this->validPayload();
         $payload->setPhpPath('/foo/bar');
-        $this->processFactory->create(Argument::containingString('/foo/bar'), null)->willReturn($this->process);
-        $this->process->run()->shouldBeCalled();
-        $this->process->isSuccessful()->willReturn(true);
-        $this->process->getOutput()->willReturn(serialize(['foo' => 'bar']));
+        $this->processFactory->method('create')->willReturn($this->process);
+        $this->process->expects($this->once())->method('run');
+        $this->process->method('isSuccessful')->willReturn(true);
+        $this->process->method('getOutput')->willReturn(serialize(['foo' => 'bar']));
 
-        $payload->launch($payload);
+        $payload->launch();
     }
 
     /**
@@ -114,14 +121,14 @@ class PayloadTest extends IntegrationTestCase
             'bar' => 'foo',
         ]);
 
-        $this->processFactory->create(Argument::containingString('-dfoo=bar'), null)->willReturn($this->process)->shouldBeCalled();
-        $this->processFactory->create(Argument::containingString('-dbar=foo'), null)->willReturn($this->process)->shouldBeCalled();
-        $this->process->run()->shouldBeCalled();
-        $this->process->run()->shouldBeCalled();
-        $this->process->isSuccessful()->willReturn(true);
-        $this->process->getOutput()->willReturn(serialize(['foo' => 'bar']));
+        $this->processFactory->expects($this->once())->method('create')->with(
+            $this->stringContains('-dfoo=bar -dbar=foo')
+        )->willReturn($this->process);
+        $this->process->expects($this->once())->method('run');
+        $this->process->method('isSuccessful')->willReturn(true);
+        $this->process->method('getOutput')->willReturn(serialize(['foo' => 'bar']));
 
-        $payload->launch($payload);
+        $payload->launch();
     }
 
     /**
@@ -132,12 +139,14 @@ class PayloadTest extends IntegrationTestCase
         $payload = $this->validPayload();
         $payload->setWrapper('bockfire');
         $payload->setPhpPath('/boo/bar/php');
-        $this->processFactory->create(Argument::containingString('bockfire \'/boo/bar/php\''), null)->willReturn($this->process)->shouldBeCalled();
-        $this->process->run()->shouldBeCalled();
-        $this->process->isSuccessful()->willReturn(true);
-        $this->process->getOutput()->willReturn(serialize(['foo' => 'bar']));
+        $this->processFactory->expects($this->once())->method('create')->with(
+            $this->stringContains('bockfire \'/boo/bar/php\'')
+        )->willReturn($this->process);
+        $this->process->expects($this->once())->method('run');
+        $this->process->method('isSuccessful')->willReturn(true);
+        $this->process->method('getOutput')->willReturn(serialize(['foo' => 'bar']));
 
-        $payload->launch($payload);
+        $payload->launch();
     }
 
     /**
@@ -148,13 +157,13 @@ class PayloadTest extends IntegrationTestCase
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Could not find script template');
-        $processFactory = $this->prophesize(ProcessFactoryInterface::class);
+        $processFactory = $this->createMock(ProcessFactoryInterface::class);
         $payload = new Payload(
             __DIR__ . '/template/not-existing-filename.template',
             [],
             null,
             null,
-            $processFactory->reveal()
+            $processFactory
         );
 
         $payload->launch($payload);
@@ -172,7 +181,7 @@ class PayloadTest extends IntegrationTestCase
             [],
             null,
             null,
-            $this->processFactory->reveal()
+            $this->processFactory
         );
     }
 }
