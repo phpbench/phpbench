@@ -16,7 +16,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PhpBench\Remote\Payload;
 use PhpBench\Remote\ProcessFactoryInterface;
 use PhpBench\Tests\IntegrationTestCase;
-use Prophecy\Argument;
 use RuntimeException;
 use Symfony\Component\Process\Process;
 
