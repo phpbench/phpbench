@@ -80,8 +80,7 @@
         ],
         "psr-4": {
             "PhpBench\\": "lib/",
-            "PhpBench\\Extensions\\XDebug\\": "extensions/xdebug/lib/",
-            "PhpBench\\Extensions\\Reports\\": "extensions/reports/lib/"
+            "PhpBench\\Extensions\\XDebug\\": "extensions/xdebug/lib/"
         }
     },
     "autoload-dev": {
