@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+1.2.2
+-----
+
+Bug fixes:
+
+- Fix non-existing mappings in composer file #955 @Dgame
+
 1.2.1
 -----
 
