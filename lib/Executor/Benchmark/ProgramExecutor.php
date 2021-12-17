@@ -55,8 +55,10 @@ class ProgramExecutor implements BenchmarkExecutorInterface
             'warmup',
             'hrtime_sampler',
             [
-                    'hrtime_sampler',
+                'rev_loop',
+                [
                     'call_subject',
+                ],
             ],
             'after_methods',
             'memory_sampler'
