@@ -60,10 +60,13 @@ class ProgramExecutor implements BenchmarkExecutorInterface
     {
         $options->setDefault('program', [
             'before_methods',
+            'warmup',
             'hrtime_sampler',
             [
-                'call_subject',
+                    'hrtime_sampler',
+                    'call_subject',
             ],
+            'after_methods',
             'memory_sampler'
         ]);
         $options->setAllowedTypes('program', ['array']);
