@@ -43,6 +43,9 @@ class UnitTestCase extends IntegrationTestCase
 
     public function registeredCalls(): array
     {
+        if (!$this->workspace()->exists('example.bench')) {
+            return [];
+        }
         $calls = trim($this->workspace()->getContents('example.bench'));
         return array_map(function (string $json) {
             return json_decode($json, true);

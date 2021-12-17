@@ -36,6 +36,11 @@ final class ExecutionContextBuilder
      */
     private $afterMethods = [];
 
+    /**
+     * @var int
+     */
+    private $warmup = 0;
+
     public static function create(): self
     {
         return new self();
@@ -68,7 +73,8 @@ final class ExecutionContextBuilder
             1,
             $this->beforeMethods,
             $this->afterMethods,
-            ParameterSet::fromUnserializedValues('one', $this->parameters)
+            ParameterSet::fromUnserializedValues('one', $this->parameters),
+            $this->warmup,
         );
     }
 
@@ -87,6 +93,12 @@ return $this;
     public function withAfterMethods(array $afterMethods): self
     {
         $this->afterMethods = $afterMethods;
+        return $this;
+    }
+
+    public function withWarmup(int $warmup): self
+    {
+        $this->warmup = $warmup;
         return $this;
     }
 }
