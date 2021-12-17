@@ -4,8 +4,6 @@ namespace PhpBench\Tests\Unit\Executor;
 
 use PHPUnit\Framework\TestCase;
 use PhpBench\Executor\ExecutionContext;
-use PhpBench\Executor\Parser\StageLexer;
-use PhpBench\Executor\Parser\StageParser;
 use PhpBench\Executor\Parser\UnitParser;
 use PhpBench\Executor\ScriptBuilder;
 use PhpBench\Executor\Unit\TestUnit;

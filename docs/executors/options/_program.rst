@@ -2,4 +2,4 @@
 .. _executor_program_option_program:
 
 **program**:
-  Type(s): ``string``, Default: ``call_before_methods;hrtime_sampler{call_subject}memory_sampler``
+  Type(s): ``array``, Default: ``[before_methods, warmup, hrtime_sampler, [hrtime_sampler, call_subject], after_methods, memory_sampler]``

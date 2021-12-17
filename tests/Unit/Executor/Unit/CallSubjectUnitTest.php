@@ -2,10 +2,7 @@
 
 namespace PhpBench\Tests\Unit\Executor\Unit;
 
-use PHPUnit\Framework\TestCase;
-use PhpBench\Executor\ExecutionContext;
 use PhpBench\Executor\Unit\CallSubjectUnit;
-use PhpBench\Executor\Unit\RootUnit;
 
 class CallSubjectUnitTest extends UnitTestCase
 {

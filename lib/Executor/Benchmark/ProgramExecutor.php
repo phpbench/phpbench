@@ -5,11 +5,8 @@ namespace PhpBench\Executor\Benchmark;
 use PhpBench\Executor\BenchmarkExecutorInterface;
 use PhpBench\Executor\ExecutionContext;
 use PhpBench\Executor\ExecutionResults;
-use PhpBench\Executor\Parser\StageLexer;
-use PhpBench\Executor\Parser\StageParser;
 use PhpBench\Executor\Parser\UnitParser;
 use PhpBench\Executor\ScriptBuilder;
-use PhpBench\Executor\ScriptExecutor;
 use PhpBench\Executor\ScriptExecutorInterface;
 use PhpBench\Model\MainResultFactory;
 use PhpBench\Registry\Config;
@@ -18,12 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class ProgramExecutor implements BenchmarkExecutorInterface
 {
     /**
-     * @var StageLexer
-     */
-    private $lexer;
-
-    /**
-     * @var StageParser
+     * @var UnitParser
      */
     private $parser;
 

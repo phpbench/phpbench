@@ -12,7 +12,7 @@ class UnitParserTest extends TestCase
     /**
      * @dataProvider provideParse
      */
-    public function testParse(array $program, UnitNode $expected)
+    public function testParse(array $program, UnitNode $expected): void
     {
         $parser = new UnitParser();
         self::assertEquals($expected, $parser->parse($program));
@@ -26,6 +26,7 @@ class UnitParserTest extends TestCase
             new UnitNode('root', [
             ]),
         ];
+
         yield [
             [
                 'foobar',

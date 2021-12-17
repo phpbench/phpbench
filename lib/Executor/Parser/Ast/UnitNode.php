@@ -10,12 +10,12 @@ class UnitNode
     public $name;
 
     /**
-     * @var StageNode[]
+     * @var UnitNode[]
      */
     public $children;
 
     /**
-     * @param StageNode[] $children
+     * @param UnitNode[] $children
      */
     public function __construct(string $name, array $children = [])
     {

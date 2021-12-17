@@ -10,7 +10,6 @@ use PhpBench\Executor\ScriptBuilder;
 use PhpBench\Executor\ScriptExecutor;
 use PhpBench\Executor\Unit\RootUnit;
 use PhpBench\Tests\IntegrationTestCase;
-use PhpBench\Tests\TestCase;
 use PhpBench\Tests\Util\ExecutionContextBuilder;
 
 class UnitTestCase extends IntegrationTestCase
@@ -30,6 +29,7 @@ class UnitTestCase extends IntegrationTestCase
             $this->workspace()->path('example'),
             false
         );
+
         return $executor->execute($builder->build($context, $node));
     }
 
@@ -47,6 +47,7 @@ class UnitTestCase extends IntegrationTestCase
             return [];
         }
         $calls = trim($this->workspace()->getContents('example.bench'));
+
         return array_map(function (string $json) {
             return json_decode($json, true);
         }, explode("\n", $calls));

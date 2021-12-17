@@ -3,6 +3,7 @@
 namespace PhpBench\Executor\Parser;
 
 use PhpBench\Executor\Parser\Ast\UnitNode;
+use RuntimeException;
 
 class UnitParser
 {
@@ -14,12 +15,14 @@ class UnitParser
         foreach ($program as $nameOrChildren) {
             if (is_array($nameOrChildren)) {
                 $this->parse($nameOrChildren, $currentNode);
+
                 continue;
             }
 
             if (is_string($nameOrChildren)) {
                 $currentNode = new UnitNode($nameOrChildren);
                 $node->children[] = $currentNode;
+
                 continue;
             }
 

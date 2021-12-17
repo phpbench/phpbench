@@ -8,7 +8,6 @@ use PhpBench\Executor\ExecutionContext;
 use PhpBench\Executor\ExecutionResults;
 use PhpBench\Executor\Parser\UnitParser;
 use PhpBench\Executor\ScriptBuilder;
-use PhpBench\Executor\ScriptExecutor;
 use PhpBench\Executor\ScriptExecutorInterface;
 use PhpBench\Executor\Unit\TestUnit;
 use PhpBench\Model\MainResultFactory;
@@ -30,7 +29,7 @@ class ProgramExecutorTest extends TestCase
     private $units;
 
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->executor = $this->createMock(ScriptExecutorInterface::class);
         $this->units = [
@@ -39,7 +38,7 @@ class ProgramExecutorTest extends TestCase
         ];
     }
 
-    public function testExecutor(): void 
+    public function testExecutor(): void
     {
         $this->expectExecutorWith('onestart', [
             'buffer' => [
@@ -77,7 +76,7 @@ class ProgramExecutorTest extends TestCase
         return $executor->execute($context, new Config('foo', $config));
     }
 
-    private function expectExecutorWith(string $string, array $result)
+    private function expectExecutorWith(string $string, array $result): void
     {
         $this->executor->method('execute')->with($this->stringContains($string))->willReturn($result);
     }

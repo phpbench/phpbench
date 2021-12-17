@@ -2,12 +2,8 @@
 
 namespace PhpBench\Tests\Unit\Executor\Unit;
 
-use PHPUnit\Framework\TestCase;
-use PhpBench\Executor\ExecutionContext;
 use PhpBench\Executor\Unit\CallSubjectUnit;
-use PhpBench\Executor\Unit\HrtimeSampler;
 use PhpBench\Executor\Unit\MemorySampler;
-use PhpBench\Executor\Unit\RootUnit;
 
 class MemorySamplerTest extends UnitTestCase
 {
