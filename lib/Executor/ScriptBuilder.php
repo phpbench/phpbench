@@ -2,7 +2,7 @@
 
 namespace PhpBench\Executor;
 
-use PhpBench\Executor\Parser\Ast\StageNode;
+use PhpBench\Executor\Parser\Ast\UnitNode;
 use RuntimeException;
 use function str_repeat;
 
@@ -23,7 +23,7 @@ class ScriptBuilder
         }, $scriptStages), array_values($scriptStages));
     }
 
-    public function build(ExecutionContext $context, StageNode $node): string
+    public function build(ExecutionContext $context, UnitNode $node): string
     {
         return implode("\n", array_merge(['<?php'], $this->renderNode($context, $node)));
     }
@@ -31,7 +31,7 @@ class ScriptBuilder
     /**
      * @return string[]
      */
-    private function renderNode(ExecutionContext $context, StageNode $node, int $indentation = 0): array
+    private function renderNode(ExecutionContext $context, UnitNode $node, int $indentation = 0): array
     {
         if (!isset($this->scriptStages[$node->name])) {
             throw new RuntimeException(sprintf(

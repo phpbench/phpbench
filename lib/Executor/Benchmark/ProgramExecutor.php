@@ -7,6 +7,7 @@ use PhpBench\Executor\ExecutionContext;
 use PhpBench\Executor\ExecutionResults;
 use PhpBench\Executor\Parser\StageLexer;
 use PhpBench\Executor\Parser\StageParser;
+use PhpBench\Executor\Parser\UnitParser;
 use PhpBench\Executor\ScriptBuilder;
 use PhpBench\Executor\ScriptExecutor;
 use PhpBench\Model\MainResultFactory;
@@ -41,13 +42,11 @@ class ProgramExecutor implements BenchmarkExecutorInterface
     private $resultFactory;
 
     public function __construct(
-        StageLexer $lexer,
-        StageParser $parser,
+        UnitParser $parser,
         ScriptBuilder $builder,
         ScriptExecutor $executor,
         MainResultFactory $resultFactory
     ) {
-        $this->lexer = $lexer;
         $this->parser = $parser;
         $this->builder = $builder;
         $this->executor = $executor;
@@ -58,8 +57,15 @@ class ProgramExecutor implements BenchmarkExecutorInterface
      */
     public function configure(OptionsResolver $options): void
     {
-        $options->setDefault('program', 'call_before_methods;hrtime_sampler{call_subject}memory_sampler');
-        $options->setAllowedTypes('program', ['string']);
+        $options->setDefault('program', [
+            'call_before_methods',
+            'hrtime_sampler',
+            [
+                'call_subject',
+            ],
+            'memory_sampler'
+        ]);
+        $options->setAllowedTypes('program', ['array']);
         $options->setRequired('program');
     }
 
@@ -68,7 +74,7 @@ class ProgramExecutor implements BenchmarkExecutorInterface
      */
     public function execute(ExecutionContext $context, Config $config): ExecutionResults
     {
-        $program = $this->parser->parse($this->lexer->lex($config['program']));
+        $program = $this->parser->parse($config['program']);
         $script = $this->builder->build($context, $program);
         $results = $this->executor->execute($script);
 

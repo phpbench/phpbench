@@ -33,8 +33,7 @@ use PhpBench\Executor\CompositeExecutor;
 use PhpBench\Executor\Method\ErrorHandlingExecutorDecorator;
 use PhpBench\Executor\Method\LocalMethodExecutor;
 use PhpBench\Executor\Method\RemoteMethodExecutor;
-use PhpBench\Executor\Parser\StageLexer;
-use PhpBench\Executor\Parser\StageParser;
+use PhpBench\Executor\Parser\UnitParser;
 use PhpBench\Executor\PhpProcessFactory;
 use PhpBench\Executor\PhpProcessOptions;
 use PhpBench\Executor\ScriptBuilder;
@@ -389,8 +388,7 @@ class RunnerExtension implements ExtensionInterface
 
         $container->register(ProgramExecutor::class, function (Container $container) {
             return new ProgramExecutor(
-                new StageLexer(),
-                new StageParser(),
+                new UnitParser(),
                 new ScriptBuilder([
                     new RootUnit($container->getParameter('runner.bootstrap')),
                     new SetupUnit(),

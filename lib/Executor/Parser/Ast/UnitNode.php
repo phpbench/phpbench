@@ -2,7 +2,7 @@
 
 namespace PhpBench\Executor\Parser\Ast;
 
-class StageNode
+class UnitNode
 {
     /**
      * @var string
