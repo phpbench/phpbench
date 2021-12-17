@@ -41,6 +41,11 @@ final class ExecutionContextBuilder
      */
     private $warmup = 0;
 
+    /**
+     * @var int
+     */
+    private $revolutions = 1;
+
     public static function create(): self
     {
         return new self();
@@ -70,7 +75,7 @@ final class ExecutionContextBuilder
             $this->class,
             $this->path,
             $this->methodName,
-            1,
+            $this->revolutions,
             $this->beforeMethods,
             $this->afterMethods,
             ParameterSet::fromUnserializedValues('one', $this->parameters),
@@ -99,6 +104,12 @@ return $this;
     public function withWarmup(int $warmup): self
     {
         $this->warmup = $warmup;
+        return $this;
+    }
+
+    public function withRevolutions(int $revolutions): self
+    {
+        $this->revolutions = $revolutions;
         return $this;
     }
 }
