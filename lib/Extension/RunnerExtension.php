@@ -42,7 +42,7 @@ use PhpBench\Executor\Unit\CallSubjectUnit;
 use PhpBench\Executor\Unit\HrtimeSampler;
 use PhpBench\Executor\Unit\MemorySampler;
 use PhpBench\Executor\Unit\RootUnit;
-use PhpBench\Executor\Unit\SetupUnit;
+use PhpBench\Executor\Unit\BeforeMethodsUnit;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\ExpressionLanguage;
 use PhpBench\Expression\Printer;
@@ -391,7 +391,7 @@ class RunnerExtension implements ExtensionInterface
                 new UnitParser(),
                 new ScriptBuilder([
                     new RootUnit($container->getParameter('runner.bootstrap')),
-                    new SetupUnit(),
+                    new BeforeMethodsUnit(),
                     new CallSubjectUnit(),
                     new HrtimeSampler(),
                     new MemorySampler(),

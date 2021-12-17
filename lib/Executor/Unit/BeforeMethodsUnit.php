@@ -5,7 +5,7 @@ namespace PhpBench\Executor\Unit;
 use PhpBench\Executor\ExecutionContext;
 use PhpBench\Executor\UnitInterface;
 
-class SetupUnit implements UnitInterface
+class BeforeMethodsUnit implements UnitInterface
 {
     public function name(): string
     {
