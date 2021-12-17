@@ -26,6 +26,16 @@ final class ExecutionContextBuilder
      */
     private $parameters = [];
 
+    /**
+     * @var array
+     */
+    private $beforeMethods = [];
+
+    /**
+     * @var array
+     */
+    private $afterMethods = [];
+
     public static function create(): self
     {
         return new self();
@@ -56,8 +66,8 @@ final class ExecutionContextBuilder
             $this->path,
             $this->methodName,
             1,
-            [],
-            [],
+            $this->beforeMethods,
+            $this->afterMethods,
             ParameterSet::fromUnserializedValues('one', $this->parameters)
         );
     }
@@ -66,5 +76,17 @@ final class ExecutionContextBuilder
     {
         $this->parameters=  $parameters;
 return $this;
+    }
+
+    public function withBeforeMethods(array $beforeMethods): self
+    {
+        $this->beforeMethods = $beforeMethods;
+        return $this;
+    }
+
+    public function withAfterMethods(array $afterMethods): self
+    {
+        $this->afterMethods = $afterMethods;
+        return $this;
     }
 }

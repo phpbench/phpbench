@@ -4,36 +4,36 @@ namespace PhpBench\Tests\Unit\Executor\Unit;
 
 use PHPUnit\Framework\TestCase;
 use PhpBench\Executor\ExecutionContext;
-use PhpBench\Executor\Unit\BeforeMethodsUnit;
+use PhpBench\Executor\Unit\AfterMethodsUnit;
 use PhpBench\Executor\Unit\CallSubjectUnit;
 use PhpBench\Executor\Unit\HrtimeSampler;
 use PhpBench\Executor\Unit\RootUnit;
 
-class BeforeMethodsUnitTest extends UnitTestCase
+class AfterMethodsUnitTest extends UnitTestCase
 {
-    public function testBefore(): void
+    public function testAfter(): void
     {
         $result = $this->executeProgram([
-            new BeforeMethodsUnit(),
+            new AfterMethodsUnit(),
             new CallSubjectUnit(),
-        ], $this->context()->withBeforeMethods(['register', 'register'])->build(), [
-            'before_methods',
+        ], $this->context()->withAfterMethods(['register', 'register'])->build(), [
+            'after_methods',
             'call_subject',
         ]);
         self::assertCount(3, $this->registeredCalls());
     }
 
-    public function testBeforeWithParams(): void
+    public function testAfterWithParams(): void
     {
         $result = $this->executeProgram([
-            new BeforeMethodsUnit(),
+            new AfterMethodsUnit(),
             new CallSubjectUnit(),
-        ], $this->context()->withBeforeMethods(
+        ], $this->context()->withAfterMethods(
             ['register']
         )->withParameters([
             'one' => 'two',
         ])->build(), [
-            'before_methods',
+            'after_methods',
             'call_subject',
         ]);
         $calls = $this->registeredCalls();
