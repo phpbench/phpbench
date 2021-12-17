@@ -9,7 +9,7 @@ class BeforeMethodsUnit implements UnitInterface
 {
     public function name(): string
     {
-        return 'call_before_methods';
+        return 'before_methods';
     }
 
     /**

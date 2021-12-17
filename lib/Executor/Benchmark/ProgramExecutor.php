@@ -59,7 +59,7 @@ class ProgramExecutor implements BenchmarkExecutorInterface
     public function configure(OptionsResolver $options): void
     {
         $options->setDefault('program', [
-            'call_before_methods',
+            'before_methods',
             'hrtime_sampler',
             [
                 'call_subject',
