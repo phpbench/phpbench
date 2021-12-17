@@ -7,7 +7,7 @@ use RuntimeException;
 use Symfony\Component\Process\Process;
 use function uniqid;
 
-final class ScriptExecutor
+final class ScriptExecutor implements ScriptExecutorInterface
 {
     /**
      * @var string|null

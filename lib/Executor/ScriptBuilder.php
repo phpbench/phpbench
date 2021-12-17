@@ -6,7 +6,7 @@ use PhpBench\Executor\Parser\Ast\UnitNode;
 use RuntimeException;
 use function str_repeat;
 
-class ScriptBuilder
+final class ScriptBuilder
 {
     /**
      * @var array<string, UnitInterface>

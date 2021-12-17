@@ -10,6 +10,7 @@ use PhpBench\Executor\Parser\StageParser;
 use PhpBench\Executor\Parser\UnitParser;
 use PhpBench\Executor\ScriptBuilder;
 use PhpBench\Executor\ScriptExecutor;
+use PhpBench\Executor\ScriptExecutorInterface;
 use PhpBench\Model\MainResultFactory;
 use PhpBench\Registry\Config;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -32,7 +33,7 @@ class ProgramExecutor implements BenchmarkExecutorInterface
     private $builder;
 
     /**
-     * @var ScriptExecutor
+     * @var ScriptExecutorInterface
      */
     private $executor;
 
@@ -44,7 +45,7 @@ class ProgramExecutor implements BenchmarkExecutorInterface
     public function __construct(
         UnitParser $parser,
         ScriptBuilder $builder,
-        ScriptExecutor $executor,
+        ScriptExecutorInterface $executor,
         MainResultFactory $resultFactory
     ) {
         $this->parser = $parser;
