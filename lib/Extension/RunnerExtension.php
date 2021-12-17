@@ -38,11 +38,14 @@ use PhpBench\Executor\PhpProcessFactory;
 use PhpBench\Executor\PhpProcessOptions;
 use PhpBench\Executor\ScriptBuilder;
 use PhpBench\Executor\ScriptExecutor;
+use PhpBench\Executor\Unit\AfterMethodsUnit;
 use PhpBench\Executor\Unit\CallSubjectUnit;
 use PhpBench\Executor\Unit\HrtimeSampler;
 use PhpBench\Executor\Unit\MemorySampler;
+use PhpBench\Executor\Unit\RevLoopUnit;
 use PhpBench\Executor\Unit\RootUnit;
 use PhpBench\Executor\Unit\BeforeMethodsUnit;
+use PhpBench\Executor\Unit\WarmupUnit;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\ExpressionLanguage;
 use PhpBench\Expression\Printer;
@@ -392,9 +395,12 @@ class RunnerExtension implements ExtensionInterface
                 new ScriptBuilder([
                     new RootUnit($container->getParameter('runner.bootstrap')),
                     new BeforeMethodsUnit(),
+                    new AfterMethodsUnit(),
                     new CallSubjectUnit(),
                     new HrtimeSampler(),
                     new MemorySampler(),
+                    new WarmupUnit(),
+                    new RevLoopUnit(),
                 ]),
                 new ScriptExecutor(
                     new PhpProcessFactory(

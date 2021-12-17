@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use PhpBench\Executor\ExecutionContext;
 use PhpBench\Executor\Parser\StageLexer;
 use PhpBench\Executor\Parser\StageParser;
+use PhpBench\Executor\Parser\UnitParser;
 use PhpBench\Executor\ScriptBuilder;
 use PhpBench\Executor\Unit\TestUnit;
 
@@ -33,7 +34,7 @@ class ScriptBuilderTest extends TestCase
 // <<< root
 EOT
         , $this->build(
-            'stage1{stage2;stage3}',
+            ['stage1', ['stage2', 'stage3']],
             new TestUnit('root', '', ''),
             new TestUnit('stage1', '{{', '}}'),
             new TestUnit('stage2', '<<', '>>'),
@@ -41,9 +42,9 @@ EOT
         ));
     }
 
-    private function build(string $program, TestUnit ...$testStages): string
+    private function build(array $program, TestUnit ...$testStages): string
     {
-        $node = (new StageParser())->parse((new StageLexer())->lex($program));
+        $node = (new UnitParser())->parse($program);
         $context = new ExecutionContext('foo', 'path', 'method');
 
         return (new ScriptBuilder($testStages))->build($context, $node);
