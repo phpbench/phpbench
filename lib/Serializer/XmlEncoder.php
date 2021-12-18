@@ -282,6 +282,9 @@ class XmlEncoder
 
     private function buildStatsEl(Variant $variant, Element $statsEl): void
     {
+        if (false === $variant->isComputed()) {
+            return;
+        }
         $stats = $variant->getStats();
         $stats = iterator_to_array($stats);
         // ensure same order (for testing)
