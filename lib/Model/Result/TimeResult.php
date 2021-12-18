@@ -36,7 +36,7 @@ class TimeResult implements ResultInterface
      */
     private $unit;
 
-    public function __construct(int $netTime, int $revs = 1, string $unit = TimeUnit::MICROSECONDS)
+    public function __construct($netTime, int $revs = 1, string $unit = TimeUnit::MICROSECONDS)
     {
         if ($netTime < 0) {
             throw new InvalidArgumentException(sprintf('Net time cannot be less than zero, got "%s"', $netTime));
@@ -49,13 +49,13 @@ class TimeResult implements ResultInterface
 
         $this->netTime = $unit === TimeUnit::MICROSECONDS ? $netTime : TimeUnit::convert($netTime, $unit, TimeUnit::MICROSECONDS, TimeUnit::MODE_TIME);
         $this->revs = $revs;
-        $this->unit = $unit;
+        $this->unit = TimeUnit::MICROSECONDS;
     }
 
     public static function fromArray(array $values): ResultInterface
     {
         return new self(
-            (int) $values['net'],
+            $values['net'],
             array_key_exists('revs', $values) ? $values['revs'] : 1
         );
     }
