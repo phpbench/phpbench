@@ -14,11 +14,13 @@ namespace PhpBench\Tests\Unit\Serializer;
 
 use PhpBench\Dom\Document;
 use PhpBench\Environment\Information;
+use PhpBench\Model\ParameterSet;
 use PhpBench\Model\Suite;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Serializer\XmlDecoder;
 use PhpBench\Serializer\XmlEncoder;
 use PhpBench\Tests\Util\Approval;
+use PhpBench\Tests\Util\SuiteBuilder;
 
 class XmlDecoderTest extends XmlTestCase
 {
@@ -205,6 +207,33 @@ EOT
         $this->assertEquals(
             $dom->dump(),
             $decodedDom->dump()
+        );
+    }
+
+    public function testParameters(): void
+    {
+        $collection = new SuiteCollection([
+            SuiteBuilder::create('one')->withDateString('2021-01-01')->benchmark('bench')->subject('subject')->variant()->withParameterSet('one', [
+                'int' => 1,
+                'float' => 1.123,
+                'string' => 'string',
+            ])->end()->end()->end()->build()
+        ]);
+        $dom = $this->encode($collection);
+        $decoder = new XmlDecoder();
+        $suites = $decoder->decode($dom);
+
+        self::assertEquals(
+            ParameterSet::fromUnserializedValues('one', [
+                'int' => 1,
+                'float' => 1.123,
+                'string' => 'string',
+            ]),
+            $suites->first()
+                ->getBenchmark('bench')
+                ->getSubject('subject')
+                ->getVariantByParameterSetName('one')
+                ->getParameterSet()
         );
     }
 
