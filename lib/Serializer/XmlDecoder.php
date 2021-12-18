@@ -233,18 +233,19 @@ class XmlDecoder
                 continue;
             }
 
-            $value = $parameterEl->getAttribute('value');
-            $type = $parameterEl->getAttribute('type');
+            $parameters[$name] = (function (DOMElement $element) {
+                $value = $element->getAttribute('value');
+                $type = $element->getAttribute('type');
 
-            switch ($type) {
-                case 'integer':
-                    $value = intval($value);
+                switch ($type) {
+                    case 'integer':
+                        return intval($value);
+                    case 'double':
+                        return floatval($value);
+                }
 
-                    break;
-                case 'double':
-                    $value = floatval($value);
-            }
-            $parameters[$name] = $value;
+                return $value;
+            })($parameterEl);
         }
 
         return $parameters;
