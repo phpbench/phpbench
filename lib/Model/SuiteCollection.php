@@ -14,6 +14,7 @@ namespace PhpBench\Model;
 
 use ArrayIterator;
 use IteratorAggregate;
+use RuntimeException;
 
 /**
  * @implements IteratorAggregate<Suite>
@@ -112,5 +113,17 @@ use IteratorAggregate;
         }, $this->suites);
 
         return $new;
+    }
+
+    public function first(): Suite
+    {
+        if (empty($this->suites)) {
+            throw new RuntimeException(
+                'Suite collection is empty, cannot get first'
+            );
+        }
+
+        $suite = reset($this->suites);
+        return $suite;
     }
 }
