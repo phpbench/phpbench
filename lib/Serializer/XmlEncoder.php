@@ -231,6 +231,7 @@ class XmlEncoder
 
         if (is_scalar($value) && !$this->isBinary($value)) {
             $parameterEl->setAttribute('value', $value);
+            $parameterEl->setAttribute('type', gettype($value));
 
             return $parameterEl;
         }

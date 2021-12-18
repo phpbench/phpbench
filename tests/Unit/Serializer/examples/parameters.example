@@ -7,9 +7,9 @@
         <executor name="example"/>
         <variant sleep="0" output-time-unit="microseconds" output-time-precision="" output-mode="time" revs="1" warmup="1" retry-threshold="">
           <parameter-set name="one">
-            <parameter name="int" value="1"/>
-            <parameter name="float" value="1.123"/>
-            <parameter name="string" value="string"/>
+            <parameter name="int" value="1" type="integer"/>
+            <parameter name="float" value="1.123" type="double"/>
+            <parameter name="string" value="string" type="string"/>
           </parameter-set>
           <stats/>
         </variant>

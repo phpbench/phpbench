@@ -24,9 +24,9 @@
         <group name="group2"/>
         <variant sleep="5" output-time-unit="milliseconds" output-time-precision="7" output-mode="throughput" revs="100" warmup="50" retry-threshold="10">
           <parameter-set name="some params">
-            <parameter name="foo" value="bar"/>
+            <parameter name="foo" value="bar" type="string"/>
             <parameter name="bar" type="collection">
-              <parameter name="baz" value="bon"/>
+              <parameter name="baz" value="bon" type="string"/>
             </parameter>
             <parameter name="baz" xsi:nil="true"/>
           </parameter-set>

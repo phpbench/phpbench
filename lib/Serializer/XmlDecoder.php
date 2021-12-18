@@ -233,7 +233,18 @@ class XmlDecoder
                 continue;
             }
 
-            $parameters[$name] = $parameterEl->getAttribute('value');
+            $value = $parameterEl->getAttribute('value');
+            $type = $parameterEl->getAttribute('type');
+
+            switch ($type) {
+                case 'integer':
+                    $value = intval($value);
+
+                    break;
+                case 'double':
+                    $value = floatval($value);
+            }
+            $parameters[$name] = $value;
         }
 
         return $parameters;

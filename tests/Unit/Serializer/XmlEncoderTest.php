@@ -24,7 +24,6 @@ use PhpBench\PhpBench;
 use PhpBench\Serializer\XmlEncoder;
 use PhpBench\Tests\Util\Approval;
 use PhpBench\Tests\Util\SuiteBuilder;
-use PhpBench\Tests\Util\VariantBuilder;
 use RuntimeException;
 
 class XmlEncoderTest extends XmlTestCase

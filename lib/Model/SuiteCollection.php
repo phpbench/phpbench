@@ -124,6 +124,7 @@ use RuntimeException;
         }
 
         $suite = reset($this->suites);
+
         return $suite;
     }
 }
