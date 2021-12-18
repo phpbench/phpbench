@@ -4,8 +4,10 @@ namespace PhpBench\Tests\Util;
 
 use DateTime;
 use PhpBench\Model\Benchmark;
+use PhpBench\Model\ResolvedExecutor;
 use PhpBench\Model\Subject;
 use PhpBench\Model\Suite;
+use PhpBench\Registry\Config;
 use RuntimeException;
 
 final class SubjectBuilder
@@ -66,6 +68,7 @@ final class SubjectBuilder
 
         $subject = new Subject($benchmark, $this->name);
         $subject->setGroups($this->groups);
+        $subject->setExecutor(new ResolvedExecutor('example', new Config('config', [])));
 
         foreach ($this->variantBuilders as $builder) {
             $subject->setVariant($builder->build($subject));

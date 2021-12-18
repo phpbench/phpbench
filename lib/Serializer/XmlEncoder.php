@@ -231,6 +231,7 @@ class XmlEncoder
 
         if (is_scalar($value) && !$this->isBinary($value)) {
             $parameterEl->setAttribute('value', $value);
+            $parameterEl->setAttribute('type', gettype($value));
 
             return $parameterEl;
         }
@@ -282,6 +283,9 @@ class XmlEncoder
 
     private function buildStatsEl(Variant $variant, Element $statsEl): void
     {
+        if (false === $variant->isComputed()) {
+            return;
+        }
         $stats = $variant->getStats();
         $stats = iterator_to_array($stats);
         // ensure same order (for testing)

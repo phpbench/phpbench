@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+master
+------
+
+Bug fixes:
+
+- Parameters seem to be converted to strings when storing/retrieving #959
+
 1.2.2
 -----
 

@@ -23,6 +23,7 @@ use PhpBench\Model\Variant;
 use PhpBench\PhpBench;
 use PhpBench\Serializer\XmlEncoder;
 use PhpBench\Tests\Util\Approval;
+use PhpBench\Tests\Util\SuiteBuilder;
 use RuntimeException;
 
 class XmlEncoderTest extends XmlTestCase
@@ -78,6 +79,20 @@ class XmlEncoderTest extends XmlTestCase
             ],
         ]);
         $this->encode($collection);
+    }
+
+    public function testParameters(): void
+    {
+        $collection = new SuiteCollection([
+            SuiteBuilder::create('one')->withDateString('2021-01-01')->benchmark('bench')->subject('subject')->variant()->withParameterSet('one', [
+                'int' => 1,
+                'float' => 1.123,
+                'string' => 'string',
+            ])->end()->end()->end()->build()
+        ]);
+        $approval = Approval::create(__DIR__ . '/examples/parameters.example', 0);
+        $dom = $this->encode($collection);
+        $approval->approve($this->dumpNormalized($dom));
     }
 
     private function dumpNormalized(Document $dom)

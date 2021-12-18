@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<phpbench xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="PHPBENCH_VERSION">
+  <suite tag="one" context="one" date="2021-01-01T00:00:00+00:00" config-path="" uuid="">
+    <env/>
+    <benchmark class="bench">
+      <subject name="subject">
+        <executor name="example"/>
+        <variant sleep="0" output-time-unit="microseconds" output-time-precision="" output-mode="time" revs="1" warmup="1" retry-threshold="">
+          <parameter-set name="one">
+            <parameter name="int" value="1" type="integer"/>
+            <parameter name="float" value="1.123" type="double"/>
+            <parameter name="string" value="string" type="string"/>
+          </parameter-set>
+          <stats/>
+        </variant>
+      </subject>
+    </benchmark>
+  </suite>
+</phpbench>
