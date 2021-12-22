@@ -12,7 +12,7 @@
       "schedule": {
         "interval": "daily"
       },
-      "versioning-strategy": "increase"
+      "versioning-strategy": "widen"
     },
     {
       "directory": "/",
