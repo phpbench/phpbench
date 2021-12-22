@@ -34,7 +34,7 @@
         "dantleech/invoke": "^2.0",
         "friendsofphp/php-cs-fixer": "^3.0",
         "jangregor/phpstan-prophecy": "^0.8.1",
-        "phpspec/prophecy": "^1.12",
+        "phpspec/prophecy": "^1.15",
         "phpstan/phpstan": "^0.12.7",
         "phpunit/phpunit": "^8.5.8 || ^9.0",
         "symfony/error-handler": "^5.2 || ^6.0",
