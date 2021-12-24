@@ -4,9 +4,14 @@ CHANGELOG
 master
 ------
 
+Improvements:
+
+- Allow `psr/log` `2.x` and `3.x`
+
 Bug fixes:
 
 - Parameters seem to be converted to strings when storing/retrieving #959
+
 
 1.2.2
 -----
