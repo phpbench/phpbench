@@ -17,4 +17,19 @@ namespace PhpBench\Remote\Exception;
  */
 class ScriptErrorException extends \RuntimeException
 {
+    /**
+     * @var int
+     */
+    private $exitCode;
+
+    public function __construct(string $message, int $exitCode = null)
+    {
+        $this->message = $message;
+        $this->exitCode = $exitCode;
+    }
+
+    public function getExitCode(): ?int
+    {
+        return $this->exitCode;
+    }
 }
