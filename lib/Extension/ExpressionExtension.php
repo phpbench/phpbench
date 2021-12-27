@@ -130,6 +130,7 @@ class ExpressionExtension implements ExtensionInterface
     public const PARAM_SYNTAX_HIGHLIGHTING = 'expression.syntax_highlighting';
     public const PARAM_THEME = 'expression.theme';
     public const PARAM_MEMORY_UNIT_PREFIX = 'expression.memory_unit_prefix';
+    public const PARAM_STRIP_TAILING_ZEROS = 'expression.strip_tailing_zeros';
 
     public const SERVICE_PLAIN_PRINTER = 'expression.printer.plain';
     public const SERVICE_BARE_PRINTER = 'expression.printer.bare';
@@ -296,7 +297,8 @@ class ExpressionExtension implements ExtensionInterface
                 new ValueWithUnitPrinter(),
                 new DisplayAsPrinter(
                     $container->get(TimeUnit::class),
-                    $container->getParameter(self::PARAM_MEMORY_UNIT_PREFIX) === self::PREFIX_BINARY
+                    $container->getParameter(self::PARAM_MEMORY_UNIT_PREFIX) === self::PREFIX_BINARY,
+                    $container->getParameter(self::PARAM_STRIP_TAILING_ZEROS)
                 ),
                 new ParameterPrinter(),
                 new StringPrinter(),
@@ -390,14 +392,18 @@ class ExpressionExtension implements ExtensionInterface
             self::PARAM_SYNTAX_HIGHLIGHTING => true,
             self::PARAM_THEME => self::THEME_SOLARIZED,
             self::PARAM_MEMORY_UNIT_PREFIX => self::PREFIX_DECIMAL,
+            self::PARAM_STRIP_TAILING_ZEROS => false,
         ]);
         $resolver->setAllowedTypes(self::PARAM_SYNTAX_HIGHLIGHTING, 'bool');
         $resolver->setAllowedTypes(self::PARAM_THEME, 'string');
         $resolver->setAllowedTypes(self::PARAM_MEMORY_UNIT_PREFIX, ['string']);
+        $resolver->setAllowedTypes(self::PARAM_STRIP_TAILING_ZEROS, ['bool']);
         $resolver->setAllowedValues(self::PARAM_MEMORY_UNIT_PREFIX, [self::PREFIX_BINARY, self::PREFIX_DECIMAL]);
+
         SymfonyOptionsResolverCompat::setInfos($resolver, [
             self::PARAM_SYNTAX_HIGHLIGHTING => 'Enable syntax highlighting',
             self::PARAM_THEME => 'Select a theme to use',
+            self::PARAM_STRIP_TAILING_ZEROS => 'Do not display meaningless zeros after the decimal place',
             self::PARAM_MEMORY_UNIT_PREFIX => sprintf(
                 'By default use ``%s`` (1kb = 1000 bytes) or ``%s`` (1KiB = 1024 bytes) when displaying memory',
                 self::PREFIX_DECIMAL,

@@ -6,7 +6,8 @@ master
 
 Improvements
 
-- Show more concise error messages including script exit code
+- Show more concise error messages including script exit code #969
+- Configuration (`expression.strip_tailing_zeros`) to strip meaningless zeros after the decimal place #958
 
 1.2.3
 ------
