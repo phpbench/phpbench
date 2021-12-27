@@ -90,12 +90,10 @@ abstract class PhpBenchLoggerTest extends LoggerTestCase
     {
         $error1 = $this->prophesize(Error::class);
         $error1->getMessage()->willReturn('MessageOne');
-        $error1->getClass()->willReturn('ExceptionOne');
         $error1->getTrace()->willReturn('-- trace --');
 
         $error2 = $this->prophesize(Error::class);
         $error2->getMessage()->willReturn('MessageTwo');
-        $error2->getClass()->willReturn('ExceptionTwo');
         $error2->getTrace()->willReturn('-- trace --');
         $errorStack = $this->prophesize(ErrorStack::class);
         $errorStack->getVariant()->willReturn($this->variant->reveal());
@@ -115,8 +113,6 @@ abstract class PhpBenchLoggerTest extends LoggerTestCase
 
         self::assertStringContainsString('1 subjects encountered errors', $buffer);
         self::assertStringContainsString('Namespace\Foo::bar', $buffer);
-        self::assertStringContainsString('ExceptionOne', $buffer);
-        self::assertStringContainsString('ExceptionTwo', $buffer);
         self::assertStringContainsString('MessageOne', $buffer);
         self::assertStringContainsString('Two', $buffer);
     }

@@ -28,7 +28,7 @@ class ErrorHandlingExecutorDecorator implements MethodExecutorInterface
                 'Could not execute method(s) "%s" on "%s"',
                 implode('", "', $methods),
                 $context->getBenchmarkClass()
-            ), 0, $throwable);
+            ));
         }
     }
 }
