@@ -62,9 +62,10 @@ class TemplateExecutor implements BenchmarkExecutorInterface
             $result = $payload->launch();
         } catch (ScriptErrorException $error) {
             throw new ExecutionError(sprintf(
-                'Benchmarking script exited with code %s',
-                $error->getExitCode()
-            ), $error->getMessage());
+                "Benchmarking script exited with code %s\n\n%s",
+                $error->getExitCode(),
+                $error->getMessage()
+            ));
         }
 
         if (isset($result['buffer']) && $result['buffer']) {
