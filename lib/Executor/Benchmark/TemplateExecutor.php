@@ -63,7 +63,7 @@ class TemplateExecutor implements BenchmarkExecutorInterface
         } catch (ScriptErrorException $error) {
             throw new ExecutionError(sprintf(
                 "Benchmarking script exited with code %s\n\n%s",
-                $error->getExitCode(),
+                $error->getExitCode() ?? 'unknown',
                 $error->getMessage()
             ));
         }
