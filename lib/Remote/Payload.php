@@ -144,7 +144,7 @@ class Payload
                 '%s%s',
                 $process->getErrorOutput(),
                 $process->getOutput()
-            ));
+            ), $process->getExitCode());
         }
 
         return $this->decodeResults($process);

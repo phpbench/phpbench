@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+master
+------
+
+Improvements
+
+- Show more concise error messages including script exit code
+
 1.2.3
 ------
 

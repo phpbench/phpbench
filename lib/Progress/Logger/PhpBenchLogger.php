@@ -120,7 +120,7 @@ abstract class PhpBenchLogger extends NullLogger
 
         foreach ($errorStacks as $errorStack) {
             $this->output->writeln(sprintf(
-                '%s::%s</error>',
+                '<error>%s::%s</>',
                 $errorStack->getVariant()->getSubject()->getBenchmark()->getClass(),
                 $errorStack->getVariant()->getSubject()->getName()
             ));
@@ -128,10 +128,8 @@ abstract class PhpBenchLogger extends NullLogger
 
             foreach ($errorStack as $error) {
                 $this->output->writeln(sprintf(
-                    "    %s %s\n\n    %s</comment>\n",
-                    $error->getClass(),
-                    str_replace("\n", "\n    ", $error->getMessage()),
-                    str_replace("\n", "\n    ", $error->getTrace())
+                    "    %s\n",
+                    str_replace("\n", "\n    ", $error->getMessage())
                 ));
             }
         }
