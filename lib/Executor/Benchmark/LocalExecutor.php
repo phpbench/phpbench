@@ -31,6 +31,18 @@ class LocalExecutor implements BenchmarkExecutorInterface
 
     public function execute(ExecutionContext $context, Config $config): ExecutionResults
     {
+        try {
+            return $this->doExecute($context, $config);
+        } catch (\Exception $e) {
+            throw new ExecutionError(
+                sprintf("Exception encountered in benchmark [%s]:\n%s", get_class($e), $e->getMessage()),
+                $e->getTraceAsString(),
+            );
+        }
+    }
+
+    private function doExecute(ExecutionContext $context, Config $config): ExecutionResults
+    {
         if ($this->bootstrap) {
             require_once($this->bootstrap);
         }
