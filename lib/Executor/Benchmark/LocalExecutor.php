@@ -35,8 +35,7 @@ class LocalExecutor implements BenchmarkExecutorInterface
             return $this->doExecute($context, $config);
         } catch (\Exception $e) {
             throw new ExecutionError(
-                sprintf("Exception encountered in benchmark [%s]:\n%s", get_class($e), $e->getMessage()),
-                $e->getTraceAsString(),
+                sprintf("Exception encountered in benchmark: %s\n\n[%s]\n\n%s", $e->getMessage(), get_class($e), $e->getTraceAsString()),
             );
         }
     }

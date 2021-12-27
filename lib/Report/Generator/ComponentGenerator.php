@@ -103,7 +103,6 @@ class ComponentGenerator implements ComponentGeneratorInterface, GeneratorInterf
      */
     public function generate(SuiteCollection $collection, Config $config): Reports
     {
-        throw new \Exception('asd');
         $dataFrame = $this->transformer->suiteToFrame($collection);
         $component = $this->generateComponent($dataFrame, $config->getArrayCopy());
         assert($component instanceof Report);
