@@ -544,6 +544,17 @@ Types: ``["string"]``
 
 Allowed values: ``["binary","decimal"]``
 
+.. _configuration_expression_strip_tailing_zeros:
+
+expression.strip_tailing_zeros
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Do not display meaningless zeros after the decimal place
+
+Default: ``false``
+
+Types: ``["bool"]``
+
 Storage
 -------
 

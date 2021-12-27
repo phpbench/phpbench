@@ -317,6 +317,12 @@
                 "decimal"
             ]
         },
+        "expression.strip_tailing_zeros": {
+            "description": "Do not display meaningless zeros after the decimal place",
+            "type": [
+                "boolean"
+            ]
+        },
         "storage.driver": {
             "description": "Storage driver to use",
             "type": [

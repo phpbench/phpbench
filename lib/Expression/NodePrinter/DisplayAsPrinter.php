@@ -14,6 +14,7 @@ use PhpBench\Expression\Exception\PrinterError;
 use PhpBench\Expression\NodePrinter;
 use PhpBench\Expression\Printer;
 use PhpBench\Util\MemoryUnit;
+use PhpBench\Util\NumberFormat;
 use PhpBench\Util\TimeUnit;
 
 class DisplayAsPrinter implements NodePrinter
@@ -34,10 +35,16 @@ class DisplayAsPrinter implements NodePrinter
      */
     private $memoryAsBinary;
 
-    public function __construct(TimeUnit $timeUnit, bool $memoryAsBinary)
+    /**
+     * @var bool
+     */
+    private $stripTailingZeros;
+
+    public function __construct(TimeUnit $timeUnit, bool $memoryAsBinary, bool $stripTailingZeros = false)
     {
         $this->timeUnit = $timeUnit;
         $this->memoryAsBinary = $memoryAsBinary;
+        $this->stripTailingZeros = $stripTailingZeros;
     }
 
     public function print(Printer $printer, Node $node): ?string
@@ -115,13 +122,14 @@ class DisplayAsPrinter implements NodePrinter
 
     private function timeUnit(float $value, ?string $unit, ?int $precision, string $prettyUnit, ?string $mode): string
     {
-        return sprintf('%s%s', number_format(
+        return sprintf('%s%s', NumberFormat::format(
             $this->timeUnit->toDestUnit(
                 $value,
                 $this->timeUnit->resolveDestUnit($unit, $value),
                 $mode
             ),
-            $precision ?: $this->timeUnit->getPrecision()
+            $precision ?: $this->timeUnit->getPrecision(),
+            $this->stripTailingZeros,
         ), $prettyUnit);
     }
 
@@ -132,7 +140,11 @@ class DisplayAsPrinter implements NodePrinter
     {
         return sprintf(
             '%s%s',
-            number_format(MemoryUnit::convertTo($value, MemoryUnit::BYTES, $unit), $unit === MemoryUnit::BYTES ? 0 : ($precision ?: 3)),
+            NumberFormat::format(
+                MemoryUnit::convertTo($value, MemoryUnit::BYTES, $unit),
+                $unit === MemoryUnit::BYTES ? 0 : ($precision ?: 3),
+                $this->stripTailingZeros
+            ),
             $prettyUnit
         );
     }

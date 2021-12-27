@@ -15,6 +15,7 @@
     "runner.retry_threshold": 5,
     "runner.revs": 10,
     "runner.assert": "mode(variant.time.avg) as ms <= mode(baseline.time.avg) as ms +/- 5%",
+    "expression.strip_tailing_zeros": true,
     "report.generators": {
         "examples": {
             "generator": "composite",
