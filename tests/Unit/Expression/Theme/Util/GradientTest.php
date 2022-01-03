@@ -97,7 +97,7 @@ class GradientTest extends TestCase
     /**
      * @dataProvider provideColorAtPercentile
      */
-    public function testColorAtPercentile(Gradient $gradient, int $percentile, Color $expected): void
+    public function testColorAtPercentile(Gradient $gradient, float $percentile, Color $expected): void
     {
         self::assertEquals($expected, $gradient->colorAtPercentile($percentile));
     }
@@ -123,6 +123,12 @@ class GradientTest extends TestCase
             Gradient::start(Color::fromRgb(0, 0, 0))->to(Color::fromRgb(0, 0, 10), 9),
             50,
             Color::fromRgb(0, 0, 5)
+        ];
+
+        yield [
+            Gradient::start(Color::fromRgb(0, 0, 0))->to(Color::fromRgb(0, 0, 10), 9),
+            43.5,
+            Color::fromRgb(0, 0, 4)
         ];
 
         yield 'more than 100' => [
