@@ -79,7 +79,7 @@ use function array_fill;
         return new static(...$colors);
     }
 
-    public function colorAtPercentile(int $percentile): Color
+    public function colorAtPercentile(float $percentile): Color
     {
         $percentile = $percentile < 0 ? 0 : min(100, abs($percentile));
 
