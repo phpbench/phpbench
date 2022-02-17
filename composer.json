@@ -24,11 +24,10 @@
         "psr/log": "^1.1 || ^2.0 || ^3.0",
         "seld/jsonlint": "^1.1",
         "symfony/console": "^4.2 || ^5.0  || ^6.0",
-        "symfony/filesystem": "^4.2 || ^5.0 || ^6.0",
+        "symfony/filesystem": "^5.4 || ^6.0",
         "symfony/finder": "^4.2 || ^5.0 || ^6.0",
         "symfony/options-resolver": "^4.2 || ^5.0 || ^6.0",
-        "symfony/process": "^4.2 || ^5.0 || ^6.0",
-        "webmozart/path-util": "^2.3"
+        "symfony/process": "^4.2 || ^5.0 || ^6.0"
     },
     "require-dev": {
         "dantleech/invoke": "^2.0",

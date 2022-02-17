@@ -4,7 +4,7 @@ namespace PhpBench\Config\Processor;
 
 use PhpBench\Config\ConfigLoader;
 use PhpBench\Config\ConfigProcessor;
-use Webmozart\PathUtil\Path;
+use Symfony\Component\Filesystem\Path;
 
 class IncludeProcessor implements ConfigProcessor
 {

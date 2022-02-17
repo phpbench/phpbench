@@ -55,10 +55,10 @@ use PhpBench\Util\PathNormalizer;
 use PhpBench\Util\TimeUnit;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
+use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Process\ExecutableFinder;
-use Webmozart\PathUtil\Path;
 
 class RunnerExtension implements ExtensionInterface
 {

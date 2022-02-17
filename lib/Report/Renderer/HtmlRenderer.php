@@ -10,8 +10,8 @@ use PhpBench\Report\RendererInterface;
 use PhpBench\Template\ObjectRenderer;
 use RuntimeException;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Filesystem\Path;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Webmozart\PathUtil\Path;
 
 class HtmlRenderer implements RendererInterface
 {
