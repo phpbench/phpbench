@@ -13,9 +13,7 @@ class PathUtilTest extends IntegrationTestCase
      */
     public function testNormalizePath(string $baseDir, array $paths, array $expected): void
     {
-        sort($paths);
-        sort($expected);
-        self::assertEquals($expected, PathNormalizer::normalizePaths($baseDir, $paths));
+        self::assertPaths($expected, PathNormalizer::normalizePaths($baseDir, $paths));
     }
 
     /**
@@ -46,7 +44,7 @@ class PathUtilTest extends IntegrationTestCase
         $this->workspace()->put('foobar/baz/foo', '1');
         $this->workspace()->put('foobar/bom/foo', '2');
 
-        self::assertEquals([
+        self::assertPaths([
             $this->workspace()->path('foobar/bom/foo'),
             $this->workspace()->path('foobar/baz/foo'),
         ], PathNormalizer::normalizePaths($this->workspace()->path(), [
@@ -59,11 +57,18 @@ class PathUtilTest extends IntegrationTestCase
         $this->workspace()->put('foobar/baz/foo', '1');
         $this->workspace()->put('foobar/bom/foo', '2');
 
-        self::assertEquals([
+        self::assertPaths([
             $this->workspace()->path('foobar/bom/foo'),
             $this->workspace()->path('foobar/baz/foo'),
         ], PathNormalizer::normalizePaths($this->workspace()->path(), [
             $this->workspace()->path('foobar/*/foo'),
         ]));
+    }
+
+    private static function assertPaths(array $paths, array $expected): void
+    {
+        sort($paths);
+        sort($expected);
+        self::assertEquals($expected, $paths);
     }
 }
