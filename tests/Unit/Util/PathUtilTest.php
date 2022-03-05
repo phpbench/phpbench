@@ -13,6 +13,8 @@ class PathUtilTest extends IntegrationTestCase
      */
     public function testNormalizePath(string $baseDir, array $paths, array $expected): void
     {
+        sort($paths);
+        sort($expected);
         self::assertEquals($expected, PathNormalizer::normalizePaths($baseDir, $paths));
     }
 
