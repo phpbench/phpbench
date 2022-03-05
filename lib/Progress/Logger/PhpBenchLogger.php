@@ -53,7 +53,7 @@ abstract class PhpBenchLogger extends NullLogger
     public function startSuite(RunnerConfig $config, Suite $suite): void
     {
         $this->output->writeln(sprintf(
-            'PHPBench (%s) running benchmarks...',
+            'PHPBench (%s) running benchmarks... <fg=cyan>#standwith</><fg=yellow>ukraine</>',
             PhpBench::version()
         ));
 
