@@ -1,7 +1,10 @@
+[![SWUbanner](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/banner-direct.svg)](https://github.com/vshymanskyy/StandWithUkraine/blob/main/docs/README.md)
+
 <p  align="center">
     <img src="https://user-images.githubusercontent.com/530801/92305960-d2866a00-ef83-11ea-878a-10584e583da4.png" title="PHPBench logo"/>
 </p>
 
+[![StandWithUkraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/badges/StandWithUkraine.svg)](https://github.com/vshymanskyy/StandWithUkraine/blob/main/docs/README.md)
 [![CI](https://github.com/phpbench/phpbench/actions/workflows/ci.yaml/badge.svg)](https://github.com/phpbench/phpbench/actions/workflows/ci.yaml)
 [![Documentation](https://github.com/phpbench/phpbench/actions/workflows/documentation.yaml/badge.svg)](https://github.com/phpbench/phpbench/actions/workflows/documentation.yaml)
 [![Latest Stable Version](https://poser.pugx.org/phpbench/phpbench/v)](//packagist.org/packages/phpbench/phpbench) 
