@@ -23,7 +23,7 @@ use PhpBench\Reflection\ReflectionHierarchy;
 use PhpBench\Reflection\ReflectionMethod;
 use PhpBench\Reflection\ReflectorInterface;
 use PhpBench\Tests\TestCase;
-use PhpBench\Tests\Unit\Benchmark\Metadata\Exception\CouldNotLoadMetadataException;
+use PhpBench\Benchmark\Metadata\Exception\CouldNotLoadMetadataException;
 
 class AnnotationDriverTest extends TestCase
 {

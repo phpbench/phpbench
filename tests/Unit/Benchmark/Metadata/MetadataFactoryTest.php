@@ -21,7 +21,7 @@ use PhpBench\Reflection\ReflectionClass;
 use PhpBench\Reflection\ReflectionHierarchy;
 use PhpBench\Reflection\ReflectorInterface;
 use PhpBench\Tests\TestCase;
-use PhpBench\Tests\Unit\Benchmark\Metadata\Exception\CouldNotLoadMetadataException;
+use PhpBench\Benchmark\Metadata\Exception\CouldNotLoadMetadataException;
 use PhpBench\Tests\Util\TestLogger;
 use PhpBench\Tests\Util\TestUtil;
 use Prophecy\Prophecy\ObjectProphecy;

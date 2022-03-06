@@ -1,11 +1,20 @@
 CHANGELOG
 =========
 
-master
-------
+1.2.5
+-----
+
+Bug fixes:
+
+- New "CouldNotLoadMetadata" exception was located in the `tests` folder and
+  was not available when phpbench was used as a dependency.
+
+1.2.4
+-----
 
 Improvements
 
+- Show [solidarity](https://github.com/vshymanskyy/StandWithUkraine) with Ukrainians
 - Show more concise error messages including script exit code #969
 - Configuration (`expression.strip_tailing_zeros`) to strip meaningless zeros after the decimal place #958
 

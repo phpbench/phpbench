@@ -18,7 +18,7 @@ use Doctrine\Common\Annotations\DocParser;
 use Doctrine\Common\Annotations\TokenParser;
 use PhpBench\Reflection\ReflectionClass;
 use PhpBench\Reflection\ReflectionMethod;
-use PhpBench\Tests\Unit\Benchmark\Metadata\Exception\CouldNotLoadMetadataException;
+use PhpBench\Benchmark\Metadata\Exception\CouldNotLoadMetadataException;
 
 /**
  * Annotation reader.

@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpBench\Tests\Unit\Benchmark\Metadata\Exception;
+namespace PhpBench\Benchmark\Metadata\Exception;
 
 use InvalidArgumentException;
 
