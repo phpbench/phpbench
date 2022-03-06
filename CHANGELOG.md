@@ -1,6 +1,14 @@
 CHANGELOG
 =========
 
+1.2.5
+-----
+
+Bug fixes:
+
+- New "CouldNotLoadMetadata" exception was located in the `tests` folder and
+  was not available when phpbench was used as a dependency.
+
 1.2.4
 -----
 
