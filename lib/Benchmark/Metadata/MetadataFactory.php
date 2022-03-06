@@ -17,7 +17,7 @@ use PhpBench\Model\Exception\InvalidParameterSets;
 use PhpBench\Model\Subject;
 use PhpBench\Reflection\ReflectionHierarchy;
 use PhpBench\Reflection\ReflectorInterface;
-use PhpBench\Tests\Unit\Benchmark\Metadata\Exception\CouldNotLoadMetadataException;
+use PhpBench\Benchmark\Metadata\Exception\CouldNotLoadMetadataException;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
