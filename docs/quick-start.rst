@@ -214,7 +214,7 @@ Increase Stability
 ------------------
 
 Stability can be inferred from `rstdev` (`relative standard deviation`_) , with 0% being the best and anything
-about 2% should be treated as suspicious.
+above 2% should be treated as suspicious.
 
 .. image:: images/rstdev.png
 
