@@ -32,10 +32,7 @@ final class AssertTest extends TestCase
     }
 }
 
-#[
-    Assert('mode(variant.mem.peak) < 2097152'),
-    Assert('mode(variant.time.avg) < 10000000')
-]
+#[Assert('mode(variant.mem.peak) < 2097152'), Assert('mode(variant.time.avg) < 10000000')]
 class AttributeAssertUsedMultipleTimes
 {
 }
