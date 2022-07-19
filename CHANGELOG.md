@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+1.2.6
+-----
+
+Bug fixes:
+
+- Allow multiple `Assert` annotations #996 @nyamsprod
+
 1.2.5
 -----
 
