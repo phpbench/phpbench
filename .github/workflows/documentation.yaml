@@ -40,7 +40,7 @@ jobs:
 
             -   name: "Install Sphinx + requirements via pip"
                 working-directory: "docs"
-                run: pip install -r requirements.txt
+                run: pip3 install -r requirements.txt
 
             -   name: "Build documentation"
                 working-directory: "docs"
