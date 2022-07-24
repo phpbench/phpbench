@@ -13,6 +13,7 @@ use PhpBench\Report\Model\BarChart;
 use PhpBench\Report\Model\BarChartDataSet;
 use RuntimeException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+
 use function PhpBench\Report\Func\fit_to_axis;
 
 class BarChartAggregateComponentGenerator implements ComponentGeneratorInterface

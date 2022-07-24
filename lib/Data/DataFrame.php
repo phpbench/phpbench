@@ -10,6 +10,7 @@ use PhpBench\Data\Exception\ColumnDoesNotExist;
 use PhpBench\Data\Func\Partition;
 use PHPUnit\Framework\MockObject\BadMethodCallException;
 use RuntimeException;
+
 use function array_map;
 use function array_reduce;
 use function array_search;
