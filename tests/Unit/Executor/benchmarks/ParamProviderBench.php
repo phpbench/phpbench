@@ -31,6 +31,13 @@ class ParamProviderBench
     {
     }
 
+    public function paramProviderNotArray(): array
+    {
+        return [
+            'foo' => 'bar',
+        ];
+    }
+
     public function provideParams()
     {
         return [

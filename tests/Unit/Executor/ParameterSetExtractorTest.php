@@ -83,6 +83,13 @@ class ParameterSetExtractorTest extends TestCase
         $this->provideParams(['privateParamProvider']);
     }
 
+    public function testThrowsExceptionIfParameterProviderDoesNotReturnArray(): void
+    {
+        $this->expectException(ScriptErrorException::class);
+        $this->expectExceptionMessage('Parameters in set "foo" must be an array');
+        $this->provideParams(['paramProviderNotArray']);
+    }
+
     /**
      * @param string[] $providers
      */
