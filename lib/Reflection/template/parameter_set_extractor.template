@@ -17,17 +17,19 @@ function normalize_parameter_set($parameterSet)
         ));
     }
 
-    return array_combine(array_keys($parameterSet), array_map(function ($parameters) {
+    $keys = array_keys($parameterSet);
+    return array_combine($keys, array_map(function (string $key, $parameters) {
         if (!is_array($parameters)) {
-            throw new \RuntimeException(
+            throw new \RuntimeException(sprintf(
                 'Parameters in set "%s" must be an array, got "%s"',
+                $key,
                 gettype($parameters)
-            );
+            ));
         }
         return array_map(function ($value) {
             return serialize($value);
         }, $parameters);
-    }, $parameterSet));
+    }, $keys, $parameterSet));
 }
 
 $bootstrap = '{{ bootstrap }}';
