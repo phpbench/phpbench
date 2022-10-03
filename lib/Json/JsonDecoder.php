@@ -53,7 +53,7 @@ class JsonDecoder
      * Allow "non-strict" JSON - i.e. if no quotes are provided then try and
      * add them.
      */
-    private function normalize($jsonString)
+    private function normalize($jsonString): string
     {
         if (!is_string($jsonString)) {
             throw new \InvalidArgumentException(sprintf(
@@ -64,10 +64,6 @@ class JsonDecoder
         $chars = str_split($jsonString);
         $inRight = $inQuote = $inFakeQuote = false;
         $fakeQuoteStart = null;
-
-        if (empty($chars)) {
-            return;
-        }
 
         if ($chars[0] !== '{') {
             array_unshift($chars, '{');
