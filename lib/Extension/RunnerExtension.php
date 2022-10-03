@@ -317,7 +317,6 @@ class RunnerExtension implements ExtensionInterface
                 $container->get(self::SERVICE_REGISTRY_EXECUTOR),
                 $container->get(Supplier::class),
                 $container->get(AssertionProcessor::class),
-                $container->getParameter(self::PARAM_RUNNER_RETRY_THRESHOLD),
                 $container->getParameter(CoreExtension::PARAM_CONFIG_PATH)
             );
         });
