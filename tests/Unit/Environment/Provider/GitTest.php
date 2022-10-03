@@ -16,6 +16,7 @@ use PhpBench\Environment\Provider;
 use PhpBench\Tests\IntegrationTestCase;
 use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\Process;
+
 use function sys_get_temp_dir;
 
 class GitTest extends IntegrationTestCase

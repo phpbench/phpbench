@@ -27,7 +27,7 @@ invalid:
     Foobar  Barfoo   Baz
     --------^^^^^^
 EOT
-        , $error->getMessage());
+            , $error->getMessage());
     }
 
     public function testFromTokenTruncatesToMaxLength(): void
@@ -48,6 +48,6 @@ invalid:
     … oobarFoobarFoobarBarfooBarfooBarfooBarBa …
       -----------------^^^^^^
 EOT
-        , $error->getMessage());
+            , $error->getMessage());
     }
 }

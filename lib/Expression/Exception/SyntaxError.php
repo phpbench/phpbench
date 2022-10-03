@@ -5,6 +5,7 @@ namespace PhpBench\Expression\Exception;
 use PhpBench\Expression\Token;
 use PhpBench\Expression\Tokens;
 use PhpBench\Util\TextTruncate;
+
 use function str_repeat;
 
 class SyntaxError extends ExpressionError

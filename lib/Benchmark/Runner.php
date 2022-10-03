@@ -159,7 +159,6 @@ final class Runner
 
         /** @var SubjectMetadata $subjectMetadata */
         foreach ($subjectMetadatas as $subjectMetadata) {
-
             // override parameters
             $subjectMetadata->setIterations($config->getIterations($subjectMetadata->getIterations() ?? [1]));
             $subjectMetadata->setRevs($config->getRevolutions($subjectMetadata->getRevs() ?? [1]));

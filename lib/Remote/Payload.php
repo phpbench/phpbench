@@ -15,6 +15,7 @@ namespace PhpBench\Remote;
 use PhpBench\Remote\Exception\ScriptErrorException;
 use RuntimeException;
 use Symfony\Component\Process\Process;
+
 use function escapeshellarg;
 
 /**

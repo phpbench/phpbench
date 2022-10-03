@@ -4,6 +4,7 @@ namespace PhpBench\Template;
 
 use Exception;
 use PhpBench\Template\Exception\CouldNotFindTemplateForObject;
+
 use function ob_end_clean;
 use function ob_get_clean;
 use function ob_start;

@@ -13,6 +13,7 @@ use PhpBench\Expression\Ast\ScalarValue;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Exception\ExpressionError;
 use PhpBench\Expression\NodeEvaluator;
+
 use function array_key_exists;
 
 class AccessEvaluator implements NodeEvaluator

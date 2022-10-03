@@ -13,6 +13,7 @@ use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Reflection\ReflectionClass;
 use PhpBench\Reflection\ReflectionHierarchy;
 use PhpBench\Reflection\ReflectionMethod;
+
 use function array_key_exists;
 
 class AttributeDriver implements DriverInterface

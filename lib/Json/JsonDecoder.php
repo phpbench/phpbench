@@ -98,14 +98,12 @@ class JsonDecoder
 
             // if we added a "fake" quote, look for the end of the unquoted string
             if ($inFakeQuote && preg_match('{[\s:\}\],]}', $char)) {
-
                 // if we are on the left side, then "]" is OK.
                 if (!$inRight && $char === ']') {
                     continue;
                 }
 
                 if ($inRight) {
-
                     // extract the right hand value
                     $string = implode('', array_slice($chars, $fakeQuoteStart + 1, $index - 1 - $fakeQuoteStart));
 

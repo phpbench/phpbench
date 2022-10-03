@@ -4,6 +4,7 @@ namespace PhpBench\Config\Linter;
 
 use PhpBench\Config\ConfigLinter;
 use PhpBench\Config\Exception\LintError;
+
 use function json_last_error;
 use function json_last_error_msg;
 

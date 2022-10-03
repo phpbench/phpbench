@@ -5,6 +5,7 @@ namespace PhpBench\Tests\Unit\Data;
 use PhpBench\Data\DataFrame;
 use PhpBench\Data\Row;
 use PHPUnit\Framework\TestCase;
+
 use function iterator_to_array;
 
 class DataFrameTest extends TestCase

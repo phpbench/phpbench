@@ -100,7 +100,6 @@ class SolarizedTheme implements ColorMap
      */
     public function colors(): array
     {
-
         /** @phpstan-ignore-next-line */
         return [
             LabelNode::class => 'fg='. self::BASE1,

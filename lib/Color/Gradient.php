@@ -4,6 +4,7 @@ namespace PhpBench\Color;
 
 use PhpBench\Expression\Theme\Util\Color as DeprecatedColor;
 use RuntimeException;
+
 use function array_fill;
 
 /** final */ class Gradient

@@ -24,6 +24,7 @@ use PhpBench\Report\Model\Reports;
 use PhpBench\Report\Model\Table;
 use PhpBench\Report\Model\Text;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+
 use function array_combine;
 
 class OutputTestGenerator implements GeneratorInterface

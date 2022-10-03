@@ -23,6 +23,7 @@ use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+
 use function array_combine;
 use function array_key_exists;
 use function iterator_to_array;
@@ -86,7 +87,7 @@ display_as_time(
     first(subject_time_precision), 
     first(subject_time_mode))
 EOT
-            , $expr);
+                , $expr);
         };
 
         $options->setDefaults([

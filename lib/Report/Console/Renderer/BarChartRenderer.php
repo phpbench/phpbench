@@ -9,6 +9,7 @@ use PhpBench\Report\Console\ObjectRenderer;
 use PhpBench\Report\Console\ObjectRendererInterface;
 use PhpBench\Report\Model\BarChart;
 use Symfony\Component\Console\Output\OutputInterface;
+
 use function mb_substr;
 
 class BarChartRenderer implements ObjectRendererInterface

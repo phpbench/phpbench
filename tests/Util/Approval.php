@@ -5,6 +5,7 @@ namespace PhpBench\Tests\Util;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\SkippedTestError;
 use RuntimeException;
+
 use function json_decode;
 
 class Approval

@@ -130,7 +130,6 @@ final class Lexer
 
             case (preg_match('{'. self::PATTERN_NAME. '}', $value)):
                 return Token::T_NAME;
-
         }
 
         return $type;

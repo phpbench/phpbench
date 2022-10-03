@@ -25,6 +25,7 @@ use PhpBench\Model\Variant;
 use PhpBench\PhpBench;
 use PhpBench\Util\TimeUnit;
 use RuntimeException;
+
 use function base64_encode;
 
 /**
@@ -169,7 +170,6 @@ class XmlEncoder
             $iterationEl = $variantEl->appendElement('iteration');
 
             foreach ($iteration->getResults() as $result) {
-
                 // we need to store the class FQNs of the results for deserialization later.
                 if (!isset($resultClasses[$result->getKey()])) {
                     $resultClasses[$result->getKey()] = get_class($result);

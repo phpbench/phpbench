@@ -5,6 +5,7 @@ namespace PhpBench\Expression\Func;
 use PhpBench\Expression\Ast\ListNode;
 use PhpBench\Expression\Ast\PhpValue;
 use PhpBench\Expression\Ast\PhpValueFactory;
+
 use function array_sum;
 
 final class SumFunction
