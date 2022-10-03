@@ -28,6 +28,7 @@
         "symfony/finder": "^4.2 || ^5.0 || ^6.0",
         "symfony/options-resolver": "^4.2 || ^5.0 || ^6.0",
         "symfony/process": "^4.2 || ^5.0 || ^6.0",
+        "webmozart/glob": "^4.6",
         "webmozart/path-util": "^2.3"
     },
     "require-dev": {
