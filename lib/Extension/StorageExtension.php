@@ -19,7 +19,6 @@ use PhpBench\Console\Command\Handler\TimeUnitHandler;
 use PhpBench\Console\Command\LogCommand;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
-use PhpBench\Json\JsonDecoder;
 use PhpBench\Serializer\XmlDecoder;
 use PhpBench\Serializer\XmlEncoder;
 use PhpBench\Storage\Driver\Xml\XmlDriver;
@@ -66,13 +65,6 @@ class StorageExtension implements ExtensionInterface
         $this->registerCommands($container);
         $this->registerSerializer($container);
         $this->registerStorage($container);
-    }
-
-    private function registerJson(Container $container): void
-    {
-        $container->register(JsonDecoder::class, function (Container $container) {
-            return new JsonDecoder();
-        });
     }
 
     private function registerCommands(Container $container): void

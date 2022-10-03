@@ -4,6 +4,7 @@ namespace PhpBench\Report\Model;
 
 use PhpBench\Report\ComponentInterface;
 use RuntimeException;
+
 use function array_replace;
 
 class BarChart implements ComponentInterface

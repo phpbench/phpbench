@@ -21,20 +21,11 @@ use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Reflection\ReflectionClass;
 use PhpBench\Reflection\ReflectionHierarchy;
 use PhpBench\Reflection\ReflectionMethod;
-use PhpBench\Reflection\ReflectorInterface;
 use PhpBench\Tests\TestCase;
 use PhpBench\Benchmark\Metadata\Exception\CouldNotLoadMetadataException;
 
 class AnnotationDriverTest extends TestCase
 {
-    private $driver;
-    private $reflector;
-
-    protected function setUp(): void
-    {
-        $this->reflector = $this->prophesize(ReflectorInterface::class);
-    }
-
     /**
      * It should return class metadata according to annotations.
      */
@@ -533,7 +524,6 @@ EOT;
     private function createDriver($prefix = '^bench'): DriverInterface
     {
         return new AnnotationDriver(
-            $this->reflector->reveal(),
             $prefix
         );
     }

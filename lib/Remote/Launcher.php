@@ -47,11 +47,6 @@ class Launcher
     private $phpWrapper;
 
     /**
-     * @var PayloadFactory
-     */
-    private $factory;
-
-    /**
      * @var ExecutableFinder
      */
     private $finder;
@@ -62,7 +57,7 @@ class Launcher
     private $phpDisableIni;
 
     public function __construct(
-        PayloadFactory $factory = null,
+        PayloadFactory $payloadFactory = null,
         ExecutableFinder $finder = null,
         ?string $bootstrap = null,
         ?string $phpBinary = null,
@@ -71,12 +66,11 @@ class Launcher
         bool $phpDisableIni = false
     ) {
         $this->bootstrap = $bootstrap;
-        $this->payloadFactory = $factory ?: new PayloadFactory();
+        $this->payloadFactory = $payloadFactory ?: new PayloadFactory();
         $this->phpBinary = $phpBinary;
         $this->phpConfig = $phpConfig;
         $this->phpWrapper = $phpWrapper;
         $this->finder = $finder ?: new ExecutableFinder();
-        $this->factory = $factory;
         $this->phpDisableIni = $phpDisableIni;
     }
 

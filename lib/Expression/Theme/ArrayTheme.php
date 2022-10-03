@@ -7,6 +7,7 @@ use PhpBench\Expression\ColorMap;
 
 /**
  * @template T
+ *
  * @implements ColorMap<T>
  */
 class ArrayTheme implements ColorMap

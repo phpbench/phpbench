@@ -20,6 +20,7 @@ class TagTest extends TestCase
 {
     /**
      * @doesNotPerformAssertions
+     *
      * @dataProvider provideValidTag
      */
     public function testValidTag(string $tag): void

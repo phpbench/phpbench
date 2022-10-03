@@ -24,11 +24,6 @@ class VerboseLogger extends PhpBenchLogger
     private $rejectionCount = 0;
 
     /**
-     * @var string
-     */
-    private $paramSetIndex;
-
-    /**
      * {@inheritdoc}
      */
     public function benchmarkStart(Benchmark $benchmark): void
@@ -63,7 +58,6 @@ class VerboseLogger extends PhpBenchLogger
      */
     public function variantStart(Variant $variant): void
     {
-        $this->paramSetIndex = $variant->getParameterSet()->getIndex();
     }
 
     /**

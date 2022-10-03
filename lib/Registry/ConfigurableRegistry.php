@@ -28,6 +28,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * ```
  *
  * @template T of object
+ *
  * @extends Registry<T>
  */
 class ConfigurableRegistry extends Registry

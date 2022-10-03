@@ -10,10 +10,9 @@ use RuntimeException;
 use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
 use Symfony\Component\OptionsResolver\Exception\NoConfigurationException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+
 use function json_encode;
-use function mb_strlen;
 use function method_exists;
-use function str_repeat;
 
 class OptionDumper
 {
@@ -125,11 +124,6 @@ class OptionDumper
         }
 
         return implode("\n", $section);
-    }
-
-    private function underline(string $string, string $char): string
-    {
-        return str_repeat($char, mb_strlen($string));
     }
 
     /**

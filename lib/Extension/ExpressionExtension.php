@@ -264,7 +264,7 @@ class ExpressionExtension implements ExtensionInterface
 
         $container->register(SolarizedTheme::class, function (Container $container) {
             // this theme uses true colors which is only supported in SF5
-            return class_exists(NullOutputFormatter::class) ? new SolarizedTheme(false) : new EightColorTheme();
+            return class_exists(NullOutputFormatter::class) ? new SolarizedTheme() : new EightColorTheme();
         }, [
             self::TAG_THEME => [
                 'name' => self::THEME_SOLARIZED,

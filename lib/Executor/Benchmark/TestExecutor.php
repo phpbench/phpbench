@@ -8,7 +8,6 @@ use PhpBench\Executor\ExecutionResults;
 use PhpBench\Executor\HealthCheckInterface;
 use PhpBench\Executor\MethodExecutorContext;
 use PhpBench\Executor\MethodExecutorInterface;
-use PhpBench\Model\Variant;
 use PhpBench\Registry\Config;
 use RuntimeException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -34,11 +33,6 @@ class TestExecutor implements BenchmarkExecutorInterface, MethodExecutorInterfac
      * @var ExecutionContext|null
      */
     private $lastContext;
-
-    /**
-     * @var Variant|null
-     */
-    private $lastVariant;
 
     private $index = 0;
 

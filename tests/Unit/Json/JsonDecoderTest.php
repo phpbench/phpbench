@@ -39,6 +39,10 @@ class JsonDecoderTest extends TestCase
     {
         return [
             [
+                '',
+                []
+            ],
+            [
                 'iterations: false',
                 [
                     'iterations' => false,

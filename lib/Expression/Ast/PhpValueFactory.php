@@ -3,6 +3,7 @@
 namespace PhpBench\Expression\Ast;
 
 use PhpBench\Data\DataFrame;
+
 use function is_float;
 
 final class PhpValueFactory

@@ -11,6 +11,7 @@ use PhpBench\Report\Model\Reports;
 use PhpBench\Report\Model\Table;
 use PhpBench\Report\Transform\SuiteCollectionTransformer;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+
 use function array_map;
 
 class BareGenerator implements GeneratorInterface

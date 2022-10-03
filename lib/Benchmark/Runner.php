@@ -54,11 +54,6 @@ final class Runner
     private $envSupplier;
 
     /**
-     * @var float
-     */
-    private $retryThreshold;
-
-    /**
      * @var string
      */
     private $configPath;
@@ -77,13 +72,11 @@ final class Runner
         ConfigurableRegistry $executorRegistry,
         Supplier $envSupplier,
         AssertionProcessor $assertion,
-        float $retryThreshold = null,
         string $configPath = null
     ) {
         $this->logger = new NullLogger();
         $this->executorRegistry = $executorRegistry;
         $this->envSupplier = $envSupplier;
-        $this->retryThreshold = $retryThreshold;
         $this->configPath = $configPath;
         $this->assertionProcessor = $assertion;
     }
@@ -159,7 +152,6 @@ final class Runner
 
         /** @var SubjectMetadata $subjectMetadata */
         foreach ($subjectMetadatas as $subjectMetadata) {
-
             // override parameters
             $subjectMetadata->setIterations($config->getIterations($subjectMetadata->getIterations() ?? [1]));
             $subjectMetadata->setRevs($config->getRevolutions($subjectMetadata->getRevs() ?? [1]));

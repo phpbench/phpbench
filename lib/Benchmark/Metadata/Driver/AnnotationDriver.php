@@ -23,17 +23,14 @@ use PhpBench\Benchmark\Metadata\DriverInterface;
 use PhpBench\Benchmark\Metadata\ExecutorMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Reflection\ReflectionHierarchy;
-use PhpBench\Reflection\ReflectorInterface;
 
 class AnnotationDriver implements DriverInterface
 {
-    private $reflector;
     private $reader;
     private $subjectPattern;
 
-    public function __construct(ReflectorInterface $reflector, $subjectPattern = '^bench', AnnotationReader $reader = null)
+    public function __construct($subjectPattern = '^bench', AnnotationReader $reader = null)
     {
-        $this->reflector = $reflector;
         $this->reader = $reader ?: new AnnotationReader();
         $this->subjectPattern = $subjectPattern;
     }

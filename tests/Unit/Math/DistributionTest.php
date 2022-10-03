@@ -50,7 +50,7 @@ class DistributionTest extends TestCase
             30,
         ]);
         $stats = iterator_to_array($distribution);
-        $this->assertEquals([
+        $this->assertEqualsWithDelta([
             'min' => 10,
             'max' => 30,
             'sum' => 60,
@@ -59,7 +59,7 @@ class DistributionTest extends TestCase
             'mode' => 20,
             'variance' => 66.666666666667,
             'rstdev' => 40.824829046386,
-        ], $stats);
+        ], $stats, 0.0000000001);
     }
 
     /**

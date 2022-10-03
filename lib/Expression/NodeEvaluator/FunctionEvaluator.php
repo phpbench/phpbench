@@ -48,28 +48,12 @@ class FunctionEvaluator implements NodeEvaluator
     /**
      * @return array<Node>
      */
-    private function args(?ArgumentListNode $args)
+    private function args(?ArgumentListNode $args): array
     {
         if (null === $args) {
             return [];
         }
 
         return $args->nodes();
-    }
-
-    /**
-     * @return mixed
-     */
-    private function resolveScalarValues(PhpValue $node)
-    {
-        $value = $node->value();
-
-        if (is_array($value)) {
-            return array_map(function (PhpValue $value) {
-                return $this->resolveScalarValues($value);
-            }, $value);
-        }
-
-        return $value;
     }
 }

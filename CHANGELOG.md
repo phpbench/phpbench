@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+master
+------
+
+Improvements:
+
+- Update PHPStan to 1.0 and fix new errors #1006
+
 1.2.6
 -----
 

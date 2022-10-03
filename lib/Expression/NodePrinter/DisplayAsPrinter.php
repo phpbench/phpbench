@@ -22,9 +22,6 @@ class DisplayAsPrinter implements NodePrinter
     public const PARAM_OUTPUT_TIME_UNIT = 'output_time_unit';
     public const PARAM_OUTPUT_TIME_PRECISION = 'output_time_precision';
 
-    private const DEFAULT_TIME_UNIT = 'time';
-    private const DEFAULT_MEMORY_UNIT = 'memory';
-
     /**
      * @var TimeUnit
      */

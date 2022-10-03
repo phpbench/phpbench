@@ -69,14 +69,14 @@ class ComparisonEvaluator implements NodeEvaluator
         }
 
         switch ($node->operator()) {
-        case '<':
-            return $leftValue < $rightValue;
-        case '<=':
-            return $leftValue <= $rightValue;
-        case '>':
-            return $leftValue > $rightValue;
-        case '>=':
-            return $leftValue >= $rightValue;
+            case '<':
+                return $leftValue < $rightValue;
+            case '<=':
+                return $leftValue <= $rightValue;
+            case '>':
+                return $leftValue > $rightValue;
+            case '>=':
+                return $leftValue >= $rightValue;
         }
 
         throw new EvaluationError($node, sprintf(

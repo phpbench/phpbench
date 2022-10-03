@@ -9,11 +9,6 @@ class PercentDifferenceNode extends PhpValue
      */
     private $percentage;
 
-    /**
-     * @var float
-     */
-    private $tolerance;
-
     public function __construct(float $percentage)
     {
         $this->percentage = $percentage;

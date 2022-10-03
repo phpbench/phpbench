@@ -4,6 +4,7 @@ namespace PhpBench\Tests\Unit\Report\Func;
 
 use Generator;
 use PHPUnit\Framework\TestCase;
+
 use function PhpBench\Report\Func\fit_to_axis;
 
 class FitToAxisTest extends TestCase

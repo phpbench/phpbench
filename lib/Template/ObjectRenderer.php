@@ -4,6 +4,7 @@ namespace PhpBench\Template;
 
 use Exception;
 use PhpBench\Template\Exception\CouldNotFindTemplateForObject;
+
 use function ob_end_clean;
 use function ob_get_clean;
 use function ob_start;
@@ -21,11 +22,6 @@ final class ObjectRenderer
      * @var array
      */
     private $templatePaths;
-
-    /**
-     * @var array
-     */
-    private $serviceMap;
 
     /**
      * @var TemplateService

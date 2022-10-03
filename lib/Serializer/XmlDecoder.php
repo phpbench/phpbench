@@ -27,6 +27,7 @@ use PhpBench\Model\SuiteCollection;
 use PhpBench\Model\Variant;
 use PhpBench\PhpBench;
 use PhpBench\Registry\Config;
+
 use function base64_decode;
 
 /**

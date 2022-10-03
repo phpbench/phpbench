@@ -3,6 +3,7 @@
 namespace PhpBench\Expression;
 
 use Closure;
+
 use function preg_replace_callback;
 
 final class MustacheRenderer

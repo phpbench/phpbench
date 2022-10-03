@@ -3,6 +3,7 @@
 namespace PhpBench\Compat;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
+
 use function method_exists;
 
 class SymfonyOptionsResolverCompat

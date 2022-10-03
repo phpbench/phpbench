@@ -11,10 +11,6 @@ use PhpBench\Tests\Unit\Expression\NodePrinterTestCase;
 
 class DisplayAsPrinterTest extends NodePrinterTestCase
 {
-    public function testPrintDataFrame(): void
-    {
-    }
-
     public function testDisplayAsBinaryUnit(): void
     {
         self::assertEquals('1.000GiB', $this->print(
