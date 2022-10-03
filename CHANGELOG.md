@@ -7,6 +7,12 @@ master
 Improvements:
 
 - Update PHPStan to 1.0 and fix new errors #1006
+- Use `webmozart/glob` instead of `glob` for benchmark paths and config
+  include paths #1005
+
+Bug fixes:
+
+- Fix bad exception call #1002 @TRowbotham
 
 1.2.6
 -----
