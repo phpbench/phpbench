@@ -14,7 +14,6 @@ namespace PhpBench\Console\Command\Handler;
 
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Report\ReportManager;
-use PhpBench\Storage\StorageRegistry;
 use PhpBench\Util\Cast;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

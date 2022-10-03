@@ -19,7 +19,6 @@ use PhpBench\Console\Command\Handler\TimeUnitHandler;
 use PhpBench\Console\Command\LogCommand;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
-use PhpBench\Json\JsonDecoder;
 use PhpBench\Serializer\XmlDecoder;
 use PhpBench\Serializer\XmlEncoder;
 use PhpBench\Storage\Driver\Xml\XmlDriver;

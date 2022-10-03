@@ -36,7 +36,6 @@ class Summary
         'max' => [],
         'sum' => [],
     ];
-    private $errorStacks = [];
 
     /**
      * @var bool
@@ -70,8 +69,6 @@ class Summary
                     $this->nbRejects += $variant->getRejectCount();
 
                     if ($variant->hasErrorStack()) {
-                        $this->errorStacks[] = $variant->getErrorStack();
-
                         continue;
                     }
 

@@ -12,9 +12,7 @@ use Symfony\Component\OptionsResolver\Exception\NoConfigurationException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use function json_encode;
-use function mb_strlen;
 use function method_exists;
-use function str_repeat;
 
 class OptionDumper
 {

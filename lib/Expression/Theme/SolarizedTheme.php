@@ -2,7 +2,6 @@
 
 namespace PhpBench\Expression\Theme;
 
-use Closure;
 use PhpBench\Expression\Ast\ArithmeticOperatorNode;
 use PhpBench\Expression\Ast\BooleanNode;
 use PhpBench\Expression\Ast\ComparisonNode;
