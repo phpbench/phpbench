@@ -72,7 +72,7 @@ class XmlEncoder
             $suiteEl->setAttribute('context', $suite->getTag() ?? '');
             $suiteEl->setAttribute('date', $suite->getDate()->format('c'));
             $suiteEl->setAttribute('config-path', $suite->getConfigPath() ?? '');
-            $suiteEl->setAttribute('uuid', $suite->getUuid());
+            $suiteEl->setAttribute('uuid', (string)$suite->getUuid());
 
             $envEl = $suiteEl->appendElement('env');
 
