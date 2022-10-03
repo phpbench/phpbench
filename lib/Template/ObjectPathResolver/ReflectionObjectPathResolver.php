@@ -43,17 +43,6 @@ final class ReflectionObjectPathResolver implements ObjectPathResolver
         return $paths;
     }
 
-    private function tryToResolve(string $classFqn): ?string
-    {
-        $path = $this->classToPath($classFqn);
-
-        if (file_exists($path)) {
-            return $path;
-        }
-
-        return null;
-    }
-
     private function classToPath(string $classFqn): ?string
     {
         foreach ($this->prefixMap as $prefix => $pathPrefix) {

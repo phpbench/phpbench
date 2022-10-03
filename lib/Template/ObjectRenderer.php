@@ -24,11 +24,6 @@ final class ObjectRenderer
     private $templatePaths;
 
     /**
-     * @var array
-     */
-    private $serviceMap;
-
-    /**
      * @var TemplateService
      */
     private $container;

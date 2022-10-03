@@ -11,7 +11,6 @@ use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Exception\EvaluationError;
 use PhpBench\Expression\ExpressionEvaluator;
-use PhpBench\Expression\Printer;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
 use PhpBench\Report\GeneratorInterface;
@@ -24,7 +23,6 @@ use RuntimeException;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-use function array_combine;
 use function array_key_exists;
 use function iterator_to_array;
 
@@ -174,49 +172,6 @@ EOT
 
         // convert the array into Table instances for rendering
         return $this->generateReports($tables, $config);
-    }
-
-    /**
-     * @param array<string,mixed> $table
-     * @param string[] $aggregateCols
-     *
-     * @return array<string,mixed>
-     */
-    private function aggregate(array $table, array $aggregateCols): array
-    {
-        $aggregated = [];
-
-        foreach ($table as $row) {
-            $hash = implode('-', array_map(function (string $key) use ($row) {
-                if (!array_key_exists($key, $row)) {
-                    throw new RuntimeException(sprintf(
-                        'Cannot aggregate: field "%s" does not exist, know fields: "%s"',
-                        $key,
-                        implode('", "', array_keys($row))
-                    ));
-                }
-
-                return $row[$key];
-            }, $aggregateCols));
-
-            $aggregated[$hash] = (function () use ($row, $hash, $aggregated) {
-                if (!isset($aggregated[$hash])) {
-                    return array_map(function ($value) {
-                        if (is_array($value)) {
-                            return $value;
-                        }
-
-                        return [$value];
-                    }, $row);
-                }
-
-                return array_combine(array_keys($aggregated[$hash]), array_map(function ($aggValue, $value) {
-                    return array_merge((array)$aggValue, (array)$value);
-                }, $aggregated[$hash], $row));
-            })();
-        }
-
-        return $aggregated;
     }
 
     /**
