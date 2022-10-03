@@ -20,11 +20,6 @@ class Parser
     private $infixParselets;
 
     /**
-     * @var Tokens
-     */
-    private $tokens;
-
-    /**
      * @var Parselets
      */
     private $suffixParselets;

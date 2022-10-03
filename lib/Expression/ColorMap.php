@@ -10,7 +10,7 @@ use Closure;
 interface ColorMap
 {
     /**
-     * @return array<class-string<T>, string|Closure(T):string>
+     * @return array<class-string, string|Closure(T):string>
      */
     public function colors(): array;
 }

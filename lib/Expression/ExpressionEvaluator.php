@@ -23,11 +23,6 @@ final class ExpressionEvaluator
     /**
      * @var MustacheRenderer
      */
-    private $templateRenderer;
-
-    /**
-     * @var MustacheRenderer
-     */
     private $mustacheRenderer;
 
     /**

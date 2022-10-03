@@ -19,7 +19,6 @@ final class Lexer
     private const PATTERN_STRING = '"(?:[^"]|"")*"';
     private const PATTERN_STRING_SINGLE = '\'(?:[^\']|\'\')*\'';
     private const PATTERN_NUMBER = '(?:[0-9]+(?:[\\.][0-9]+)*)(?:e[+-]?[0-9]+)?';
-    private const PATTERN_PARAMETER = '(?:(?:[a-z_]+\\.)+(?:[a-z_\[\]]+))';
 
     private const TOKEN_VALUE_MAP = [
         '+/-' => Token::T_TOLERANCE,

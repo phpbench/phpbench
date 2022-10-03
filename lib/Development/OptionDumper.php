@@ -128,11 +128,6 @@ class OptionDumper
         return implode("\n", $section);
     }
 
-    private function underline(string $string, string $char): string
-    {
-        return str_repeat($char, mb_strlen($string));
-    }
-
     /**
      * @param mixed $value
      */

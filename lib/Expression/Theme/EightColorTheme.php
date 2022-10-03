@@ -2,7 +2,6 @@
 
 namespace PhpBench\Expression\Theme;
 
-use Closure;
 use PhpBench\Expression\Ast\ArithmeticOperatorNode;
 use PhpBench\Expression\Ast\BooleanNode;
 use PhpBench\Expression\Ast\ComparisonNode;
@@ -20,14 +19,8 @@ use PhpBench\Expression\ColorMap;
  */
 class EightColorTheme implements ColorMap
 {
-    /**
-     * @template T
-     *
-     * @return array<class-string<T>, string|Closure(T):string>
-     */
     public function colors(): array
     {
-        /** @phpstan-ignore-next-line */
         return [
             FunctionNode::class => 'fg=green',
             ParenthesisNode::class => 'fg=red',

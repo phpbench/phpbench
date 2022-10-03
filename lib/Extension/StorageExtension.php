@@ -68,13 +68,6 @@ class StorageExtension implements ExtensionInterface
         $this->registerStorage($container);
     }
 
-    private function registerJson(Container $container): void
-    {
-        $container->register(JsonDecoder::class, function (Container $container) {
-            return new JsonDecoder();
-        });
-    }
-
     private function registerCommands(Container $container): void
     {
         $container->register(SuiteCollectionHandler::class, function (Container $container) {

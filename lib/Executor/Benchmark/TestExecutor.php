@@ -35,11 +35,6 @@ class TestExecutor implements BenchmarkExecutorInterface, MethodExecutorInterfac
      */
     private $lastContext;
 
-    /**
-     * @var Variant|null
-     */
-    private $lastVariant;
-
     private $index = 0;
 
     /**

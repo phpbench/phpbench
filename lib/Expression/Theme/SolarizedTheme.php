@@ -27,80 +27,24 @@ use PhpBench\Expression\Theme\Util\Gradient;
  */
 class SolarizedTheme implements ColorMap
 {
-    private const BASE03 = '#002b36';
-    private const BASE02 = '#073642';
-    private const BASE01 = '#586e75';
-    private const BASE00 = '#657b83';
-    private const BASE0 = '#839496';
     private const BASE1 = '#93a1a1';
-    private const BASE2 = '#eee8d5';
-    private const BASE3 = '#fdf6e3';
     private const YELLOW = '#b58900';
     private const ORANGE = '#cb4b16';
     private const RED = '#dc322f';
-    private const MAGENTA = '#d33682';
-    private const VIOLET = '#6c71c4';
-    private const BLUE = '#268bd2';
-    private const CYAN = '#2aa198';
     private const GREEN = '#859900';
+    private const BLUE = '#268bd2';
 
     /**
      * @var Gradient|null
      */
     private $gradient;
 
-    /**
-     * @var string
-     */
-    private $base0;
-
-    /**
-     * @var string
-     */
-    private $base1;
-
-    /**
-     * @var string
-     */
-    private $base2;
-
-    /**
-     * @var string
-     */
-    private $base3;
-
-    /**
-     * @var string
-     */
-    private $neutral;
-
-    public function __construct(bool $light = true)
+    public function __construct()
     {
-        if ($light) {
-            $this->base0 = self::BASE00;
-            $this->base1 = self::BASE01;
-            $this->base2 = self::BASE02;
-            $this->base3 = self::BASE03;
-            $this->neutral = '#222222';
-
-            return;
-        }
-
-        $this->neutral = '#aaaaaa';
-        $this->base0 = self::BASE0;
-        $this->base1 = self::BASE1;
-        $this->base2 = self::BASE2;
-        $this->base3 = self::BASE3;
     }
 
-    /**
-     * @template T
-     *
-     * @return array<class-string<T>, string|Closure(T):string>
-     */
     public function colors(): array
     {
-        /** @phpstan-ignore-next-line */
         return [
             LabelNode::class => 'fg='. self::BASE1,
             UnitNode::class => 'fg='. self::BASE1,
