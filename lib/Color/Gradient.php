@@ -70,6 +70,7 @@ use function array_fill;
             $gradient[$i] = range($cStart, $cEnd, $step);
         }
 
+        /** @phpstan-ignore-next-line */
         $colors = array_merge($this->colors, array_map(function (float $r, float $g, float $b) {
             return DeprecatedColor::fromRgb((int)$r, (int)$g, (int)$b);
         }, ...$gradient));
