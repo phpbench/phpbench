@@ -169,7 +169,7 @@ class BarChartAggregateComponentGenerator implements ComponentGeneratorInterface
             $hash = [];
 
             foreach ($partitionColumns as $column) {
-                $hash[] = $this->evaluator->evaluatePhpValue($column, $row->toRecord());
+                $hash[] = (string)$this->evaluator->evaluatePhpValue($column, $row->toRecord());
             }
 
             return implode('-', array_filter($hash, function (string $value) {

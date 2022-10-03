@@ -45,11 +45,6 @@ class ExpressionGenerator implements GeneratorInterface
     private $evaluator;
 
     /**
-     * @var Printer
-     */
-    private $printer;
-
-    /**
      * @var LoggerInterface
      */
     private $logger;
@@ -61,12 +56,10 @@ class ExpressionGenerator implements GeneratorInterface
 
     public function __construct(
         ExpressionEvaluator $evaluator,
-        Printer $printer,
         SuiteCollectionTransformer $transformer,
         LoggerInterface $logger
     ) {
         $this->evaluator = $evaluator;
-        $this->printer = $printer;
         $this->logger = $logger;
         $this->transformer = $transformer;
     }

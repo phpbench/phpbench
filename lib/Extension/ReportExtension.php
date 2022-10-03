@@ -15,7 +15,6 @@ use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\Expression\ExpressionEvaluator;
 use PhpBench\Expression\NodePrinters;
 use PhpBench\Expression\Printer;
-use PhpBench\Expression\Printer\EvaluatingPrinter;
 use PhpBench\Expression\Printer\NormalizingPrinter;
 use PhpBench\Json\JsonDecoder;
 use PhpBench\Registry\ConfigurableRegistry;
@@ -195,7 +194,6 @@ class ReportExtension implements ExtensionInterface
         $container->register(ExpressionGenerator::class, function (Container $container) {
             return new ExpressionGenerator(
                 $container->get(ExpressionEvaluator::class),
-                $container->get(EvaluatingPrinter::class),
                 $container->get(SuiteCollectionTransformer::class),
                 $container->get(LoggerInterface::class)
             );

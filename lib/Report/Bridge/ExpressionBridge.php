@@ -57,7 +57,7 @@ class ExpressionBridge
             $hash = [];
 
             foreach ($expressions as $expression) {
-                $hash[] = $this->evaluatePhpValue($expression, $row->toRecord());
+                $hash[] = (string)$this->evaluatePhpValue($expression, $row->toRecord());
             }
 
             return implode('-', $hash);

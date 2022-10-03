@@ -4,7 +4,6 @@ namespace PhpBench\Tests\Unit\Report\Generator;
 
 use PhpBench\DependencyInjection\Container;
 use PhpBench\Expression\ExpressionEvaluator;
-use PhpBench\Expression\Printer\EvaluatingPrinter;
 use PhpBench\Report\Generator\ExpressionGenerator;
 use PhpBench\Report\GeneratorInterface;
 use PhpBench\Report\Transform\SuiteCollectionTransformer;
@@ -24,7 +23,6 @@ class ExpressionGeneratorTest extends GeneratorTestCase
     {
         return new ExpressionGenerator(
             $container->get(ExpressionEvaluator::class),
-            $container->get(EvaluatingPrinter::class),
             new SuiteCollectionTransformer(),
             new ConsoleLogger(new ConsoleOutput())
         );
