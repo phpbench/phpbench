@@ -30,11 +30,6 @@ class ReportHandler
      */
     private $reportManager;
 
-    /**
-     * @var StorageRegistry
-     */
-    private $storageRegistry;
-
     public function __construct(ReportManager $reportManager)
     {
         $this->reportManager = $reportManager;
