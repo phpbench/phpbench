@@ -4,6 +4,7 @@ namespace PhpBench\Config\Processor;
 
 use PhpBench\Config\ConfigLoader;
 use PhpBench\Config\ConfigProcessor;
+use Webmozart\Glob\Glob;
 use Webmozart\PathUtil\Path;
 
 class IncludeGlobProcessor implements ConfigProcessor
@@ -19,7 +20,7 @@ class IncludeGlobProcessor implements ConfigProcessor
         foreach ((array)$config[self::DIRECTIVE] as $globPath) {
             $globPath = Path::makeAbsolute($globPath, dirname($path));
 
-            foreach (glob($globPath) as $includePath) {
+            foreach (Glob::glob($globPath) as $includePath) {
                 $config = array_merge_recursive(
                     $config,
                     $loader->load($includePath)

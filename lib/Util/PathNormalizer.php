@@ -2,6 +2,7 @@
 
 namespace PhpBench\Util;
 
+use Webmozart\Glob\Glob;
 use Webmozart\PathUtil\Path;
 
 class PathNormalizer
@@ -17,7 +18,7 @@ class PathNormalizer
             $path = Path::isAbsolute($path) ? $path : Path::join([$baseDir, $path]);
 
             if (self::isGlob($path)) {
-                $globPaths = glob($path, GLOB_NOSORT);
+                $globPaths = Glob::glob($path);
 
                 if (empty($globPaths)) {
                     return [];
