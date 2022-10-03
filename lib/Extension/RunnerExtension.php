@@ -559,7 +559,6 @@ class RunnerExtension implements ExtensionInterface
 
         $container->register(AnnotationDriver::class, function (Container $container) {
             return new AnnotationDriver(
-                $container->get(RemoteReflector::class),
                 $container->getParameter(self::PARAM_SUBJECT_PATTERN),
                 $container->get(AnnotationReader::class)
             );
