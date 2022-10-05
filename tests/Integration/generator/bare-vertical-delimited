@@ -19,6 +19,7 @@ iteration_index	0
 result_time_net	0
 result_time_revs	1
 result_time_avg	0
+result_time_unit	microseconds
 result_mem_peak	200
 result_mem_real	200
 result_mem_final	200
@@ -46,6 +47,7 @@ iteration_index	1
 result_time_net	10
 result_time_revs	1
 result_time_avg	10
+result_time_unit	microseconds
 result_mem_peak	200
 result_mem_real	200
 result_mem_final	200

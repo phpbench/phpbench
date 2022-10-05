@@ -14,6 +14,7 @@ namespace PhpBench\Model\Result;
 
 use InvalidArgumentException;
 use PhpBench\Model\ResultInterface;
+use PhpBench\Util\TimeUnit;
 
 /**
  * Represents the net time taken by a single iteration (all revolutions).
@@ -21,7 +22,7 @@ use PhpBench\Model\ResultInterface;
 class TimeResult implements ResultInterface
 {
     /**
-     * @var int
+     * @var int|float
      */
     private $netTime;
 
@@ -30,8 +31,12 @@ class TimeResult implements ResultInterface
      */
     private $revs;
 
+    /**
+     * @var string
+     */
+    private $unit;
 
-    public function __construct(int $netTime, int $revs = 1)
+    public function __construct($netTime, int $revs = 1, string $unit = TimeUnit::MICROSECONDS)
     {
         if ($netTime < 0) {
             throw new InvalidArgumentException(sprintf('Net time cannot be less than zero, got "%s"', $netTime));
@@ -41,24 +46,28 @@ class TimeResult implements ResultInterface
             throw new InvalidArgumentException(sprintf('Revs cannot be less than zero, got "%s"', $revs));
         }
 
-        $this->netTime = $netTime;
+
+        $this->netTime = $unit === TimeUnit::MICROSECONDS ? $netTime : TimeUnit::convert($netTime, $unit, TimeUnit::MICROSECONDS, TimeUnit::MODE_TIME);
         $this->revs = $revs;
+        $this->unit = TimeUnit::MICROSECONDS;
     }
 
     public static function fromArray(array $values): ResultInterface
     {
         return new self(
-            (int) $values['net'],
+            $values['net'],
             array_key_exists('revs', $values) ? $values['revs'] : 1
         );
     }
 
     /**
+     * TODO: This is downcasting to an int
+     *
      * Return the net-time for this iteration.
      */
     public function getNet(): int
     {
-        return $this->netTime;
+        return (int)$this->netTime;
     }
 
     /**
@@ -90,6 +99,7 @@ class TimeResult implements ResultInterface
             'net' => $this->netTime,
             'revs' => $this->revs,
             'avg' => $this->netTime / $this->revs,
+            'unit' => $this->unit,
         ];
     }
 

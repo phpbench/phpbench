@@ -41,6 +41,10 @@ final class Token
     public const T_STRING = 'string';
     public const T_PARAMETER = 'parameter';
     public const T_QUESTION = 'question';
+    public const T_SEMICOLON = 'semicolon';
+    public const T_OPEN_BRACE = 'open_brace';
+    public const T_CLOSE_BRACE = 'close_brace';
+
 
     /**
      * @var string

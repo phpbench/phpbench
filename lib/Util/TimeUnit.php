@@ -17,6 +17,7 @@ namespace PhpBench\Util;
  */
 class TimeUnit
 {
+    public const NANOSECOND = 'nanosecond';
     public const MILLISECOND = 'millisecond';
     public const MICROSECOND = 'microsecond';
     public const SECOND = 'second';
@@ -24,6 +25,7 @@ class TimeUnit
     public const HOUR = 'hour';
     public const DAY = 'day';
 
+    public const NANOSECONDS = 'nanoseconds';
     public const MICROSECONDS = 'microseconds';
     public const MILLISECONDS = 'milliseconds';
     public const SECONDS = 'seconds';
@@ -39,6 +41,7 @@ class TimeUnit
      * @var array
      */
     private static $map = [
+        self::NANOSECONDS => 0.001,
         self::MICROSECONDS => 1,
         self::MILLISECONDS => 1000,
         self::SECONDS => 1000000,
@@ -48,6 +51,7 @@ class TimeUnit
     ];
 
     private static $aliases = [
+        self::NANOSECOND => self::NANOSECONDS,
         self::MICROSECOND => self::MICROSECONDS,
         self::MILLISECOND => self::MILLISECONDS,
         self::SECOND => self::SECONDS,
@@ -64,6 +68,7 @@ class TimeUnit
      * @var array
      */
     private static $suffixes = [
+        self::NANOSECONDS => 'ns',
         self::MICROSECONDS => 'μs',
         self::MILLISECONDS => 'ms',
         self::SECONDS => 's',

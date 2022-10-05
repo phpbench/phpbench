@@ -183,7 +183,7 @@ class XmlEncoder
                         '%s-%s',
                         $prefix,
                         str_replace('_', '-', $key)
-                    ), $value);
+                    ), (string)$value);
                 }
             }
         }

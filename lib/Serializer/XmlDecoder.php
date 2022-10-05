@@ -238,14 +238,7 @@ class XmlDecoder
                 $value = $element->getAttribute('value');
                 $type = $element->getAttribute('type');
 
-                switch ($type) {
-                    case 'integer':
-                        return intval($value);
-                    case 'double':
-                        return floatval($value);
-                }
-
-                return $value;
+                return $this->resolveTypedValue($type, $value);
             })($parameterEl);
         }
 
@@ -309,7 +302,7 @@ class XmlDecoder
                 }
 
                 $suffix = substr($name, strpos($name, '-') + 1);
-                $results[$prefix][str_replace('-', '_', $suffix)] = $attributeEl->value;
+                $results[$prefix][str_replace('-', '_', $suffix)] = $this->guessTypedValue($attributeEl->value);
             }
 
             $iteration = $variant->createIteration();
@@ -338,5 +331,30 @@ class XmlDecoder
         }
 
         return $value;
+    }
+
+    private function resolveTypedValue(string $type, string $value)
+    {
+        switch ($type) {
+            case 'integer':
+                return intval($value);
+            case 'double':
+                return floatval($value);
+        }
+        
+        return $value;
+    }
+
+    private function guessTypedValue(string $stringValue)
+    {
+        if (!is_numeric($stringValue)) {
+            return $stringValue;
+        }
+
+        if (false !== strpos($stringValue, '.')) {
+            return floatval($stringValue);
+        }
+
+        return intval($stringValue);
     }
 }

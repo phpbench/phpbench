@@ -27,16 +27,34 @@ use PhpBench\Environment\Supplier;
 use PhpBench\Executor\Benchmark\DebugExecutor;
 use PhpBench\Executor\Benchmark\LocalExecutor;
 use PhpBench\Executor\Benchmark\MemoryCentricMicrotimeExecutor;
+use PhpBench\Executor\Benchmark\ProgramExecutor;
 use PhpBench\Executor\Benchmark\RemoteExecutor;
 use PhpBench\Executor\CompositeExecutor;
 use PhpBench\Executor\Method\ErrorHandlingExecutorDecorator;
 use PhpBench\Executor\Method\LocalMethodExecutor;
 use PhpBench\Executor\Method\RemoteMethodExecutor;
+use PhpBench\Executor\Parser\UnitParser;
+use PhpBench\Executor\PhpProcessFactory;
+use PhpBench\Executor\PhpProcessOptions;
+use PhpBench\Executor\ScriptBuilder;
+use PhpBench\Executor\ScriptExecutor;
+use PhpBench\Executor\Unit\AfterMethodsUnit;
+use PhpBench\Executor\Unit\CallSubjectUnit;
+use PhpBench\Executor\Unit\HrtimeSampler;
+use PhpBench\Executor\Unit\MemorySampler;
+use PhpBench\Executor\Unit\RevLoopUnit;
+use PhpBench\Executor\Unit\RootUnit;
+use PhpBench\Executor\Unit\BeforeMethodsUnit;
+use PhpBench\Executor\Unit\WarmupUnit;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\ExpressionLanguage;
 use PhpBench\Expression\Printer;
 use PhpBench\Expression\Printer\EvaluatingPrinter;
 use PhpBench\Json\JsonDecoder;
+use PhpBench\Model\MainResultFactory;
+use PhpBench\Model\Result\BufferResultFactory;
+use PhpBench\Model\Result\HrTimeResultFactory;
+use PhpBench\Model\Result\MemoryResultFactory;
 use PhpBench\Progress\Logger\BlinkenLogger;
 use PhpBench\Progress\Logger\DotsLogger;
 use PhpBench\Progress\Logger\HistogramLogger;
@@ -368,6 +386,42 @@ class RunnerExtension implements ExtensionInterface
             return new DebugExecutor();
         }, [
             self::TAG_EXECUTOR => ['name' => 'debug']
+        ]);
+
+        $container->register(ProgramExecutor::class, function (Container $container) {
+            return new ProgramExecutor(
+                new UnitParser(),
+                new ScriptBuilder([
+                    new RootUnit($container->getParameter('runner.bootstrap')),
+                    new BeforeMethodsUnit(),
+                    new AfterMethodsUnit(),
+                    new CallSubjectUnit(),
+                    new HrtimeSampler(),
+                    new MemorySampler(),
+                    new WarmupUnit(),
+                    new RevLoopUnit(),
+                ]),
+                new ScriptExecutor(
+                    new PhpProcessFactory(
+                        new PhpProcessOptions(
+                            $container->getParameter(self::PARAM_PHP_BINARY) ?? PHP_BINARY,
+                            $container->getParameter(self::PARAM_PHP_CONFIG),
+                            $container->getParameter(self::PARAM_PHP_DISABLE_INI),
+                            $container->getParameter(self::PARAM_PHP_WRAPPER),
+                            $container->getParameter(self::PARAM_RUNNER_TIMEOUT),
+                        )
+                    ),
+                    $container->getParameter(self::PARAM_REMOTE_SCRIPT_PATH),
+                    $container->getParameter(self::PARAM_REMOTE_SCRIPT_REMOVE),
+                ),
+                new MainResultFactory([
+                    'hrtime' => new HrTimeResultFactory(),
+                    'buffer' => new BufferResultFactory(),
+                    'mem' => new MemoryResultFactory(),
+                ]),
+            );
+        }, [
+            self::TAG_EXECUTOR => ['name' => 'program']
         ]);
 
         $container->register(Finder::class, function (Container $container) {
