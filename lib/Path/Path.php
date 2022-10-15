@@ -15,6 +15,10 @@ use Symfony\Component\Filesystem\Exception\InvalidArgumentException;
 use Symfony\Component\Filesystem\Exception\RuntimeException;
 
 /**
+ * NOTE: This class is copied as the class was "moved" from a dedicated package
+ * to be part of the symfony/filesystem package which is not available in the
+ * current version constraints.
+ * 
  * Contains utility methods for handling path strings.
  *
  * The methods in this class are able to deal with both UNIX and Windows paths
