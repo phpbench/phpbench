@@ -44,5 +44,7 @@ class NumberFormatTest extends TestCase
         yield [10.12, 3, false, '10.120'];
 
         yield [10.000, 3, false, '10.000'];
+
+        yield [1000, 3, true, '1,000'];
     }
 }

@@ -18,7 +18,7 @@ class NumberFormat
             $formated = rtrim($formated, '0');
 
             if (substr($formated, -1) === '.') {
-                return (string)$number;
+                return (string)number_format($number);
             }
         }
 
