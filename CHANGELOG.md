@@ -6,7 +6,7 @@ master
 
 Improvements:
 
-- Remove dependency on `webmozaty/path` (copied the class into PHPBench)
+- Remove dependency on `webmozart/path` (copied the class into PHPBench)
 - Update PHPStan to 1.0 and fix new errors #1006
 - Use `webmozart/glob` instead of `glob` for benchmark paths and config
   include paths #1005
@@ -14,6 +14,7 @@ Improvements:
 Bug fixes:
 
 - Fix bad exception call #1002 @TRowbotham
+- Fix comma formatting of numbers with no zero decimal precision #1008
 
 1.2.6
 -----
