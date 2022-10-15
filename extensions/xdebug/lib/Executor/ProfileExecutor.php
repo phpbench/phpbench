@@ -17,10 +17,10 @@ use PhpBench\Executor\BenchmarkExecutorInterface;
 use PhpBench\Executor\ExecutionContext;
 use PhpBench\Executor\ExecutionResults;
 use PhpBench\Extensions\XDebug\XDebugUtil;
+use PhpBench\Path\Path;
 use PhpBench\Registry\Config;
 use RuntimeException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Webmozart\PathUtil\Path;
 
 class ProfileExecutor implements BenchmarkExecutorInterface
 {

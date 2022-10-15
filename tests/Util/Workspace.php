@@ -3,11 +3,11 @@
 namespace PhpBench\Tests\Util;
 
 use InvalidArgumentException;
+use PhpBench\Path\Path;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RuntimeException;
 use SplFileInfo;
-use Webmozart\PathUtil\Path;
 
 class Workspace
 {
