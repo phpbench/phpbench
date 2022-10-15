@@ -6,6 +6,7 @@ master
 
 Improvements:
 
+- Remove dependency on `webmozaty/path` (copied the class into PHPBench)
 - Update PHPStan to 1.0 and fix new errors #1006
 - Use `webmozart/glob` instead of `glob` for benchmark paths and config
   include paths #1005

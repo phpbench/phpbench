@@ -4,8 +4,8 @@ namespace PhpBench\Config\Processor;
 
 use PhpBench\Config\ConfigLoader;
 use PhpBench\Config\ConfigProcessor;
+use PhpBench\Path\Path;
 use Webmozart\Glob\Glob;
-use Webmozart\PathUtil\Path;
 
 class IncludeGlobProcessor implements ConfigProcessor
 {

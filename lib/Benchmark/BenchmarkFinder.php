@@ -15,10 +15,10 @@ namespace PhpBench\Benchmark;
 use Generator;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\MetadataFactory;
+use PhpBench\Path\Path;
 use Psr\Log\LoggerInterface;
 use SplFileInfo;
 use Symfony\Component\Finder\Finder;
-use Webmozart\PathUtil\Path;
 
 /**
  * This class finds a benchmark (or benchmarks depending on the path), loads

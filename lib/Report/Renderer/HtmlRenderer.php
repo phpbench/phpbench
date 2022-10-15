@@ -3,6 +3,7 @@
 namespace PhpBench\Report\Renderer;
 
 use PhpBench\Compat\SymfonyOptionsResolverCompat;
+use PhpBench\Path\Path;
 use PhpBench\Registry\Config;
 use PhpBench\Report\Model\HtmlDocument;
 use PhpBench\Report\Model\Reports;
@@ -11,7 +12,6 @@ use PhpBench\Template\ObjectRenderer;
 use RuntimeException;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Webmozart\PathUtil\Path;
 
 class HtmlRenderer implements RendererInterface
 {
