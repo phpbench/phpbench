@@ -44,10 +44,14 @@ class XDebugExtension implements ExtensionInterface
 
     public function load(Container $container): void
     {
+        $container->register(XDebugUtil::class, function (Container $container) {
+            return XDebugUtil::fromEnvironment();
+        });
         $container->register(ProfileCommand::class, function (Container $container) {
             return new ProfileCommand(
                 $container->get(RunnerHandler::class),
-                $container->get(self::PARAM_OUTPUT_DIR)
+                $container->get(self::PARAM_OUTPUT_DIR),
+                $container->get(XDebugUtil::class)
             );
         }, [
             ConsoleExtension::TAG_CONSOLE_COMMAND => []
@@ -64,6 +68,7 @@ class XDebugExtension implements ExtensionInterface
             return new CompositeExecutor(
                 new ProfileExecutor(
                     $container->get(RemoteExecutor::class),
+                    $container->get(XDebugUtil::class),
                     $container->getParameter(CoreExtension::PARAM_WORKING_DIR)
                 ),
                 $container->get(RemoteMethodExecutor::class)
