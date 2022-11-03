@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+master
+------
+
+Improvements:
+
+- Profiler: detect Xdebug `.gz` files when compression enabled #1011 @blackwolf12333
+
 1.2.7
 -----
 
