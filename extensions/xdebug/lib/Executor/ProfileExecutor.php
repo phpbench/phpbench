@@ -19,7 +19,6 @@ use PhpBench\Executor\ExecutionResults;
 use PhpBench\Extensions\XDebug\XDebugUtil;
 use PhpBench\Path\Path;
 use PhpBench\Registry\Config;
-use RuntimeException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProfileExecutor implements BenchmarkExecutorInterface
@@ -34,10 +33,16 @@ class ProfileExecutor implements BenchmarkExecutorInterface
      */
     private $cwd;
 
-    public function __construct(TemplateExecutor $innerExecutor, string $cwd)
+    /**
+     * @var XDebugUtil
+     */
+    private $xdebugUtil;
+
+    public function __construct(TemplateExecutor $innerExecutor, XDebugUtil $xdebugUtil, string $cwd)
     {
         $this->innerExecutor = $innerExecutor;
         $this->cwd = $cwd;
+        $this->xdebugUtil = $xdebugUtil;
     }
 
     /**
@@ -60,7 +65,7 @@ class ProfileExecutor implements BenchmarkExecutorInterface
     {
         $outputDir = $config['output_dir'];
         $callback = $config['callback'];
-        $name = XDebugUtil::filenameFromContext($context, '.cachegrind');
+        $name = $this->xdebugUtil->filenameFromContext($context, '.cachegrind');
 
         $config[TemplateExecutor::OPTION_PHP_CONFIG] = $this->resolveXdebugIniSettings($outputDir, $name);
         $results = $this->innerExecutor->execute($context, $config);
@@ -75,17 +80,11 @@ class ProfileExecutor implements BenchmarkExecutorInterface
      */
     private function resolveXdebugIniSettings(string $outputDir, string $name): array
     {
-        $xdebugVersion = phpversion('xdebug');
-
-        if (false === $xdebugVersion) {
-            throw new RuntimeException(
-                'Xdebug is not installed'
-            );
-        }
+        $xdebugVersion = $this->xdebugUtil->discoverXdebugMajorVersion();
 
         $outputPath = Path::makeAbsolute($outputDir, $this->cwd);
 
-        if (substr($xdebugVersion, 0, 1) === '3') {
+        if ($xdebugVersion === '3') {
             return [
                 'xdebug.mode' => 'profile',
                 'xdebug.output_dir' => $outputPath,

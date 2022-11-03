@@ -3,6 +3,7 @@ parameters:
     paths:
         - lib
         - examples/Extension
+        - extensions/xdebug/lib
     excludePaths:
         - lib/Attributes
         - lib/Benchmark/Metadata/Driver/AttributeDriver.php

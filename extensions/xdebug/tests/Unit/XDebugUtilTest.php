@@ -39,12 +39,26 @@ class XDebugUtilTest extends TestCase
             'className' => $class,
             'methodName' => $subject,
         ];
+        $xdebugUtil = new XDebugUtil('3.1.2', false);
 
-        $result = XDebugUtil::filenameFromContext(Invoke::new(ExecutionContext::class, $params));
+        $result = $xdebugUtil->filenameFromContext(Invoke::new(ExecutionContext::class, $params));
         $this->assertEquals(
             $expected,
             $result
         );
+    }
+
+    /**
+     *
+     * @dataProvider provideXdebugVersion
+     */
+    public function testCacheGrindExtension($xdebugVersion, $useCompression, $expectedExtension): void
+    {
+        $xdebugUtil = new XDebugUtil($xdebugVersion, $useCompression);
+
+        $cacheGrindExtension = $xdebugUtil->getCachegrindExtensionOfGeneratedFile();
+
+        $this->assertEquals($expectedExtension, $cacheGrindExtension);
     }
 
     public function provideGenerate()
@@ -60,6 +74,15 @@ class XDebugUtilTest extends TestCase
                 'Subject\\//asd',
                 '25133125bf4eca7a08502711d2c8403d'
             ],
+        ];
+    }
+
+    public function provideXdebugVersion(): array
+    {
+        return [
+            ['2.8.1', false, '.cachegrind'],
+            ['3.1.2', false, '.cachegrind'],
+            ['3.1.2', true, '.cachegrind.gz']
         ];
     }
 }

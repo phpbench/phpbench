@@ -20,25 +20,33 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\Process;
 
 class ProfileCommand extends Command
 {
+    /**
+     * @var RunnerHandler
+     */
     private $runnerHandler;
-    private $filesystem;
+    /**
+     * @var OutputDirHandler
+     */
     private $outputDirHandler;
+    /**
+     * @var XDebugUtil
+     */
+    private $xdebugUtil;
 
     public function __construct(
         RunnerHandler $runnerHandler,
         OutputDirHandler $outputDirHandler,
-        Filesystem $filesystem = null
+        XDebugUtil $xdebugUtil
     ) {
         parent::__construct();
         $this->runnerHandler = $runnerHandler;
-        $this->filesystem = $filesystem ?: new Filesystem();
         $this->outputDirHandler = $outputDirHandler;
+        $this->xdebugUtil = $xdebugUtil;
     }
 
     public function configure(): void
@@ -79,7 +87,7 @@ EOT
                 'executor' => 'xdebug_profile',
                 'output_dir' => $outputDir,
                 'callback' => function ($iteration) use ($outputDir, $guiBin, &$generatedFiles): void {
-                    $generatedFiles[] = $generatedFile = $outputDir . DIRECTORY_SEPARATOR . XDebugUtil::filenameFromContext($iteration, '.cachegrind');
+                    $generatedFiles[] = $generatedFile = $outputDir . DIRECTORY_SEPARATOR . $this->xdebugUtil->filenameFromContext($iteration, $this->xdebugUtil->getCachegrindExtensionOfGeneratedFile());
 
                     if ($guiBin) {
                         $process = Process::fromShellCommandline(sprintf(
