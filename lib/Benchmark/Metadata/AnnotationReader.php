@@ -143,12 +143,6 @@ class AnnotationReader
         $this->docParser = new DocParser();
         $this->docParser->setIgnoredAnnotationNames(self::$globalIgnoredNames);
         $this->importUse = $importUse;
-
-        AnnotationRegistry::registerLoader(function ($classFqn) {
-            if (class_exists($classFqn)) {
-                return true;
-            }
-        });
     }
 
     /**
