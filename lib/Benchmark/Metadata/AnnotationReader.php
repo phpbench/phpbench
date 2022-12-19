@@ -13,7 +13,6 @@
 namespace PhpBench\Benchmark\Metadata;
 
 use Doctrine\Common\Annotations\AnnotationException;
-use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\Annotations\DocParser;
 use Doctrine\Common\Annotations\TokenParser;
 use PhpBench\Reflection\ReflectionClass;
@@ -191,7 +190,7 @@ class AnnotationReader
 
         $content = file_get_contents($class->path);
         $tokenizer = new TokenParser('<?php ' . $content);
-        $useImports = $tokenizer->parseUseStatements($class->namespace);
+        $useImports = $tokenizer->parseUseStatements($class->namespace ?? '');
         $this->useImports[$class->class] = $useImports;
 
         return $useImports;
@@ -206,7 +205,7 @@ class AnnotationReader
     private function parse($input, $context = ''): array
     {
         try {
-            $annotations = @$this->docParser->parse($input, $context);
+            $annotations = @$this->docParser->parse($input ?? '', $context);
         } catch (AnnotationException $e) {
             if (!preg_match('/The annotation "(.*)" .* was never imported/', $e->getMessage(), $matches)) {
                 throw new CouldNotLoadMetadataException($e->getMessage(), 0, $e);
