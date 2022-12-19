@@ -28,7 +28,7 @@ jobs:
                 run: sudo apt-get update
 
             -   name: "Install Sphinx dependencies"
-                run: sudo apt-get install python-dev build-essential
+                run: sudo apt-get install python3-dev build-essential
 
             -   name: "Cache pip"
                 uses: actions/cache@v3
