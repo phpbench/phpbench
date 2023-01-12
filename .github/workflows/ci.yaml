@@ -68,7 +68,7 @@ jobs:
 
             -
                 name: "Composer install"
-                uses: "ramsey/composer-install@v1"
+                uses: "ramsey/composer-install@v2"
                 with:
                     composer-options: "--no-scripts"
 
@@ -105,7 +105,7 @@ jobs:
 
             -
                 name: "Composer install"
-                uses: "ramsey/composer-install@v1"
+                uses: "ramsey/composer-install@v2"
                 with:
                     composer-options: "--no-scripts"
 
@@ -165,7 +165,7 @@ jobs:
               run: composer remove --dev friendsofphp/php-cs-fixer --no-update
 
             - name: "Composer install"
-              uses: "ramsey/composer-install@v1"
+              uses: "ramsey/composer-install@v2"
               with:
                   dependency-versions: "${{ matrix.dependency }}"
 
