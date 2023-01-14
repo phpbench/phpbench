@@ -45,7 +45,7 @@ following:
 
 .. code-block:: bash
 
-     gpg --recv-keys 29BE1AD59988642ADCDFC86715E1F8E2B149E6F5
+     gpg --recv-keys 1EF396F668895578CAB457A26FC579F5F0FCC966
      gpg --with-fingerprint --verify phpbench.phar.asc phpbench.phar
 
 You should then see something like the following:
