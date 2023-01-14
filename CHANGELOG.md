@@ -1,11 +1,13 @@
 CHANGELOG
 =========
 
-master
-------
+1.2.8
+-----
 
 Improvements:
 
+- Update documentation to point to reference new GPG key #1017
+- Support Doctrine Annotations 2.0 #1013 @greg0ire
 - Profiler: detect Xdebug `.gz` files when compression enabled #1011 @blackwolf12333
 
 1.2.7
