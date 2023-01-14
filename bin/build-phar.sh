@@ -16,7 +16,7 @@ if [[ "$GPG_SIGNING" != '' ]] ; then
 
     echo "Sign Phar"
 
-    echo "$GPG_PASSPHRASE" | gpg --command-fd 0 --passphrase-fd 0 --pinentry-mode loopback -u 6FC579F5F0FCC966 --batch --detach-sign --armor --output phpbench.phar.asc phpbench.phar
+    echo "$GPG_PASSPHRASE" | gpg --command-fd 0 --passphrase-fd 0 --pinentry-mode loopback -u 676674024C0D866B --batch --detach-sign --armor --output phpbench.phar.asc phpbench.phar
 fi
 
 cd -
