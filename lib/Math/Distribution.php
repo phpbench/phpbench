@@ -13,6 +13,8 @@
 namespace PhpBench\Math;
 
 use ArrayAccess;
+use ArrayIterator;
+use Closure;
 use IteratorAggregate;
 
 /**
@@ -24,10 +26,25 @@ use IteratorAggregate;
  */
 class Distribution implements IteratorAggregate, ArrayAccess
 {
+    /**
+     * @var list<float>
+     */
     private $samples = [];
+
+    /**
+     * @var array<string,float>
+     */
     private $stats = [];
+
+    /**
+     * @var array<string,Closure():float>
+     */
     private $closures = [];
 
+    /**
+     * @param list<float> $samples
+     * @param array<string,float> $stats
+     */
     public function __construct(array $samples, array $stats = [])
     {
         if (count($samples) < 1) {
@@ -76,42 +93,42 @@ class Distribution implements IteratorAggregate, ArrayAccess
         $this->stats = $stats;
     }
 
-    public function getMin()
+    public function getMin(): float
     {
         return $this->getStat('min');
     }
 
-    public function getMax()
+    public function getMax(): float
     {
         return $this->getStat('max');
     }
 
-    public function getSum()
+    public function getSum(): float
     {
         return $this->getStat('sum');
     }
 
-    public function getStdev()
+    public function getStdev(): float
     {
         return $this->getStat('stdev');
     }
 
-    public function getMean()
+    public function getMean(): float
     {
         return $this->getStat('mean');
     }
 
-    public function getMode()
+    public function getMode(): float
     {
         return $this->getStat('mode');
     }
 
-    public function getRstdev()
+    public function getRstdev(): float
     {
         return $this->getStat('rstdev');
     }
 
-    public function getVariance()
+    public function getVariance(): float
     {
         return $this->getStat('variance');
     }
@@ -126,7 +143,9 @@ class Distribution implements IteratorAggregate, ArrayAccess
 
         return new \ArrayIterator($this->stats);
     }
-
+    /**
+     * @return array<string,float>
+     */
     public function getStats(): array
     {
         $stats = [];
@@ -137,8 +156,10 @@ class Distribution implements IteratorAggregate, ArrayAccess
 
         return $stats;
     }
-
-    private function getStat($name)
+    /**
+     * @param mixed $name
+     */
+    private function getStat($name): float
     {
         if (isset($this->stats[$name])) {
             return $this->stats[$name];
@@ -152,7 +173,7 @@ class Distribution implements IteratorAggregate, ArrayAccess
             ));
         }
 
-        $this->stats[$name] = $this->closures[$name]($this->samples, $this);
+        $this->stats[$name] = $this->closures[$name]();
 
         return $this->stats[$name];
     }
@@ -170,7 +191,7 @@ class Distribution implements IteratorAggregate, ArrayAccess
      * {@inheritdoc}
      */
     #[\ReturnTypeWillChange]
-    public function offsetGet($offset)
+    public function offsetGet($offset): float
     {
         return $this->getStat($offset);
     }
