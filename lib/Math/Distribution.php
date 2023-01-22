@@ -133,7 +133,7 @@ class Distribution implements IteratorAggregate, ArrayAccess
         return $this->getStat('variance');
     }
 
-    public function getIterator(): \ArrayIterator
+    public function getIterator(): ArrayIterator
     {
         foreach ($this->closures as $name => $callback) {
             if (!array_key_exists($name, $this->stats)) {
