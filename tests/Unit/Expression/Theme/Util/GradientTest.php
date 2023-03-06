@@ -78,7 +78,7 @@ class GradientTest extends TestCase
     public function testInvalidStep($step): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectErrorMessage('more than zero');
+        $this->expectExceptionMessage('more than zero');
         Gradient::start(Color::fromHex('00000'))->to(Color::fromHex('aa0000'), 0);
     }
 

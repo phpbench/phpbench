@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Benchmark;
 
+use Generator;
 use PhpBench\Benchmark\BenchmarkFinder;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\MetadataFactory;
@@ -57,7 +58,7 @@ class BenchmarkFinderTest extends TestCase
         $this->benchmark2->hasSubjects()->willReturn(true);
         $benchmarks = $this->createFinder()->findBenchmarks([__DIR__ . '/findertest']);
 
-        $this->assertCount(2, $benchmarks);
+        $this->assertBenchmarkCount(2, $benchmarks);
         $this->logger->warning(Argument::containingString('but it does not end with'))->shouldHaveBeenCalledTimes(1);
     }
 
@@ -70,7 +71,7 @@ class BenchmarkFinderTest extends TestCase
         $this->benchmark2->hasSubjects()->willReturn(true);
         $benchmarks = $this->createFinder('*Bench.php')->findBenchmarks([__DIR__ . '/findertest']);
 
-        $this->assertCount(2, $benchmarks);
+        $this->assertBenchmarkCount(2, $benchmarks);
     }
 
     /**
@@ -94,7 +95,7 @@ class BenchmarkFinderTest extends TestCase
             __DIR__ . '/findertest/FooCase2Bench.php'
         ]);
 
-        $this->assertCount(2, iterator_to_array($benchmarks));
+        $this->assertBenchmarkCount(2, $benchmarks);
     }
 
     /**
@@ -108,7 +109,7 @@ class BenchmarkFinderTest extends TestCase
 
         $benchmarks = $this->createFinder()->findBenchmarks([__DIR__ . '/findertestnested/MyBench.php']);
 
-        $this->assertCount(1, $benchmarks);
+        $this->assertBenchmarkCount(1, $benchmarks);
     }
 
     public function testNoPatternSpecifiedWithNonBenchSuffixedFile(): void
@@ -118,7 +119,7 @@ class BenchmarkFinderTest extends TestCase
 
         $benchmarks = $this->createFinder()->findBenchmarks([__DIR__ . '/findertestnobenchsuffix']);
 
-        $this->assertCount(1, $benchmarks);
+        $this->assertBenchmarkCount(1, $benchmarks);
         $this->logger->warning(Argument::containingString('but it does not end with'))->shouldHaveBeenCalled();
     }
 
@@ -132,6 +133,14 @@ class BenchmarkFinderTest extends TestCase
 
         $benchmarks = $this->createFinder()->findBenchmarks([__DIR__ . '/findertestnested/MyBench.php']);
 
-        $this->assertCount(0, $benchmarks);
+        $this->assertBenchmarkCount(0, $benchmarks);
+    }
+
+    /**
+     * @param Generator<BenchmarkMetadata> $benchmarks
+     */
+    private function assertBenchmarkCount(int $int, Generator $benchmarks): void
+    {
+        self::assertCount($int, iterator_to_array($benchmarks, false));
     }
 }
