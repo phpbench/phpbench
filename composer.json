@@ -20,7 +20,7 @@
         "ext-tokenizer": "*",
         "doctrine/annotations": "^1.13 || ^2.0",
         "phpbench/container": "^2.1",
-        "phpbench/dom": "~0.3.1",
+        "phpbench/dom": "~0.3.3",
         "psr/log": "^1.1 || ^2.0 || ^3.0",
         "seld/jsonlint": "^1.1",
         "symfony/console": "^4.2 || ^5.0  || ^6.0",
