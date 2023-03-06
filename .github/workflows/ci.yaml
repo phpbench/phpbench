@@ -20,7 +20,7 @@ jobs:
         strategy:
             matrix:
                 php-version:
-                    - '7.3'
+                    - '7.4'
 
         steps:
             -
@@ -34,7 +34,6 @@ jobs:
                     coverage: "none"
                     php-version: "${{ matrix.php-version }}"
                     tools: composer:v2
-
             -
                 name: "Validate composer.json"
                 run: "composer validate --strict --no-check-lock"
@@ -50,7 +49,7 @@ jobs:
         strategy:
             matrix:
                 php-version:
-                    - '7.3'
+                    - '7.4'
 
         steps:
             -
@@ -87,7 +86,7 @@ jobs:
         strategy:
             matrix:
                 php-version:
-                    - '7.3'
+                    - '7.4'
 
         steps:
             -
@@ -126,26 +125,21 @@ jobs:
         strategy:
             matrix:
                 php-version:
-                    - '7.3'
                     - '7.4'
                     - '8.0'
+                    - '8.1'
+                    - '8.2'
                 dependency:
                     - 'lowest'
                     - 'highest'
                 with-examples: ['yes']
                 allow-failures: [false]
                 include:
-                    - php-version: '7.3'
+                    - php-version: '7.4'
                       dependency: 'lowest'
                       with-examples: 'no'
                       allow-failures: false
                       coverage: xdebug
-                    - php-version: '8.1'
-                      dependency: 'highest'
-                      with-examples: 'no'
-                      allow-failures: true
-                      coverage: xdebug
-                      skip_xdebug_tests: "true"
 
         steps:
             - name: "Checkout code"
