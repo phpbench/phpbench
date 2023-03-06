@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+master
+------
+
+Bug fixes:
+
+- Fix PHP 8.2 deprecation warning #1022
+
 1.2.8
 -----
 
