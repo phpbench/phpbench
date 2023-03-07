@@ -25,7 +25,7 @@ use PhpBench\Model\Summary;
 use PhpBench\Model\Variant;
 use Prophecy\Prophecy\ObjectProphecy;
 
-abstract class PhpBenchLoggerTest extends LoggerTestCase
+abstract class PhpBenchLoggerTestCase extends LoggerTestCase
 {
     protected $logger;
     protected $output;

@@ -15,7 +15,7 @@ namespace PhpBench\Tests\Unit\Progress\Logger;
 use PhpBench\Assertion\VariantAssertionResults;
 use PhpBench\Progress\Logger\PlainLogger;
 
-class PlainLoggerTest extends PhpBenchLoggerTest
+class PlainLoggerTest extends PhpBenchLoggerTestCase
 {
     public function getLogger()
     {
