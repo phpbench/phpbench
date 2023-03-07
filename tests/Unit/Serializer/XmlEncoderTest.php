@@ -24,10 +24,40 @@ use PhpBench\PhpBench;
 use PhpBench\Serializer\XmlEncoder;
 use PhpBench\Tests\Util\Approval;
 use PhpBench\Tests\Util\SuiteBuilder;
+use Prophecy\Prophecy\ObjectProphecy;
 use RuntimeException;
 
 class XmlEncoderTest extends XmlTestCase
 {
+    /**
+     * @var ObjectProphecy<SuiteCollection>
+     */
+    private $suiteCollection;
+    /**
+     * @var ObjectProphecy<Suite>
+     */
+    private $suite;
+    /**
+     * @var ObjectProphecy<Information>
+     */
+    private $env1;
+    /**
+     * @var ObjectProphecy<Benchmark>
+     */
+    private $bench1;
+    /**
+     * @var ObjectProphecy<Subject>
+     */
+    private $subject1;
+    /**
+     * @var ObjectProphecy<Variant>
+     */
+    private $variant1;
+    /**
+     * @var ObjectProphecy<Iteration>
+     */
+    private $iteration1;
+
     protected function setUp(): void
     {
         $this->suiteCollection = $this->prophesize(SuiteCollection::class);

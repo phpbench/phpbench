@@ -23,6 +23,7 @@ use PhpBench\Model\Subject;
 use PhpBench\Model\Suite;
 use PhpBench\Model\Summary;
 use PhpBench\Model\Variant;
+use Prophecy\Prophecy\ObjectProphecy;
 
 abstract class PhpBenchLoggerTest extends LoggerTestCase
 {
@@ -38,6 +39,16 @@ abstract class PhpBenchLoggerTest extends LoggerTestCase
      */
     protected $parameterSet;
     protected $stats;
+
+    /**
+     * @var ObjectProphecy<Suite>
+     */
+    private $suite;
+
+    /**
+     * @var ObjectProphecy<Summary>
+     */
+    private $summary;
 
     protected function setUp(): void
     {

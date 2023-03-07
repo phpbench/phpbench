@@ -21,6 +21,17 @@ class ResultCollectionTest extends TestCase
 {
     private $collection;
 
+    /**
+     * @var TimeResult
+     */
+    private $timeResult;
+
+    /**
+     * @var MemoryResult
+     */
+    private $memoryResult;
+
+
     protected function setUp(): void
     {
         $this->timeResult = new TimeResult(1);

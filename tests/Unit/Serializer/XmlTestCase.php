@@ -33,9 +33,39 @@ use PhpBench\Model\Tag;
 use PhpBench\Model\Variant;
 use PhpBench\Registry\Config;
 use PhpBench\Tests\TestCase;
+use Prophecy\Prophecy\ObjectProphecy;
 
 abstract class XmlTestCase extends TestCase
 {
+    /**
+     * @var ObjectProphecy<SuiteCollection>
+     */
+    private $suiteCollection;
+    /**
+     * @var ObjectProphecy<Suite>
+     */
+    private $suite;
+    /**
+     * @var ObjectProphecy<Information>
+     */
+    private $env1;
+    /**
+     * @var ObjectProphecy<Benchmark>
+     */
+    private $bench1;
+    /**
+     * @var ObjectProphecy<Subject>
+     */
+    private $subject1;
+    /**
+     * @var ObjectProphecy<Variant>
+     */
+    private $variant1;
+    /**
+     * @var ObjectProphecy<Iteration>
+     */
+    private $iteration1;
+
     protected function setUp(): void
     {
         $this->suiteCollection = $this->prophesize(SuiteCollection::class);
