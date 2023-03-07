@@ -29,45 +29,6 @@ use RuntimeException;
 
 class XmlEncoderTest extends XmlTestCase
 {
-    /**
-     * @var ObjectProphecy<SuiteCollection>
-     */
-    private $suiteCollection;
-    /**
-     * @var ObjectProphecy<Suite>
-     */
-    private $suite;
-    /**
-     * @var ObjectProphecy<Information>
-     */
-    private $env1;
-    /**
-     * @var ObjectProphecy<Benchmark>
-     */
-    private $bench1;
-    /**
-     * @var ObjectProphecy<Subject>
-     */
-    private $subject1;
-    /**
-     * @var ObjectProphecy<Variant>
-     */
-    private $variant1;
-    /**
-     * @var ObjectProphecy<Iteration>
-     */
-    private $iteration1;
-
-    protected function setUp(): void
-    {
-        $this->suiteCollection = $this->prophesize(SuiteCollection::class);
-        $this->suite = $this->prophesize(Suite::class);
-        $this->env1 = $this->prophesize(Information::class);
-        $this->bench1 = $this->prophesize(Benchmark::class);
-        $this->subject1 = $this->prophesize(Subject::class);
-        $this->variant1 = $this->prophesize(Variant::class);
-        $this->iteration1 = $this->prophesize(Iteration::class);
-    }
 
     /**
      * It should encode the suite to an XML document.
