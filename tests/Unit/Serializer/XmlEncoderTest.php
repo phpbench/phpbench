@@ -13,23 +13,16 @@
 namespace PhpBench\Tests\Unit\Serializer;
 
 use PhpBench\Dom\Document;
-use PhpBench\Environment\Information;
-use PhpBench\Model\Benchmark;
-use PhpBench\Model\Iteration;
-use PhpBench\Model\Subject;
 use PhpBench\Model\Suite;
 use PhpBench\Model\SuiteCollection;
-use PhpBench\Model\Variant;
 use PhpBench\PhpBench;
 use PhpBench\Serializer\XmlEncoder;
 use PhpBench\Tests\Util\Approval;
 use PhpBench\Tests\Util\SuiteBuilder;
-use Prophecy\Prophecy\ObjectProphecy;
 use RuntimeException;
 
 class XmlEncoderTest extends XmlTestCase
 {
-
     /**
      * It should encode the suite to an XML document.
      *

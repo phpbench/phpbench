@@ -14,6 +14,7 @@ namespace PhpBench\Benchmark\Metadata\Annotations;
 
 /**
  * @Attributes({
+ *
  *    @Attribute("extend", required = true, type="boolean"),
  * })
  */

@@ -125,7 +125,9 @@ class ComponentGeneratorBench extends IntegrationBenchCase
 
     /**
      * @BeforeMethods({"prepare"})
+     *
      * @ParamProviders({"provideConfigs", "provideNumberOfIterations"})
+     *
      * @Revs(2)
      */
     public function benchGenerate(): void
