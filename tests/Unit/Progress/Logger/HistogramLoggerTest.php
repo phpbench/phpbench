@@ -19,9 +19,31 @@ use PhpBench\Model\Subject;
 use PhpBench\Model\Variant;
 use PhpBench\Progress\Logger\HistogramLogger;
 use PhpBench\Tests\Util\TestUtil;
+use Prophecy\Prophecy\ObjectProphecy;
 
 class HistogramLoggerTest extends LoggerTestCase
 {
+    /**
+     * @var HistogramLogger
+     */
+    private $logger;
+    /**
+     * @var ObjectProphecy<Benchmark>
+     */
+    private $benchmark;
+    /**
+     * @var ObjectProphecy<Subject>
+     */
+    private $subject;
+    /**
+     * @var ObjectProphecy<Iteration>
+     */
+    private $iteration;
+    /**
+     * @var Variant
+     */
+    private $variant;
+
     protected function setUp(): void
     {
         parent::setUp();

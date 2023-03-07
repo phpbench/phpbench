@@ -23,7 +23,9 @@ class ParameterProviderCallableBench
 {
     /**
      * @Groups({"process"})
+     *
      * @Iterations(1)
+     *
      * @ParamProviders({"param_provider"})
      */
     public function benchParamProviderCallable($params): void

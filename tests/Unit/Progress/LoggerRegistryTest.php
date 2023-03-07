@@ -16,10 +16,17 @@ use InvalidArgumentException;
 use PhpBench\Progress\LoggerInterface;
 use PhpBench\Progress\LoggerRegistry;
 use PhpBench\Tests\TestCase;
+use Prophecy\Prophecy\ObjectProphecy;
 
 class LoggerRegistryTest extends TestCase
 {
     private $registry;
+
+    /**
+     * @var ObjectProphecy<LoggerInterface>
+     */
+    private $progressLogger;
+
 
     protected function setUp(): void
     {

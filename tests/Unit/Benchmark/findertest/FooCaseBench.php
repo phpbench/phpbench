@@ -56,8 +56,10 @@ class FooCaseBench
 
     /**
      * @BeforeMethod({"setupSelectSql"})
+     *
      * @ParamProvider({"provideNodes"})
      * @ParamProvider({"provideColumns"})
+     *
      * @Iterations(3)
      */
     public function benchSelectSql(BenchIteration $iteration): void
@@ -66,8 +68,10 @@ class FooCaseBench
 
     /**
      * @BeforeMethod({"setupSelectSql)
+     *
      * @ParamProvider({"provideNodes)
      * @ParamProvider({"provideColumns"})
+     *
      * @Iterations(3)
      */
     public function benchTraverseSomething(BenchIteration $iteration): void

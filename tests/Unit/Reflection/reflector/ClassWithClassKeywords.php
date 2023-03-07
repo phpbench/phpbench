@@ -14,6 +14,7 @@ namespace Test;
 
 /**
  * @revs(10000)
+ *
  * @iterations(5)
  */
 class ClassWithClassKeywords

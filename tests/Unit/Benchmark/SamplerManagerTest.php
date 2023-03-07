@@ -45,6 +45,7 @@ class SamplerManagerTest extends TestCase
      * It should measure the mean time taken to execute a callable.
      *
      * @\PhpBench\Benchmark\Metadata\Annotations\Subject()
+     *
      * @\PhpBench\Benchmark\Metadata\Annotations\Iterations(100)
      */
     public function testCallable(): void

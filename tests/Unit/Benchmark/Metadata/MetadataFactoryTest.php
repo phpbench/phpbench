@@ -73,7 +73,7 @@ class MetadataFactoryTest extends TestCase
         );
 
         $this->hierarchy = $this->prophesize(ReflectionHierarchy::class);
-        $this->hierarchy->reveal()->class = 'Class';
+        $this->hierarchy->reveal();
         $this->reflection = $this->prophesize(ReflectionClass::class);
         $this->metadata = $this->prophesize(BenchmarkMetadata::class);
         $this->subjectMetadata = $this->prophesize(SubjectMetadata::class);

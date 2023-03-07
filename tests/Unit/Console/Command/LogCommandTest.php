@@ -22,6 +22,7 @@ use PhpBench\Storage\HistoryIteratorInterface;
 use PhpBench\Tests\TestCase;
 use PhpBench\Util\TimeUnit;
 use Prophecy\Argument;
+use Prophecy\Prophecy\ObjectProphecy;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -34,6 +35,26 @@ class LogCommandTest extends TestCase
     private $driver;
     private $output;
     private $history;
+
+    /**
+     * @var ObjectProphecy<TimeUnit>
+     */
+    private $timeUnit;
+
+    /**
+     * @var ObjectProphecy<TimeUnitHandler>
+     */
+    private $timeUnitHandler;
+
+    /**
+     * @var ObjectProphecy<CharacterReader>
+     */
+    private $characterReader;
+
+    /**
+     * @var Application
+     */
+    private $application;
 
     protected function setUp(): void
     {

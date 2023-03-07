@@ -19,7 +19,9 @@ class BenchmarkBench
 
     /**
      * @Iterations(1)
+     *
      * @Revs(1000)
+     *
      * @Groups({"do_nothing"})
      */
     public function benchDoNothing(): void
@@ -28,7 +30,9 @@ class BenchmarkBench
 
     /**
      * @ParamProviders({"provideParamsOne", "provideParamsTwo"})
+     *
      * @Groups({"parameterized"})
+     *
      * @Iterations(1)
      */
     public function benchParameterized($params): void

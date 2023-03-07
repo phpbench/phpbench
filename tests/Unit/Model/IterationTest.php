@@ -17,10 +17,17 @@ use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\Variant;
 use PhpBench\Tests\TestCase;
 use PhpBench\Tests\Util\TestUtil;
+use Prophecy\Prophecy\ObjectProphecy;
 
 class IterationTest extends TestCase
 {
     private $iteration;
+
+    /**
+     * @var ObjectProphecy<Variant>
+     */
+    private $variant;
+
 
     protected function setUp(): void
     {
