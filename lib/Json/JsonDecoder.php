@@ -44,6 +44,9 @@ class JsonDecoder
     public function decode(string $jsonString): array
     {
         $jsonString = $this->normalize($jsonString);
+        if (!$jsonString) {
+            return [];
+        }
         $this->parser->parse($jsonString);
 
         return json_decode($jsonString, true);
@@ -65,7 +68,7 @@ class JsonDecoder
         $inRight = $inQuote = $inFakeQuote = false;
         $fakeQuoteStart = null;
 
-        if ($chars[0] !== '{') {
+        if (isset($chars[0]) && $chars[0] !== '{') {
             array_unshift($chars, '{');
             $chars[] = '}';
         }
