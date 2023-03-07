@@ -8,6 +8,10 @@ Bug fixes:
 
 - Fix PHP 8.2 deprecation warning #1022
 
+Improvements:
+
+- Drop support for 7.3 and support for 8.1 and 8.2 in the pipeline.
+
 1.2.8
 -----
 
