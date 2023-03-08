@@ -70,7 +70,7 @@ class Git implements ProviderInterface
             $branchName = $matches[1];
         } else {
             throw new \RuntimeException(sprintf(
-                'Encountered error when determining git branch exide code: %s, stderr: "%s"',
+                'Encountered error when determining git branch exit code: %s, stderr: "%s"',
                 $process->getExitCode(),
                 $process->getErrorOutput()
             ));
