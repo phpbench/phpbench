@@ -234,6 +234,10 @@ class TimeUnit
      */
     public function resolvePrecision($precision): ?int
     {
+        if (empty($precision)) {
+            return 0;
+        }
+
         if ($this->overriddenPrecision) {
             return $this->precision;
         }
