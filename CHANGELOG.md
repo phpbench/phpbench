@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+1.2.10
+------
+
+Improvements:
+
+- Use latest version of Box
+
 1.2.9
 -----
 
