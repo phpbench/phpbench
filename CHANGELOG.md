@@ -1,12 +1,19 @@
 CHANGELOG
 =========
 
-1.2.10
-------
+1.2.11 (09/07/2023)
+-------------------
 
 Improvements:
 
 - Use latest version of Box
+
+1.2.10 (24/04/2023)
+-------------------
+
+Improvements:
+
+- Fix deprecation warning when using blinken logger @tavaresmatheus
 
 1.2.9
 -----
