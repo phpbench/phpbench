@@ -1,6 +1,13 @@
 {
     "name": "phpbench/phpbench",
     "description": "PHP Benchmarking Framework",
+    "keywords": [
+        "benchmarking",
+        "optimization",
+        "performance",
+        "profiling",
+        "testing"
+    ],
     "license": "MIT",
     "authors": [
         {
