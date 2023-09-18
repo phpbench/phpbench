@@ -8,4 +8,5 @@ Customisation
    customisation/command
    customisation/executor
    customisation/progress-logger
+   customisation/environment-provider
    customisation/report

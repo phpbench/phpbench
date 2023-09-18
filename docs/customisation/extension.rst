@@ -6,6 +6,7 @@ PHPBench allows you to create your own extensions, allowing you to register new:
 - :doc:`Benchmark Executors <executor>`
 - :doc:`Progress Loggers <progress-logger>`
 - :doc:`Commands <command>`
+- :doc:`Environment Providers <environment-provider>`
 - :doc:`Reports <report>`
 
 Create a new extension package
