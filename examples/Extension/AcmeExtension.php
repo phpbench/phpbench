@@ -1,9 +1,11 @@
 <?php
 
+// section: all
 namespace PhpBench\Examples\Extension;
 
 use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
+// endsection: all
 use PhpBench\Examples\Extension\Command\CatsCommand;
 use PhpBench\Examples\Extension\Executor\AcmeExecutor;
 use PhpBench\Examples\Extension\ProgressLogger\CatLogger;
@@ -12,9 +14,9 @@ use PhpBench\Extension\ConsoleExtension;
 use PhpBench\Extension\CoreExtension;
 use PhpBench\Extension\ReportExtension;
 use PhpBench\Extension\RunnerExtension;
+// section: all
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-// section: all
 class AcmeExtension implements ExtensionInterface
 {
     // endsection: all
