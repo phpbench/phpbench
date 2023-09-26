@@ -18,7 +18,7 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
-        "php": "^7.4 || ^8.0",
+        "php": "^8.0",
         "ext-dom": "*",
         "ext-json": "*",
         "ext-pcre": "*",
@@ -40,7 +40,7 @@
     "require-dev": {
         "dantleech/invoke": "^2.0",
         "friendsofphp/php-cs-fixer": "^3.0",
-        "phpspec/prophecy": "^1.12",
+        "phpspec/prophecy": "^1.17",
         "phpstan/phpstan": "^1.0",
         "phpstan/phpstan-phpunit": "^1.0",
         "jangregor/phpstan-prophecy": "^1.0",
@@ -76,6 +76,9 @@
         "ext-xdebug": "For Xdebug profiling extension."
     },
     "config": {
+        "platform": {
+            "php": "8.0.0"
+        },
         "sort-packages": true,
         "allow-plugins": {
             "phpstan/extension-installer": true
