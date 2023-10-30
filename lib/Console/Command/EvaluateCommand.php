@@ -76,7 +76,7 @@ class EvaluateCommand extends Command
         $this->addArgument(self::ARG_PARAMS, InputArgument::OPTIONAL, 'JSON encoded parameters');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $expr = $input->getArgument(self::ARG_EXPR);
         assert(is_string($expr));

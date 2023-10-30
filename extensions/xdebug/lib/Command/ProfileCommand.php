@@ -64,7 +64,7 @@ EOT
         $this->addOption('gui-bin', null, InputOption::VALUE_REQUIRED, 'Bin to use to display cachegrind output', 'kcachegrind');
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $outputDir = $this->outputDirHandler->handleOutputDir($input, $output);
         $guiBin = null;
