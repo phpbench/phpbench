@@ -150,7 +150,6 @@ class RunnerConfig
     /**
      * Get the number of rev(olutions) to run.
      *
-     * @param array $default
      */
     public function getRevolutions(array $default = null): ?array
     {
@@ -160,7 +159,6 @@ class RunnerConfig
     /**
      * Return the number of warmup revolutions that should be exectuted.
      *
-     * @param array $default
      */
     public function getWarmup(array $default = null): ?array
     {

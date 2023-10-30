@@ -181,7 +181,6 @@ class TimeUnit
     /**
      * Return the destination unit.
      *
-     * @param string $unit
      */
     public function getDestUnit(string $unit = null): string
     {
@@ -342,8 +341,6 @@ class TimeUnit
      * Return the suffix for a given unit.
      *
      * @static
-     *
-     * @param string $mode
      *
      * @return string
      */
