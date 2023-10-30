@@ -83,7 +83,7 @@ class AcmeExtension implements ExtensionInterface
         // endsection: executor_di
 
         // section: env_provider_di
-        $container->register(AcmeExecutor::class, function (Container $container) {
+        $container->register(HomeProvider::class, function (Container $container) {
             return new HomeProvider();
         }, [
             RunnerExtension::TAG_ENV_PROVIDER => [
