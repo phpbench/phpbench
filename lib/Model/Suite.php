@@ -42,8 +42,6 @@ class Suite implements IteratorAggregate
     /**
      * __construct.
      *
-     * @param string $tag
-     * @param string $configPath
      * @param Information[] $envInformations
      */
     public function __construct(

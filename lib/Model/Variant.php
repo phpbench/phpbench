@@ -137,7 +137,6 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
     /**
      * Return the iteration at the given index.
      *
-     * @return Iteration
      */
     public function getIteration($index): ?Iteration
     {
@@ -224,6 +223,7 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
         foreach ($this->iterations as $iteration) {
             $timeResult = $iteration->getResult(TimeResult::class);
             assert($timeResult instanceof TimeResult);
+
             // deviation is the percentage different of the value from the mean of the set.
             if ($this->stats->getMean() > 0) {
                 $deviation = 100 / $this->stats->getMean() * (

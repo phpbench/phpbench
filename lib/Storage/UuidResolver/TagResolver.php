@@ -36,6 +36,7 @@ class TagResolver implements UuidResolverInterface
         list($offset, $tag) = $this->tagAndOffset($reference);
 
         $count = 0;
+
         /** @var HistoryEntry $entry */
         foreach ($history as $entry) {
             if ($tag->__toString() === strtolower($entry->getTag() ?? '')) {
