@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+master
+------
+
+- Allow Symfony 7.0 @keulinho
+- Add documentation for adding env providers @GromNaN
+
 1.2.{11,12,13,14} (09/07/2023)
 ------------------------------
 
