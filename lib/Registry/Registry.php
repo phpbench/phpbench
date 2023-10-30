@@ -101,7 +101,6 @@ class Registry
      * Return the named service, lazily creating it from the container
      * if it has not yet been accessed.
      *
-     * @param string $name
      *
      * @return T
      */

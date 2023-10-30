@@ -90,7 +90,6 @@ class Statistics
      * is potentially misleading, but When benchmarking this should be a very
      * rare occurance.
      *
-     * @param string $bandwidth
      */
     public static function kdeMode(array $population, int $space = 512, string $bandwidth = null): float
     {
@@ -162,8 +161,6 @@ class Statistics
      * For a better implementation copy:
      *   http://docs.scipy.org/doc/numpy-1.10.1/reference/generated/numpy.histogram.html
      *
-     * @param float $lowerBound
-     * @param float $upperBound
      */
     public static function histogram(array $values, int $steps = 10, float $lowerBound = null, float $upperBound = null): array
     {
