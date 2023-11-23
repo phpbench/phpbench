@@ -20,7 +20,7 @@ jobs:
         strategy:
             matrix:
                 php-version:
-                    - '7.4'
+                    - '8.1'
 
         steps:
             -
@@ -49,7 +49,7 @@ jobs:
         strategy:
             matrix:
                 php-version:
-                    - '7.4'
+                    - '8.1'
 
         steps:
             -
@@ -86,7 +86,7 @@ jobs:
         strategy:
             matrix:
                 php-version:
-                    - '7.4'
+                    - '8.1'
 
         steps:
             -
@@ -125,17 +125,16 @@ jobs:
         strategy:
             matrix:
                 php-version:
-                    - '7.4'
-                    - '8.0'
                     - '8.1'
                     - '8.2'
+                    - '8.3'
                 dependency:
                     - 'lowest'
                     - 'highest'
                 with-examples: ['yes']
                 allow-failures: [false]
                 include:
-                    - php-version: '7.4'
+                    - php-version: '8.1'
                       dependency: 'lowest'
                       with-examples: 'no'
                       allow-failures: false
