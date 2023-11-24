@@ -65,7 +65,7 @@ EOT;
     {
         $reflection = new ReflectionClass();
         $reflection->class = 'Test';
-        $reflection->path = __DIR__ . '/classes/Test.php';
+        $reflection->path = __DIR__ . '/classes/TestAnnotation.php';
         $reflectionMethod = new ReflectionMethod();
         $reflectionMethod->reflectionClass = $reflection;
         $reflectionMethod->comment = <<<'EOT'
