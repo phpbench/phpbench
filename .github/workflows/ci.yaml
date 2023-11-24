@@ -175,7 +175,7 @@ jobs:
               run: php --version
 
             - name: "Run tests with PHPUnit"
-              run: vendor/bin/phpunit --verbose
+              run: vendor/bin/phpunit
               env:
                   SKIP_XDEBUG_TESTS: "${{ matrix.skip_xdebug_tests }}"
 
