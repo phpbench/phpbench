@@ -4,6 +4,7 @@ CHANGELOG
 master
 ------
 
+- Bump minimum PHP version to 8.1
 - Allow Symfony 7.0 @keulinho
 - Add documentation for adding env providers @GromNaN
 
