@@ -35,7 +35,7 @@ class JsonDecoderTest extends TestCase
         $this->assertEquals($expected, $result);
     }
 
-    public function provideNormalizer()
+    public static function provideNormalizer()
     {
         return [
             [

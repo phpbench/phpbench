@@ -33,7 +33,7 @@ class GradientTest extends TestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideGradient(): Generator
+    public static function provideGradient(): Generator
     {
         yield [
             '000000',
@@ -85,7 +85,7 @@ class GradientTest extends TestCase
     /**
      * @return Generator<array<int,int|float>>
      */
-    public function provideInvalidStep(): Generator
+    public static function provideInvalidStep(): Generator
     {
         yield [ 0 ];
 
@@ -105,7 +105,7 @@ class GradientTest extends TestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideColorAtPercentile(): Generator
+    public static function provideColorAtPercentile(): Generator
     {
         yield [
             Gradient::start(Color::fromHex('#000000')),

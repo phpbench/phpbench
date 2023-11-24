@@ -34,7 +34,7 @@ class VariableEvaluatorTest extends EvaluatorTestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideEvaluate(): Generator
+    public static function provideEvaluate(): Generator
     {
         yield [
             'foobar',

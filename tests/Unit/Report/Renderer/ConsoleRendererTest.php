@@ -39,7 +39,7 @@ class ConsoleRendererTest extends AbstractRendererCase
         $approval->approve($this->workspace()->getContents('out'));
     }
 
-    public function provideRender(): Generator
+    public static function provideRender(): Generator
     {
         foreach (glob(sprintf('%s/%s/*', __DIR__, 'console')) as $path) {
             yield [$path];

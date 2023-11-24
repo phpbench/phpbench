@@ -58,7 +58,7 @@ class StatisticsTest extends TestCase
         $this->assertEquals($expected, $result);
     }
 
-    public function provideLinearSpace()
+    public static function provideLinearSpace()
     {
         return [
             [
@@ -105,7 +105,7 @@ class StatisticsTest extends TestCase
         $this->assertEquals($expected, round($result, 2));
     }
 
-    public function provideKdeMode()
+    public static function provideKdeMode()
     {
         return [
             [
@@ -165,7 +165,7 @@ class StatisticsTest extends TestCase
         $this->assertEquals($expected, $result);
     }
 
-    public function provideHistogram()
+    public static function provideHistogram()
     {
         return [
             [
@@ -251,7 +251,7 @@ class StatisticsTest extends TestCase
     /**
      * @return Generator<mixed>
      */
-    public function providePercentageDifference(): Generator
+    public static function providePercentageDifference(): Generator
     {
         yield 'zero' => [
             0,

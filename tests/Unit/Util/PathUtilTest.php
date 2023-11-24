@@ -18,7 +18,7 @@ class PathUtilTest extends IntegrationTestCase
 
     /**
      */
-    public function provideNormalizePaths(): Generator
+    public static function provideNormalizePaths(): Generator
     {
         yield [
             '',

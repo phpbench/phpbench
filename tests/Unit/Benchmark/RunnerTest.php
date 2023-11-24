@@ -143,7 +143,7 @@ class RunnerTest extends TestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideRunner(): Generator
+    public static function provideRunner(): Generator
     {
         yield [
             [1],

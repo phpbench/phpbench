@@ -14,7 +14,7 @@ namespace PhpBench\Tests\System\benchmarks\set3;
 
 class ErrorVariantsBench
 {
-    public function provideFoos()
+    public static function provideFoos()
     {
         yield [ 'one' => 'two' ];
 

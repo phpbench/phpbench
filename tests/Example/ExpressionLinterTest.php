@@ -64,7 +64,7 @@ class ExpressionLinterTest extends IntegrationTestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideExpression(): Generator
+    public static function provideExpression(): Generator
     {
         /** @phpstan-ignore-next-line */
         foreach (glob(__DIR__ . '/../../examples/Expression/*') as $file) {

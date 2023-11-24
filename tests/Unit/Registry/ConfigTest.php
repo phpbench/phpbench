@@ -56,7 +56,7 @@ class ConfigTest extends TestCase
         new Config($name, []);
     }
 
-    public function provideInvalidName()
+    public static function provideInvalidName()
     {
         return [
             ['he lo'],
@@ -77,7 +77,7 @@ class ConfigTest extends TestCase
         $this->assertEquals($name, $config->getName());
     }
 
-    public function provideGoodName()
+    public static function provideGoodName()
     {
         return [
             ['helo'],

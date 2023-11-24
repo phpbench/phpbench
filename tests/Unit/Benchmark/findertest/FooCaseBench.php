@@ -14,7 +14,7 @@ use PhpBench\BenchIteration;
 
 class FooCaseBench
 {
-    public function provideNodes()
+    public static function provideNodes()
     {
         return [
             [
@@ -32,7 +32,7 @@ class FooCaseBench
         ];
     }
 
-    public function provideColumns()
+    public static function provideColumns()
     {
         return [
             [

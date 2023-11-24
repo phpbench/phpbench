@@ -55,7 +55,7 @@ class HtmlRendererTest extends AbstractRendererCase
         $approval->approve($this->workspace()->getContents('.phpbench/html/index.html'));
     }
 
-    public function provideRender(): Generator
+    public static function provideRender(): Generator
     {
         foreach (glob(sprintf('%s/%s/*', __DIR__, 'template')) as $path) {
             yield [$path];

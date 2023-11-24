@@ -80,7 +80,7 @@ class TagResolverTest extends TestCase
         $this->assertEquals(1234, $uuid);
     }
 
-    public function provideTags(): array
+    public static function provideTags(): array
     {
         return [
             [ 'foobar',],

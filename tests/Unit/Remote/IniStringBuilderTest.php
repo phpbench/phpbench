@@ -36,7 +36,7 @@ class IniStringBuilderTest extends TestCase
         $this->assertEquals($expectedIniString, $iniString);
     }
 
-    public function provideBuild()
+    public static function provideBuild()
     {
         return [
             [

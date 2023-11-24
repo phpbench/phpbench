@@ -15,7 +15,7 @@ class FunctionParseletTest extends ParseletTestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideParse(): Generator
+    public static function provideParse(): Generator
     {
         yield [
             'foobar()',
@@ -46,7 +46,7 @@ class FunctionParseletTest extends ParseletTestCase
     /**
      * {@inheritDoc}
      */
-    public function provideEvaluate(): Generator
+    public static function provideEvaluate(): Generator
     {
         yield [
             'mode([12, 12])',
@@ -65,8 +65,8 @@ class FunctionParseletTest extends ParseletTestCase
     /**
      * {@inheritDoc}
      */
-    public function providePrint(): Generator
+    public static function providePrint(): Generator
     {
-        yield from $this->providePrintFromEvaluate();
+        yield from static::providePrintFromEvaluate();
     }
 }

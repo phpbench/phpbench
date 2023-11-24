@@ -169,7 +169,7 @@ abstract class XmlTestCase extends TestCase
         return $this->suiteCollection->reveal();
     }
 
-    public function provideEncode()
+    public static function provideEncode()
     {
         foreach (glob(__DIR__ . '/examples/*.test') as $path) {
             yield [

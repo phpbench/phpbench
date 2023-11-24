@@ -19,7 +19,7 @@ class TextTruncateTest extends TestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideCenter(): Generator
+    public static function provideCenter(): Generator
     {
         yield [
             '12345678',

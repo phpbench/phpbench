@@ -14,7 +14,7 @@ class ValueWithUnitParseletTest extends ParseletTestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideParse(): Generator
+    public static function provideParse(): Generator
     {
         yield ['1 ms', new ValueWithUnitNode(new IntegerNode(1), new UnitNode(new StringNode('ms')))];
 
@@ -24,7 +24,7 @@ class ValueWithUnitParseletTest extends ParseletTestCase
     /**
      * {@inheritDoc}
      */
-    public function provideEvaluate(): Generator
+    public static function provideEvaluate(): Generator
     {
         yield ['1 s', [], (string)1E6];
     }
@@ -32,8 +32,8 @@ class ValueWithUnitParseletTest extends ParseletTestCase
     /**
      * {@inheritDoc}
      */
-    public function providePrint(): Generator
+    public static function providePrint(): Generator
     {
-        yield from $this->providePrintFromEvaluate();
+        yield from self::providePrintFromEvaluate();
     }
 }

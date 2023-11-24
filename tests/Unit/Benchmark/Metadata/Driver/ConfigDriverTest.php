@@ -51,7 +51,7 @@ class ConfigDriverTest extends TestCase
         $assertion($driver->getMetadataForHierarchy($this->hierarchy)->getOrCreateSubject(self::EXAMPLE_SUBJECT));
     }
 
-    public function provideDriver(): Generator
+    public static function provideDriver(): Generator
     {
         yield [
             [

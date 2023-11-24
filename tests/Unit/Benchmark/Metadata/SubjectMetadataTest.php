@@ -71,7 +71,7 @@ class SubjectMetadataTest extends TestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideMerge(): Generator
+    public static function provideMerge(): Generator
     {
         yield [
             function (SubjectMetadata $subject1, SubjectMetadata $subject2): void {

@@ -45,7 +45,7 @@ class ConfiguredReportsTest extends IntegrationTestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideReport(): Generator
+    public static function provideReport(): Generator
     {
         $generators = $this->container()->get(ReportExtension::SERVICE_REGISTRY_GENERATOR);
         $renderers = $this->container()->get(ReportExtension::SERVICE_REGISTRY_RENDERER);

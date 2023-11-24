@@ -47,7 +47,7 @@ class ParserFoo
     /**
      * @return Generator<mixed>
      */
-    public function provideExpressions(): Generator
+    public static function provideExpressions(): Generator
     {
         yield 'comp. w/tol' => [
             'expr' => '10 seconds < 10 seconds +/- 10 seconds',

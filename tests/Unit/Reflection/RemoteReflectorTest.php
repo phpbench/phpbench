@@ -81,7 +81,7 @@ class RemoteReflectorTest extends IntegrationTestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideReflectAttributes(): Generator
+    public static function provideReflectAttributes(): Generator
     {
         if (PHP_VERSION_ID < 80000) {
             $this->markTestSkipped('PHP 8 only');

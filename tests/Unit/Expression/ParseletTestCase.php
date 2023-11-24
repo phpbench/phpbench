@@ -48,9 +48,9 @@ abstract class ParseletTestCase extends ParserTestCase
         );
     }
 
-    protected function providePrintFromEvaluate(): Generator
+    protected static function providePrintFromEvaluate(): Generator
     {
-        foreach ($this->provideEvaluate() as [$expr, $params]) {
+        foreach (static::provideEvaluate() as [$expr, $params]) {
             yield [$expr, $params];
         }
     }
@@ -69,15 +69,15 @@ abstract class ParseletTestCase extends ParserTestCase
     /**
      * @return Generator<mixed>
      */
-    abstract public function provideParse(): Generator;
+    abstract public static function provideParse(): Generator;
 
     /**
      * @return Generator<mixed>
      */
-    abstract public function provideEvaluate(): Generator;
+    abstract public static function provideEvaluate(): Generator;
 
     /**
      * @return Generator<mixed>
      */
-    abstract public function providePrint(): Generator;
+    abstract public static function providePrint(): Generator;
 }

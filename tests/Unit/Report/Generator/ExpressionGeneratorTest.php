@@ -14,7 +14,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 
 class ExpressionGeneratorTest extends GeneratorTestCase
 {
-    protected function acceptanceSubPath(): string
+    protected static function acceptanceSubPath(): string
     {
         return 'expression';
     }

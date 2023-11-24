@@ -47,7 +47,7 @@ EOT
     /**
      * @return Generator<mixed>
      */
-    public function provideLex(): Generator
+    public static function provideLex(): Generator
     {
         foreach (glob(__DIR__ . '/Lexer/*.test') as $path) {
             yield [$path];

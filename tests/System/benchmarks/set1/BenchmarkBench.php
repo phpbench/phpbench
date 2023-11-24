@@ -39,7 +39,7 @@ class BenchmarkBench
     {
     }
 
-    public function provideParamsOne()
+    public static function provideParamsOne()
     {
         return [
             ['length' => '1'],
@@ -47,7 +47,7 @@ class BenchmarkBench
         ];
     }
 
-    public function provideParamsTwo()
+    public static function provideParamsTwo()
     {
         return [
             ['strategy' => 'left'],

@@ -20,7 +20,7 @@ class GroupHelperTest extends TestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideResolveGroupSizes(): Generator
+    public static function provideResolveGroupSizes(): Generator
     {
         yield 'empty' => [
             [],

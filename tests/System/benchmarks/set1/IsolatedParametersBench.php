@@ -23,7 +23,7 @@ class IsolatedParameterBench
     {
     }
 
-    public function provideParams()
+    public static function provideParams()
     {
         return [
             [

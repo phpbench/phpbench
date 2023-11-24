@@ -38,7 +38,7 @@ class KdeTest extends TestCase
         $this->assertEquals($expected, $result);
     }
 
-    public function provideEvaluate()
+    public static function provideEvaluate()
     {
         return [
             [

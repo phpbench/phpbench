@@ -17,7 +17,7 @@ class DisplayAsParseletTest extends ParseletTestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideParse(): Generator
+    public static function provideParse(): Generator
     {
         yield [
             '1 ms as microseconds',
@@ -81,7 +81,7 @@ class DisplayAsParseletTest extends ParseletTestCase
     /**
      * {@inheritDoc}
      */
-    public function provideEvaluate(): Generator
+    public static function provideEvaluate(): Generator
     {
         yield ['1 s as milliseconds precision foobar', [
             'foobar' => 2
@@ -97,7 +97,7 @@ class DisplayAsParseletTest extends ParseletTestCase
     /**
      * {@inheritDoc}
      */
-    public function providePrint(): Generator
+    public static function providePrint(): Generator
     {
         yield 'units are interpreted literally' => ['1 s as milliseconds', [], '1 s as milliseconds'];
 

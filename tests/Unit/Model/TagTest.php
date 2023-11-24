@@ -28,7 +28,7 @@ class TagTest extends TestCase
         new Tag($tag);
     }
 
-    public function provideValidTag()
+    public static function provideValidTag()
     {
         yield ['foobar'];
 
@@ -53,7 +53,7 @@ class TagTest extends TestCase
         new Tag($tag);
     }
 
-    public function provideInvalidTag()
+    public static function provideInvalidTag()
     {
         yield [''];
 
