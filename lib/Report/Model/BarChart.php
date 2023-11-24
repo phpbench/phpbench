@@ -125,9 +125,6 @@ class BarChart implements ComponentInterface
     {
         $max = max($this->yValues());
 
-        if (false === $max) {
-            return [];
-        }
         $step = $max / $steps;
 
         return range(0, $max, $step);
