@@ -146,7 +146,7 @@ jobs:
                       allow-failures: true
                       flags: php-*'
                       coverage: xdebug
-                      composer-options: '--ignore-platform-reqs'
+                      composer-options: '--ignore-platform-req=php*'
 
         steps:
             - name: "Checkout code"
