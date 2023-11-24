@@ -19,7 +19,7 @@ class NumberFormatTest extends TestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideFormat(): Generator
+    public static function provideFormat(): Generator
     {
         yield [0, 0, true, '0'];
 

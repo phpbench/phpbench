@@ -36,7 +36,7 @@ class HighlightingNodePrinterTest extends TestCase
     /**
      * @return Generator<mixed>
      */
-    public function providePrint(): Generator
+    public static function providePrint(): Generator
     {
         yield 'decorates' => [
             new TestNode(),

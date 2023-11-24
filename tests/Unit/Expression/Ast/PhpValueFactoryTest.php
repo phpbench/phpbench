@@ -29,7 +29,7 @@ class PhpValueFactoryTest extends TestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideFrom(): Generator
+    public static function provideFrom(): Generator
     {
         yield [1, new IntegerNode(1)];
 

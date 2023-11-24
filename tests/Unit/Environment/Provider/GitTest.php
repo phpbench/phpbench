@@ -62,7 +62,7 @@ class GitTest extends IntegrationTestCase
     {
         $info = $this->provider->getInformation();
         $this->assertEquals('git', $info['system']);
-        $this->assertEquals('master', $info['branch']);
+        $this->assertTrue(in_array($info['branch'], ['main', 'master']));
         $this->assertNull($info['version']); // no commit has yet been made
     }
 

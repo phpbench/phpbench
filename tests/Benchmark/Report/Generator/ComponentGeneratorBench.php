@@ -65,7 +65,7 @@ class ComponentGeneratorBench extends IntegrationBenchCase
     /**
      * @return Generator<mixed>
      */
-    public function provideConfigs(): Generator
+    public static function provideConfigs(): Generator
     {
         yield 'text' => [
             'config' => [
@@ -114,7 +114,7 @@ class ComponentGeneratorBench extends IntegrationBenchCase
         ];
     }
 
-    public function provideNumberOfIterations(): Generator
+    public static function provideNumberOfIterations(): Generator
     {
         for ($i = 0; $i < 100; $i += 25) {
             yield $i => [

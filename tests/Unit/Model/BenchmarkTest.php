@@ -53,7 +53,7 @@ class BenchmarkTest extends TestCase
     /**
      * @return array<array<string>>
      */
-    public function provideName(): array
+    public static function provideName(): array
     {
         return [
             [ '', '' ],

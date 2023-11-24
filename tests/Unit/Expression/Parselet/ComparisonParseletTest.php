@@ -13,7 +13,7 @@ class ComparisonParseletTest extends ParseletTestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideParse(): Generator
+    public static function provideParse(): Generator
     {
         yield [
             '1 < 2',
@@ -28,7 +28,7 @@ class ComparisonParseletTest extends ParseletTestCase
     /**
      * {@inheritDoc}
      */
-    public function provideEvaluate(): Generator
+    public static function provideEvaluate(): Generator
     {
         yield ['1 < 2', [], 'true'];
 
@@ -80,7 +80,7 @@ class ComparisonParseletTest extends ParseletTestCase
     /**
      * {@inheritDoc}
      */
-    public function providePrint(): Generator
+    public static function providePrint(): Generator
     {
         yield ['1 < 2', []];
 

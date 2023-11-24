@@ -238,7 +238,7 @@ EOT;
         $this->createDriver()->getMetadataForHierarchy($hierarchy);
     }
 
-    public function provideClassMethodsOnMethodException()
+    public static function provideClassMethodsOnMethodException()
     {
         return [
             [

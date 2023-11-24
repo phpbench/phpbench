@@ -32,7 +32,7 @@ class EvaluatingPrinterTest extends ParserTestCase
         );
     }
 
-    public function provideEvaluate(): Generator
+    public static function provideEvaluate(): Generator
     {
         yield [
             '2 > 10',

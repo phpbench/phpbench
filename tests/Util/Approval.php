@@ -3,7 +3,7 @@
 namespace PhpBench\Tests\Util;
 
 use PHPUnit\Framework\Assert;
-use PHPUnit\Framework\SkippedTestError;
+use PHPUnit\Framework\SkippedWithMessageException;
 use RuntimeException;
 
 use function json_decode;
@@ -121,7 +121,7 @@ class Approval
                 ]
             )));
 
-            throw new SkippedTestError(sprintf('Approval generated for "%s"', $this->path));
+            throw new SkippedWithMessageException(sprintf('Approval generated for "%s"', $this->path));
         }
 
         Assert::assertEquals(trim($this->expected), trim($actual));

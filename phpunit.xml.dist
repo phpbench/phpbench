@@ -1,29 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- http://www.phpunit.de/manual/current/en/appendixes.configuration.html -->
-<phpunit 
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
-    colors="true"
-    bootstrap="tests/bootstrap.php"
-    failOnWarning="true"
-    >
-
-    <testsuites>
-        <testsuite name="PhpBench">
-            <directory>./tests</directory>
-        </testsuite>
-        <testsuite name="PhpBench Xdebug Extension">
-            <directory>./extensions/xdebug/tests</directory>
-        </testsuite>
-    </testsuites>
-
-    <coverage 
-        cacheDirectory=".phpunit.cache/coverage"
-        processUncoveredFiles="true"
-        >
-        <include>
-            <directory suffix=".php">./lib</directory>
-            <directory suffix=".php">./extensions/xdebug/lib</directory>
-        </include>
-    </coverage>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.0/phpunit.xsd" colors="true" bootstrap="tests/bootstrap.php" failOnWarning="true" cacheDirectory=".phpunit.cache">
+  <testsuites>
+    <testsuite name="PhpBench">
+      <directory>./tests</directory>
+    </testsuite>
+    <testsuite name="PhpBench Xdebug Extension">
+      <directory>./extensions/xdebug/tests</directory>
+    </testsuite>
+  </testsuites>
+  <coverage>
+    <include>
+      <directory suffix=".php">./lib</directory>
+      <directory suffix=".php">./extensions/xdebug/lib</directory>
+    </include>
+  </coverage>
 </phpunit>

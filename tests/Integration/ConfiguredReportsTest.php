@@ -17,35 +17,39 @@ class ConfiguredReportsTest extends IntegrationTestCase
         $this->workspace()->reset();
     }
 
-    /**
-     * @dataProvider provideReport
-     */
-    public function testReport(string $generator, string $renderer): void
+    public function testReport(): void
     {
-        $manager = $this->container([
-            ConsoleExtension::PARAM_OUTPUT_STREAM => $this->workspace()->path('test')
-        ])->get(ReportManager::class);
-        assert($manager instanceof ReportManager);
-        $manager->renderReports(TestUtil::createCollection([
-            [],
-        ]), [$generator], [$renderer]);
+        $generators = $this->container()->get(ReportExtension::SERVICE_REGISTRY_GENERATOR);
+        $renderers = $this->container()->get(ReportExtension::SERVICE_REGISTRY_RENDERER);
 
-        $approval = Approval::create(sprintf(
-            '%s/%s/%s-%s',
-            __DIR__,
-            '/generator/',
-            $generator,
-            $renderer
-        ), 0);
-        $contents = $this->workspace()->getContents('test');
-        $contents = str_replace(getcwd(), '', $contents);
-        $approval->approve($contents);
+        foreach ($generators->getConfigNames() as $generator) {
+            foreach (array_unique(array_merge($renderers->getServiceNames(), $renderers->getConfigNames())) as $renderer) {
+                $manager = $this->container([
+                    ConsoleExtension::PARAM_OUTPUT_STREAM => $this->workspace()->path('test')
+                ])->get(ReportManager::class);
+                assert($manager instanceof ReportManager);
+                $manager->renderReports(TestUtil::createCollection([
+                    [],
+                ]), [$generator], [$renderer]);
+
+                $approval = Approval::create(sprintf(
+                    '%s/%s/%s-%s',
+                    __DIR__,
+                    '/generator/',
+                    $generator,
+                    $renderer
+                ), 0);
+                $contents = $this->workspace()->getContents('test');
+                $contents = str_replace(getcwd(), '', $contents);
+                $approval->approve($contents);
+            }
+        }
     }
 
     /**
      * @return Generator<mixed>
      */
-    public function provideReport(): Generator
+    public static function provideReport(): Generator
     {
         $generators = $this->container()->get(ReportExtension::SERVICE_REGISTRY_GENERATOR);
         $renderers = $this->container()->get(ReportExtension::SERVICE_REGISTRY_RENDERER);

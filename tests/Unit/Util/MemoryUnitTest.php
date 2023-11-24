@@ -21,7 +21,7 @@ class MemoryUnitTest extends TestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideSiUnits(): Generator
+    public static function provideSiUnits(): Generator
     {
         yield [
                 1,
@@ -57,7 +57,7 @@ class MemoryUnitTest extends TestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideBinaryUnits(): Generator
+    public static function provideBinaryUnits(): Generator
     {
         yield [
                 1,
@@ -97,7 +97,7 @@ class MemoryUnitTest extends TestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideSuffix(): Generator
+    public static function provideSuffix(): Generator
     {
         yield [
                 'megabytes',
@@ -126,7 +126,7 @@ class MemoryUnitTest extends TestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideSuitableUnit(): Generator
+    public static function provideSuitableUnit(): Generator
     {
         yield [1, MemoryUnit::BYTES];
 
@@ -154,7 +154,7 @@ class MemoryUnitTest extends TestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideSuitableBinaryUnit(): Generator
+    public static function provideSuitableBinaryUnit(): Generator
     {
         yield [1, MemoryUnit::BYTES];
 

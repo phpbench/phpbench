@@ -24,7 +24,7 @@ class ListNodeTest extends TestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideValues(): Generator
+    public static function provideValues(): Generator
     {
         yield [
             [],

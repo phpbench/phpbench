@@ -18,7 +18,7 @@ use PhpBench\Report\GeneratorInterface;
 
 class EnvGeneratorTest extends GeneratorTestCase
 {
-    protected function acceptanceSubPath(): string
+    protected static function acceptanceSubPath(): string
     {
         return 'env';
     }

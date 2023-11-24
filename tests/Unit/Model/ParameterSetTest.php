@@ -65,7 +65,7 @@ class ParameterSetTest extends TestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideMatches(): Generator
+    public static function provideMatches(): Generator
     {
         yield 'empty string and empty patterns always matches' => ['', [], true];
 

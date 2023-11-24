@@ -32,7 +32,7 @@ class TimeUnitTest extends TestCase
         $this->assertEquals($expectedTime, $result);
     }
 
-    public function provideConvert()
+    public static function provideConvert()
     {
         return [
             [
@@ -89,7 +89,7 @@ class TimeUnitTest extends TestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideAliases(): Generator
+    public static function provideAliases(): Generator
     {
         yield [
             1,
@@ -139,7 +139,7 @@ class TimeUnitTest extends TestCase
         $this->assertEquals($expectedThroughput, $result);
     }
 
-    public function provideConvertThroughput()
+    public static function provideConvertThroughput()
     {
         return [
             [
@@ -327,7 +327,7 @@ class TimeUnitTest extends TestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideSuitableUnit(): Generator
+    public static function provideSuitableUnit(): Generator
     {
         yield [1, 'microseconds'];
 

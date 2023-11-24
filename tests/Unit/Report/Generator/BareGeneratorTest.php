@@ -9,7 +9,7 @@ use PhpBench\Report\Transform\SuiteCollectionTransformer;
 
 class BareGeneratorTest extends GeneratorTestCase
 {
-    protected function acceptanceSubPath(): string
+    protected static function acceptanceSubPath(): string
     {
         return 'bare';
     }

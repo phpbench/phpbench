@@ -388,7 +388,7 @@ class RunTest extends SystemTestCase
         $this->assertExitCode(0, $process);
     }
 
-    public function provideProgressLoggers(): array
+    public static function provideProgressLoggers(): array
     {
         return [
             ['classdots'],

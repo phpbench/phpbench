@@ -17,7 +17,7 @@ use PhpBench\Benchmark\Metadata\Annotations as PhpBench;
 /**
  * Class used to test the annotation import.
  */
-class Test
+class TestAnnotation
 {
     /**
      * @PhpBench\Subject()

@@ -31,7 +31,7 @@ class AssertionProcessorTest extends IntegrationTestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideAssert(): Generator
+    public static function provideAssert(): Generator
     {
         yield [
                 VariantBuilder::create()

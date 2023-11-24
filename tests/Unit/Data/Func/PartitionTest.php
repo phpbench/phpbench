@@ -21,7 +21,7 @@ class PartitionTest extends TestCase
         );
     }
 
-    public function providePartition(): Generator
+    public static function providePartition(): Generator
     {
         yield [
             [

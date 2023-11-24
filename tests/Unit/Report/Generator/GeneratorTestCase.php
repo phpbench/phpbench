@@ -78,16 +78,16 @@ abstract class GeneratorTestCase extends IntegrationTestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideGenerate(): Generator
+    public static function provideGenerate(): Generator
     {
-        foreach (glob(sprintf('%s/%s/*', __DIR__, $this->acceptanceSubPath())) as $path) {
+        foreach (glob(sprintf('%s/%s/*', __DIR__, static::acceptanceSubPath())) as $path) {
             yield [
                 $path
             ];
         }
     }
 
-    abstract protected function acceptanceSubPath(): string;
+    abstract protected static function acceptanceSubPath(): string;
 
     abstract protected function createGenerator(Container $container): GeneratorInterface;
 }

@@ -12,7 +12,7 @@ class ArgumentListParseletTest extends ParseletTestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideParse(): Generator
+    public static function provideParse(): Generator
     {
         yield 'single value is not an argument list' => [
             '12',
@@ -40,7 +40,7 @@ class ArgumentListParseletTest extends ParseletTestCase
     /**
      * {@inheritDoc}
      */
-    public function provideEvaluate(): Generator
+    public static function provideEvaluate(): Generator
     {
         yield [
             '12, 12',
@@ -52,7 +52,7 @@ class ArgumentListParseletTest extends ParseletTestCase
     /**
      * {@inheritDoc}
      */
-    public function providePrint(): Generator
+    public static function providePrint(): Generator
     {
         yield ['12, 12'];
 

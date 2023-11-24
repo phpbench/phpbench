@@ -17,7 +17,7 @@ class FitToAxisTest extends TestCase
         self::assertEquals($expectedSeriesSets, fit_to_axis($keys, $rows));
     }
 
-    public function provideFitToAxis(): Generator
+    public static function provideFitToAxis(): Generator
     {
         yield 'empty' => [[], [], []];
 

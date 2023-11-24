@@ -51,14 +51,8 @@ class AttributeDriverTest extends TestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideLoadBenchmark(): Generator
+    public static function provideLoadBenchmark(): Generator
     {
-        if ($this->shouldSkip()) {
-            $this->markTestSkipped('PHP 8 only');
-
-            return;
-        }
-
         yield [
             [
                 new Executor('foobar'),
@@ -126,14 +120,8 @@ class AttributeDriverTest extends TestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideLoadSubject(): Generator
+    public static function provideLoadSubject(): Generator
     {
-        if ($this->shouldSkip()) {
-            $this->markTestSkipped('PHP 8 only');
-
-            return;
-        }
-
         yield [
             [
                 new BeforeMethods(['foobar', 'barfoo']),

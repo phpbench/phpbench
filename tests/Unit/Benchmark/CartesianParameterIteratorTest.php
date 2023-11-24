@@ -37,7 +37,7 @@ class CartesianParameterIteratorTest extends TestCase
         $this->assertEquals($expected, $result);
     }
 
-    public function provideIterate()
+    public static function provideIterate()
     {
         yield '0 x 0' => [
             [

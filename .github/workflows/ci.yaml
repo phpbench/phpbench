@@ -20,7 +20,7 @@ jobs:
         strategy:
             matrix:
                 php-version:
-                    - '7.4'
+                    - '8.1'
 
         steps:
             -
@@ -49,7 +49,7 @@ jobs:
         strategy:
             matrix:
                 php-version:
-                    - '7.4'
+                    - '8.1'
 
         steps:
             -
@@ -86,7 +86,7 @@ jobs:
         strategy:
             matrix:
                 php-version:
-                    - '7.4'
+                    - '8.1'
 
         steps:
             -
@@ -125,8 +125,6 @@ jobs:
         strategy:
             matrix:
                 php-version:
-                    - '7.4'
-                    - '8.0'
                     - '8.1'
                     - '8.2'
                 dependency:
@@ -134,12 +132,28 @@ jobs:
                     - 'highest'
                 with-examples: ['yes']
                 allow-failures: [false]
+                composer-options: ['']
                 include:
-                    - php-version: '7.4'
+                    - php-version: '8.1'
                       dependency: 'lowest'
                       with-examples: 'no'
                       allow-failures: false
                       coverage: xdebug
+                      composer-options: ''
+                    - php-version: '8.3'
+                      dependency: 'lowest'
+                      with-examples: 'no'
+                      allow-failures: true
+                      flags: php-*'
+                      coverage: xdebug
+                      composer-options: '--ignore-platform-req=php*'
+                    - php-version: '8.3'
+                      dependency: 'highest'
+                      with-examples: 'no'
+                      allow-failures: true
+                      flags: php-*'
+                      coverage: xdebug
+                      composer-options: '--ignore-platform-req=php*'
 
         steps:
             - name: "Checkout code"
@@ -162,12 +176,13 @@ jobs:
               uses: "ramsey/composer-install@v2"
               with:
                   dependency-versions: "${{ matrix.dependency }}"
+                  composer-options: "${{ matrix.composer-options }}"
 
             - name: PHP Info
               run: php --version
 
             - name: "Run tests with PHPUnit"
-              run: vendor/bin/phpunit --verbose
+              run: vendor/bin/phpunit
               env:
                   SKIP_XDEBUG_TESTS: "${{ matrix.skip_xdebug_tests }}"
 

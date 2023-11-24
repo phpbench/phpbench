@@ -65,7 +65,7 @@ class DebugExecutorTest extends TestCase
         $this->assertEquals($expectedTimes, $actualTimes);
     }
 
-    public function provideConstantTimes()
+    public static function provideConstantTimes()
     {
         return [
             [
