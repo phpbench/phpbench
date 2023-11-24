@@ -45,7 +45,7 @@
             pkgs.vhs
             pkgs.hugo
             phpForPhpTui
-            pkgs.php83.packages.composer
+            pkgs.php81.packages.composer
           ];
           shellHook = ''
           if [ ! -d ".venv" ]; then
