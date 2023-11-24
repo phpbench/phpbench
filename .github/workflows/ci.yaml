@@ -139,6 +139,7 @@ jobs:
                       with-examples: 'no'
                       allow-failures: false
                       coverage: xdebug
+                      composer-options: ''
                 include:
                     - php-version: '8.3'
                       dependency: 'lowest'
