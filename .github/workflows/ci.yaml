@@ -147,6 +147,13 @@ jobs:
                       flags: php-*'
                       coverage: xdebug
                       composer-options: '--ignore-platform-req=php*'
+                    - php-version: '8.3'
+                      dependency: 'highest'
+                      with-examples: 'no'
+                      allow-failures: true
+                      flags: php-*'
+                      coverage: xdebug
+                      composer-options: '--ignore-platform-req=php*'
 
         steps:
             - name: "Checkout code"
