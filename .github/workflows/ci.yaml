@@ -132,7 +132,7 @@ jobs:
                     - 'highest'
                 with-examples: ['yes']
                 allow-failures: [false]
-                composer-options: ''
+                composer-options: ~
                 include:
                     - php-version: '8.1'
                       dependency: 'lowest'
