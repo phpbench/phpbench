@@ -87,7 +87,7 @@ abstract class GeneratorTestCase extends IntegrationTestCase
         }
     }
 
-    abstract static protected function acceptanceSubPath(): string;
+    abstract protected static function acceptanceSubPath(): string;
 
     abstract protected function createGenerator(Container $container): GeneratorInterface;
 }

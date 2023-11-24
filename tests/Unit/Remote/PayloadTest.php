@@ -18,7 +18,6 @@ use PhpBench\Remote\ProcessFactoryInterface;
 use PhpBench\Tests\IntegrationTestCase;
 use RuntimeException;
 use Symfony\Component\Process\Process;
-use Throwable;
 
 class PayloadTest extends IntegrationTestCase
 {
@@ -99,7 +98,7 @@ class PayloadTest extends IntegrationTestCase
     {
         $payload = $this->validPayload();
         $payload->setPhpPath('/foo/bar');
-            $this->processFactory->method('create')->willReturn($this->process);
+        $this->processFactory->method('create')->willReturn($this->process);
         $this->process->expects($this->once())->method('run');
         $this->process->method('isSuccessful')->willReturn(true);
         $this->process->method('getOutput')->willReturn(serialize(['foo' => 'bar']));

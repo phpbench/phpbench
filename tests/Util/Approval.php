@@ -3,7 +3,6 @@
 namespace PhpBench\Tests\Util;
 
 use PHPUnit\Framework\Assert;
-use PHPUnit\Framework\SkippedTestError;
 use PHPUnit\Framework\SkippedWithMessageException;
 use RuntimeException;
 
