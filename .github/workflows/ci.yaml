@@ -132,6 +132,7 @@ jobs:
                     - 'highest'
                 with-examples: ['yes']
                 allow-failures: [false]
+                composer-options: ''
                 include:
                     - php-version: '8.1'
                       dependency: 'lowest'
@@ -143,7 +144,9 @@ jobs:
                       dependency: 'lowest'
                       with-examples: 'no'
                       allow-failures: true
+                      flags: php-*'
                       coverage: xdebug
+                      composer-options: '--ignore-platform-reqs'
 
         steps:
             - name: "Checkout code"
@@ -166,6 +169,7 @@ jobs:
               uses: "ramsey/composer-install@v2"
               with:
                   dependency-versions: "${{ matrix.dependency }}"
+                  composer-options: "${{ matrix.composer-options }}"
 
             - name: PHP Info
               run: php --version
