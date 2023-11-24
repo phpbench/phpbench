@@ -39,15 +39,6 @@ trait ProphecyTrait
      */
     protected function prophesize($classOrInterface = null): ObjectProphecy
     {
-        if (!is_callable([$this, 'recordDoubledType'])) {
-            return parent::prophesize($classOrInterface);
-        }
-
-        if (\is_string($classOrInterface)) {
-            \assert($this instanceof TestCase);
-            $this->recordDoubledType($classOrInterface);
-        }
-
         return $this->getProphet()->prophesize($classOrInterface);
     }
 
