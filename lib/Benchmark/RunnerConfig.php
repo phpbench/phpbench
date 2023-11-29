@@ -168,8 +168,6 @@ class RunnerConfig
     /**
      * Override parameters.
      *
-     * @param parameters $default
-     *
      * @return mixed[]
      */
     public function getParameterSets(?array $default = null)

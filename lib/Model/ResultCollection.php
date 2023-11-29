@@ -54,6 +54,11 @@ class ResultCollection
      * Return the result of the given class, throw an exception
      * if it does not exist.
      *
+     * @template T of ResultInterface
+     *
+     * @param class-string<T> $class
+     *
+     * @return T
      *
      * @throws \RuntimeException
      */

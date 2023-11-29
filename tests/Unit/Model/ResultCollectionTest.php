@@ -12,30 +12,19 @@
 
 namespace PhpBench\Tests\Unit\Model;
 
-use PhpBench\Model\Result\MemoryResult;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\ResultCollection;
 use PhpBench\Tests\TestCase;
 
 class ResultCollectionTest extends TestCase
 {
-    private $collection;
+    private ResultCollection $collection;
 
-    /**
-     * @var TimeResult
-     */
-    private $timeResult;
-
-    /**
-     * @var MemoryResult
-     */
-    private $memoryResult;
-
+    private TimeResult $timeResult;
 
     protected function setUp(): void
     {
         $this->timeResult = new TimeResult(1);
-        $this->memoryResult = new MemoryResult(1, 0, 0);
 
         $this->collection = new ResultCollection([]);
     }
@@ -74,7 +63,7 @@ class ResultCollectionTest extends TestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Result of class "stdClass" has not been set');
-        $this->collection->getResult(\stdClass::class);
+        $this->collection->getResult(\stdClass::class); // @phpstan-ignore-line
     }
 
     /**

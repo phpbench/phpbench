@@ -14,38 +14,23 @@ namespace PhpBench\Tests\Unit\Progress\Logger;
 
 use PhpBench\Assertion\AssertionResult;
 use PhpBench\Assertion\VariantAssertionResults;
-use PhpBench\Model\Benchmark;
 use PhpBench\Model\Iteration;
-use PhpBench\Model\Subject;
 use PhpBench\Model\Variant;
 use PhpBench\Progress\Logger\DotsLogger;
 use Prophecy\Prophecy\ObjectProphecy;
 
 class DotsLoggerTest extends LoggerTestCase
 {
-    /**
-     * @var ObjectProphecy|Benchmark
-     */
-    private $benchmark;
-    /**
-     * @var ObjectProphecy|Subject
-     */
-    private $subject;
-    /**
-     * @var ObjectProphecy|Iteration
-     */
-    private $iteration;
-    /**
-     * @var ObjectProphecy|Variant
-     */
-    private $variant;
+    /** @var ObjectProphecy<Iteration> */
+    private ObjectProphecy $iteration;
+
+    /** @var ObjectProphecy<Variant> */
+    private ObjectProphecy $variant;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->benchmark = $this->prophesize(Benchmark::class);
-        $this->subject = $this->prophesize(Subject::class);
         $this->iteration = $this->prophesize(Iteration::class);
         $this->variant = $this->prophesize(Variant::class);
     }

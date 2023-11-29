@@ -11,6 +11,7 @@ use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Reflection\ReflectionHierarchy;
 use PhpBench\Tests\ProphecyTrait;
 use PHPUnit\Framework\TestCase;
+use Prophecy\Prophecy\ObjectProphecy;
 
 class ConfigDriverTest extends TestCase
 {
@@ -20,12 +21,9 @@ class ConfigDriverTest extends TestCase
     /**
      * @var ObjectProphecy<DriverInterface>
      */
-    private $innerDriver;
+    private ObjectProphecy $innerDriver;
 
-    /**
-     * @var ReflectionHierarchy
-     */
-    private $hierarchy;
+    private ReflectionHierarchy $hierarchy;
 
     protected function setUp(): void
     {

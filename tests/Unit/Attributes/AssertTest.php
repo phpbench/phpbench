@@ -12,23 +12,12 @@ final class AssertTest extends TestCase
 {
     public function testHandlesMultipleAssert(): void
     {
-        if ($this->shouldSkip()) {
-            $this->markTestSkipped('PHP 8 only');
-
-            return;
-        }
-
         $reflection = new ReflectionClass(AttributeAssertUsedMultipleTimes::class);
         $attributes = $reflection->getAttributes();
         self::assertCount(2, $attributes);
         foreach ($attributes as $attribute) {
             $attribute->newInstance();
         }
-    }
-
-    private function shouldSkip(): bool
-    {
-        return PHP_VERSION_ID < 80000;
     }
 }
 

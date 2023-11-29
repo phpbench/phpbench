@@ -56,6 +56,6 @@ EOT
 
     private function lex(string $string): Tokens
     {
-        return (new Lexer([], []))->lex($string);
+        return (new Lexer([]))->lex($string);
     }
 }

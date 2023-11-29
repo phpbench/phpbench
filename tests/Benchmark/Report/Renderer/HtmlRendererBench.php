@@ -5,19 +5,15 @@ namespace PhpBench\Tests\Benchmark\Report\Renderer;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
 use PhpBench\Report\Generator\OutputTestGenerator;
+use PhpBench\Report\Model\Reports;
 use PhpBench\Report\Renderer\HtmlRenderer;
 use PhpBench\Tests\Benchmark\IntegrationBenchCase;
 
 final class HtmlRendererBench extends IntegrationBenchCase
 {
-    /**
-     * @var OutputTestGenerator
-     */
-    private $reports;
-    /**
-     * @var HtmlRenderer
-     */
-    private $renderer;
+    private Reports $reports;
+
+    private HtmlRenderer $renderer;
 
     public function __construct()
     {

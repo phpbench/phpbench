@@ -25,7 +25,7 @@ class ReflectionMethod
     public $name;
 
     /**
-     * @var string
+     * @var string|null
      */
     public $comment;
 

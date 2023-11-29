@@ -31,37 +31,37 @@ class MetadataFactoryTest extends TestCase
     public const FNAME = 'fname';
     public const PATH = '/path/to';
 
-    private $factory;
+    private MetadataFactory $factory;
 
     /**
-     * @var MetadataFactoryTest
+     * @var ObjectProphecy<ReflectorInterface>
      */
-    private $reflector;
+    private ObjectProphecy $reflector;
 
     /**
      * @var ObjectProphecy<DriverInterface>
      */
-    private $driver;
+    private ObjectProphecy $driver;
 
     /**
      * @var ObjectProphecy<ReflectionHierarchy>
      */
-    private $hierarchy;
+    private ObjectProphecy $hierarchy;
 
     /**
      * @var ObjectProphecy<ReflectionClass>
      */
-    private $reflection;
+    private ObjectProphecy $reflection;
 
     /**
-     * @var ObjectProphecy<BenchmarkMetdata>
+     * @var ObjectProphecy<BenchmarkMetadata>
      */
-    private $metadata;
+    private ObjectProphecy $metadata;
 
     /**
      * @var ObjectProphecy<SubjectMetadata>
      */
-    private $subjectMetadata;
+    private ObjectProphecy $subjectMetadata;
 
     protected function setUp(): void
     {
@@ -80,7 +80,7 @@ class MetadataFactoryTest extends TestCase
 
         $this->reflector->reflect(self::FNAME)->willReturn($this->hierarchy->reveal());
         $this->driver->getMetadataForHierarchy($this->hierarchy->reveal())->willReturn($this->metadata->reveal());
-        $this->reflection->abstract = false;
+        $this->reflection->reveal()->abstract = false;
         $this->hierarchy->getTop()->willReturn($this->reflection->reveal());
     }
 
@@ -192,7 +192,7 @@ class MetadataFactoryTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('must be static in benchmark class "TestClass"');
         $this->hierarchy->isEmpty()->willReturn(false);
-        $this->reflection->class = 'TestClass';
+        $this->reflection->reveal()->class = 'TestClass';
         TestUtil::configureBenchmarkMetadata($this->metadata, [
             'beforeClassMethods' => ['beforeMe'],
         ]);
@@ -211,7 +211,7 @@ class MetadataFactoryTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('before method "beforeMe" must not be static in benchmark class "TestClass"');
         $this->hierarchy->isEmpty()->willReturn(false);
-        $this->reflection->class = 'TestClass';
+        $this->reflection->reveal()->class = 'TestClass';
         TestUtil::configureBenchmarkMetadata($this->metadata, []);
         $this->metadata->getSubjects()->willReturn([
             $this->subjectMetadata->reveal(),
@@ -234,7 +234,7 @@ class MetadataFactoryTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Unknown before method "beforeMe" in benchmark class "TestClass"');
         $this->hierarchy->isEmpty()->willReturn(false);
-        $this->reflection->class = 'TestClass';
+        $this->reflection->reveal()->class = 'TestClass';
         TestUtil::configureBenchmarkMetadata($this->metadata, []);
         $this->metadata->getSubjects()->willReturn([
             $this->subjectMetadata->reveal(),

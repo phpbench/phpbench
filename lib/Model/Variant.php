@@ -30,7 +30,7 @@ use RuntimeException;
  * status for each based on the given rejection threshold.
  *
  * @implements IteratorAggregate<Iteration>
- * @implements ArrayAccess<string, Iteration>
+ * @implements ArrayAccess<array-key, Iteration>
  */
 class Variant implements IteratorAggregate, ArrayAccess, Countable
 {

@@ -94,7 +94,7 @@ class DataFrameTest extends TestCase
                 'two' => 4,
             ],
         ];
-        self::assertEquals([1, 3], DataFrame::fromRecords($records)->row(5)->toValues());
+        self::assertEquals([1, 3], DataFrame::fromRecords($records)->row(5));
     }
 
     public function testExceptionOnRowWithInsufficientValues(): void
@@ -108,7 +108,7 @@ class DataFrameTest extends TestCase
         self::assertEquals([1, 3], DataFrame::fromRowSeries(
             $records,
             ['one', 'two']
-        )->row(5)->toValues());
+        )->row(5));
     }
 
     public function testReturnRowsAsDataFrames(): void

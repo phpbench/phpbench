@@ -6,20 +6,13 @@ use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\VariableNode;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\NodeEvaluator;
-use PhpBench\Expression\NodeEvaluators;
 use PhpBench\Tests\IntegrationTestCase;
 
 class NodeEvaluatorsTest extends IntegrationTestCase
 {
-    /**
-     * @var NodeEvaluators<Node>
-     */
-    private $evaluators;
+    private NodeEvaluator $evaluators;
 
-    /**
-     * @var NodeEvaluatorsTest
-     */
-    private $evaluator;
+    private Evaluator $evaluator;
 
 
     protected function setUp(): void

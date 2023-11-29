@@ -5,10 +5,8 @@ namespace PhpBench\Tests\Benchmark\Report\Generator;
 use Generator;
 use PhpBench\Model\Suite;
 use PhpBench\Model\SuiteCollection;
-use PhpBench\Model\Variant;
 use PhpBench\Registry\Config;
 use PhpBench\Report\Generator\ComponentGenerator;
-use PhpBench\Report\Generator\ExpressionGenerator;
 use PhpBench\Tests\Benchmark\IntegrationBenchCase;
 use PhpBench\Tests\Util\TestUtil;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -20,20 +18,11 @@ use function array_fill;
  */
 class ComponentGeneratorBench extends IntegrationBenchCase
 {
-    /**
-     * @var ExpressionGenerator
-     */
-    private $generator;
+    private ComponentGenerator $generator;
 
-    /**
-     * @var Suite
-     */
-    private $suite;
+    private Suite $suite;
 
-    /**
-     * @var OptionsResolver
-     */
-    private $config;
+    private array $config;
 
     public function __construct()
     {

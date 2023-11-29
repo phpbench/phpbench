@@ -18,12 +18,6 @@ use PhpBench\Tests\TestCase;
 
 class ConfigTest extends TestCase
 {
-    private $config;
-
-    protected function setUp(): void
-    {
-    }
-
     /**
      * It should throw an exception if an offset does not exist.
      *
@@ -42,7 +36,7 @@ class ConfigTest extends TestCase
             ],
         ]
         );
-        $config['offset_not_exist'];
+        $config['offset_not_exist']; // @phpstan-ignore-line
     }
 
     /**

@@ -40,6 +40,8 @@ class ReflectionHierarchyTest extends TestCase
         $this->hierarchy->addReflectionClass($this->reflection1);
         $this->hierarchy->addReflectionClass($this->reflection2);
 
+        $index = 0;
+
         foreach ($this->hierarchy as $index => $reflectionClass) {
             $this->assertInstanceOf(ReflectionClass::class, $reflectionClass);
         }

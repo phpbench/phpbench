@@ -168,7 +168,7 @@ abstract class AbstractExecutorTestCase extends PhpBenchTestCase
         ], $config);
 
         if (is_array($config['parameters'])) {
-            $config['parameters'] = ParameterSet::fromUnserializedValues('test', $config['parameters'] ?? []);
+            $config['parameters'] = ParameterSet::fromUnserializedValues('test', $config['parameters']);
         }
 
         return $config;

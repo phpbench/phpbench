@@ -13,22 +13,11 @@ class Approval
     /**
      * @var string[]
      */
-    private $sections;
+    private array $sections;
 
-    /**
-     * @var string
-     */
-    private $expected;
+    private ?string $expected;
 
-    /**
-     * @var string
-     */
-    private $path;
-
-    /**
-     * @var string
-     */
-    private $delimiter;
+    private string $path;
 
     /**
      * @param string[] $sections
@@ -36,13 +25,11 @@ class Approval
     public function __construct(
         string $path,
         array $sections,
-        string $delimiter,
         ?string $expected
     ) {
         $this->sections = $sections;
         $this->expected = $expected;
         $this->path = $path;
-        $this->delimiter = $delimiter;
     }
 
     public static function create(string $path, int $configCount, string $delimiter = '---'): self
@@ -75,7 +62,7 @@ class Approval
             unset($parts[$configCount - 1]);
         }
 
-        return new self($path, array_values($parts), $delimiter, $expected);
+        return new self($path, array_values($parts), $expected);
     }
 
     /**
