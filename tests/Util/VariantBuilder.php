@@ -17,32 +17,20 @@ final class VariantBuilder
     /**
      * @var IterationBuilder[]
      */
-    private $iterations = [];
+    private array $iterations = [];
 
-    /**
-     * @var int
-     */
-    private $revs = 1;
+    private int $revs = 1;
 
-    /**
-     * @var SubjectBuilder|null
-     */
-    private $subjectBuilder;
+    private ?SubjectBuilder $subjectBuilder;
 
-    /**
-     * @var string|null
-     */
-    private $name;
+    private ?string $name;
 
     /**
      * @var Error[]
      */
-    private $errors;
+    private array $errors = [];
 
-    /**
-     * @var ParameterSet
-     */
-    private $parameterSet = null;
+    private ?ParameterSet $parameterSet = null;
 
     /**
      * @param string $name @deprecated Variants are not named, and this was used as the parameter set name.

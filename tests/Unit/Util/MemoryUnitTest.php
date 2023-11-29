@@ -120,7 +120,7 @@ class MemoryUnitTest extends TestCase
      */
     public function testResolveSuitableUnit(float $value, string $expectedUnit): void
     {
-        self::assertEquals($expectedUnit, MemoryUnit::resolveSuitableUnit(MemoryUnit::AUTO, $value, true));
+        self::assertEquals($expectedUnit, MemoryUnit::resolveSuitableUnit(MemoryUnit::AUTO, $value));
     }
 
     /**

@@ -22,7 +22,6 @@ use function sys_get_temp_dir;
 class GitTest extends IntegrationTestCase
 {
     private $provider;
-    private $filesystem;
 
     protected function setUp(): void
     {

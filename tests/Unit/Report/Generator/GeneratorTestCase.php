@@ -42,8 +42,6 @@ abstract class GeneratorTestCase extends IntegrationTestCase
     }
 
     /**
-     * @return parameters
-     *
      * @param parameters $config
      */
     protected function resolveConfig(GeneratorInterface $generator, array $config): Config

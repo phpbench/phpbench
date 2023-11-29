@@ -93,7 +93,7 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @return array<array<string|int, array<string,mixed>>>
+     * @return array<array<string, mixed>>
      */
     public function toRecords(): array
     {

@@ -2,7 +2,6 @@
 
 namespace PhpBench\Tests\Benchmark\Progress;
 
-use PhpBench\Model\Result\MemoryResult;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\Variant;
 use PhpBench\Progress\VariantFormatter;
@@ -11,15 +10,9 @@ use PhpBench\Tests\Util\VariantBuilder;
 
 class VariantSummaryFormatterBench extends IntegrationBenchCase
 {
-    /**
-     * @var VariantFormatter
-     */
-    private $formatter;
+    private VariantFormatter $formatter;
 
-    /**
-     * @var Variant
-     */
-    private $variant;
+    private Variant $variant;
 
     public function __construct()
     {
@@ -30,8 +23,7 @@ class VariantSummaryFormatterBench extends IntegrationBenchCase
 
         for ($i = 0; $i < 100; $i++) {
             $variant->iteration()->setResult(
-                new TimeResult(100, 1),
-                new MemoryResult(100, 100, 100)
+                new TimeResult(100, 1)
             );
         }
 
@@ -41,7 +33,6 @@ class VariantSummaryFormatterBench extends IntegrationBenchCase
         for ($i = 0; $i < 100; $i++) {
             $baseline->iteration()->setResult(
                 new TimeResult(100, 1),
-                new MemoryResult(100, 100, 100)
             );
         }
 

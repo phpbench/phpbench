@@ -144,7 +144,7 @@ class TestUtil
                 $variant = $subject->createVariant(ParameterSet::fromUnserializedValues('0', $options['parameters']), $options['revs'], $options['warmup']);
 
                 foreach ($options['iterations'] as $time) {
-                    $variant->createIteration(self::createResults($timeOffset + $time, 200, 0));
+                    $variant->createIteration(self::createResults($timeOffset + $time, 200));
                 }
 
                 $timeOffset += $options['iterations_increase_per_subject'];
@@ -170,9 +170,6 @@ class TestUtil
         return $suite;
     }
 
-    /**
-     * @var array<string,mixed>
-     */
     public static function createCollection(array $suiteConfigs = []): SuiteCollection
     {
         $suites = [];

@@ -17,17 +17,15 @@ use PhpBench\Executor\Benchmark\DebugExecutor;
 use PhpBench\Executor\ExecutionContext;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Registry\Config;
-use PhpBench\Remote\Launcher;
 use PhpBench\Tests\TestCase;
 
 class DebugExecutorTest extends TestCase
 {
-    private $executor;
+    private DebugExecutor $executor;
 
     protected function setUp(): void
     {
-        $launcher = $this->prophesize(Launcher::class);
-        $this->executor = new DebugExecutor($launcher->reveal());
+        $this->executor = new DebugExecutor();
     }
 
     /**

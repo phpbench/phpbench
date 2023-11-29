@@ -163,7 +163,7 @@ abstract class XmlTestCase extends TestCase
         $this->iteration1->getResults()->willReturn([
             new TimeResult(10, 1),
             new MemoryResult(100, 110, 109),
-            new ComputedResult(0, 0, 5),
+            new ComputedResult(0, 0),
         ]);
 
         return $this->suiteCollection->reveal();

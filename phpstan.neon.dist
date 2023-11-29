@@ -4,9 +4,15 @@ parameters:
         - lib
         - examples/Extension
         - extensions/xdebug/lib
+        - tests
     excludePaths:
         - lib/Attributes
         - lib/Benchmark/Metadata/Driver/AttributeDriver.php
+        - tests/Workspace
+        - tests/Unit/Reflection/reflector
+        - tests/Unit/Benchmark/findertest
+        - tests/System/benchmarks
+        - tests/Unit/Executor/benchmarks
     typeAliases:
         parameters: 'array<string,mixed>'
         scalarOrNull: 'int|float|string|bool|null'

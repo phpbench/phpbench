@@ -77,7 +77,7 @@ class HistoryIteratorTest extends IntegrationTestCase
         $collections[5] = $this->createEntry(5, new \DateTime('2016-02-08 12:00:00'));
         $collections[6] = $this->createEntry(6, new \DateTime('2016-02-08 06:00:00'));
 
-        $this->xmlDecoder->decode(Argument::type(Document::class))->will(function ($args) use (&$order, &$collections) {
+        $this->xmlDecoder->decode(Argument::type(Document::class))->will(function ($args) use (&$collections) {
             $dom = $args[0];
             $uuid = $dom->evaluate('number(./@uuid)');
 

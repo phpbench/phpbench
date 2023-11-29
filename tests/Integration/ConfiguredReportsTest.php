@@ -2,7 +2,6 @@
 
 namespace PhpBench\Tests\Integration;
 
-use Generator;
 use PhpBench\Extension\ConsoleExtension;
 use PhpBench\Extension\ReportExtension;
 use PhpBench\Report\ReportManager;
@@ -42,38 +41,6 @@ class ConfiguredReportsTest extends IntegrationTestCase
                 $contents = $this->workspace()->getContents('test');
                 $contents = str_replace(getcwd(), '', $contents);
                 $approval->approve($contents);
-            }
-        }
-    }
-
-    /**
-     * @return Generator<mixed>
-     */
-    public static function provideReport(): Generator
-    {
-        $generators = $this->container()->get(ReportExtension::SERVICE_REGISTRY_GENERATOR);
-        $renderers = $this->container()->get(ReportExtension::SERVICE_REGISTRY_RENDERER);
-
-        foreach ($generators->getConfigNames() as $generator) {
-            foreach (array_unique(array_merge($renderers->getServiceNames(), $renderers->getConfigNames())) as $renderer) {
-                yield [
-                    $generator,
-                    $renderer
-                ];
-            }
-        }
-
-        foreach ($generators->getServiceNames() as $generator) {
-            // composite doesn't work without configuration
-            if ($generator === 'composite') {
-                continue;
-            }
-
-            foreach ($renderers->getServiceNames() as $renderer) {
-                yield [
-                    $generator,
-                    $renderer
-                ];
             }
         }
     }

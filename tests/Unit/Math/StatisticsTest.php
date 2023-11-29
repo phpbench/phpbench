@@ -240,11 +240,6 @@ class StatisticsTest extends TestCase
     {
         $result = Statistics::percentageDifference($value1, $value2);
 
-        if ((string)$expected == 'NAN') {
-            self::assertEquals('NAN', (string)$result);
-
-            return;
-        }
         self::assertEquals(round($expected, 2), $result);
     }
 

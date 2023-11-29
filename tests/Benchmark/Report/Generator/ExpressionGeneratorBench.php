@@ -16,20 +16,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ExpressionGeneratorBench extends IntegrationBenchCase
 {
-    /**
-     * @var ExpressionGenerator
-     */
-    private $generator;
+    private ExpressionGenerator $generator;
 
-    /**
-     * @var Suite
-     */
-    private $suite;
+    private Suite $suite;
 
-    /**
-     * @var OptionsResolver
-     */
-    private $config;
+    private array $config;
 
     public function __construct()
     {

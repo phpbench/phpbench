@@ -28,7 +28,6 @@ use Prophecy\Prophecy\ObjectProphecy;
 abstract class PhpBenchLoggerTestCase extends LoggerTestCase
 {
     protected $logger;
-    protected $output;
     protected $document;
     protected $benchmark;
     protected $variant;

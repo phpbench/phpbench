@@ -26,9 +26,7 @@ use PhpBench\Environment\Information;
 use PhpBench\Environment\Supplier;
 use PhpBench\Executor;
 use PhpBench\Executor\Benchmark\TestExecutor;
-use PhpBench\Executor\ExecutionResults;
 use PhpBench\Model\ParameterSetsCollection;
-use PhpBench\Model\Result\MemoryResult;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\Suite;
 use PhpBench\Registry\Config;
@@ -40,11 +38,6 @@ use Prophecy\Prophecy\ObjectProphecy;
 class RunnerTest extends TestCase
 {
     public const TEST_PATH = 'path/to/bench.php';
-
-    /**
-     * @var ObjectProphecy<Suite>
-     */
-    private $suite;
 
     /**
      * @var ObjectProphecy<BenchmarkMetadata>
@@ -88,12 +81,11 @@ class RunnerTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->suite = $this->prophesize(Suite::class);
         $this->benchmark = $this->prophesize(BenchmarkMetadata::class);
         $this->executorRegistry = $this->prophesize(ConfigurableRegistry::class);
         $this->executor = new TestExecutor();
         $this->assertion = $this->prophesize(AssertionProcessor::class);
-        $this->executorConfig = $this->setUpExecutorConfig([]);
+        $this->setUpExecutorConfig();
         $this->envSupplier = $this->prophesize(Supplier::class);
         $this->informations = [];
         $this->envSupplier->getInformations()->willReturn($this->informations);
@@ -103,7 +95,6 @@ class RunnerTest extends TestCase
             $this->envSupplier->reveal(),
             $this->assertion->reveal(),
             null,
-            null
         );
 
         $this->executorRegistry->getService('remote')->willReturn(
@@ -119,7 +110,7 @@ class RunnerTest extends TestCase
         $subject = new SubjectMetadata($this->benchmark->reveal(), 'name');
         $subject->setIterations($iterations);
         $subject->setBeforeMethods(['beforeFoo']);
-        $subject->setParameterSets(ParameterSetsCollection::fromUnserializedParameterSetsCollection([[$parameters]]));
+        $subject->setParameterSets(ParameterSetsCollection::fromUnserializedParameterSetsCollection([[$parameters]]));// @phpstan-ignore-line
         $subject->setRevs($revs);
 
         TestUtil::configureBenchmarkMetadata($this->benchmark);
@@ -470,16 +461,8 @@ class RunnerTest extends TestCase
         }
     }
 
-    private function exampleResults(): ExecutionResults
-    {
-        return ExecutionResults::fromResults(
-            new TimeResult(10),
-            new MemoryResult(10, 10, 10)
-        );
-    }
-
     /**
-     * @param array<string, mixed>
+     * @param array<string, mixed> $config
      */
     private function setUpExecutorConfig(array $config = []): void
     {

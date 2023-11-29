@@ -75,7 +75,6 @@ class CommandsTest extends IntegrationTestCase
      */
     public static function provideCommand(): Generator
     {
-        /** @phpstan-ignore-next-line */
         foreach (glob(__DIR__ . '/../../examples/Command/*') as $file) {
             yield [
                 $file,

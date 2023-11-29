@@ -7,20 +7,14 @@ use PhpBench\Model\Suite;
 
 final class SuiteBuilder
 {
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
 
     /**
      * @var BenchmarkBuilder[]
      */
-    private $benchmarkBuilders = [];
+    private array $benchmarkBuilders = [];
 
-    /**
-     * @var DateTime
-     */
-    private $date = null;
+    private ?DateTime $date = null;
 
     public function __construct(string $name)
     {

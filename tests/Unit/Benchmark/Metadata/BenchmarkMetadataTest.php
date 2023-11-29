@@ -13,31 +13,17 @@
 namespace PhpBench\Tests\Unit\Benchmark\Metadata;
 
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
-use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Tests\TestCase;
 
 class BenchmarkMetadataTest extends TestCase
 {
-    /**
-     * @var BenchmarkMetadata
-     */
-    private $metadata;
-
-    /**
-     * @var SubjectMetadata
-     */
-    private $subject1;
-
-    /**
-     * @var SubjectMetadata
-     */
-    private $subject2;
+    private BenchmarkMetadata $metadata;
 
     protected function setUp(): void
     {
         $this->metadata = new BenchmarkMetadata('/path/to', 'Class');
-        $this->subject1 = $this->metadata->getOrCreateSubject('subjectOne');
-        $this->subject2 = $this->metadata->getOrCreateSubject('subjectTwo');
+        $this->metadata->getOrCreateSubject('subjectOne');
+        $this->metadata->getOrCreateSubject('subjectTwo');
     }
 
     /**

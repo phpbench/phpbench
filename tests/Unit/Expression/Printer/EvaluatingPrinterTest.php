@@ -24,12 +24,7 @@ class EvaluatingPrinterTest extends ParserTestCase
             ]
         );
 
-        self::assertEquals(
-            $expected,
-            $printer->print($this->parse(
-                $expr
-            ), [])
-        );
+        self::assertEquals($expected, $printer->print($this->parse($expr)));
     }
 
     public static function provideEvaluate(): Generator

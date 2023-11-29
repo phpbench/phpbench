@@ -17,20 +17,19 @@ use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\ExecutorMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Tests\TestCase;
+use Prophecy\Prophecy\ObjectProphecy;
 
 class SubjectMetadataTest extends TestCase
 {
-    private $subject;
+    private SubjectMetadata $subject;
 
-    /**
-     * @var BenchmarkMetadata
-     */
-    private $benchmark;
+    /** @var ObjectProphecy<BenchmarkMetadata>  */
+    private ObjectProphecy $benchmark;
 
     protected function setUp(): void
     {
         $this->benchmark = $this->prophesize(BenchmarkMetadata::class);
-        $this->subject = new SubjectMetadata($this->benchmark->reveal(), 'subjectOne', 0);
+        $this->subject = new SubjectMetadata($this->benchmark->reveal(), 'subjectOne');
     }
 
     /**

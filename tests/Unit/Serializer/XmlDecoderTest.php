@@ -56,7 +56,7 @@ class XmlDecoderTest extends XmlTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('XML file defines a non-existing result class "FooVendor\FooResult" - maybe you are missing an extension?');
-        $dom = new Document(1.0);
+        $dom = new Document('1.0');
         $dom->loadXML(
             <<<EOT
 <phpbench>
@@ -78,7 +78,7 @@ EOT
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('No result class was provided with key "foobar" for attribute "foobar-foo"');
-        $dom = new Document(1.0);
+        $dom = new Document('1.0');
         $dom->loadXML(
             <<<EOT
 <phpbench>
@@ -106,7 +106,7 @@ EOT
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Expected attribute name to have a result key prefix, got "foo"');
-        $dom = new Document(1.0);
+        $dom = new Document('1.0');
         $dom->loadXML(
             <<<EOT
 <phpbench>
@@ -128,7 +128,7 @@ EOT
 
     public function testDecodeBoolValue(): void
     {
-        $dom = new Document(1.0);
+        $dom = new Document('1.0');
         $dom->loadXML(
             <<<EOT
 <phpbench>
@@ -156,7 +156,7 @@ EOT
 
     public function testDecodeLegacyEnv(): void
     {
-        $dom = new Document(1.0);
+        $dom = new Document('1.0');
         $dom->loadXML(
             <<<EOT
 <phpbench>
