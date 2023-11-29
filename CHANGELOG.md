@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-master
+1.2.10
 ------
 
 - Bump minimum PHP version to 8.1
