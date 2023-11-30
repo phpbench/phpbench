@@ -14,37 +14,13 @@ use PhpBench\Report\Model\Builder\TableBuilder;
 final class Table implements IteratorAggregate, ComponentInterface
 {
     /**
-     * @var TableRow[]
-     */
-    private $rows;
-
-    /**
-     * @var string|null
-     */
-    private $title;
-
-    /**
-     * @var string[]
-     */
-    private $headers;
-
-    /**
-     * @var array<string,TableColumnGroup>
-     */
-    private $columnGroups;
-
-    /**
      * @param Node[]|string[]|null $headers
      * @param TableRow[] $rows
      * @param TableColumnGroup[] $columnGroups
      * @param string[] $headers
      */
-    public function __construct(array $rows, ?array $headers, ?string $title, array $columnGroups = [])
+    public function __construct(private readonly array $rows, private readonly ?array $headers, private readonly ?string $title, private readonly array $columnGroups = [])
     {
-        $this->rows = $rows;
-        $this->title = $title;
-        $this->headers = $headers;
-        $this->columnGroups = $columnGroups;
     }
 
     /**

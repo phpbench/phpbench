@@ -8,20 +8,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ConsoleLogger extends AbstractLogger
 {
-    /**
-     * @var bool
-     */
-    private $enable;
-
-    /**
-     * @var OutputInterface
-     */
-    private $output;
-
-    public function __construct(OutputInterface $output, bool $enable)
+    public function __construct(private readonly OutputInterface $output, private readonly bool $enable)
     {
-        $this->enable = $enable;
-        $this->output = $output;
     }
 
     /**
@@ -52,6 +40,6 @@ class ConsoleLogger extends AbstractLogger
 
                 break;
         }
-        $this->output->writeln(sprintf("[<%s>%s</>] %s\n", $decoration, strtoupper($level), $message));
+        $this->output->writeln(sprintf("[<%s>%s</>] %s\n", $decoration, strtoupper((string) $level), $message));
     }
 }

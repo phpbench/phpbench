@@ -6,14 +6,13 @@ use PhpBench\Template\ObjectPathResolver;
 
 class ChainObjectPathResolver implements ObjectPathResolver
 {
-    /**
-     * @var ObjectPathResolver[]
-     */
-    private $objectPathResolvers;
-
-    public function __construct(array $objectPathResolvers)
+    public function __construct(
+        /**
+         * @var ObjectPathResolver[]
+         */
+        private readonly array $objectPathResolvers
+    )
     {
-        $this->objectPathResolvers = $objectPathResolvers;
     }
 
     /**

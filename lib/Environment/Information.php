@@ -12,20 +12,23 @@
 
 namespace PhpBench\Environment;
 
+use ArrayAccess;
+use IteratorAggregate;
+use ReturnTypeWillChange;
+use BadMethodCallException;
+use ArrayIterator;
 /**
  * Represents information about the VCS system used by the current working
  * directory.
  */
-class Information implements \ArrayAccess, \IteratorAggregate
+class Information implements ArrayAccess, IteratorAggregate
 {
-    private $name;
-    private $information;
+    private array $information;
 
     /**
      */
-    public function __construct(string $name, array $information)
+    public function __construct(private readonly string $name, array $information)
     {
-        $this->name = $name;
         $this->information = $this->flattenInformation($information);
     }
 
@@ -45,7 +48,7 @@ class Information implements \ArrayAccess, \IteratorAggregate
     /**
      * {@inheritdoc}
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->information[$offset];
@@ -54,10 +57,10 @@ class Information implements \ArrayAccess, \IteratorAggregate
     /**
      * {@inheritdoc}
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetSet($offset, $value): void
     {
-        throw new \BadMethodCallException(sprintf(
+        throw new BadMethodCallException(sprintf(
             'Environmental information is immutable. Tried to set key "%s" with value "%s"',
             $offset,
             $value
@@ -67,7 +70,7 @@ class Information implements \ArrayAccess, \IteratorAggregate
     /**
      * {@inheritdoc}
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetExists($offset): bool
     {
         return array_key_exists($offset, $this->information);
@@ -76,10 +79,10 @@ class Information implements \ArrayAccess, \IteratorAggregate
     /**
      * {@inheritdoc}
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetUnset($offset): void
     {
-        throw new \BadMethodCallException(sprintf(
+        throw new BadMethodCallException(sprintf(
             'Environmental information is immutable. Tried to unset key "%s"',
             $offset
         ));
@@ -88,9 +91,9 @@ class Information implements \ArrayAccess, \IteratorAggregate
     /**
      * {@inheritdoc}
      */
-    public function getIterator(): \ArrayIterator
+    public function getIterator(): ArrayIterator
     {
-        return new \ArrayIterator($this->information);
+        return new ArrayIterator($this->information);
     }
 
     public function toArray(): array

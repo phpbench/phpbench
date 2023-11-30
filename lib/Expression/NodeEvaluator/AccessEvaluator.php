@@ -2,6 +2,7 @@
 
 namespace PhpBench\Expression\NodeEvaluator;
 
+use Exception;
 use PhpBench\Expression\Ast\AccessNode;
 use PhpBench\Expression\Ast\DataFrameNode;
 use PhpBench\Expression\Ast\ListNode;
@@ -18,10 +19,7 @@ use function array_key_exists;
 
 class AccessEvaluator implements NodeEvaluator
 {
-    /**
-     * @var DataFrameEvaluator
-     */
-    private $dataFrameEvaluator;
+    private readonly DataFrameEvaluator $dataFrameEvaluator;
 
     public function __construct()
     {
@@ -55,7 +53,7 @@ class AccessEvaluator implements NodeEvaluator
 
         try {
             $arrayValue = $this->resolveArray($evaluator, $value);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw new ExpressionError(sprintf(
                 'Could not get value for key "%s": %s',
                 $accessValue,
@@ -86,7 +84,7 @@ class AccessEvaluator implements NodeEvaluator
         if (!$value instanceof ListNode) {
             throw new ExpressionError(sprintf(
                 'Array access expression on non-array, got "%s"',
-                get_class($value)
+                $value::class
             ));
         }
 
@@ -105,7 +103,7 @@ class AccessEvaluator implements NodeEvaluator
         if (!$accessValue instanceof ScalarValue) {
             throw new ExpressionError(sprintf(
                 'Array access expression must evaluate to a scalar, got "%s"',
-                get_class($accessValue)
+                $accessValue::class
             ));
         }
 

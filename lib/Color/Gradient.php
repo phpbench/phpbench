@@ -12,7 +12,7 @@ use function array_fill;
     /**
      * @var Color[]
      */
-    private $colors;
+    private array $colors;
 
     final private function __construct(Color ...$colors)
     {

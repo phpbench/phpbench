@@ -23,28 +23,19 @@ use Symfony\Component\Console\Output\OutputInterface;
 class DotsLogger extends PhpBenchLogger
 {
     /**
-     * @var bool
-     */
-    private $showBench;
-
-    /**
      * @var string
      */
     private $buffer;
 
-    /**
-     * @var bool
-     */
-    private $firstTime = true;
+    private bool $firstTime = true;
 
     public function __construct(
         OutputInterface $output,
         VariantFormatter $formatter,
         TimeUnit $timeUnit,
-        bool $showBench = false
+        private readonly bool $showBench = false
     ) {
         parent::__construct($output, $formatter, $timeUnit);
-        $this->showBench = $showBench;
     }
 
     public function benchmarkStart(Benchmark $benchmark): void

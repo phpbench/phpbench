@@ -23,13 +23,13 @@ use Prophecy\Prophecy\ObjectProphecy;
 
 class CompositeGeneratorTest extends TestCase
 {
-    private $generator;
-    private $manager;
+    private CompositeGenerator $generator;
+    private ObjectProphecy $manager;
 
     /**
      * @var ObjectProphecy<SuiteCollection>
      */
-    private $collection;
+    private ObjectProphecy $collection;
 
     protected function setUp(): void
     {

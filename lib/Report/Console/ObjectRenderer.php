@@ -8,18 +8,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ObjectRenderer
 {
     /**
-     * @var OutputInterface
-     */
-    private $output;
-
-    /**
      * @var ObjectRendererInterface[]
      */
-    private $renderers;
+    private readonly array $renderers;
 
-    public function __construct(OutputInterface $output, ObjectRendererInterface ...$renderers)
+    public function __construct(private readonly OutputInterface $output, ObjectRendererInterface ...$renderers)
     {
-        $this->output = $output;
         $this->renderers = $renderers;
     }
 
@@ -33,7 +27,7 @@ class ObjectRenderer
 
         throw new CouldNotRender(sprintf(
             'Could not render object "%s"',
-            get_class($object)
+            $object::class
         ));
     }
 }

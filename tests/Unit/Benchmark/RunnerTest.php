@@ -37,27 +37,24 @@ use Prophecy\Prophecy\ObjectProphecy;
 
 class RunnerTest extends TestCase
 {
-    public const TEST_PATH = 'path/to/bench.php';
+    final public const TEST_PATH = 'path/to/bench.php';
 
     /**
      * @var ObjectProphecy<BenchmarkMetadata>
      */
-    private $benchmark;
+    private ObjectProphecy $benchmark;
 
-    /**
-     * @var TestExecutor
-     */
-    private $executor;
+    private TestExecutor $executor;
 
     /**
      * @var ObjectProphecy<ConfigurableRegistry>
      */
-    private $executorRegistry;
+    private ObjectProphecy $executorRegistry;
 
     /**
      * @var ObjectProphecy<AssertionProcessor>
      */
-    private $assertion;
+    private ObjectProphecy $assertion;
 
     /**
      * @var Config
@@ -67,17 +64,14 @@ class RunnerTest extends TestCase
     /**
      * @var ObjectProphecy<Supplier>
      */
-    private $envSupplier;
+    private ObjectProphecy $envSupplier;
 
     /**
      * @var array<mixed>
      */
-    private $informations;
+    private array $informations;
 
-    /**
-     * @var Runner
-     */
-    private $runner;
+    private Runner $runner;
 
     protected function setUp(): void
     {
@@ -121,7 +115,7 @@ class RunnerTest extends TestCase
 
         $suite = $this->runner->run([ $this->benchmark->reveal() ], RunnerConfig::create()->withTag('context'));
 
-        $this->assertInstanceOf('PhpBench\Model\Suite', $suite);
+        $this->assertInstanceOf(Suite::class, $suite);
         $this->assertNoErrors($suite);
 
         self::assertEquals((int)(count($revs) * array_sum($iterations)), $this->executor->getExecutedContextCount());
@@ -225,7 +219,7 @@ class RunnerTest extends TestCase
 
         $suite = $this->runner->run([ $this->benchmark->reveal() ], RunnerConfig::create());
 
-        $this->assertInstanceOf('PhpBench\Model\Suite', $suite);
+        $this->assertInstanceOf(Suite::class, $suite);
         $this->assertNoErrors($suite);
         $this->assertEquals(2, $suite->getSummary()->getNbSubjects());
         $subjects = $suite->getSubjects();

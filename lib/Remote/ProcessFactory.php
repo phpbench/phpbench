@@ -8,20 +8,11 @@ use Symfony\Component\Process\Process;
 
 final class ProcessFactory implements ProcessFactoryInterface
 {
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private readonly LoggerInterface $logger;
 
-    /**
-     * @var array|null
-     */
-    private $env;
-
-    public function __construct(?LoggerInterface $logger = null, ?array $env = null)
+    public function __construct(?LoggerInterface $logger = null, private readonly ?array $env = null)
     {
         $this->logger = $logger ?: new NullLogger();
-        $this->env = $env;
     }
 
     public function create(string $commandLine, ?float $timeout = null): Process

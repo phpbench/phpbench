@@ -4,17 +4,8 @@ namespace PhpBench\Expression\Ast;
 
 final class UnrepresentableValueNode extends PhpValue
 {
-    /**
-     * @var mixed
-     */
-    private $value;
-
-    /**
-     * @param mixed $value
-     */
-    public function __construct($value)
+    public function __construct(private readonly mixed $value)
     {
-        $this->value = $value;
     }
 
     /**

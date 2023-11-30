@@ -4,20 +4,8 @@ namespace PhpBench\Benchmark\Metadata;
 
 class ExecutorMetadata
 {
-    /**
-     * @var string
-     */
-    private $name;
-
-    /**
-     * @var array
-     */
-    private $config;
-
-    public function __construct(string $name, array $options)
+    public function __construct(private readonly string $name, private readonly array $config)
     {
-        $this->name = $name;
-        $this->config = $options;
     }
 
     public function getName(): string

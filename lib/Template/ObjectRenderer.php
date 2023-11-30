@@ -11,28 +11,10 @@ use function ob_start;
 
 final class ObjectRenderer
 {
-    private $idCounter = 0;
+    private int $idCounter = 0;
 
-    /**
-     * @var ObjectPathResolver
-     */
-    private $resolver;
-
-    /**
-     * @var array
-     */
-    private $templatePaths;
-
-    /**
-     * @var TemplateService
-     */
-    private $container;
-
-    public function __construct(ObjectPathResolver $resolver, array $templatePaths, TemplateService $container)
+    public function __construct(private readonly ObjectPathResolver $resolver, private readonly array $templatePaths, private readonly TemplateService $container)
     {
-        $this->resolver = $resolver;
-        $this->templatePaths = $templatePaths;
-        $this->container = $container;
     }
 
     public function render(object $object): string
@@ -68,7 +50,7 @@ final class ObjectRenderer
 
         throw new CouldNotFindTemplateForObject(sprintf(
             'Could not resolve path for object "%s", tried paths "%s"',
-            get_class($object),
+            $object::class,
             implode('", "', $tried)
         ));
     }

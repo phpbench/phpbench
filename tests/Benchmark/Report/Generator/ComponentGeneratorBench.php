@@ -18,7 +18,7 @@ use function array_fill;
  */
 class ComponentGeneratorBench extends IntegrationBenchCase
 {
-    private ComponentGenerator $generator;
+    private readonly ComponentGenerator $generator;
 
     private Suite $suite;
 

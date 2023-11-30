@@ -12,22 +12,13 @@ use PhpBench\Expression\Exception\SyntaxError;
  */
 final class Tokens implements IteratorAggregate, Countable
 {
-    /**
-     * @var Token[]
-     */
-    private $tokens;
-
-    /**
-     * @var int
-     */
-    private $position = 0;
+    private int $position = 0;
 
     /**
      * @param Token[] $tokens
      */
-    public function __construct(array $tokens)
+    public function __construct(private array $tokens)
     {
-        $this->tokens = $tokens;
     }
 
     /**
@@ -89,11 +80,7 @@ final class Tokens implements IteratorAggregate, Countable
 
     private function atPosition(int $position): Token
     {
-        if (isset($this->tokens[$position])) {
-            return $this->tokens[$position];
-        }
-
-        return new Token(Token::T_EOF, '', $position);
+        return $this->tokens[$position] ?? new Token(Token::T_EOF, '', $position);
     }
 
     public function current(): Token

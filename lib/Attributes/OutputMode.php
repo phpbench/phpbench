@@ -17,14 +17,8 @@ use Attribute;
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
 class OutputMode
 {
-    /**
-     * @var string
-     */
-    private $mode;
-
-    public function __construct(string $mode)
+    public function __construct(private readonly string $mode)
     {
-        $this->mode = $mode;
     }
 
     public function getMode()

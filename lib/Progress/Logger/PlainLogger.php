@@ -18,7 +18,7 @@ use PhpBench\Model\Variant;
 
 class PlainLogger extends PhpBenchLogger
 {
-    private $firstTime = true;
+    private bool $firstTime = true;
     /**
      * {@inheritdoc}
      */

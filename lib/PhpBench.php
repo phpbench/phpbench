@@ -38,7 +38,7 @@ use function set_error_handler;
 class PhpBench
 {
     // PHPBench version: @git_tag@ will be replaced by box.
-    public const VERSION = '@git_tag@';
+    final public const VERSION = '@git_tag@';
 
     public static function run(?InputInterface $input = null, ?OutputInterface $output = null): void
     {

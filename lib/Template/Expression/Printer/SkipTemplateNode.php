@@ -6,14 +6,8 @@ use PhpBench\Expression\Ast\Node;
 
 class SkipTemplateNode extends Node
 {
-    /**
-     * @var Node
-     */
-    private $subject;
-
-    public function __construct(Node $subject)
+    public function __construct(private readonly Node $subject)
     {
-        $this->subject = $subject;
     }
 
     public function subject(): Node

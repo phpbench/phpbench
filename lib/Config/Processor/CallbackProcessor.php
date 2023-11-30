@@ -8,14 +8,8 @@ use PhpBench\Config\ConfigProcessor;
 
 class CallbackProcessor implements ConfigProcessor
 {
-    /**
-     * @var Closure
-     */
-    private $callback;
-
-    public function __construct(Closure $callback)
+    public function __construct(private readonly Closure $callback)
     {
-        $this->callback = $callback;
     }
 
     public function process(ConfigLoader $loader, string $path, array $config): array

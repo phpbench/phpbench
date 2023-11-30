@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Reflection;
 
+use InvalidArgumentException;
 use PhpBench\Reflection\ReflectionClass;
 use PhpBench\Reflection\ReflectionHierarchy;
 use PhpBench\Reflection\ReflectionMethod;
@@ -19,9 +20,9 @@ use PhpBench\Tests\TestCase;
 
 class ReflectionHierarchyTest extends TestCase
 {
-    private $hierarchy;
-    private $reflection1;
-    private $reflection2;
+    private ReflectionHierarchy $hierarchy;
+    private ReflectionClass $reflection1;
+    private ReflectionClass $reflection2;
 
     protected function setUp(): void
     {
@@ -58,7 +59,7 @@ class ReflectionHierarchyTest extends TestCase
      */
     public function testGetTopNoClasses(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Cannot get top');
         $this->hierarchy->getTop();
     }

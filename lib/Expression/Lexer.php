@@ -4,15 +4,7 @@ namespace PhpBench\Expression;
 
 final class Lexer
 {
-    /**
-     * @var string
-     */
-    private $pattern;
-
-    /**
-     * @var array
-     */
-    private $unitNames;
+    private readonly string $pattern;
 
     private const PATTERN_NAME = '(?:[a-z_\/]{1}[a-z0-9_\/]*)';
     private const PATTERN_FUNCTION = '(?:[a-z_\/]+\()';
@@ -62,7 +54,7 @@ final class Lexer
     /**
      */
     public function __construct(
-        array $unitNames = []
+        private readonly array $unitNames = []
     ) {
         $this->pattern = sprintf(
             '{(%s)|(%s)|\n|\r}iu',
@@ -71,7 +63,6 @@ final class Lexer
             }, array_keys(self::TOKEN_VALUE_MAP))),
             implode(')|(', self::PATTERNS)
         );
-        $this->unitNames = $unitNames;
     }
 
     public function lex(string $expression): Tokens
@@ -100,10 +91,7 @@ final class Lexer
         return new Tokens($tokens);
     }
 
-    /**
-     * @param mixed $value
-     */
-    protected function resolveType($value, Token $prevToken): string
+    protected function resolveType(mixed $value, Token $prevToken): string
     {
         $type = Token::T_NONE;
 
@@ -113,7 +101,7 @@ final class Lexer
 
         switch (true) {
             case (is_numeric($value)):
-                if (strpos((string)$value, '.') !== false || stripos((string)$value, 'e') !== false) {
+                if (str_contains((string)$value, '.') || stripos((string)$value, 'e') !== false) {
                     return Token::T_FLOAT;
                 }
 
@@ -124,10 +112,10 @@ final class Lexer
             case ($prevToken->type !== Token::T_DOT && in_array($value, $this->unitNames, true)):
                 return Token::T_UNIT;
 
-            case (preg_match('{'. self::PATTERN_FUNCTION. '}', $value)):
+            case (preg_match('{'. self::PATTERN_FUNCTION. '}', (string) $value)):
                 return Token::T_FUNCTION;
 
-            case (preg_match('{'. self::PATTERN_NAME. '}', $value)):
+            case (preg_match('{'. self::PATTERN_NAME. '}', (string) $value)):
                 return Token::T_NAME;
         }
 

@@ -24,7 +24,7 @@ namespace PhpBench\Benchmark\Metadata\Annotations;
  */
 class Groups extends AbstractArrayAnnotation
 {
-    private $groups;
+    private readonly array $groups;
 
     public function __construct($params)
     {

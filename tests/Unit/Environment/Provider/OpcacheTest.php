@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Environment\Provider;
 
+use PhpBench\Environment\Provider\Opcache;
 use PhpBench\Environment\Provider;
 use PhpBench\Remote\Launcher;
 use PhpBench\Tests\TestCase;
@@ -56,6 +57,6 @@ class OpcacheTest extends TestCase
 
         $launcher = new Launcher(null, null, null, null, $phpConfig);
 
-        return new Provider\Opcache($launcher);
+        return new Opcache($launcher);
     }
 }

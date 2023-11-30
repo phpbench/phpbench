@@ -51,7 +51,7 @@ class TimeUnitTest extends TestCase
                 1,
                 TimeUnit::SECONDS,
                 TimeUnit::MICROSECONDS,
-                1000000,
+                1_000_000,
             ],
             [
                 1,
@@ -109,14 +109,14 @@ class TimeUnitTest extends TestCase
             1,
             TimeUnit::SECOND,
             TimeUnit::MICROSECOND,
-            1000000
+            1_000_000
         ];
 
         yield [
             1,
             TimeUnit::MINUTE,
             TimeUnit::MICROSECOND,
-            60000000
+            60_000_000
         ];
 
         yield [
@@ -339,8 +339,8 @@ class TimeUnitTest extends TestCase
 
         yield [100000, 'milliseconds'];
 
-        yield [1000000, 'seconds'];
+        yield [1_000_000, 'seconds'];
 
-        yield [60000000, 'minutes'];
+        yield [60_000_000, 'minutes'];
     }
 }

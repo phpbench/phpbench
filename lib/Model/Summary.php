@@ -19,14 +19,14 @@ use PhpBench\Math\Statistics;
  */
 class Summary
 {
-    private $nbSubjects = 0;
-    private $nbIterations = 0;
-    private $nbRejects = 0;
-    private $nbRevolutions = 0;
-    private $nbFailures = 0;
-    private $nbAssertions = 0;
-    private $nbErrors = 0;
-    private $stats = [
+    private int $nbSubjects = 0;
+    private int $nbIterations = 0;
+    private int $nbRejects = 0;
+    private int $nbRevolutions = 0;
+    private int $nbFailures = 0;
+    private int $nbAssertions = 0;
+    private int $nbErrors = 0;
+    private array $stats = [
         'stdev' => [],
         'mean' => [],
         'mode' => [],
@@ -37,15 +37,9 @@ class Summary
         'sum' => [],
     ];
 
-    /**
-     * @var bool
-     */
-    private $opCacheEnabled = false;
+    private bool $opCacheEnabled = false;
 
-    /**
-     * @var bool
-     */
-    private $xdebugEnabled = false;
+    private bool $xdebugEnabled = false;
 
     /**
      * @var string|null

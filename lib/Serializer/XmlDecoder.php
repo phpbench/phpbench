@@ -12,6 +12,8 @@
 
 namespace PhpBench\Serializer;
 
+use DateTime;
+use RuntimeException;
 use DOMElement;
 use PhpBench\Assertion\AssertionResult;
 use PhpBench\Dom\Document;
@@ -80,7 +82,7 @@ class XmlDecoder
     {
         $suite = new Suite(
             $suiteEl->getAttribute('tag'),
-            new \DateTime($suiteEl->getAttribute('date')),
+            new DateTime($suiteEl->getAttribute('date')),
             $suiteEl->getAttribute('config-path'),
             [],
             [],
@@ -117,7 +119,7 @@ class XmlDecoder
             $class = $resultEl->getAttribute('class');
 
             if (!class_exists($class)) {
-                throw new \RuntimeException(sprintf(
+                throw new RuntimeException(sprintf(
                     'XML file defines a non-existing result class "%s" - maybe you are missing an extension?',
                     $class
                 ));
@@ -245,15 +247,11 @@ class XmlDecoder
             $parameters[$name] = (function (DOMElement $element) {
                 $value = $element->getAttribute('value');
                 $type = $element->getAttribute('type');
-
-                switch ($type) {
-                    case 'integer':
-                        return intval($value);
-                    case 'double':
-                        return floatval($value);
-                }
-
-                return $value;
+                return match ($type) {
+                    'integer' => intval($value),
+                    'double' => floatval($value),
+                    default => $value,
+                };
             })($parameterEl);
         }
 
@@ -300,24 +298,24 @@ class XmlDecoder
             foreach ($iterationEl->attributes as $attributeEl) {
                 $name = $attributeEl->name;
 
-                if (false === strpos($name, '-')) {
-                    throw new \RuntimeException(sprintf(
+                if (!str_contains((string) $name, '-')) {
+                    throw new RuntimeException(sprintf(
                         'Expected attribute name to have a result key prefix, got "%s".',
                         $name
                     ));
                 }
 
-                $prefix = substr($name, 0, strpos($name, '-'));
+                $prefix = substr((string) $name, 0, strpos((string) $name, '-'));
 
                 if (!isset($resultClasses[$prefix])) {
-                    throw new \RuntimeException(sprintf(
+                    throw new RuntimeException(sprintf(
                         'No result class was provided with key "%s" for attribute "%s"',
                         $prefix,
                         $name
                     ));
                 }
 
-                $suffix = substr($name, strpos($name, '-') + 1);
+                $suffix = substr((string) $name, strpos((string) $name, '-') + 1);
                 $results[$prefix][str_replace('-', '_', $suffix)] = $attributeEl->value;
             }
 
@@ -337,10 +335,8 @@ class XmlDecoder
 
     /**
      * @return mixed
-     *
-     * @param mixed $value
      */
-    private function resolveEnvType(string $type, $value)
+    private function resolveEnvType(string $type, mixed $value)
     {
         if ($type === 'boolean') {
             return (bool)$value;

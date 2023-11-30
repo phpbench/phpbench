@@ -12,6 +12,7 @@
 
 namespace PhpBench\Storage;
 
+use DateTime;
 use PhpBench\Model\Tag;
 
 /**
@@ -19,47 +20,8 @@ use PhpBench\Model\Tag;
  */
 class HistoryEntry
 {
-    private $runId;
-    private $date;
-    private $tag;
-    private $branch;
-
-    private $nbSubjects;
-    private $nbIterations;
-    private $nbRevolutions;
-
-    private $minTime;
-    private $maxTime;
-    private $meanTime;
-    private $meanRelStDev;
-    private $totalTime;
-
-    public function __construct(
-        $runId,
-        \DateTime $date,
-        $tag,
-        $branch,
-        $nbSubjects,
-        $nbIterations,
-        $nbRevolutions,
-        $minTime,
-        $maxTime,
-        $meanTime,
-        $meanRelStDev,
-        $totalTime
-    ) {
-        $this->runId = $runId;
-        $this->date = $date;
-        $this->tag = $tag;
-        $this->branch = $branch;
-        $this->nbSubjects = $nbSubjects;
-        $this->nbIterations = $nbIterations;
-        $this->nbRevolutions = $nbRevolutions;
-        $this->minTime = $minTime;
-        $this->maxTime = $maxTime;
-        $this->meanTime = $meanTime;
-        $this->meanRelStDev = $meanRelStDev;
-        $this->totalTime = $totalTime;
+    public function __construct(private $runId, private readonly DateTime $date, private $tag, private $branch, private $nbSubjects, private $nbIterations, private $nbRevolutions, private $minTime, private $maxTime, private $meanTime, private $meanRelStDev, private $totalTime)
+    {
     }
 
     public function getRunId()
@@ -67,7 +29,7 @@ class HistoryEntry
         return $this->runId;
     }
 
-    public function getDate(): \DateTime
+    public function getDate(): DateTime
     {
         return $this->date;
     }

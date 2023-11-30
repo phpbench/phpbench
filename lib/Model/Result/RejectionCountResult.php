@@ -17,7 +17,7 @@ use PhpBench\Model\ResultInterface;
 
 class RejectionCountResult implements ResultInterface
 {
-    private $rejectCount;
+    private readonly int $rejectCount;
 
     /**
      * {@inheritdoc}

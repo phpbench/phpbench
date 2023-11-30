@@ -12,6 +12,9 @@
 
 namespace PhpBench\Tests\Unit\Model;
 
+use RuntimeException;
+use stdClass;
+use InvalidArgumentException;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\ResultCollection;
 use PhpBench\Tests\TestCase;
@@ -61,9 +64,9 @@ class ResultCollectionTest extends TestCase
      */
     public function testNonExistantClass(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Result of class "stdClass" has not been set');
-        $this->collection->getResult(\stdClass::class); // @phpstan-ignore-line
+        $this->collection->getResult(stdClass::class); // @phpstan-ignore-line
     }
 
     /**
@@ -81,7 +84,7 @@ class ResultCollectionTest extends TestCase
      */
     public function testNamedMetricDoesNotExist(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Unknown metric "foobar" for result class "PhpBench\Model\Result\TimeResult". Available metrics: "net"');
         $this->collection->setResult($this->timeResult);
         $this->assertEquals(1, $this->collection->getMetric(TimeResult::class, 'foobar'));

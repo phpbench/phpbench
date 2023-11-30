@@ -12,6 +12,12 @@
 
 namespace PhpBench\Math;
 
+use LogicException;
+use RuntimeException;
+use ArrayIterator;
+use InvalidArgumentException;
+use ReturnTypeWillChange;
+use BadMethodCallException;
 use ArrayAccess;
 use IteratorAggregate;
 
@@ -25,13 +31,13 @@ use IteratorAggregate;
 class Distribution implements IteratorAggregate, ArrayAccess
 {
     private $samples = [];
-    private $stats = [];
-    private $closures = [];
+    private array $stats = [];
+    private array $closures = [];
 
     public function __construct(array $samples, array $stats = [])
     {
         if (count($samples) < 1) {
-            throw new \LogicException(
+            throw new LogicException(
                 'Cannot create a distribution with zero samples.'
             );
         }
@@ -67,7 +73,7 @@ class Distribution implements IteratorAggregate, ArrayAccess
         ];
 
         if ($diff = array_diff(array_keys($stats), array_keys($this->closures))) {
-            throw new \RuntimeException(sprintf(
+            throw new RuntimeException(sprintf(
                 'Unknown pre-computed stat(s) encountered: "%s"',
                 implode('", "', $diff)
             ));
@@ -116,7 +122,7 @@ class Distribution implements IteratorAggregate, ArrayAccess
         return $this->getStat('variance');
     }
 
-    public function getIterator(): \ArrayIterator
+    public function getIterator(): ArrayIterator
     {
         foreach ($this->closures as $name => $callback) {
             if (!array_key_exists($name, $this->stats)) {
@@ -124,7 +130,7 @@ class Distribution implements IteratorAggregate, ArrayAccess
             }
         }
 
-        return new \ArrayIterator($this->stats);
+        return new ArrayIterator($this->stats);
     }
 
     public function getStats(): array
@@ -145,7 +151,7 @@ class Distribution implements IteratorAggregate, ArrayAccess
         }
 
         if (!isset($this->closures[$name])) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'Unknown stat "%s", known stats: "%s"',
                 $name,
                 implode('", "', array_keys($this->closures))
@@ -160,7 +166,7 @@ class Distribution implements IteratorAggregate, ArrayAccess
     /**
      * {@inheritdoc}
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetExists($offset): bool
     {
         return isset($this->stats[$offset]);
@@ -169,7 +175,7 @@ class Distribution implements IteratorAggregate, ArrayAccess
     /**
      * {@inheritdoc}
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->getStat($offset);
@@ -178,18 +184,18 @@ class Distribution implements IteratorAggregate, ArrayAccess
     /**
      * {@inheritdoc}
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetSet($offset, $value): void
     {
-        throw new \BadMethodCallException('Distribution is read-only');
+        throw new BadMethodCallException('Distribution is read-only');
     }
 
     /**
      * {@inheritdoc}
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetUnset($offset): void
     {
-        throw new \BadMethodCallException('Distribution is read-only');
+        throw new BadMethodCallException('Distribution is read-only');
     }
 }

@@ -4,14 +4,8 @@ namespace PhpBench\Expression\Ast;
 
 class FloatNode extends NumberNode
 {
-    /**
-     * @var float
-     */
-    private $number;
-
-    public function __construct(float $number)
+    public function __construct(private readonly float $number)
     {
-        $this->number = $number;
     }
 
     public function value(): float

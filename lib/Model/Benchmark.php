@@ -12,6 +12,7 @@
 
 namespace PhpBench\Model;
 
+use IteratorAggregate;
 use ArrayIterator;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use RuntimeException;
@@ -19,31 +20,19 @@ use RuntimeException;
 /**
  * Benchmark metadata class.
  *
- * @implements \IteratorAggregate<Subject>
+ * @implements IteratorAggregate<Subject>
  */
-class Benchmark implements \IteratorAggregate
+class Benchmark implements IteratorAggregate
 {
-    /**
-     * @var string
-     */
-    private $class;
-
     /**
      * @var Subject[]
      */
     private $subjects = [];
 
     /**
-     * @var Suite
      */
-    private $suite;
-
-    /**
-     */
-    public function __construct(Suite $suite, string $class)
+    public function __construct(private Suite $suite, private string $class)
     {
-        $this->suite = $suite;
-        $this->class = $class;
     }
 
     public function createSubjectFromMetadataAndExecutor(SubjectMetadata $metadata, ResolvedExecutor $executor): Subject

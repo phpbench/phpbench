@@ -26,60 +26,34 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class RunnerHandler
 {
-    public const ARG_PATH = 'path';
-    public const OPT_FILTER = 'filter';
-    public const OPT_GROUP = 'group';
-    public const OPT_PARAMETERS = 'parameters';
-    public const OPT_ASSERT = 'assert';
-    public const OPT_REVS = 'revs';
-    public const OPT_PROGRESS = 'progress';
-    public const OPT_BOOTSTRAP = 'bootstrap';
-    public const OPT_EXECUTOR = 'executor';
-    public const OPT_STOP_ON_ERROR = 'stop-on-error';
-    public const OPT_PHP_BIN = 'php-binary';
-    public const OPT_PHP_CONFIG = 'php-config';
-    public const OPT_PHP_WRAPPER = 'php-wrapper';
-    public const OPT_PHP_DISABLE_INI = 'php-disable-ini';
-    public const OPT_FORMAT = 'format';
-    public const OPT_VARIANT_FILTER = 'variant';
-
-    /**
-     * @var LoggerRegistry
-     */
-    private $loggerRegistry;
-
-    /**
-     * @var string|null
-     */
-    private $defaultProgress;
-
-    /**
-     * @var array<string>
-     */
-    private $benchPaths;
-
-    /**
-     * @var Runner
-     */
-    private $runner;
-
-    /**
-     * @var BenchmarkFinder
-     */
-    private $finder;
+    final public const ARG_PATH = 'path';
+    final public const OPT_FILTER = 'filter';
+    final public const OPT_GROUP = 'group';
+    final public const OPT_PARAMETERS = 'parameters';
+    final public const OPT_ASSERT = 'assert';
+    final public const OPT_REVS = 'revs';
+    final public const OPT_PROGRESS = 'progress';
+    final public const OPT_BOOTSTRAP = 'bootstrap';
+    final public const OPT_EXECUTOR = 'executor';
+    final public const OPT_STOP_ON_ERROR = 'stop-on-error';
+    final public const OPT_PHP_BIN = 'php-binary';
+    final public const OPT_PHP_CONFIG = 'php-config';
+    final public const OPT_PHP_WRAPPER = 'php-wrapper';
+    final public const OPT_PHP_DISABLE_INI = 'php-disable-ini';
+    final public const OPT_FORMAT = 'format';
+    final public const OPT_VARIANT_FILTER = 'variant';
 
     public function __construct(
-        Runner $runner,
-        LoggerRegistry $loggerRegistry,
-        BenchmarkFinder $finder,
-        ?string $defaultProgress = null,
-        array $benchPaths = null
-    ) {
-        $this->runner = $runner;
-        $this->loggerRegistry = $loggerRegistry;
-        $this->defaultProgress = $defaultProgress;
-        $this->benchPaths = $benchPaths;
-        $this->finder = $finder;
+        private readonly Runner $runner,
+        private readonly LoggerRegistry $loggerRegistry,
+        private readonly BenchmarkFinder $finder,
+        private readonly ?string $defaultProgress = null,
+        /**
+         * @var array<string>
+         */
+        private readonly ?array $benchPaths = null
+    )
+    {
     }
 
     public static function configureFilters(Command $command): void
@@ -162,10 +136,10 @@ class RunnerHandler
         $parameters = [];
 
         if ($parametersJson) {
-            $parameters = json_decode($parametersJson, true);
+            $parameters = json_decode((string) $parametersJson, true);
 
             if (null === $parameters) {
-                throw new \InvalidArgumentException(sprintf(
+                throw new InvalidArgumentException(sprintf(
                     'Could not decode parameters JSON string: "%s"',
                     $parametersJson
                 ));

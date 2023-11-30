@@ -14,14 +14,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class TableRenderer implements ObjectRendererInterface
 {
-    /**
-     * @var Printer
-     */
-    private $printer;
-
-    public function __construct(Printer $printer)
+    public function __construct(private readonly Printer $printer)
     {
-        $this->printer = $printer;
     }
 
     public function render(OutputInterface $output, ObjectRenderer $renderer, object $object): bool

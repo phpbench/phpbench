@@ -18,10 +18,8 @@ class PhpValueFactoryTest extends TestCase
 {
     /**
      * @dataProvider provideFrom
-     *
-     * @param mixed $value
      */
-    public function testFrom($value, Node $expected): void
+    public function testFrom(mixed $value, Node $expected): void
     {
         self::assertEquals($expected, PhpValueFactory::fromValue($value));
     }

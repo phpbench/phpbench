@@ -12,6 +12,23 @@
 
 namespace PhpBench\Benchmark\Metadata\Driver;
 
+use InvalidArgumentException;
+use PhpBench\Benchmark\Metadata\Annotations\BeforeMethods;
+use PhpBench\Benchmark\Metadata\Annotations\AfterMethods;
+use PhpBench\Benchmark\Metadata\Annotations\ParamProviders;
+use PhpBench\Benchmark\Metadata\Annotations\Iterations;
+use PhpBench\Benchmark\Metadata\Annotations\Sleep;
+use PhpBench\Benchmark\Metadata\Annotations\Groups;
+use PhpBench\Benchmark\Metadata\Annotations\Revs;
+use PhpBench\Benchmark\Metadata\Annotations\Warmup;
+use PhpBench\Benchmark\Metadata\Annotations\Skip;
+use PhpBench\Benchmark\Metadata\Annotations\OutputTimeUnit;
+use PhpBench\Benchmark\Metadata\Annotations\OutputMode;
+use PhpBench\Benchmark\Metadata\Annotations\Assert;
+use PhpBench\Benchmark\Metadata\Annotations\Format;
+use PhpBench\Benchmark\Metadata\Annotations\Executor;
+use PhpBench\Benchmark\Metadata\Annotations\Timeout;
+use PhpBench\Benchmark\Metadata\Annotations\RetryThreshold;
 use PhpBench\Benchmark\Metadata\AnnotationReader;
 use PhpBench\Benchmark\Metadata\Annotations;
 use PhpBench\Benchmark\Metadata\Annotations\AbstractArrayAnnotation;
@@ -26,13 +43,11 @@ use PhpBench\Reflection\ReflectionHierarchy;
 
 class AnnotationDriver implements DriverInterface
 {
-    private $reader;
-    private $subjectPattern;
+    private readonly AnnotationReader $reader;
 
-    public function __construct($subjectPattern = '^bench', AnnotationReader $reader = null)
+    public function __construct(private $subjectPattern = '^bench', AnnotationReader $reader = null)
     {
         $this->reader = $reader ?: new AnnotationReader();
-        $this->subjectPattern = $subjectPattern;
     }
 
     public function getMetadataForHierarchy(ReflectionHierarchy $hierarchy): BenchmarkMetadata
@@ -64,7 +79,7 @@ class AnnotationDriver implements DriverInterface
 
         foreach ($reflectionHierarchy as $reflection) {
             foreach ($reflection->methods as $reflectionMethod) {
-                $hasPrefix = (bool) preg_match('{' . $this->subjectPattern . '}', $reflectionMethod->name);
+                $hasPrefix = (bool) preg_match('{' . $this->subjectPattern . '}', (string) $reflectionMethod->name);
                 $hasAnnotation = false;
                 $subjectAnnotations = null;
 
@@ -107,14 +122,14 @@ class AnnotationDriver implements DriverInterface
     {
         foreach ($annotations as $annotation) {
             if ($annotation instanceof BeforeClassMethods) {
-                throw new \InvalidArgumentException(sprintf(
+                throw new InvalidArgumentException(sprintf(
                     '@BeforeClassMethods annotation can only be applied at the class level (%s)',
                     $subject->getBenchmark()->getClass() . '::' . $subject->getName()
                 ));
             }
 
             if ($annotation instanceof AfterClassMethods) {
-                throw new \InvalidArgumentException(sprintf(
+                throw new InvalidArgumentException(sprintf(
                     '@AfterClassMethods annotation can only be applied at the class level (%s)',
                     $subject->getBenchmark()->getClass() . '::' . $subject->getName()
                 ));
@@ -126,7 +141,7 @@ class AnnotationDriver implements DriverInterface
 
     private function processSubject(SubjectMetadata $subject, $annotation): void
     {
-        if ($annotation instanceof Annotations\BeforeMethods) {
+        if ($annotation instanceof BeforeMethods) {
             $subject->setBeforeMethods(
                 $this->resolveValue(
                     $annotation,
@@ -136,7 +151,7 @@ class AnnotationDriver implements DriverInterface
             );
         }
 
-        if ($annotation instanceof Annotations\AfterMethods) {
+        if ($annotation instanceof AfterMethods) {
             $subject->setAfterMethods(
                 $this->resolveValue(
                     $annotation,
@@ -146,7 +161,7 @@ class AnnotationDriver implements DriverInterface
             );
         }
 
-        if ($annotation instanceof Annotations\ParamProviders) {
+        if ($annotation instanceof ParamProviders) {
             $subject->setParamProviders(
                 $this->resolveValue(
                     $annotation,
@@ -156,15 +171,15 @@ class AnnotationDriver implements DriverInterface
             );
         }
 
-        if ($annotation instanceof Annotations\Iterations) {
+        if ($annotation instanceof Iterations) {
             $subject->setIterations($annotation->getIterations());
         }
 
-        if ($annotation instanceof Annotations\Sleep) {
+        if ($annotation instanceof Sleep) {
             $subject->setSleep($annotation->getSleep());
         }
 
-        if ($annotation instanceof Annotations\Groups) {
+        if ($annotation instanceof Groups) {
             $subject->setGroups(
                 $this->resolveValue(
                     $annotation,
@@ -174,51 +189,51 @@ class AnnotationDriver implements DriverInterface
             );
         }
 
-        if ($annotation instanceof Annotations\Revs) {
+        if ($annotation instanceof Revs) {
             $subject->setRevs($annotation->getRevs());
         }
 
-        if ($annotation instanceof Annotations\Warmup) {
+        if ($annotation instanceof Warmup) {
             $subject->setWarmup($annotation->getRevs());
         }
 
-        if ($annotation instanceof Annotations\Skip) {
+        if ($annotation instanceof Skip) {
             $subject->setSkip(true);
         }
 
-        if ($annotation instanceof Annotations\OutputTimeUnit) {
+        if ($annotation instanceof OutputTimeUnit) {
             $subject->setOutputTimeUnit($annotation->getTimeUnit());
             $subject->setOutputTimePrecision($annotation->getPrecision());
         }
 
-        if ($annotation instanceof Annotations\OutputMode) {
+        if ($annotation instanceof OutputMode) {
             $subject->setOutputMode($annotation->getMode());
         }
 
-        if ($annotation instanceof Annotations\Assert) {
+        if ($annotation instanceof Assert) {
             $subject->addAssertion($annotation->getExpression());
         }
 
-        if ($annotation instanceof Annotations\Format) {
+        if ($annotation instanceof Format) {
             $subject->setFormat($annotation->getFormat());
         }
 
-        if ($annotation instanceof Annotations\Executor) {
+        if ($annotation instanceof Executor) {
             $subject->setExecutor(new ExecutorMetadata($annotation->getName(), $annotation->getConfig()));
         }
 
-        if ($annotation instanceof Annotations\Timeout) {
+        if ($annotation instanceof Timeout) {
             $subject->setTimeout($annotation->getTimeout());
         }
 
-        if ($annotation instanceof Annotations\RetryThreshold) {
+        if ($annotation instanceof RetryThreshold) {
             $subject->setRetryThreshold($annotation->getRetryThreshold());
         }
     }
 
     public function processBenchmark(BenchmarkMetadata $benchmark, $annotation): void
     {
-        if ($annotation instanceof Annotations\Executor) {
+        if ($annotation instanceof Executor) {
             $benchmark->setExecutor(new ExecutorMetadata($annotation->getName(), $annotation->getConfig()));
         }
 

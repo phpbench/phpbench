@@ -24,10 +24,7 @@ namespace PhpBench\Benchmark\Metadata\Annotations;
  */
 class RetryThreshold
 {
-    /**
-     * @var float
-     */
-    private $retryThreshold;
+    private readonly float $retryThreshold;
 
     public function __construct($params)
     {

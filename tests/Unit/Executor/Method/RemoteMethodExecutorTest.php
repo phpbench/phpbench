@@ -2,6 +2,7 @@
 
 namespace PhpBench\Tests\Unit\Executor\Method;
 
+use PhpBench\Tests\Unit\Executor\benchmarks\MicrotimeExecutorBench;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Executor\Method\RemoteMethodExecutor;
 use PhpBench\Executor\MethodExecutorContext;
@@ -11,22 +12,19 @@ use Prophecy\Prophecy\ObjectProphecy;
 
 class RemoteMethodExecutorTest extends PhpBenchTestCase
 {
-    /**
-     * @var RemoteMethodExecutor
-     */
-    private $executor;
+    private RemoteMethodExecutor $executor;
 
     /**
      * @var ObjectProphecy<BenchmarkMetadata>
      */
-    private $benchmarkMetadata;
+    private ObjectProphecy $benchmarkMetadata;
 
     protected function setUp(): void
     {
         $this->executor = new RemoteMethodExecutor(new Launcher());
         $this->benchmarkMetadata = $this->prophesize(BenchmarkMetadata::class);
         $this->benchmarkMetadata->getPath()->willReturn(__DIR__ . '/../benchmarks/MicrotimeExecutorBench.php');
-        $this->benchmarkMetadata->getClass()->willReturn('PhpBench\Tests\Unit\Executor\benchmarks\MicrotimeExecutorBench');
+        $this->benchmarkMetadata->getClass()->willReturn(MicrotimeExecutorBench::class);
     }
 
     /**

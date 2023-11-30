@@ -14,7 +14,7 @@ class BenchmarkBench
 {
     public function benchRandom(): void
     {
-        usleep(rand(0, 100));
+        usleep(random_int(0, 100));
     }
 
     /**

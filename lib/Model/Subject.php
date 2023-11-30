@@ -24,72 +24,35 @@ use RuntimeException;
 class Subject
 {
     /**
-     * @var Benchmark
-     */
-    private $benchmark;
-
-    /**
-     * @var string
-     */
-    private $name;
-
-    /**
      * @var string[]
      */
-    private $groups = [];
+    private array $groups = [];
 
-    /**
-     * @var int
-     */
-    private $sleep = 0;
+    private int $sleep = 0;
 
-    /**
-     * @var float|null
-     */
-    private $retryThreshold;
+    private ?float $retryThreshold = null;
 
-    /**
-     * @var string
-     */
-    private $outputTimeUnit = TimeUnit::MICROSECONDS;
+    private ?string $outputTimeUnit = TimeUnit::MICROSECONDS;
 
-    /**
-     * @var int|null
-     */
-    private $outputTimePrecision = null;
+    private ?int $outputTimePrecision = null;
 
-    /**
-     * @var string
-     */
-    private $outputMode = TimeUnit::MODE_TIME;
+    private ?string $outputMode = TimeUnit::MODE_TIME;
 
     /**
      * @var Variant[]
      */
     private $variants = [];
 
-    /**
-     * @var int
-     */
-    private $index = 0;
+    private int $index = 0;
 
-    /**
-     * @var ResolvedExecutor
-     */
-    private $executor;
+    private ?ResolvedExecutor $executor = null;
 
-    /**
-     * @var string
-     */
-    private $format;
+    private ?string $format = null;
 
     /**
      */
-    public function __construct(Benchmark $benchmark, string $name)
+    public function __construct(private Benchmark $benchmark, private string $name)
     {
-        $this->benchmark = $benchmark;
-        $this->name = $name;
-
         $this->index = count($benchmark->getSubjects());
     }
 

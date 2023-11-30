@@ -22,7 +22,7 @@ namespace PhpBench\Benchmark\Metadata\Annotations;
  */
 abstract class AbstractMethodsAnnotation extends AbstractArrayAnnotation
 {
-    private $methods;
+    private readonly array $methods;
 
     public function __construct($params)
     {

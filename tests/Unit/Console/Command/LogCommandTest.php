@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Console\Command;
 
+use DateTime;
 use PhpBench\Console\CharacterReader;
 use PhpBench\Console\Command\Handler\TimeUnitHandler;
 use PhpBench\Console\Command\LogCommand;
@@ -30,31 +31,28 @@ use Symfony\Component\Console\Output\BufferedOutput;
 
 class LogCommandTest extends TestCase
 {
-    private $storage;
-    private $command;
-    private $driver;
-    private $output;
-    private $history;
+    private ObjectProphecy $storage;
+    private LogCommand $command;
+    private ObjectProphecy $driver;
+    private BufferedOutput $output;
+    private ObjectProphecy $history;
 
     /**
      * @var ObjectProphecy<TimeUnit>
      */
-    private $timeUnit;
+    private ObjectProphecy $timeUnit;
 
     /**
      * @var ObjectProphecy<TimeUnitHandler>
      */
-    private $timeUnitHandler;
+    private ObjectProphecy $timeUnitHandler;
 
     /**
      * @var ObjectProphecy<CharacterReader>
      */
-    private $characterReader;
+    private ObjectProphecy $characterReader;
 
-    /**
-     * @var Application
-     */
-    private $application;
+    private Application $application;
 
     protected function setUp(): void
     {
@@ -271,14 +269,14 @@ EOT;
 
     private function replaceDate($string)
     {
-        return preg_replace('{\+[0-9]{2}:[0-9]{2}}', '00:00', $string);
+        return preg_replace('{\+[0-9]{2}:[0-9]{2}}', '00:00', (string) $string);
     }
 
     private function createHistoryEntry($index)
     {
         return new HistoryEntry(
             $index,
-            new \DateTime('2016-01-01'),
+            new DateTime('2016-01-01'),
             'foo',
             'branch' . $index,
             10,

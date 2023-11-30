@@ -12,6 +12,7 @@
 
 namespace PhpBench\Math;
 
+use InvalidArgumentException;
 /**
  * Static class containing functions related to statistics.
  */
@@ -40,7 +41,7 @@ class Statistics
         $sum = 0;
 
         foreach ($values as $value) {
-            $diff = pow($value - $average, 2);
+            $diff = ($value - $average) ** 2;
             $sum += $diff;
         }
 
@@ -132,7 +133,7 @@ class Statistics
         $range = $max - $min;
 
         if ($max == $min) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'Min and max cannot be the same number: %s',
                 $max
             ));

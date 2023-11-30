@@ -6,26 +6,8 @@ use RuntimeException;
 
 /** final */class Color
 {
-    /**
-     * @var int
-     */
-    private $red;
-
-    /**
-     * @var int
-     */
-    private $green;
-
-    /**
-     * @var int
-     */
-    private $blue;
-
-    final private function __construct(int $red, int $green, int $blue)
+    final private function __construct(private readonly int $red, private readonly int $green, private readonly int $blue)
     {
-        $this->red = $red;
-        $this->green = $green;
-        $this->blue = $blue;
     }
 
     public static function fromHex(string $hex): self

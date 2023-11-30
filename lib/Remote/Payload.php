@@ -23,12 +23,7 @@ use function escapeshellarg;
  */
 class Payload
 {
-    public const FLAG_DISABLE_INI = '-n';
-
-    /**
-     * Path to script template.
-     */
-    private $template;
+    final public const FLAG_DISABLE_INI = '-n';
 
     /**
      * Wrapper for PHP binary, e.g. "blackfire".
@@ -38,47 +33,18 @@ class Payload
     /**
      * Associative array of PHP INI settings.
      */
-    private $phpConfig = [];
+    private array $phpConfig = [];
 
     /**
      * Path to PHP binary.
      */
-    private $phpPath;
+    private string $phpPath;
 
-    /**
-     * Tokens to substitute in the script template.
-     */
-    private $tokens = [];
+    private bool $disableIni = false;
 
-    /**
-     * @var bool
-     */
-    private $disableIni = false;
+    private readonly IniStringBuilder $iniStringBuilder;
 
-    /**
-     * @var IniStringBuilder
-     */
-    private $iniStringBuilder;
-
-    /**
-     * @var ProcessFactoryInterface
-     */
-    private $processFactory;
-
-    /**
-     * @var float
-     */
-    private $timeout;
-
-    /**
-     * @var string
-     */
-    private $scriptPath;
-
-    /**
-     * @var bool
-     */
-    private $scriptRemove;
+    private readonly ProcessFactoryInterface $processFactory;
 
     /**
      * Create a new Payload object with the given script template.
@@ -87,22 +53,20 @@ class Payload
      * @param array<string, mixed> $tokens
      */
     public function __construct(
-        string $template,
-        array $tokens = [],
+        /**
+         * Path to script template.
+         */
+        private readonly string $template,
+        private readonly array $tokens = [],
         ?string $phpPath = null,
-        ?float $timeout = null,
+        private readonly ?float $timeout = null,
         ProcessFactoryInterface $processFactory = null,
-        string $scriptPath = null,
-        bool $scriptRemove = false
+        private readonly ?string $scriptPath = null,
+        private readonly bool $scriptRemove = false
     ) {
-        $this->template = $template;
-        $this->tokens = $tokens;
         $this->processFactory = $processFactory ?: new ProcessFactory();
         $this->iniStringBuilder = new IniStringBuilder();
-        $this->timeout = $timeout;
         $this->phpPath = $phpPath ?: PHP_BINARY;
-        $this->scriptPath = $scriptPath;
-        $this->scriptRemove = $scriptRemove;
     }
 
     public function setWrapper($wrapper): void
@@ -178,7 +142,7 @@ class Payload
     private function readFile(): string
     {
         if (!file_exists($this->template)) {
-            throw new \RuntimeException(sprintf(
+            throw new RuntimeException(sprintf(
                 'Could not find script template "%s"',
                 $this->template
             ));
@@ -261,7 +225,7 @@ class Payload
             return $result;
         }
 
-        throw new \RuntimeException(sprintf(
+        throw new RuntimeException(sprintf(
             'Script "%s" did not return an array, got: %s',
             $this->template,
             $output

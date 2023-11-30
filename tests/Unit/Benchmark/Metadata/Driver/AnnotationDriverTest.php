@@ -220,7 +220,7 @@ EOT;
      */
     public function testClassMethodsOnException($annotation): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('annotation can only be applied');
         $reflection = new ReflectionClass();
         $reflection->class = 'Test';

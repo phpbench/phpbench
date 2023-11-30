@@ -38,19 +38,19 @@ class MemoryUnitTest extends TestCase
         yield [
                 1,
                 MemoryUnit::MEGABYTES,
-                1000000
+                1_000_000
             ];
 
         yield [
                 1,
                 MemoryUnit::GIGABYTES,
-                1000000000
+                1_000_000_000
             ];
 
         yield [
                 2,
                 MemoryUnit::GIGABYTES,
-                2000000000
+                2_000_000_000
             ];
     }
 
@@ -62,19 +62,19 @@ class MemoryUnitTest extends TestCase
         yield [
                 1,
                 MemoryUnit::KIBIBYTES,
-                pow(2, 10)
+                2 ** 10
             ];
 
         yield [
                 1,
                 MemoryUnit::MEBIBYTES,
-                pow(2, 20)
+                2 ** 20
             ];
 
         yield [
                 1,
                 MemoryUnit::GIBIBYTES,
-                pow(2, 30)
+                2 ** 30
             ];
     }
 
@@ -138,9 +138,9 @@ class MemoryUnitTest extends TestCase
 
         yield [100000, MemoryUnit::KILOBYTES];
 
-        yield [1000000, MemoryUnit::MEGABYTES];
+        yield [1_000_000, MemoryUnit::MEGABYTES];
 
-        yield [1000000000, MemoryUnit::GIGABYTES];
+        yield [1_000_000_000, MemoryUnit::GIGABYTES];
     }
 
     /**
@@ -166,8 +166,8 @@ class MemoryUnitTest extends TestCase
 
         yield [100000, MemoryUnit::KIBIBYTES];
 
-        yield [1000000, MemoryUnit::MEBIBYTES];
+        yield [1_000_000, MemoryUnit::MEBIBYTES];
 
-        yield [1000000000, MemoryUnit::GIBIBYTES];
+        yield [1_000_000_000, MemoryUnit::GIBIBYTES];
     }
 }

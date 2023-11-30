@@ -12,6 +12,7 @@
 
 namespace PhpBench\Assertion;
 
+use Countable;
 use ArrayIterator;
 use IteratorAggregate;
 use PhpBench\Model\Variant;
@@ -19,25 +20,18 @@ use PhpBench\Model\Variant;
 /**
  * @implements IteratorAggregate<AssertionResult>
  */
-class VariantAssertionResults implements IteratorAggregate, \Countable
+class VariantAssertionResults implements IteratorAggregate, Countable
 {
-    /**
-     * @var Variant
-     */
-    private $variant;
-
     /**
      * @var array<AssertionResult>
      */
-    private $results = [];
+    private array $results = [];
 
     /**
      * @param array<AssertionResult> $results
      */
-    public function __construct(Variant $variant, array $results = [])
+    public function __construct(private readonly Variant $variant, array $results = [])
     {
-        $this->variant = $variant;
-
         foreach ($results as $result) {
             $this->add($result);
         }
@@ -48,7 +42,7 @@ class VariantAssertionResults implements IteratorAggregate, \Countable
      */
     public function getIterator(): ArrayIterator
     {
-        return new \ArrayIterator($this->results);
+        return new ArrayIterator($this->results);
     }
 
     public function add(AssertionResult $result): void

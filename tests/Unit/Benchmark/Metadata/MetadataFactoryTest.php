@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Benchmark\Metadata;
 
+use RuntimeException;
 use InvalidArgumentException;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\DriverInterface;
@@ -28,8 +29,8 @@ use Prophecy\Prophecy\ObjectProphecy;
 
 class MetadataFactoryTest extends TestCase
 {
-    public const FNAME = 'fname';
-    public const PATH = '/path/to';
+    final public const FNAME = 'fname';
+    final public const PATH = '/path/to';
 
     private MetadataFactory $factory;
 
@@ -93,7 +94,7 @@ class MetadataFactoryTest extends TestCase
         $this->metadata->getSubjects()->willReturn([]);
         TestUtil::configureBenchmarkMetadata($this->metadata);
         $metadata = $this->factory->getMetadataForFile(self::FNAME);
-        $this->assertInstanceOf('PhpBench\Benchmark\Metadata\BenchmarkMetadata', $metadata);
+        $this->assertInstanceOf(BenchmarkMetadata::class, $metadata);
     }
 
     public function testWarnOnCouldNotLoadMetadata(): void
@@ -131,7 +132,7 @@ class MetadataFactoryTest extends TestCase
 
     public function testExceptionIfDriverDoesNotThrowCouldNotLoadMetadata(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('no');
         $this->hierarchy->isEmpty()->willReturn(false);
         $logger = new TestLogger();
@@ -141,7 +142,7 @@ class MetadataFactoryTest extends TestCase
             $logger,
             true
         );
-        $this->driver->getMetadataForHierarchy($this->hierarchy->reveal())->willThrow(new \RuntimeException('no'));
+        $this->driver->getMetadataForHierarchy($this->hierarchy->reveal())->willThrow(new RuntimeException('no'));
         $factory->getMetadataForFile(self::FNAME);
     }
 
@@ -160,7 +161,7 @@ class MetadataFactoryTest extends TestCase
         TestUtil::configureSubjectMetadata($this->subjectMetadata);
 
         $metadata = $this->factory->getMetadataForFile(self::FNAME);
-        $this->assertInstanceOf('PhpBench\Benchmark\Metadata\BenchmarkMetadata', $metadata);
+        $this->assertInstanceOf(BenchmarkMetadata::class, $metadata);
         $this->assertIsArray($metadata->getSubjects());
         $this->assertCount(1, $metadata->getSubjects());
     }
@@ -208,7 +209,7 @@ class MetadataFactoryTest extends TestCase
      */
     public function testValidationBeforeMethodsBenchmarkIsStatic(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('before method "beforeMe" must not be static in benchmark class "TestClass"');
         $this->hierarchy->isEmpty()->willReturn(false);
         $this->reflection->reveal()->class = 'TestClass';

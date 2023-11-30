@@ -9,16 +9,10 @@ use PhpBench\Reflection\ReflectionHierarchy;
 class ChainDriver implements DriverInterface
 {
     /**
-     * @var DriverInterface[]
-     */
-    private $drivers;
-
-    /**
      * @param DriverInterface[] $drivers
      */
-    public function __construct(array $drivers)
+    public function __construct(private readonly array $drivers)
     {
-        $this->drivers = $drivers;
     }
 
     /**

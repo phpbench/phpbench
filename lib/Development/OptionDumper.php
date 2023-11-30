@@ -17,22 +17,10 @@ use function method_exists;
 class OptionDumper
 {
     /**
-     * @var Container
+     * @param array<string, string> $typeToRegistryMap
      */
-    private $container;
-
-    /**
-     * @var array<string,string>
-     */
-    private $typeToRegistryMap;
-
-    /**
-     * @param array<string,string> $nameToRegistryMap
-     */
-    public function __construct(Container $container, array $nameToRegistryMap)
+    public function __construct(private readonly Container $container, private array $typeToRegistryMap)
     {
-        $this->container = $container;
-        $this->typeToRegistryMap = $nameToRegistryMap;
     }
 
     /**
@@ -85,7 +73,7 @@ class OptionDumper
             } catch (NoConfigurationException $noConfig) {
                 throw new RuntimeException(sprintf(
                     'Could not generate doc for "%s": %s',
-                    get_class($service),
+                    $service::class,
                     $noConfig->getMessage()
                 ));
             }
@@ -107,7 +95,7 @@ class OptionDumper
 
             try {
                 $default = $this->prettyPrint($inspector->getDefault($option));
-            } catch (NoConfigurationException $no) {
+            } catch (NoConfigurationException) {
             }
             $types = $this->prettyPrint($inspector->getAllowedTypes($option));
 
@@ -126,10 +114,7 @@ class OptionDumper
         return implode("\n", $section);
     }
 
-    /**
-     * @param mixed $value
-     */
-    private function prettyPrint($value): string
+    private function prettyPrint(mixed $value): string
     {
         if (is_bool($value)) {
             return $value ? 'true' : 'false';

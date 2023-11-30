@@ -25,32 +25,20 @@ class CartesianParameterIterator implements Iterator
     /**
      * @var array<int,ArrayIterator<string, ParameterSet>>
      */
-    private $sets = [];
+    private array $sets = [];
 
-    /**
-     * @var int
-     */
-    private $index = 0;
+    private int $index = 0;
 
-    /**
-     * @var int
-     */
-    private $max;
+    private readonly int $max;
 
     /**
      * @var array<mixed>
      */
     private $current = [];
 
-    /**
-     * @var bool
-     */
-    private $break = false;
+    private bool $break = false;
 
-    /**
-     * @var string
-     */
-    private $key;
+    private ?string $key = null;
 
     public function __construct(ParameterSetsCollection $parameterSetsCollection)
     {

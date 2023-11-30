@@ -22,9 +22,9 @@ class BlinkenLogger extends AnsiLogger
     /**
      * Number of measurements to show per row.
      */
-    public const NUMBER_COLS = 10;
+    final public const NUMBER_COLS = 10;
 
-    public const INDENT = 4;
+    final public const INDENT = 4;
 
     /**
      * Track rejected iterations.
@@ -42,11 +42,9 @@ class BlinkenLogger extends AnsiLogger
 
     /**
      * Column width.
-     *
-     * @var int
      */
-    private $colWidth = 6;
-    private $firstTime = true;
+    private int $colWidth = 6;
+    private bool $firstTime = true;
 
     /**
      * {@inheritdoc}

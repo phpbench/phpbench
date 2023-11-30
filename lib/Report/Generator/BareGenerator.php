@@ -16,16 +16,10 @@ use function array_map;
 
 class BareGenerator implements GeneratorInterface
 {
-    public const PARAM_VERTICAL = 'vertical';
+    final public const PARAM_VERTICAL = 'vertical';
 
-    /**
-     * @var SuiteCollectionTransformer
-     */
-    private $transformer;
-
-    public function __construct(SuiteCollectionTransformer $transformer)
+    public function __construct(private readonly SuiteCollectionTransformer $transformer)
     {
-        $this->transformer = $transformer;
     }
 
     /**

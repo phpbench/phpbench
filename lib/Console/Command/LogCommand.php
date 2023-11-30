@@ -25,29 +25,17 @@ use Symfony\Component\Console\Terminal;
 
 class LogCommand extends Command
 {
-    private $storage;
-    private $timeUnit;
-    private $timeUnitHandler;
-    private $characterReader;
-
-    /**
-     * @var OutputInterface
-     */
-    private $stdout;
+    private readonly CharacterReader $characterReader;
 
     public function __construct(
-        Registry $storage,
-        TimeUnit $timeUnit,
-        TimeUnitHandler $timeUnitHandler,
-        CharacterReader $characterReader = null,
-        OutputInterface $stdout
+        private readonly Registry $storage,
+        private readonly TimeUnit $timeUnit,
+        private readonly TimeUnitHandler $timeUnitHandler,
+        private readonly OutputInterface $stdout,
+        CharacterReader $characterReader = null
     ) {
         parent::__construct();
-        $this->storage = $storage;
-        $this->timeUnitHandler = $timeUnitHandler;
-        $this->timeUnit = $timeUnit;
         $this->characterReader = $characterReader ?: new CharacterReader();
-        $this->stdout = $stdout;
     }
 
     public function configure(): void
@@ -98,9 +86,9 @@ EOT
         foreach ($this->storage->getService()->history() as $entry) {
             $lines = [];
             $lines[] = sprintf('<comment>run %s</>', $entry->getRunId());
-            $lines[] = sprintf('Date:    ' . $entry->getDate()->format('c'));
-            $lines[] = sprintf('Branch:  ' . $entry->getVcsBranch());
-            $lines[] = sprintf('Tag:     ' . ($entry->getTag() ?: '<none>'));
+            $lines[] = 'Date:    ' . $entry->getDate()->format('c');
+            $lines[] = 'Branch:  ' . $entry->getVcsBranch();
+            $lines[] = 'Tag:     ' . ($entry->getTag() ?: '<none>');
             $lines[] = sprintf('Scale:   ' . '%d subjects, %d iterations, %d revolutions', $entry->getNbSubjects(), $entry->getNbIterations(), $entry->getNbRevolutions());
 
             $lines[] = sprintf(

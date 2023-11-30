@@ -26,25 +26,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class DelimitedRenderer implements RendererInterface
 {
-    public const OPT_DELIMITER = 'delimiter';
-    public const OPT_FILE = 'file';
-    public const OPT_HEADER = 'header';
+    final public const OPT_DELIMITER = 'delimiter';
+    final public const OPT_FILE = 'file';
+    final public const OPT_HEADER = 'header';
 
-
-    /**
-     * @var OutputInterface
-     */
-    private $output;
-
-    /**
-     * @var Printer
-     */
-    private $printer;
-
-    public function __construct(OutputInterface $output, Printer $printer)
+    public function __construct(private readonly OutputInterface $output, private readonly Printer $printer)
     {
-        $this->output = $output;
-        $this->printer = $printer;
     }
 
     /**

@@ -7,10 +7,7 @@ use PhpBench\Storage\HistoryIteratorInterface;
 
 class FakeHistoryIterator implements HistoryIteratorInterface
 {
-    /**
-     * @var array
-     */
-    private $entries;
+    private array $entries;
 
     public function __construct(HistoryEntry ...$entries)
     {

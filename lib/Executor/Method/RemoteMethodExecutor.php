@@ -8,14 +8,8 @@ use PhpBench\Remote\Launcher;
 
 class RemoteMethodExecutor implements MethodExecutorInterface
 {
-    /**
-     * @var Launcher
-     */
-    private $launcher;
-
-    public function __construct(Launcher $launcher)
+    public function __construct(private readonly Launcher $launcher)
     {
-        $this->launcher = $launcher;
     }
 
     /**

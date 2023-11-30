@@ -14,14 +14,8 @@ namespace PhpBench\Benchmark\Metadata;
 
 class AssertionMetadata
 {
-    /**
-     * @var array
-     */
-    private $config;
-
-    public function __construct(array $config)
+    public function __construct(private readonly array $config)
     {
-        $this->config = $config;
     }
 
     public function getConfig(): array

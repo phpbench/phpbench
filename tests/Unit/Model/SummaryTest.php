@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Model;
 
+use ArrayIterator;
 use PhpBench\Assertion\AssertionResult;
 use PhpBench\Assertion\VariantAssertionResults;
 use PhpBench\Environment\Information;
@@ -27,30 +28,15 @@ use Prophecy\Prophecy\ObjectProphecy;
 
 class SummaryTest extends TestCase
 {
-    /**
-     * @var ObjectProphecy
-     */
-    private $suite;
+    private ObjectProphecy $suite;
 
-    /**
-     * @var ObjectProphecy
-     */
-    private $bench1;
+    private ObjectProphecy $bench1;
 
-    /**
-     * @var ObjectProphecy
-     */
-    private $subject1;
+    private ObjectProphecy $subject1;
 
-    /**
-     * @var ObjectProphecy
-     */
-    private $variant1;
+    private ObjectProphecy $variant1;
 
-    /**
-     * @var ObjectProphecy
-     */
-    private $stats;
+    private ObjectProphecy $stats;
 
     protected function setUp(): void
     {
@@ -136,7 +122,7 @@ class SummaryTest extends TestCase
             ])
         );
         $this->variant1->getErrorStack()->willReturn(new ErrorStack($this->variant1->reveal(), []));
-        $this->stats->getIterator()->willReturn(new \ArrayIterator([
+        $this->stats->getIterator()->willReturn(new ArrayIterator([
             'min' => '1',
             'max' => '2',
             'mean' => 5,

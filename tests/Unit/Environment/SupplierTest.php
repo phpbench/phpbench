@@ -23,27 +23,24 @@ class SupplierTest extends TestCase
     /**
      * @var ObjectProphecy<ProviderInterface>
      */
-    private $provider1;
+    private ObjectProphecy $provider1;
 
     /**
      * @var ObjectProphecy<ProviderInterface>
      */
-    private $provider2;
+    private ObjectProphecy $provider2;
 
     /**
      * @var ObjectProphecy<Information>
      */
-    private $information1;
+    private ObjectProphecy $information1;
 
     /**
      * @var ObjectProphecy<Information>
      */
-    private $information2;
+    private ObjectProphecy $information2;
 
-    /**
-     * @var Supplier
-     */
-    private $supplier;
+    private Supplier $supplier;
 
     protected function setUp(): void
     {

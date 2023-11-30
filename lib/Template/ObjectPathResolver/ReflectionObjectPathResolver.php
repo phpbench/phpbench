@@ -8,16 +8,10 @@ use ReflectionClass;
 final class ReflectionObjectPathResolver implements ObjectPathResolver
 {
     /**
-     * @var array<string,string>
-     */
-    private $prefixMap;
-
-    /**
      * @param array<string,string> $prefixMap
      */
-    public function __construct(array $prefixMap)
+    public function __construct(private readonly array $prefixMap)
     {
-        $this->prefixMap = $prefixMap;
     }
 
     /**
@@ -25,7 +19,7 @@ final class ReflectionObjectPathResolver implements ObjectPathResolver
      */
     public function resolvePaths(object $object): array
     {
-        $paths = [ $this->classToPath(get_class($object)) ];
+        $paths = [ $this->classToPath($object::class) ];
 
         $reflectionClass = new ReflectionClass($object);
 
@@ -46,7 +40,7 @@ final class ReflectionObjectPathResolver implements ObjectPathResolver
     private function classToPath(string $classFqn): ?string
     {
         foreach ($this->prefixMap as $prefix => $pathPrefix) {
-            if (false !== strpos($classFqn, $prefix)) {
+            if (str_contains($classFqn, $prefix)) {
                 return sprintf('%s/%s.phtml', rtrim($pathPrefix, '/'), ltrim(str_replace('\\', '/', substr($classFqn, strlen($prefix))), '/'));
             }
         }

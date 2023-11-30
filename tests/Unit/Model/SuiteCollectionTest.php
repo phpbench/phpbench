@@ -22,15 +22,15 @@ class SuiteCollectionTest extends TestCase
     /**
      * @var ObjectProphecy<Suite>
      */
-    private $suite1;
+    private ObjectProphecy $suite1;
     /**
      * @var ObjectProphecy<Suite>
      */
-    private $suite2;
+    private ObjectProphecy $suite2;
     /**
      * @var ObjectProphecy<Suite>
      */
-    private $suite3;
+    private ObjectProphecy $suite3;
 
     protected function setUp(): void
     {

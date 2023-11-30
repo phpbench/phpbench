@@ -28,62 +28,26 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class RunCommand extends Command
 {
-    public const EXIT_CODE_ERROR = 1;
-    public const EXIT_CODE_FAILURE = 2;
+    final public const EXIT_CODE_ERROR = 1;
+    final public const EXIT_CODE_FAILURE = 2;
 
-    public const OPT_ITERATIONS = 'iterations';
-    public const OPT_WARMUP = 'warmup';
-    public const OPT_RETRY_THRESHOLD = 'retry-threshold';
-    public const OPT_SLEEP = 'sleep';
-    public const OPT_TAG = 'tag';
-    public const OPT_STORE = 'store';
-    public const OPT_TOLERATE_FAILURE = 'tolerate-failure';
-
-    /**
-     * @var RunnerHandler
-     */
-    private $runnerHandler;
-
-    /**
-     * @var ReportHandler
-     */
-    private $reportHandler;
-
-    /**
-     * @var TimeUnitHandler
-     */
-    private $timeUnitHandler;
-
-    /**
-     * @var DumpHandler
-     */
-    private $dumpHandler;
-
-    /**
-     * @var Registry
-     */
-    private $storage;
-
-    /**
-     * @var SuiteCollectionHandler
-     */
-    private $suiteCollectionHandler;
+    final public const OPT_ITERATIONS = 'iterations';
+    final public const OPT_WARMUP = 'warmup';
+    final public const OPT_RETRY_THRESHOLD = 'retry-threshold';
+    final public const OPT_SLEEP = 'sleep';
+    final public const OPT_TAG = 'tag';
+    final public const OPT_STORE = 'store';
+    final public const OPT_TOLERATE_FAILURE = 'tolerate-failure';
 
     public function __construct(
-        RunnerHandler $runnerHandler,
-        ReportHandler $reportHandler,
-        SuiteCollectionHandler $suiteCollectionHandler,
-        TimeUnitHandler $timeUnitHandler,
-        DumpHandler $dumpHandler,
-        Registry $storage
+        private readonly RunnerHandler $runnerHandler,
+        private readonly ReportHandler $reportHandler,
+        private readonly SuiteCollectionHandler $suiteCollectionHandler,
+        private readonly TimeUnitHandler $timeUnitHandler,
+        private readonly DumpHandler $dumpHandler,
+        private readonly Registry $storage
     ) {
         parent::__construct();
-        $this->runnerHandler = $runnerHandler;
-        $this->reportHandler = $reportHandler;
-        $this->suiteCollectionHandler = $suiteCollectionHandler;
-        $this->timeUnitHandler = $timeUnitHandler;
-        $this->dumpHandler = $dumpHandler;
-        $this->storage = $storage;
     }
 
     public function configure(): void

@@ -12,6 +12,7 @@
 
 namespace PhpBench\Model\Result;
 
+use OutOfBoundsException;
 use InvalidArgumentException;
 use PhpBench\Model\ResultInterface;
 
@@ -20,15 +21,9 @@ use PhpBench\Model\ResultInterface;
  */
 class TimeResult implements ResultInterface
 {
-    /**
-     * @var int
-     */
-    private $netTime;
+    private readonly int $netTime;
 
-    /**
-     * @var int
-     */
-    private $revs;
+    private readonly int $revs;
 
 
     public function __construct(int $netTime, int $revs = 1)
@@ -65,7 +60,7 @@ class TimeResult implements ResultInterface
      * Return the time for the given number of revolutions.
      *
      *
-     * @throws \OutOfBoundsException If revs <= 0
+     * @throws OutOfBoundsException If revs <= 0
      *
      * @return float
      */

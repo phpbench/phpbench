@@ -24,29 +24,26 @@ use Prophecy\Prophecy\ObjectProphecy;
 
 class ReportManagerTest extends TestCase
 {
-    private $reportManager;
-    private $generator;
-    private $suiteCollection;
+    private ReportManager $reportManager;
+    private ObjectProphecy $generator;
+    private SuiteCollection $suiteCollection;
 
     /**
      * @var ObjectProphecy<ConfigurableRegistry>
      */
-    private $rendererRegistry;
+    private ObjectProphecy $rendererRegistry;
 
     /**
      * @var ObjectProphecy<ConfigurableRegistry>
      */
-    private $generatorRegistry;
+    private ObjectProphecy $generatorRegistry;
 
     /**
      * @var ObjectProphecy<RendererInterface>
      */
-    private $renderer;
+    private ObjectProphecy $renderer;
 
-    /**
-     * @var Reports
-     */
-    private $reports;
+    private Reports $reports;
 
     protected function setUp(): void
     {

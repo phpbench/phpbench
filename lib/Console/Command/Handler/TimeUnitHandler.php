@@ -20,15 +20,8 @@ use Symfony\Component\Console\Input\InputOption;
 
 class TimeUnitHandler
 {
-    /**
-     * @var TimeUnit
-     */
-    private $timeUnit;
-
-    public function __construct(
-        TimeUnit $timeUnit
-    ) {
-        $this->timeUnit = $timeUnit;
+    public function __construct(private readonly TimeUnit $timeUnit)
+    {
     }
 
     public static function configure(Command $command): void

@@ -10,9 +10,9 @@ use PhpBench\Tests\Util\VariantBuilder;
 
 class VariantSummaryFormatterBench extends IntegrationBenchCase
 {
-    private VariantFormatter $formatter;
+    private readonly VariantFormatter $formatter;
 
-    private Variant $variant;
+    private readonly Variant $variant;
 
     public function __construct()
     {

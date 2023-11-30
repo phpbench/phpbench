@@ -18,23 +18,17 @@ use function PhpBench\Report\Func\fit_to_axis;
 
 class BarChartAggregateComponentGenerator implements ComponentGeneratorInterface
 {
-    public const PARAM_X_PARTITION = 'x_partition';
-    public const PARAM_BAR_PARTITION = 'bar_partition';
-    public const PARAM_Y_EXPR = 'y_expr';
-    public const PARAM_Y_ERROR_MARGIN = 'y_error_margin';
-    public const PARAM_TITLE = 'title';
-    public const PARAM_DESCRIPTION = 'description';
-    public const PARAM_Y_AXES_LABEL = 'y_axes_label';
-    public const PARAM_X_AXES_LABEL = 'x_axes_label';
+    final public const PARAM_X_PARTITION = 'x_partition';
+    final public const PARAM_BAR_PARTITION = 'bar_partition';
+    final public const PARAM_Y_EXPR = 'y_expr';
+    final public const PARAM_Y_ERROR_MARGIN = 'y_error_margin';
+    final public const PARAM_TITLE = 'title';
+    final public const PARAM_DESCRIPTION = 'description';
+    final public const PARAM_Y_AXES_LABEL = 'y_axes_label';
+    final public const PARAM_X_AXES_LABEL = 'x_axes_label';
 
-    /**
-     * @var ExpressionEvaluator
-     */
-    private $evaluator;
-
-    public function __construct(ExpressionEvaluator $evaluator)
+    public function __construct(private readonly ExpressionEvaluator $evaluator)
     {
-        $this->evaluator = $evaluator;
     }
 
     /**

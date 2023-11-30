@@ -53,26 +53,26 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ReportExtension implements ExtensionInterface
 {
-    public const PARAM_OUTPUTS = 'report.outputs';
-    public const PARAM_REPORTS = 'report.generators';
-    public const PARAM_COMPONENTS = 'report.components';
+    final public const PARAM_OUTPUTS = 'report.outputs';
+    final public const PARAM_REPORTS = 'report.generators';
+    final public const PARAM_COMPONENTS = 'report.components';
 
-    public const SERVICE_REGISTRY_GENERATOR = 'report.registry_generator';
-    public const SERVICE_REGISTRY_RENDERER = 'report.registry_renderer';
-    public const SERVICE_REGISTRY_COMPONENT = 'report.registry_component';
+    final public const SERVICE_REGISTRY_GENERATOR = 'report.registry_generator';
+    final public const SERVICE_REGISTRY_RENDERER = 'report.registry_renderer';
+    final public const SERVICE_REGISTRY_COMPONENT = 'report.registry_component';
 
-    public const TAG_REPORT_GENERATOR = 'report.generator';
-    public const TAG_COMPONENT_GENERATOR = 'report.component';
-    public const TAG_REPORT_RENDERER = 'report.renderer';
-    public const PARAM_TEMPLATE_MAP = 'report.template_map';
-    public const PARAM_TEMPLATE_PATHS = 'report.template_paths';
+    final public const TAG_REPORT_GENERATOR = 'report.generator';
+    final public const TAG_COMPONENT_GENERATOR = 'report.component';
+    final public const TAG_REPORT_RENDERER = 'report.renderer';
+    final public const PARAM_TEMPLATE_MAP = 'report.template_map';
+    final public const PARAM_TEMPLATE_PATHS = 'report.template_paths';
 
     /**
      * This configuration has been removed as it did not do anything. If this
      * setting is given it will be ignored, and in 2.0 an exception will be
      * raised used.
      */
-    public const PARAM_OUTPUT_DIR_HTML = 'report.html_output_dir';
+    final public const PARAM_OUTPUT_DIR_HTML = 'report.html_output_dir';
 
     public function configure(OptionsResolver $resolver): void
     {

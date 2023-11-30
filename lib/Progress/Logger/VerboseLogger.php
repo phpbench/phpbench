@@ -18,10 +18,7 @@ use PhpBench\Model\Variant;
 
 class VerboseLogger extends PhpBenchLogger
 {
-    /**
-     * @var int
-     */
-    private $rejectionCount = 0;
+    private int $rejectionCount = 0;
 
     /**
      * {@inheritdoc}

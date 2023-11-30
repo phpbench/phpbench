@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Util;
 
+use DateTime;
 use PhpBench\Environment\Information;
 use PhpBench\Model\ParameterSet;
 use PhpBench\Model\Result\MemoryResult;
@@ -68,9 +69,7 @@ class TestUtil
         $variant = reset($variants);
 
         if (!$variant) {
-            throw new RuntimeException(sprintf(
-                'Could not find a variant in test suite'
-            ));
+            throw new RuntimeException('Could not find a variant in test suite');
         }
 
         return $variant;
@@ -119,7 +118,7 @@ class TestUtil
             'iterations_increase_per_subject' => 0,
         ], $options);
 
-        $dateTime = new \DateTime($options['date']);
+        $dateTime = new DateTime($options['date']);
         $suite = new Suite(
             $options['name'],
             $dateTime,

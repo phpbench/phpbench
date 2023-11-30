@@ -12,15 +12,20 @@
 
 namespace PhpBench\Tests\Unit\Benchmark;
 
+use PhpBench\Benchmark\Metadata\Annotations\BeforeMethods;
+use InvalidArgumentException;
+use PhpBench\Benchmark\Metadata\Annotations\Subject;
+use PhpBench\Benchmark\Metadata\Annotations\Iterations;
+use stdClass;
 use PhpBench\Benchmark\SamplerManager;
 use PhpBench\Tests\TestCase;
 
 /**
- * @\PhpBench\Benchmark\Metadata\Annotations\BeforeMethods({"setUp"})
+ * @BeforeMethods({"setUp"})
  */
 class SamplerManagerTest extends TestCase
 {
-    private $manager;
+    private SamplerManager $manager;
 
     public static $callCount = false;
 
@@ -35,23 +40,21 @@ class SamplerManagerTest extends TestCase
      */
     public function testRegisterTwice(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Baseline callable "foo" has already been registered.');
-        $this->manager->addSamplerCallable('foo', __CLASS__ . '::samplerExample');
-        $this->manager->addSamplerCallable('foo', __CLASS__ . '::samplerExample');
+        $this->manager->addSamplerCallable('foo', self::class . '::samplerExample');
+        $this->manager->addSamplerCallable('foo', self::class . '::samplerExample');
     }
 
     /**
      * It should measure the mean time taken to execute a callable.
-     *
-     * @\PhpBench\Benchmark\Metadata\Annotations\Subject()
-     *
-     * @\PhpBench\Benchmark\Metadata\Annotations\Iterations(100)
+     * @Subject()
+     * @Iterations(100)
      */
     public function testCallable(): void
     {
         static::$callCount = 0;
-        $this->manager->addSamplerCallable('foo', __CLASS__ . '::samplerExample');
+        $this->manager->addSamplerCallable('foo', self::class . '::samplerExample');
         $this->manager->sample('foo', 100);
         $this->assertEquals(100, static::$callCount);
     }
@@ -62,7 +65,7 @@ class SamplerManagerTest extends TestCase
      */
     public function testCallableNotCallable(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Given sampler "foo" callable "does_not_exist" is not callable.');
         $this->manager->addSamplerCallable('foo', 'does_not_exist');
         $this->manager->sample('foo', 100);
@@ -74,9 +77,9 @@ class SamplerManagerTest extends TestCase
      */
     public function testCallableNotCallableObject(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Given sampler "foo" callable "object" is not callable.');
-        $this->manager->addSamplerCallable('foo', new \stdClass());
+        $this->manager->addSamplerCallable('foo', new stdClass());
         $this->manager->sample('foo', 100);
     }
 

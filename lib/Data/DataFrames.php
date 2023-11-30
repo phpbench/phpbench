@@ -10,14 +10,13 @@ use IteratorAggregate;
  */
 final class DataFrames implements IteratorAggregate
 {
-    /**
-     * @var DataFrame[]
-     */
-    private $dataFrames;
-
-    public function __construct(array $dataFrames)
+    public function __construct(
+        /**
+         * @var DataFrame[]
+         */
+        private readonly array $dataFrames
+    )
     {
-        $this->dataFrames = $dataFrames;
     }
 
     /**

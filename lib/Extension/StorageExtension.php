@@ -33,14 +33,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class StorageExtension implements ExtensionInterface
 {
-    public const PARAM_STORAGE = 'storage.driver';
-    public const PARAM_XML_STORAGE_PATH = 'storage.xml_storage_path';
-    public const PARAM_STORE_BINARY = 'storage.store_binary';
+    final public const PARAM_STORAGE = 'storage.driver';
+    final public const PARAM_XML_STORAGE_PATH = 'storage.xml_storage_path';
+    final public const PARAM_STORE_BINARY = 'storage.store_binary';
 
-    public const SERVICE_REGISTRY_DRIVER = 'storage.driver_registry';
+    final public const SERVICE_REGISTRY_DRIVER = 'storage.driver_registry';
 
-    public const TAG_STORAGE_DRIVER = 'storage.driver';
-    public const TAG_UUID_RESOLVER = 'storage.uuid_resolver';
+    final public const TAG_STORAGE_DRIVER = 'storage.driver';
+    final public const TAG_UUID_RESOLVER = 'storage.uuid_resolver';
 
     public function configure(OptionsResolver $resolver): void
     {

@@ -12,42 +12,40 @@
 
 namespace PhpBench\Util;
 
+use InvalidArgumentException;
 /**
  * Utility class for representing and converting time units.
  */
 class TimeUnit
 {
-    public const MILLISECOND = 'millisecond';
-    public const MICROSECOND = 'microsecond';
-    public const SECOND = 'second';
-    public const MINUTE = 'minute';
-    public const HOUR = 'hour';
-    public const DAY = 'day';
+    final public const MILLISECOND = 'millisecond';
+    final public const MICROSECOND = 'microsecond';
+    final public const SECOND = 'second';
+    final public const MINUTE = 'minute';
+    final public const HOUR = 'hour';
+    final public const DAY = 'day';
 
-    public const MICROSECONDS = 'microseconds';
-    public const MILLISECONDS = 'milliseconds';
-    public const SECONDS = 'seconds';
-    public const MINUTES = 'minutes';
-    public const HOURS = 'hours';
-    public const DAYS = 'days';
+    final public const MICROSECONDS = 'microseconds';
+    final public const MILLISECONDS = 'milliseconds';
+    final public const SECONDS = 'seconds';
+    final public const MINUTES = 'minutes';
+    final public const HOURS = 'hours';
+    final public const DAYS = 'days';
 
-    public const MODE_THROUGHPUT = 'throughput';
-    public const MODE_TIME = 'time';
-    public const AUTO = 'time';
+    final public const MODE_THROUGHPUT = 'throughput';
+    final public const MODE_TIME = 'time';
+    final public const AUTO = 'time';
 
-    /**
-     * @var array
-     */
-    private static $map = [
+    private static array $map = [
         self::MICROSECONDS => 1,
         self::MILLISECONDS => 1000,
-        self::SECONDS => 1000000,
-        self::MINUTES => 60000000,
-        self::HOURS => 3600000000,
-        self::DAYS => 86400000000,
+        self::SECONDS => 1_000_000,
+        self::MINUTES => 60_000_000,
+        self::HOURS => 3_600_000_000,
+        self::DAYS => 86_400_000_000,
     ];
 
-    private static $aliases = [
+    private static array $aliases = [
         self::MICROSECOND => self::MICROSECONDS,
         self::MILLISECOND => self::MILLISECONDS,
         self::SECOND => self::SECONDS,
@@ -60,10 +58,7 @@ class TimeUnit
         'm' => self::MINUTES,
     ];
 
-    /**
-     * @var array
-     */
-    private static $suffixes = [
+    private static array $suffixes = [
         self::MICROSECONDS => 'μs',
         self::MILLISECONDS => 'ms',
         self::SECONDS => 's',
@@ -72,51 +67,14 @@ class TimeUnit
         self::DAYS => 'd',
     ];
 
-    /**
-     * @var string
-     */
-    private $sourceUnit;
+    private bool $overriddenDestUnit = false;
 
-    /**
-     * @var string
-     */
-    private $destUnit;
+    private bool $overriddenMode = false;
 
-    /**
-     * @var bool
-     */
-    private $overriddenDestUnit = false;
+    private bool $overriddenPrecision = false;
 
-    /**
-     * @var bool
-     */
-    private $overriddenMode = false;
-
-    /**
-     * @var bool
-     */
-    private $overriddenPrecision = false;
-
-    /**
-     * @var string
-     */
-    private $mode;
-
-    /**
-     * @var int
-     */
-    private $precision;
-
-    public function __construct(
-        string $sourceUnit = self::MICROSECONDS,
-        string $destUnit = self::MICROSECONDS,
-        string $mode = self::MODE_TIME,
-        int $precision = 3
-    ) {
-        $this->sourceUnit = $sourceUnit;
-        $this->destUnit = $destUnit;
-        $this->mode = $mode;
-        $this->precision = $precision;
+    public function __construct(private readonly string $sourceUnit = self::MICROSECONDS, private string $destUnit = self::MICROSECONDS, private string $mode = self::MODE_TIME, private int $precision = 3)
+    {
     }
 
     /**
@@ -273,7 +231,7 @@ class TimeUnit
     {
         $value = number_format(
             $this->toDestUnit($time, $unit, $mode),
-            $precision !== null ? $precision : $this->precision
+            $precision ?? $this->precision
         );
 
         if (false === $suffix) {
@@ -367,7 +325,7 @@ class TimeUnit
         $validModes = [self::MODE_THROUGHPUT, self::MODE_TIME];
 
         if (!in_array($mode, $validModes)) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'Time mode must be one of "%s", got "%s"',
                 implode('", "', $validModes),
                 $mode
@@ -389,7 +347,7 @@ class TimeUnit
             return $unit;
         }
 
-        throw new \InvalidArgumentException(sprintf(
+        throw new InvalidArgumentException(sprintf(
             'Invalid time unit "%s", available units: "%s"',
             $unit,
             implode('", "', array_keys(self::$map))

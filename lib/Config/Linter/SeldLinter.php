@@ -9,10 +9,7 @@ use Seld\JsonLint\ParsingException;
 
 class SeldLinter implements ConfigLinter
 {
-    /**
-     * @var JsonParser
-     */
-    private $linter;
+    private readonly JsonParser $linter;
 
     public function __construct()
     {

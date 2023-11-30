@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Environment\Provider;
 
+use PhpBench\Environment\Provider\Php;
 use PhpBench\Environment\Provider;
 use PhpBench\Remote\Launcher;
 use PhpBench\Tests\TestCase;
@@ -46,7 +47,7 @@ class PhpTest extends TestCase
 
     private function createProvider()
     {
-        return new Provider\Php(
+        return new Php(
             new Launcher()
         );
     }

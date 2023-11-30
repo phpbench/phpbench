@@ -7,17 +7,13 @@ use RuntimeException;
 class BarChartDataSet
 {
     /**
-     * @var string
-     */
-    private $name;
-    /**
      * @var scalar[]
      */
-    private $xSeries;
+    private readonly array $xSeries;
     /**
      * @var number[]
      */
-    private $ySeries;
+    private array $ySeries;
     /**
      * @var number[]
      */
@@ -28,7 +24,7 @@ class BarChartDataSet
      * @param number[] $ySeries
      * @param number[] $errorMargins
      */
-    public function __construct(string $name, array $xSeries, array $ySeries, ?array $errorMargins)
+    public function __construct(private readonly string $name, array $xSeries, array $ySeries, ?array $errorMargins)
     {
         if (count($xSeries) !== count($ySeries) || $errorMargins !== null && count($xSeries) !== count($errorMargins)) {
             throw new RuntimeException(sprintf(
@@ -38,7 +34,6 @@ class BarChartDataSet
                 count($errorMargins ?? [])
             ));
         }
-        $this->name = $name;
         $this->xSeries = $xSeries;
         $this->ySeries = $ySeries;
         $this->errorMargins = $errorMargins;

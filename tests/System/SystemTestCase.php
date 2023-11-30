@@ -12,6 +12,10 @@
 
 namespace PhpBench\Tests\System;
 
+use Exception;
+use DOMDocument;
+use RuntimeException;
+use DOMXPath;
 use PhpBench\Dom\Document;
 use PhpBench\Tests\IntegrationTestCase;
 use Symfony\Component\Filesystem\Filesystem;
@@ -45,7 +49,7 @@ class SystemTestCase extends IntegrationTestCase
         );
 
         if ($process->getExitCode() !== 0) {
-            throw new \Exception('Could not generate test data:' . $process->getErrorOutput() . $process->getOutput());
+            throw new Exception('Could not generate test data:' . $process->getErrorOutput() . $process->getOutput());
         }
 
         $document = new Document();
@@ -90,17 +94,17 @@ class SystemTestCase extends IntegrationTestCase
 
     protected function assertXPathExpression($expected, $xmlString, $expression): void
     {
-        $dom = new \DOMDocument();
+        $dom = new DOMDocument();
         $result = @$dom->loadXML($xmlString);
 
         if (false === $result) {
-            throw new \RuntimeException(sprintf(
+            throw new RuntimeException(sprintf(
                 'Could not load XML "%s"',
                 $xmlString
             ));
         }
 
-        $xpath = new \DOMXPath($dom);
+        $xpath = new DOMXPath($dom);
         $dom->formatOutput = true;
         $result = $xpath->evaluate($expression);
         $this->assertEquals($expected, $result);

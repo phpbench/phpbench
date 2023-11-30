@@ -4,14 +4,13 @@ namespace PhpBench\Expression\Ast;
 
 final class ParameterNode extends Node
 {
-    /**
-     * @var Node[]
-     */
-    private $segments;
-
-    public function __construct(array $segments)
+    public function __construct(
+        /**
+         * @var Node[]
+         */
+        private readonly array $segments
+    )
     {
-        $this->segments = $segments;
     }
 
     /**

@@ -4,14 +4,8 @@ namespace PhpBench\Expression\Ast;
 
 class IntegerNode extends NumberNode
 {
-    /**
-     * @var int
-     */
-    private $value;
-
-    public function __construct(int $value)
+    public function __construct(private readonly int $value)
     {
-        $this->value = $value;
     }
 
     public function value(): int

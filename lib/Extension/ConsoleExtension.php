@@ -26,15 +26,15 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ConsoleExtension implements ExtensionInterface
 {
-    public const PARAM_ANSI = 'console.ansi';
-    public const PARAM_ERROR_STREAM = 'console.error_stream';
-    public const PARAM_OUTPUT_STREAM = 'console.output_stream';
-    public const PARAM_DISABLE_OUTPUT = 'console.disable_output';
+    final public const PARAM_ANSI = 'console.ansi';
+    final public const PARAM_ERROR_STREAM = 'console.error_stream';
+    final public const PARAM_OUTPUT_STREAM = 'console.output_stream';
+    final public const PARAM_DISABLE_OUTPUT = 'console.disable_output';
 
-    public const TAG_CONSOLE_COMMAND = 'console.command';
+    final public const TAG_CONSOLE_COMMAND = 'console.command';
 
-    public const SERVICE_OUTPUT_ERR = 'console.stream_err';
-    public const SERVICE_OUTPUT_STD = 'console.stream_std';
+    final public const SERVICE_OUTPUT_ERR = 'console.stream_err';
+    final public const SERVICE_OUTPUT_STD = 'console.stream_std';
 
     public function configure(OptionsResolver $resolver): void
     {

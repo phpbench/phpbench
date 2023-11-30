@@ -12,6 +12,7 @@
 
 namespace PhpBench\Json;
 
+use InvalidArgumentException;
 use Seld\JsonLint\JsonParser;
 
 /**
@@ -26,10 +27,7 @@ use Seld\JsonLint\JsonParser;
  */
 class JsonDecoder
 {
-    /**
-     * @var JsonParser
-     */
-    private $parser;
+    private readonly JsonParser $parser;
 
     public function __construct()
     {
@@ -60,7 +58,7 @@ class JsonDecoder
     private function normalize($jsonString): string
     {
         if (!is_string($jsonString)) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'Expected a string, got "%s"',
                 gettype($jsonString)
             ));
@@ -76,7 +74,7 @@ class JsonDecoder
 
         for ($index = 0; $index < count($chars); $index++) {
             $char = $chars[$index];
-            $prevChar = isset($chars[$index - 1]) ? $chars[$index - 1] : null;
+            $prevChar = $chars[$index - 1] ?? null;
 
             if (!$inQuote && $prevChar == ':') {
                 $inRight = true;

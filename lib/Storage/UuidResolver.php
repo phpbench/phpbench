@@ -8,14 +8,8 @@ namespace PhpBench\Storage;
  */
 final class UuidResolver
 {
-    /**
-     * @var UuidResolverInterface
-     */
-    private $innerResolver;
-
-    public function __construct(UuidResolverInterface $innerResolver)
+    public function __construct(private readonly UuidResolverInterface $innerResolver)
     {
-        $this->innerResolver = $innerResolver;
     }
 
     public function resolve(string $ref): string

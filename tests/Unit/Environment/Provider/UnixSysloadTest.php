@@ -12,12 +12,13 @@
 
 namespace PhpBench\Tests\Unit\Environment\Provider;
 
+use PhpBench\Environment\Provider\UnixSysload;
 use PhpBench\Environment\Provider;
 use PhpBench\Tests\TestCase;
 
 class UnixSysloadTest extends TestCase
 {
-    private $provider;
+    private UnixSysload $provider;
 
     protected function setUp(): void
     {
@@ -25,7 +26,7 @@ class UnixSysloadTest extends TestCase
             $this->markTestSkipped('Unix specific test');
         }
 
-        $this->provider = new Provider\UnixSysload();
+        $this->provider = new UnixSysload();
     }
 
     /**

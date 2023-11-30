@@ -24,7 +24,7 @@ namespace PhpBench\Benchmark\Metadata\Annotations;
  */
 class Revs
 {
-    private $revs;
+    private readonly array $revs;
 
     public function __construct($revs)
     {
