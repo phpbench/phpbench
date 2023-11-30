@@ -21,6 +21,7 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->importShortClasses();
 
     $rectorConfig->paths([
+        __DIR__ . '/examples',
         __DIR__ . '/lib',
         __DIR__ . '/tests',
     ]);
