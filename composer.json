@@ -46,12 +46,12 @@
         "phpstan/phpstan-phpunit": "^1.0",
         "jangregor/phpstan-prophecy": "^1.0",
         "phpstan/extension-installer": "^1.1",
-        "phpunit/phpunit": "^10.0",
+        "phpunit/phpunit": "^10.4",
         "symfony/error-handler": "^5.2 || ^6.0 || ^7.0",
         "symfony/var-dumper": "^4.0 || ^5.0 || ^6.0 || ^7.0"
     },
     "scripts": {
-        "integrate":[ 
+        "integrate":[
             "vendor/bin/php-cs-fixer fix",
             "vendor/bin/phpstan analyse -c phpstan.neon.dist",
             "vendor/bin/phpunit",
