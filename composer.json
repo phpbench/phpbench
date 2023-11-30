@@ -97,7 +97,7 @@
         "integrate": [
             "@composer normalize",
             "vendor/bin/php-cs-fixer fix",
-            "vendor/bin/phpstan analyse -c phpstan.neon.dist",
+            "vendor/bin/phpstan analyse -c phpstan.neon.dist --memory-limit=-1",
             "vendor/bin/phpunit",
             "bin/phpbench run --revs=1 --iterations=2",
             "bin/phpbench run --profile=examples --revs=1 --iterations=1 --report=examples",
