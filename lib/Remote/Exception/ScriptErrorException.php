@@ -13,6 +13,7 @@
 namespace PhpBench\Remote\Exception;
 
 use RuntimeException;
+
 /**
  * Thrown in the case of an error in the remote script.
  */

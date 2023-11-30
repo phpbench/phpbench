@@ -13,6 +13,7 @@
 namespace PhpBench\Storage;
 
 use Iterator;
+
 /**
  * Iterator interface which must be implemented by storage drivers.
  *

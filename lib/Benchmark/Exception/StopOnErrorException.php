@@ -13,6 +13,7 @@
 namespace PhpBench\Benchmark\Exception;
 
 use Exception;
+
 class StopOnErrorException extends Exception
 {
 }

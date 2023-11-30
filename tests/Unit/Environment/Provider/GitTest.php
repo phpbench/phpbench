@@ -13,7 +13,6 @@
 namespace PhpBench\Tests\Unit\Environment\Provider;
 
 use PhpBench\Environment\Provider\Git;
-use PhpBench\Environment\Provider;
 use PhpBench\Tests\IntegrationTestCase;
 use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\Process;

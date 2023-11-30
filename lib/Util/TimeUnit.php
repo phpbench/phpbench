@@ -13,6 +13,7 @@
 namespace PhpBench\Util;
 
 use InvalidArgumentException;
+
 /**
  * Utility class for representing and converting time units.
  */

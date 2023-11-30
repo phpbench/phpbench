@@ -20,7 +20,6 @@ use PhpBench\Attributes\Revs;
 use PhpBench\Reflection\ReflectionClass;
 use PhpBench\Reflection\ReflectionHierarchy;
 use PhpBench\Reflection\ReflectionMethod;
-use PhpBench\Reflection\ReflectorInterface;
 use PhpBench\Reflection\RemoteReflector;
 use PhpBench\Remote\Launcher;
 use PhpBench\Tests\IntegrationTestCase;
@@ -30,9 +29,6 @@ use PhpBench\Tests\Unit\Reflection\reflector\Class3;
 
 class RemoteReflectorTest extends IntegrationTestCase
 {
-    /**
-     * @var ReflectorInterface
-     */
     private RemoteReflector $reflector;
 
     protected function setUp(): void
@@ -258,6 +254,7 @@ EOT
         $fname = __DIR__ . '/reflector/ClassWithClassKeywords.php';
         $classHierarchy = $this->reflector->reflect($fname);
         $reflection = $classHierarchy->getTop();
+        /** @phpstan-ignore-next-line */
         $this->assertEquals('\\' . ClassWithClassKeywords::class, $reflection->class);
     }
 }

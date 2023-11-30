@@ -67,6 +67,7 @@ class ComparisonEvaluator implements NodeEvaluator
                 gettype($rightValue)
             ));
         }
+
         return match ($node->operator()) {
             '<' => $leftValue < $rightValue,
             '<=' => $leftValue <= $rightValue,

@@ -17,6 +17,7 @@ use IteratorAggregate;
 use ReturnTypeWillChange;
 use BadMethodCallException;
 use ArrayIterator;
+
 /**
  * Represents information about the VCS system used by the current working
  * directory.

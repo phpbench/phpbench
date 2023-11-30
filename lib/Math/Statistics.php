@@ -13,6 +13,7 @@
 namespace PhpBench\Math;
 
 use InvalidArgumentException;
+
 /**
  * Static class containing functions related to statistics.
  */

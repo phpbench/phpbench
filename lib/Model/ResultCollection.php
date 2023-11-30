@@ -14,6 +14,7 @@ namespace PhpBench\Model;
 
 use RuntimeException;
 use InvalidArgumentException;
+
 /**
  * Represents the result of a single iteration executed by an executor.
  */

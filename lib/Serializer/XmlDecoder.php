@@ -247,6 +247,7 @@ class XmlDecoder
             $parameters[$name] = (function (DOMElement $element) {
                 $value = $element->getAttribute('value');
                 $type = $element->getAttribute('type');
+
                 return match ($type) {
                     'integer' => intval($value),
                     'double' => floatval($value),

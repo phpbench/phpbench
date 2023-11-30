@@ -13,6 +13,7 @@
 namespace PhpBench\Progress;
 
 use InvalidArgumentException;
+
 class LoggerRegistry
 {
     private ?array $progressLoggers = null;

@@ -48,7 +48,9 @@ class SamplerManagerTest extends TestCase
 
     /**
      * It should measure the mean time taken to execute a callable.
+     *
      * @Subject()
+     *
      * @Iterations(100)
      */
     public function testCallable(): void

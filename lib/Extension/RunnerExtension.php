@@ -29,7 +29,6 @@ use PhpBench\Console\Command\Handler\TimeUnitHandler;
 use PhpBench\Console\Command\RunCommand;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
-use PhpBench\Environment\Provider;
 use PhpBench\Environment\Supplier;
 use PhpBench\Executor\Benchmark\DebugExecutor;
 use PhpBench\Executor\Benchmark\LocalExecutor;

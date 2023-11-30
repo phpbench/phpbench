@@ -13,6 +13,7 @@
 namespace PhpBench\Tests\System\benchmarks\set3;
 
 use Exception;
+
 class ErrorVariantsBench
 {
     public static function provideFoos()

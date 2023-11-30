@@ -52,8 +52,7 @@ class RunnerHandler
          * @var array<string>
          */
         private readonly ?array $benchPaths = null
-    )
-    {
+    ) {
     }
 
     public static function configureFilters(Command $command): void

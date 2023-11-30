@@ -13,6 +13,7 @@
 namespace PhpBench\Benchmark;
 
 use InvalidArgumentException;
+
 /**
  * The sampler manager is responsible for collecting and executing
  * sampler benchmarks.

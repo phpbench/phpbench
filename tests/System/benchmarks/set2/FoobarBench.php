@@ -13,6 +13,7 @@
 namespace PhpBench\Tests\System\benchmarks\foobar;
 
 use Test\Foobar;
+
 /**
  * This benchmark requires the bootstrap/foobar_bootstrap.php to be loaded in
  * order that Foobar be defined.

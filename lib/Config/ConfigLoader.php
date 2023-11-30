@@ -15,8 +15,7 @@ class ConfigLoader
          * @var ConfigProcessor[]
          */
         private readonly array $processors
-    )
-    {
+    ) {
     }
 
     public static function create(): self

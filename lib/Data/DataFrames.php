@@ -15,8 +15,7 @@ final class DataFrames implements IteratorAggregate
          * @var DataFrame[]
          */
         private readonly array $dataFrames
-    )
-    {
+    ) {
     }
 
     /**

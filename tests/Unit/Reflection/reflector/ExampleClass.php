@@ -13,6 +13,7 @@
 namespace PhpBench\Tests\Unit\Reflection\reflector;
 
 use stdClass;
+
 /**
  * Some doc comment.
  */

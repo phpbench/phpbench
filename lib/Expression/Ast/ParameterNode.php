@@ -9,8 +9,7 @@ final class ParameterNode extends Node
          * @var Node[]
          */
         private readonly array $segments
-    )
-    {
+    ) {
     }
 
     /**

@@ -11,8 +11,7 @@ class ChainObjectPathResolver implements ObjectPathResolver
          * @var ObjectPathResolver[]
          */
         private readonly array $objectPathResolvers
-    )
-    {
+    ) {
     }
 
     /**

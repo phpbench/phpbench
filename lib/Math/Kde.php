@@ -15,6 +15,7 @@ namespace PhpBench\Math;
 use Closure;
 use OutOfBoundsException;
 use InvalidArgumentException;
+
 /**
  * This class was ported from the Python scipy package.
  *
