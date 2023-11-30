@@ -38,6 +38,43 @@ jobs:
                 name: "Validate composer.json"
                 run: "composer validate --strict --no-check-lock"
 
+    composer-normalize:
+        needs:
+            - "composer-validate"
+
+        name: "Composer Normalize (${{ matrix.php-version }})"
+
+        runs-on: "ubuntu-latest"
+
+        strategy:
+            matrix:
+                php-version:
+                    - '8.1'
+
+        steps:
+            -
+                name: "Checkout code"
+                uses: "actions/checkout@v3"
+
+            -
+                name: "Install PHP"
+                uses: "shivammathur/setup-php@v2"
+                with:
+                    coverage: "none"
+                    extensions: "${{ env.REQUIRED_PHP_EXTENSIONS }}"
+                    php-version: "${{ matrix.php-version }}"
+                    tools: composer:v2
+
+            -
+                name: "Composer install"
+                uses: "ramsey/composer-install@v2"
+                with:
+                    composer-options: "--no-scripts"
+
+            -
+                name: "Run composer normalize"
+                run: "composer normalize --dry-run"
+
     php-cs-fixer:
         needs:
             - "composer-validate"
