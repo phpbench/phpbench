@@ -12,10 +12,7 @@ use PhpBench\Config\ConfigLinter;
  */
 abstract class LinterBenchCase
 {
-    /**
-     * @var ConfigLinter
-     */
-    private $linter;
+    private readonly ConfigLinter $linter;
 
     /**
      * @var string
