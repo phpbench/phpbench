@@ -48,17 +48,11 @@ class Kde
      */
     private $factor;
 
-    /**
-     * @var float
-     */
-    private $_dataInvCov;
+    private ?float $_dataInvCov = null;
 
     private float|int|object|null $_dataCovariance = null;
 
-    /**
-     * @var float
-     */
-    private $invCov;
+    private int|float|null $invCov = null;
 
     /**
      * @var float

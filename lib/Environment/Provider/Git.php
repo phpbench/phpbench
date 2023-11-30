@@ -25,7 +25,7 @@ use Symfony\Component\Process\Process;
 class Git implements ProviderInterface
 {
     private readonly ExecutableFinder $exeFinder;
-    private $exePath;
+    private ?string $exePath = null;
 
     public function __construct(private readonly string $cwd, ExecutableFinder $exeFinder = null, private $exeName = 'git')
     {
