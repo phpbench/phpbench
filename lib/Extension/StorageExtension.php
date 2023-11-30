@@ -89,8 +89,8 @@ class StorageExtension implements ExtensionInterface
                 $container->get(self::SERVICE_REGISTRY_DRIVER),
                 $container->get(TimeUnit::class),
                 $container->get(TimeUnitHandler::class),
+                $container->get(ConsoleExtension::SERVICE_OUTPUT_STD),
                 null,
-                $container->get(ConsoleExtension::SERVICE_OUTPUT_STD)
             );
         }, [
             ConsoleExtension::TAG_CONSOLE_COMMAND => []

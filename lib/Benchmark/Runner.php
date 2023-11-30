@@ -250,7 +250,8 @@ final class Runner
 
             try {
                 $this->runVariant($executor, $subject->getExecutor()->getConfig(), $config, $subjectMetadata, $variant);
-            } catch (StopOnErrorException) {
+            } catch (StopOnErrorException $exception) {
+                $stopException = $exception;
             }
         }
 

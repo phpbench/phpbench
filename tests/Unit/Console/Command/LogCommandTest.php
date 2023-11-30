@@ -70,8 +70,8 @@ class LogCommandTest extends TestCase
             $this->storage->reveal(),
             $this->timeUnit->reveal(),
             $this->timeUnitHandler->reveal(),
+            $this->output,
             $this->characterReader->reveal(),
-            $this->output
         );
 
         $this->application = new Application();
