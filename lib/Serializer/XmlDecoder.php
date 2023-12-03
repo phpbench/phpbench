@@ -43,6 +43,7 @@ class XmlDecoder
     {
         $suites = [];
 
+        /** @var Element $suiteEl */
         foreach ($document->query('//suite') as $suiteEl) {
             $suites[] = $this->processSuite($suiteEl);
         }
@@ -141,6 +142,7 @@ class XmlDecoder
 
     private function processBenchmark(Benchmark $benchmark, Element $benchmarkEl, array $resultClasses): void
     {
+        /** @var Element $subjectEl */
         foreach ($benchmarkEl->query('./subject') as $subjectEl) {
             $subject = $benchmark->createSubject($subjectEl->getAttribute('name'));
             $this->processSubject($subject, $subjectEl, $resultClasses);
@@ -151,11 +153,13 @@ class XmlDecoder
     {
         $groups = [];
 
+        /** @var Element $groupEl */
         foreach ($subjectEl->query('./group') as $groupEl) {
             $groups[] = $groupEl->getAttribute('name');
         }
         $subject->setGroups($groups);
 
+        /** @var Element $executorEl */
         foreach ($subjectEl->query('./executor') as $executorEl) {
             $subject->setExecutor(ResolvedExecutor::fromNameAndConfig($executorEl->getAttribute('name'), new Config('asd', $this->getParameters($executorEl))));
 
@@ -164,6 +168,7 @@ class XmlDecoder
 
         // TODO: These attributes should be on the subject, see
         // https://github.com/phpbench/phpbench/issues/307
+        /** @var Element $variantEl */
         foreach ($subjectEl->query('./variant') as $variantEl) {
             $subject->setSleep((int)$variantEl->getAttribute('sleep'));
             $subject->setOutputTimeUnit($variantEl->getAttribute('output-time-unit'));
@@ -174,9 +179,11 @@ class XmlDecoder
             break;
         }
 
+        /** @var Element $variantEl */
         foreach ($subjectEl->query('./variant') as $index => $variantEl) {
             $parameterSet = ParameterSet::fromUnserializedValues('0', []);
 
+            /** @var Element $parameterSetEl */
             foreach ($variantEl->query('./parameter-set') as $parameterSetEl) {
                 $name = $parameterSetEl->getAttribute('name');
                 $parameters = $this->getParameters($parameterSetEl);
@@ -207,6 +214,7 @@ class XmlDecoder
     {
         $parameters = [];
 
+        /** @var Element $parameterEl */
         foreach ($element->query('./parameter') as $parameterEl) {
             $name = $parameterEl->getAttribute('name');
 
@@ -259,6 +267,7 @@ class XmlDecoder
         if ($errorEls->length) {
             $errors = [];
 
+            /** @var Element $errorEl */
             foreach ($errorEls as $errorEl) {
                 $error = new Error(
                     $errorEl->nodeValue,

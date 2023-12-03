@@ -20,6 +20,3 @@ parameters:
         number: 'int|float'
         tableRowArray: 'array<string,\PhpBench\Expression\Ast\Node>'
         tableColumnDefinition: 'array<string,mixed>'
-
-includes:
-    - phpstan-baseline.neon
