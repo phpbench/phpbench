@@ -33,6 +33,8 @@ class AttributeDriverTest extends TestCase
 {
     /**
      * @dataProvider provideLoadBenchmark
+     *
+     * @param mixed[] $attributes
      */
     public function testLoadBenchmark(array $attributes, callable $assertion): void
     {
@@ -91,6 +93,8 @@ class AttributeDriverTest extends TestCase
     }
     /**
      * @dataProvider provideLoadSubject
+     *
+     * @param mixed[] $attributes
      */
     public function testLoadSubject(array $attributes, callable $assertion): void
     {

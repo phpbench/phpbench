@@ -63,7 +63,7 @@ class ConfigurableRegistry extends Registry
     /**
      * Return the named configuration.
      *
-     * @param string|array $name
+     * @param string|mixed[] $name
      */
     public function getConfig($name): Config
     {
@@ -112,6 +112,8 @@ class ConfigurableRegistry extends Registry
      *
      * Note that all configurations must be associated with a named service
      * via a configuration key equal to the configuration service type of this registry.
+     *
+     * @param mixed[] $config
      *
      */
     public function setConfig(string $name, array $config): void

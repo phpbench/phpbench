@@ -19,6 +19,9 @@ abstract class IntegrationBenchCase
         return Workspace::create(__DIR__ . '/../Workspace');
     }
 
+    /**
+     * @param mixed[] $config
+     */
     protected function container(array $config = []): ContainerInterface
     {
         $container = new Container([

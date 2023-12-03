@@ -25,14 +25,17 @@ class TimeUnitTest extends TestCase
      * @dataProvider provideAliases
      * @dataProvider provideConvert
      */
-    public function testConvert($time, $unit, $destUnit, $expectedTime): void
+    public function testConvert(float $time, string $unit, string $destUnit, float|int $expectedTime): void
     {
         $unit = new TimeUnit($unit, $destUnit);
         $result = $unit->toDestUnit($time);
         $this->assertEquals($expectedTime, $result);
     }
 
-    public static function provideConvert()
+    /**
+     * @return list<list{int|float, string, string, int|float}>
+     */
+    public static function provideConvert(): array
     {
         return [
             [
@@ -132,13 +135,16 @@ class TimeUnitTest extends TestCase
      *
      * @dataProvider provideConvertThroughput
      */
-    public function testConvertThroughput($time, $unit, $destUnit, $expectedThroughput): void
+    public function testConvertThroughput(float $time, string $unit, string $destUnit, float|int $expectedThroughput): void
     {
         $unit = new TimeUnit($unit, $destUnit);
         $result = $unit->toDestUnit($time, null, TimeUnit::MODE_THROUGHPUT);
         $this->assertEquals($expectedThroughput, $result);
     }
 
+    /**
+     * @return list<list{int|float, string, string, int|float}>
+     */
     public static function provideConvertThroughput()
     {
         return [

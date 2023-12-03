@@ -1,0 +1,2376 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Method PhpBench\\\\Examples\\\\Extension\\\\ProgressLogger\\\\CatLogger\\:\\:benchmarkEnd\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: examples/Extension/ProgressLogger/CatLogger.php
+
+		-
+			message: "#^Method PhpBench\\\\Examples\\\\Extension\\\\ProgressLogger\\\\CatLogger\\:\\:benchmarkStart\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: examples/Extension/ProgressLogger/CatLogger.php
+
+		-
+			message: "#^Method PhpBench\\\\Examples\\\\Extension\\\\ProgressLogger\\\\CatLogger\\:\\:endSuite\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: examples/Extension/ProgressLogger/CatLogger.php
+
+		-
+			message: "#^Method PhpBench\\\\Examples\\\\Extension\\\\ProgressLogger\\\\CatLogger\\:\\:iterationEnd\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: examples/Extension/ProgressLogger/CatLogger.php
+
+		-
+			message: "#^Method PhpBench\\\\Examples\\\\Extension\\\\ProgressLogger\\\\CatLogger\\:\\:iterationStart\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: examples/Extension/ProgressLogger/CatLogger.php
+
+		-
+			message: "#^Method PhpBench\\\\Examples\\\\Extension\\\\ProgressLogger\\\\CatLogger\\:\\:retryStart\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: examples/Extension/ProgressLogger/CatLogger.php
+
+		-
+			message: "#^Method PhpBench\\\\Examples\\\\Extension\\\\ProgressLogger\\\\CatLogger\\:\\:startSuite\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: examples/Extension/ProgressLogger/CatLogger.php
+
+		-
+			message: "#^Method PhpBench\\\\Examples\\\\Extension\\\\ProgressLogger\\\\CatLogger\\:\\:subjectEnd\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: examples/Extension/ProgressLogger/CatLogger.php
+
+		-
+			message: "#^Method PhpBench\\\\Examples\\\\Extension\\\\ProgressLogger\\\\CatLogger\\:\\:subjectStart\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: examples/Extension/ProgressLogger/CatLogger.php
+
+		-
+			message: "#^Method PhpBench\\\\Examples\\\\Extension\\\\ProgressLogger\\\\CatLogger\\:\\:variantEnd\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: examples/Extension/ProgressLogger/CatLogger.php
+
+		-
+			message: "#^Method PhpBench\\\\Examples\\\\Extension\\\\ProgressLogger\\\\CatLogger\\:\\:variantStart\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: examples/Extension/ProgressLogger/CatLogger.php
+
+		-
+			message: "#^Method PhpBench\\\\Extensions\\\\XDebug\\\\XDebugUtil\\:\\:filenameFromContext\\(\\) has parameter \\$extension with no type specified\\.$#"
+			count: 1
+			path: extensions/xdebug/lib/XDebugUtil.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Baseline\\\\Baselines\\:\\:fwriteFread\\(\\) has parameter \\$revs with no type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/Baseline/Baselines.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Baseline\\\\Baselines\\:\\:md5\\(\\) has parameter \\$revs with no type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/Baseline/Baselines.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Baseline\\\\Baselines\\:\\:nothing\\(\\) has parameter \\$revs with no type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/Baseline/Baselines.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\BenchmarkFinder\\:\\:findFiles\\(\\) has parameter \\$paths with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/BenchmarkFinder.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\AnnotationReader\\:\\:getClassAnnotations\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/AnnotationReader.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\AnnotationReader\\:\\:getMethodAnnotations\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/AnnotationReader.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\AnnotationReader\\:\\:getPhpBenchImports\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/AnnotationReader.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\AnnotationReader\\:\\:getUseImports\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/AnnotationReader.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\AnnotationReader\\:\\:parse\\(\\) has parameter \\$context with no type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/AnnotationReader.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\AnnotationReader\\:\\:parse\\(\\) has parameter \\$input with no type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/AnnotationReader.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\AnnotationReader\\:\\:parse\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/AnnotationReader.php
+
+		-
+			message: "#^Property PhpBench\\\\Benchmark\\\\Metadata\\\\AnnotationReader\\:\\:\\$globalIgnoredNames type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/AnnotationReader.php
+
+		-
+			message: "#^Property PhpBench\\\\Benchmark\\\\Metadata\\\\AnnotationReader\\:\\:\\$phpBenchImports type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/AnnotationReader.php
+
+		-
+			message: "#^Property PhpBench\\\\Benchmark\\\\Metadata\\\\AnnotationReader\\:\\:\\$useImports type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/AnnotationReader.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\Annotations\\\\AbstractArrayAnnotation\\:\\:__construct\\(\\) has parameter \\$params with no type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/Annotations/AbstractArrayAnnotation.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\Annotations\\\\AbstractArrayAnnotation\\:\\:getExtend\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/Annotations/AbstractArrayAnnotation.php
+
+		-
+			message: "#^Property PhpBench\\\\Benchmark\\\\Metadata\\\\Annotations\\\\AbstractArrayAnnotation\\:\\:\\$extend has no type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/Annotations/AbstractArrayAnnotation.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\Annotations\\\\AbstractMethodsAnnotation\\:\\:__construct\\(\\) has parameter \\$params with no type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/Annotations/AbstractMethodsAnnotation.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\Annotations\\\\AbstractMethodsAnnotation\\:\\:getMethods\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/Annotations/AbstractMethodsAnnotation.php
+
+		-
+			message: "#^Property PhpBench\\\\Benchmark\\\\Metadata\\\\Annotations\\\\AbstractMethodsAnnotation\\:\\:\\$methods type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/Annotations/AbstractMethodsAnnotation.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\Annotations\\\\Executor\\:\\:__construct\\(\\) has parameter \\$params with no type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/Annotations/Executor.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\Annotations\\\\Executor\\:\\:getConfig\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/Annotations/Executor.php
+
+		-
+			message: "#^Property PhpBench\\\\Benchmark\\\\Metadata\\\\Annotations\\\\Executor\\:\\:\\$config has no type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/Annotations/Executor.php
+
+		-
+			message: "#^Property PhpBench\\\\Benchmark\\\\Metadata\\\\Annotations\\\\Executor\\:\\:\\$name has no type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/Annotations/Executor.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\Annotations\\\\Format\\:\\:__construct\\(\\) has parameter \\$params with no type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/Annotations/Format.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\Annotations\\\\Groups\\:\\:__construct\\(\\) has parameter \\$params with no type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/Annotations/Groups.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\Annotations\\\\Groups\\:\\:getGroups\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/Annotations/Groups.php
+
+		-
+			message: "#^Property PhpBench\\\\Benchmark\\\\Metadata\\\\Annotations\\\\Groups\\:\\:\\$groups type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/Annotations/Groups.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\Annotations\\\\Iterations\\:\\:__construct\\(\\) has parameter \\$params with no type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/Annotations/Iterations.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\Annotations\\\\Iterations\\:\\:getIterations\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/Annotations/Iterations.php
+
+		-
+			message: "#^Property PhpBench\\\\Benchmark\\\\Metadata\\\\Annotations\\\\Iterations\\:\\:\\$iterations type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/Annotations/Iterations.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\Annotations\\\\OutputMode\\:\\:__construct\\(\\) has parameter \\$params with no type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/Annotations/OutputMode.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\Annotations\\\\OutputMode\\:\\:getMode\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/Annotations/OutputMode.php
+
+		-
+			message: "#^Property PhpBench\\\\Benchmark\\\\Metadata\\\\Annotations\\\\OutputMode\\:\\:\\$mode has no type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/Annotations/OutputMode.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\Annotations\\\\OutputTimeUnit\\:\\:__construct\\(\\) has parameter \\$timeUnit with no type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/Annotations/OutputTimeUnit.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\Annotations\\\\OutputTimeUnit\\:\\:getPrecision\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/Annotations/OutputTimeUnit.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\Annotations\\\\OutputTimeUnit\\:\\:getTimeUnit\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/Annotations/OutputTimeUnit.php
+
+		-
+			message: "#^Property PhpBench\\\\Benchmark\\\\Metadata\\\\Annotations\\\\OutputTimeUnit\\:\\:\\$precision has no type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/Annotations/OutputTimeUnit.php
+
+		-
+			message: "#^Property PhpBench\\\\Benchmark\\\\Metadata\\\\Annotations\\\\OutputTimeUnit\\:\\:\\$timeUnit has no type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/Annotations/OutputTimeUnit.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\Annotations\\\\ParamProviders\\:\\:__construct\\(\\) has parameter \\$params with no type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/Annotations/ParamProviders.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\Annotations\\\\ParamProviders\\:\\:getProviders\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/Annotations/ParamProviders.php
+
+		-
+			message: "#^Property PhpBench\\\\Benchmark\\\\Metadata\\\\Annotations\\\\ParamProviders\\:\\:\\$providers type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/Annotations/ParamProviders.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\Annotations\\\\RetryThreshold\\:\\:__construct\\(\\) has parameter \\$params with no type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/Annotations/RetryThreshold.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\Annotations\\\\Revs\\:\\:__construct\\(\\) has parameter \\$revs with no type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/Annotations/Revs.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\Annotations\\\\Revs\\:\\:getRevs\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/Annotations/Revs.php
+
+		-
+			message: "#^Property PhpBench\\\\Benchmark\\\\Metadata\\\\Annotations\\\\Revs\\:\\:\\$revs type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/Annotations/Revs.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\Annotations\\\\Sleep\\:\\:__construct\\(\\) has parameter \\$params with no type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/Annotations/Sleep.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\Annotations\\\\Timeout\\:\\:__construct\\(\\) has parameter \\$params with no type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/Annotations/Timeout.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\Annotations\\\\Warmup\\:\\:__construct\\(\\) has parameter \\$revs with no type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/Annotations/Warmup.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\Annotations\\\\Warmup\\:\\:getRevs\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/Annotations/Warmup.php
+
+		-
+			message: "#^Property PhpBench\\\\Benchmark\\\\Metadata\\\\Annotations\\\\Warmup\\:\\:\\$revs type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/Annotations/Warmup.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\AssertionMetadata\\:\\:__construct\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/AssertionMetadata.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\AssertionMetadata\\:\\:getConfig\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/AssertionMetadata.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\BenchmarkMetadata\\:\\:getAfterClassMethods\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/BenchmarkMetadata.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\BenchmarkMetadata\\:\\:getBeforeClassMethods\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/BenchmarkMetadata.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\BenchmarkMetadata\\:\\:getIterator\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/BenchmarkMetadata.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\BenchmarkMetadata\\:\\:setAfterClassMethods\\(\\) has parameter \\$afterClassMethods with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/BenchmarkMetadata.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\BenchmarkMetadata\\:\\:setBeforeClassMethods\\(\\) has parameter \\$beforeClassMethods with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/BenchmarkMetadata.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\Driver\\\\AnnotationDriver\\:\\:__construct\\(\\) has parameter \\$subjectPattern with no type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/Driver/AnnotationDriver.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\Driver\\\\AnnotationDriver\\:\\:buildSubject\\(\\) has parameter \\$annotations with no type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/Driver/AnnotationDriver.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\Driver\\\\AnnotationDriver\\:\\:processBenchmark\\(\\) has parameter \\$annotation with no type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/Driver/AnnotationDriver.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\Driver\\\\AnnotationDriver\\:\\:processSubject\\(\\) has parameter \\$annotation with no type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/Driver/AnnotationDriver.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\Driver\\\\AnnotationDriver\\:\\:resolveValue\\(\\) has parameter \\$annotationValues with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/Driver/AnnotationDriver.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\Driver\\\\AnnotationDriver\\:\\:resolveValue\\(\\) has parameter \\$currentValues with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/Driver/AnnotationDriver.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\Driver\\\\AnnotationDriver\\:\\:resolveValue\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/Driver/AnnotationDriver.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\Driver\\\\ConfigDriver\\:\\:__construct\\(\\) has parameter \\$warmup with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/Driver/ConfigDriver.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\ExecutorMetadata\\:\\:__construct\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/ExecutorMetadata.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\ExecutorMetadata\\:\\:getConfig\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/ExecutorMetadata.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\ExecutorMetadata\\:\\:getRegistryConfig\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/ExecutorMetadata.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\MetadataFactory\\:\\:validateMethodExists\\(\\) has parameter \\$context with no type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/MetadataFactory.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\MetadataFactory\\:\\:validateMethodExists\\(\\) has parameter \\$isStatic with no type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/MetadataFactory.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\MetadataFactory\\:\\:validateMethodExists\\(\\) has parameter \\$method with no type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/Metadata/MetadataFactory.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\RunnerConfig\\:\\:assertArrayValuesGreaterThanZero\\(\\) has parameter \\$field with no type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/RunnerConfig.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\RunnerConfig\\:\\:assertArrayValuesGreaterThanZero\\(\\) has parameter \\$values with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/RunnerConfig.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\RunnerConfig\\:\\:getAssertions\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/RunnerConfig.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\RunnerConfig\\:\\:getExecutor\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/RunnerConfig.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\RunnerConfig\\:\\:getIterations\\(\\) has parameter \\$default with no type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/RunnerConfig.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\RunnerConfig\\:\\:getIterations\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/RunnerConfig.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\RunnerConfig\\:\\:getParameterSets\\(\\) has parameter \\$default with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/RunnerConfig.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\RunnerConfig\\:\\:getRevolutions\\(\\) has parameter \\$default with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/RunnerConfig.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\RunnerConfig\\:\\:getRevolutions\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/RunnerConfig.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\RunnerConfig\\:\\:getSleep\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/RunnerConfig.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\RunnerConfig\\:\\:getSleep\\(\\) has parameter \\$default with no type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/RunnerConfig.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\RunnerConfig\\:\\:getWarmup\\(\\) has parameter \\$default with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/RunnerConfig.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\RunnerConfig\\:\\:getWarmup\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/RunnerConfig.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\RunnerConfig\\:\\:withAssertions\\(\\) has parameter \\$assertions with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/RunnerConfig.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\RunnerConfig\\:\\:withExecutor\\(\\) has parameter \\$executor with no type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/RunnerConfig.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\RunnerConfig\\:\\:withFilters\\(\\) has parameter \\$filters with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/RunnerConfig.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\RunnerConfig\\:\\:withGroups\\(\\) has parameter \\$groups with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/RunnerConfig.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\RunnerConfig\\:\\:withIterations\\(\\) has parameter \\$iterations with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/RunnerConfig.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\RunnerConfig\\:\\:withParameters\\(\\) has parameter \\$parameters with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/RunnerConfig.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\RunnerConfig\\:\\:withRevolutions\\(\\) has parameter \\$revolutions with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/RunnerConfig.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\RunnerConfig\\:\\:withWarmup\\(\\) has parameter \\$warmup with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Benchmark/RunnerConfig.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\SamplerManager\\:\\:addSamplerCallable\\(\\) has parameter \\$callable with no type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/SamplerManager.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\SamplerManager\\:\\:sample\\(\\) has parameter \\$name with no type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/SamplerManager.php
+
+		-
+			message: "#^Method PhpBench\\\\Benchmark\\\\SamplerManager\\:\\:sample\\(\\) has parameter \\$revs with no type specified\\.$#"
+			count: 1
+			path: lib/Benchmark/SamplerManager.php
+
+		-
+			message: "#^Property PhpBench\\\\Color\\\\GradientBuilder\\:\\:\\$cache type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Color/GradientBuilder.php
+
+		-
+			message: "#^Method PhpBench\\\\Config\\\\ConfigLoader\\:\\:load\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Config/ConfigLoader.php
+
+		-
+			message: "#^Method PhpBench\\\\Config\\\\ConfigProcessor\\:\\:process\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Config/ConfigProcessor.php
+
+		-
+			message: "#^Method PhpBench\\\\Config\\\\ConfigProcessor\\:\\:process\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Config/ConfigProcessor.php
+
+		-
+			message: "#^Method PhpBench\\\\Config\\\\Processor\\\\CallbackProcessor\\:\\:process\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Config/Processor/CallbackProcessor.php
+
+		-
+			message: "#^Method PhpBench\\\\Config\\\\Processor\\\\CallbackProcessor\\:\\:process\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Config/Processor/CallbackProcessor.php
+
+		-
+			message: "#^Method PhpBench\\\\Config\\\\Processor\\\\IncludeGlobProcessor\\:\\:process\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Config/Processor/IncludeGlobProcessor.php
+
+		-
+			message: "#^Method PhpBench\\\\Config\\\\Processor\\\\IncludeGlobProcessor\\:\\:process\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Config/Processor/IncludeGlobProcessor.php
+
+		-
+			message: "#^Method PhpBench\\\\Config\\\\Processor\\\\IncludeProcessor\\:\\:process\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Config/Processor/IncludeProcessor.php
+
+		-
+			message: "#^Method PhpBench\\\\Config\\\\Processor\\\\IncludeProcessor\\:\\:process\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Config/Processor/IncludeProcessor.php
+
+		-
+			message: "#^Method PhpBench\\\\Console\\\\Command\\\\Handler\\\\RunnerHandler\\:\\:getParameters\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Console/Command/Handler/RunnerHandler.php
+
+		-
+			message: "#^Method PhpBench\\\\Console\\\\Command\\\\Handler\\\\RunnerHandler\\:\\:getParameters\\(\\) has parameter \\$parametersJson with no type specified\\.$#"
+			count: 1
+			path: lib/Console/Command/Handler/RunnerHandler.php
+
+		-
+			message: "#^Method PhpBench\\\\Console\\\\Command\\\\LogCommand\\:\\:__construct\\(\\) has parameter \\$storage with generic class PhpBench\\\\Registry\\\\Registry but does not specify its types\\: T$#"
+			count: 1
+			path: lib/Console/Command/LogCommand.php
+
+		-
+			message: "#^Method PhpBench\\\\Console\\\\Command\\\\LogCommand\\:\\:writeLines\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Console/Command/LogCommand.php
+
+		-
+			message: "#^Method PhpBench\\\\Console\\\\Command\\\\LogCommand\\:\\:writeLines\\(\\) has parameter \\$height with no type specified\\.$#"
+			count: 1
+			path: lib/Console/Command/LogCommand.php
+
+		-
+			message: "#^Method PhpBench\\\\Console\\\\Command\\\\LogCommand\\:\\:writeLines\\(\\) has parameter \\$lines with no type specified\\.$#"
+			count: 1
+			path: lib/Console/Command/LogCommand.php
+
+		-
+			message: "#^Method PhpBench\\\\Console\\\\Command\\\\LogCommand\\:\\:writeLines\\(\\) has parameter \\$nbRows with no type specified\\.$#"
+			count: 1
+			path: lib/Console/Command/LogCommand.php
+
+		-
+			message: "#^Method PhpBench\\\\Console\\\\Command\\\\LogCommand\\:\\:writeLines\\(\\) has parameter \\$output with no type specified\\.$#"
+			count: 1
+			path: lib/Console/Command/LogCommand.php
+
+		-
+			message: "#^Method PhpBench\\\\Console\\\\Command\\\\RunCommand\\:\\:__construct\\(\\) has parameter \\$storage with generic class PhpBench\\\\Registry\\\\Registry but does not specify its types\\: T$#"
+			count: 1
+			path: lib/Console/Command/RunCommand.php
+
+		-
+			message: "#^Method PhpBench\\\\Console\\\\Command\\\\ShowCommand\\:\\:__construct\\(\\) has parameter \\$storage with generic class PhpBench\\\\Registry\\\\Registry but does not specify its types\\: T$#"
+			count: 1
+			path: lib/Console/Command/ShowCommand.php
+
+		-
+			message: "#^Method PhpBench\\\\Data\\\\DataFrames\\:\\:getIterator\\(\\) return type with generic class ArrayIterator does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: lib/Data/DataFrames.php
+
+		-
+			message: "#^Method PhpBench\\\\Data\\\\DataFrames\\:\\:toArray\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Data/DataFrames.php
+
+		-
+			message: "#^Method PhpBench\\\\Data\\\\Row\\:\\:toRecord\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Data/Row.php
+
+		-
+			message: "#^Method PhpBench\\\\Data\\\\Series\\:\\:__construct\\(\\) has parameter \\$values with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Data/Series.php
+
+		-
+			message: "#^Method PhpBench\\\\Data\\\\Series\\:\\:toValues\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Data/Series.php
+
+		-
+			message: "#^Method PhpBench\\\\Development\\\\ConfigDumper\\:\\:prettyPrint\\(\\) has parameter \\$value with no type specified\\.$#"
+			count: 1
+			path: lib/Development/ConfigDumper.php
+
+		-
+			message: "#^Class PhpBench\\\\Environment\\\\Information implements generic interface ArrayAccess but does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: lib/Environment/Information.php
+
+		-
+			message: "#^Class PhpBench\\\\Environment\\\\Information implements generic interface IteratorAggregate but does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: lib/Environment/Information.php
+
+		-
+			message: "#^Method PhpBench\\\\Environment\\\\Information\\:\\:__construct\\(\\) has parameter \\$information with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Environment/Information.php
+
+		-
+			message: "#^Method PhpBench\\\\Environment\\\\Information\\:\\:flattenInformation\\(\\) has parameter \\$information with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Environment/Information.php
+
+		-
+			message: "#^Method PhpBench\\\\Environment\\\\Information\\:\\:flattenInformation\\(\\) has parameter \\$prefix with no type specified\\.$#"
+			count: 1
+			path: lib/Environment/Information.php
+
+		-
+			message: "#^Method PhpBench\\\\Environment\\\\Information\\:\\:flattenInformation\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Environment/Information.php
+
+		-
+			message: "#^Method PhpBench\\\\Environment\\\\Information\\:\\:getIterator\\(\\) return type with generic class ArrayIterator does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: lib/Environment/Information.php
+
+		-
+			message: "#^Method PhpBench\\\\Environment\\\\Information\\:\\:toArray\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Environment/Information.php
+
+		-
+			message: "#^Property PhpBench\\\\Environment\\\\Information\\:\\:\\$information type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Environment/Information.php
+
+		-
+			message: "#^Method PhpBench\\\\Environment\\\\Provider\\\\AbstractRemoteProvider\\:\\:getData\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Environment/Provider/AbstractRemoteProvider.php
+
+		-
+			message: "#^Method PhpBench\\\\Environment\\\\Provider\\\\Git\\:\\:__construct\\(\\) has parameter \\$exeName with no type specified\\.$#"
+			count: 1
+			path: lib/Environment/Provider/Git.php
+
+		-
+			message: "#^Method PhpBench\\\\Environment\\\\Provider\\\\Git\\:\\:exec\\(\\) has parameter \\$cmd with no type specified\\.$#"
+			count: 1
+			path: lib/Environment/Provider/Git.php
+
+		-
+			message: "#^Method PhpBench\\\\Environment\\\\Provider\\\\Sampler\\:\\:__construct\\(\\) has parameter \\$enabled with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Environment/Provider/Sampler.php
+
+		-
+			message: "#^Method PhpBench\\\\Environment\\\\VcsInformation\\:\\:__construct\\(\\) has parameter \\$branch with no type specified\\.$#"
+			count: 1
+			path: lib/Environment/VcsInformation.php
+
+		-
+			message: "#^Method PhpBench\\\\Environment\\\\VcsInformation\\:\\:__construct\\(\\) has parameter \\$version with no type specified\\.$#"
+			count: 1
+			path: lib/Environment/VcsInformation.php
+
+		-
+			message: "#^Property PhpBench\\\\Executor\\\\Benchmark\\\\DebugExecutor\\:\\:\\$variantTimes type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Executor/Benchmark/DebugExecutor.php
+
+		-
+			message: "#^Method PhpBench\\\\Executor\\\\Benchmark\\\\TestExecutor\\:\\:executeMethods\\(\\) has parameter \\$methods with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Executor/Benchmark/TestExecutor.php
+
+		-
+			message: "#^Property PhpBench\\\\Executor\\\\Benchmark\\\\TestExecutor\\:\\:\\$executedMethods type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Executor/Benchmark/TestExecutor.php
+
+		-
+			message: "#^Method PhpBench\\\\Executor\\\\Method\\\\ErrorHandlingExecutorDecorator\\:\\:executeMethods\\(\\) has parameter \\$methods with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Executor/Method/ErrorHandlingExecutorDecorator.php
+
+		-
+			message: "#^Method PhpBench\\\\Executor\\\\Method\\\\RemoteMethodExecutor\\:\\:executeMethods\\(\\) has parameter \\$methods with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Executor/Method/RemoteMethodExecutor.php
+
+		-
+			message: "#^Method PhpBench\\\\Executor\\\\MethodExecutorInterface\\:\\:executeMethods\\(\\) has parameter \\$methods with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Executor/MethodExecutorInterface.php
+
+		-
+			message: "#^Method PhpBench\\\\Expression\\\\Ast\\\\ConcatNode\\:\\:nodes\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Expression/Ast/ConcatNode.php
+
+		-
+			message: "#^Method PhpBench\\\\Expression\\\\ExpressionFunctions\\:\\:execute\\(\\) has parameter \\$args with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Expression/ExpressionFunctions.php
+
+		-
+			message: "#^Method PhpBench\\\\Expression\\\\Lexer\\:\\:__construct\\(\\) has parameter \\$unitNames with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Expression/Lexer.php
+
+		-
+			message: "#^Method PhpBench\\\\Expression\\\\Parser\\:\\:__construct\\(\\) has parameter \\$suffixParselets with generic class PhpBench\\\\Expression\\\\Parselets but does not specify its types\\: T$#"
+			count: 1
+			path: lib/Expression/Parser.php
+
+		-
+			message: "#^Method PhpBench\\\\Expression\\\\Printer\\\\EvaluatingPrinter\\:\\:__construct\\(\\) has parameter \\$nodeClasses with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Expression/Printer/EvaluatingPrinter.php
+
+		-
+			message: "#^Method PhpBench\\\\Expression\\\\Printer\\\\EvaluatingPrinter\\:\\:__construct\\(\\) has parameter \\$params with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Expression/Printer/EvaluatingPrinter.php
+
+		-
+			message: "#^Method PhpBench\\\\Json\\\\JsonDecoder\\:\\:decode\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Json/JsonDecoder.php
+
+		-
+			message: "#^Method PhpBench\\\\Json\\\\JsonDecoder\\:\\:normalize\\(\\) has parameter \\$jsonString with no type specified\\.$#"
+			count: 1
+			path: lib/Json/JsonDecoder.php
+
+		-
+			message: "#^Method PhpBench\\\\Logger\\\\ConsoleLogger\\:\\:log\\(\\) has parameter \\$context with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Logger/ConsoleLogger.php
+
+		-
+			message: "#^Class PhpBench\\\\Math\\\\Distribution implements generic interface ArrayAccess but does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: lib/Math/Distribution.php
+
+		-
+			message: "#^Method PhpBench\\\\Math\\\\Distribution\\:\\:__construct\\(\\) has parameter \\$samples with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Math/Distribution.php
+
+		-
+			message: "#^Method PhpBench\\\\Math\\\\Distribution\\:\\:__construct\\(\\) has parameter \\$stats with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Math/Distribution.php
+
+		-
+			message: "#^Method PhpBench\\\\Math\\\\Distribution\\:\\:getIterator\\(\\) return type with generic class ArrayIterator does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: lib/Math/Distribution.php
+
+		-
+			message: "#^Method PhpBench\\\\Math\\\\Distribution\\:\\:getMax\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Math/Distribution.php
+
+		-
+			message: "#^Method PhpBench\\\\Math\\\\Distribution\\:\\:getMean\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Math/Distribution.php
+
+		-
+			message: "#^Method PhpBench\\\\Math\\\\Distribution\\:\\:getMin\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Math/Distribution.php
+
+		-
+			message: "#^Method PhpBench\\\\Math\\\\Distribution\\:\\:getMode\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Math/Distribution.php
+
+		-
+			message: "#^Method PhpBench\\\\Math\\\\Distribution\\:\\:getRstdev\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Math/Distribution.php
+
+		-
+			message: "#^Method PhpBench\\\\Math\\\\Distribution\\:\\:getStat\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Math/Distribution.php
+
+		-
+			message: "#^Method PhpBench\\\\Math\\\\Distribution\\:\\:getStat\\(\\) has parameter \\$name with no type specified\\.$#"
+			count: 1
+			path: lib/Math/Distribution.php
+
+		-
+			message: "#^Method PhpBench\\\\Math\\\\Distribution\\:\\:getStats\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Math/Distribution.php
+
+		-
+			message: "#^Method PhpBench\\\\Math\\\\Distribution\\:\\:getStdev\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Math/Distribution.php
+
+		-
+			message: "#^Method PhpBench\\\\Math\\\\Distribution\\:\\:getSum\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Math/Distribution.php
+
+		-
+			message: "#^Method PhpBench\\\\Math\\\\Distribution\\:\\:getVariance\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Math/Distribution.php
+
+		-
+			message: "#^Property PhpBench\\\\Math\\\\Distribution\\:\\:\\$closures type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Math/Distribution.php
+
+		-
+			message: "#^Property PhpBench\\\\Math\\\\Distribution\\:\\:\\$samples has no type specified\\.$#"
+			count: 1
+			path: lib/Math/Distribution.php
+
+		-
+			message: "#^Property PhpBench\\\\Math\\\\Distribution\\:\\:\\$stats type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Math/Distribution.php
+
+		-
+			message: "#^Method PhpBench\\\\Math\\\\Statistics\\:\\:histogram\\(\\) has parameter \\$values with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Math/Statistics.php
+
+		-
+			message: "#^Method PhpBench\\\\Math\\\\Statistics\\:\\:histogram\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Math/Statistics.php
+
+		-
+			message: "#^Method PhpBench\\\\Math\\\\Statistics\\:\\:kdeMode\\(\\) has parameter \\$population with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Math/Statistics.php
+
+		-
+			message: "#^Method PhpBench\\\\Math\\\\Statistics\\:\\:mean\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Math/Statistics.php
+
+		-
+			message: "#^Method PhpBench\\\\Math\\\\Statistics\\:\\:mean\\(\\) has parameter \\$values with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Math/Statistics.php
+
+		-
+			message: "#^Method PhpBench\\\\Math\\\\Statistics\\:\\:stdev\\(\\) has parameter \\$values with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Math/Statistics.php
+
+		-
+			message: "#^Method PhpBench\\\\Math\\\\Statistics\\:\\:variance\\(\\) has parameter \\$values with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Math/Statistics.php
+
+		-
+			message: "#^Method PhpBench\\\\Model\\\\Benchmark\\:\\:getIterator\\(\\) return type with generic class ArrayIterator does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: lib/Model/Benchmark.php
+
+		-
+			message: "#^Method PhpBench\\\\Model\\\\Error\\:\\:__construct\\(\\) has parameter \\$class with no type specified\\.$#"
+			count: 1
+			path: lib/Model/Error.php
+
+		-
+			message: "#^Method PhpBench\\\\Model\\\\Error\\:\\:__construct\\(\\) has parameter \\$code with no type specified\\.$#"
+			count: 1
+			path: lib/Model/Error.php
+
+		-
+			message: "#^Method PhpBench\\\\Model\\\\Error\\:\\:__construct\\(\\) has parameter \\$file with no type specified\\.$#"
+			count: 1
+			path: lib/Model/Error.php
+
+		-
+			message: "#^Method PhpBench\\\\Model\\\\Error\\:\\:__construct\\(\\) has parameter \\$line with no type specified\\.$#"
+			count: 1
+			path: lib/Model/Error.php
+
+		-
+			message: "#^Method PhpBench\\\\Model\\\\Error\\:\\:__construct\\(\\) has parameter \\$message with no type specified\\.$#"
+			count: 1
+			path: lib/Model/Error.php
+
+		-
+			message: "#^Method PhpBench\\\\Model\\\\Error\\:\\:__construct\\(\\) has parameter \\$trace with no type specified\\.$#"
+			count: 1
+			path: lib/Model/Error.php
+
+		-
+			message: "#^Method PhpBench\\\\Model\\\\Error\\:\\:getClass\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Model/Error.php
+
+		-
+			message: "#^Method PhpBench\\\\Model\\\\Error\\:\\:getCode\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Model/Error.php
+
+		-
+			message: "#^Method PhpBench\\\\Model\\\\Error\\:\\:getFile\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Model/Error.php
+
+		-
+			message: "#^Method PhpBench\\\\Model\\\\Error\\:\\:getLine\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Model/Error.php
+
+		-
+			message: "#^Method PhpBench\\\\Model\\\\Error\\:\\:getMessage\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Model/Error.php
+
+		-
+			message: "#^Method PhpBench\\\\Model\\\\Error\\:\\:getTrace\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Model/Error.php
+
+		-
+			message: "#^Method PhpBench\\\\Model\\\\ErrorStack\\:\\:getErrors\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Model/ErrorStack.php
+
+		-
+			message: "#^Method PhpBench\\\\Model\\\\ErrorStack\\:\\:getIterator\\(\\) return type with generic class ArrayIterator does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: lib/Model/ErrorStack.php
+
+		-
+			message: "#^Method PhpBench\\\\Model\\\\ErrorStack\\:\\:getTop\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Model/ErrorStack.php
+
+		-
+			message: "#^Method PhpBench\\\\Model\\\\Result\\\\ComputedResult\\:\\:getMetrics\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Model/Result/ComputedResult.php
+
+		-
+			message: "#^Method PhpBench\\\\Model\\\\Result\\\\MemoryResult\\:\\:getMetrics\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Model/Result/MemoryResult.php
+
+		-
+			message: "#^Method PhpBench\\\\Model\\\\Result\\\\RejectionCountResult\\:\\:getMetrics\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Model/Result/RejectionCountResult.php
+
+		-
+			message: "#^Method PhpBench\\\\Model\\\\Result\\\\TimeResult\\:\\:getMetrics\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Model/Result/TimeResult.php
+
+		-
+			message: "#^Method PhpBench\\\\Model\\\\ResultCollection\\:\\:getMetric\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Model/ResultCollection.php
+
+		-
+			message: "#^Method PhpBench\\\\Model\\\\ResultCollection\\:\\:getMetricOrDefault\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Model/ResultCollection.php
+
+		-
+			message: "#^Method PhpBench\\\\Model\\\\ResultCollection\\:\\:getMetricOrDefault\\(\\) has parameter \\$default with no type specified\\.$#"
+			count: 1
+			path: lib/Model/ResultCollection.php
+
+		-
+			message: "#^Property PhpBench\\\\Model\\\\ResultCollection\\:\\:\\$results type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Model/ResultCollection.php
+
+		-
+			message: "#^Unable to resolve the template type T in call to method PhpBench\\\\Model\\\\ResultCollection\\:\\:getResult\\(\\)$#"
+			count: 1
+			path: lib/Model/ResultCollection.php
+
+		-
+			message: "#^Method PhpBench\\\\Model\\\\ResultInterface\\:\\:getMetrics\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Model/ResultInterface.php
+
+		-
+			message: "#^Class PhpBench\\\\Model\\\\SuiteCollection implements generic interface IteratorAggregate but does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: lib/Model/SuiteCollection.php
+
+		-
+			message: "#^Method PhpBench\\\\Model\\\\Summary\\:\\:getMaxTime\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Model/Summary.php
+
+		-
+			message: "#^Method PhpBench\\\\Model\\\\Summary\\:\\:getMeanRelStDev\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Model/Summary.php
+
+		-
+			message: "#^Method PhpBench\\\\Model\\\\Summary\\:\\:getMeanStDev\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Model/Summary.php
+
+		-
+			message: "#^Method PhpBench\\\\Model\\\\Summary\\:\\:getMeanTime\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Model/Summary.php
+
+		-
+			message: "#^Method PhpBench\\\\Model\\\\Summary\\:\\:getMinTime\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Model/Summary.php
+
+		-
+			message: "#^Method PhpBench\\\\Model\\\\Summary\\:\\:getModeTime\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Model/Summary.php
+
+		-
+			message: "#^Method PhpBench\\\\Model\\\\Summary\\:\\:getStats\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Model/Summary.php
+
+		-
+			message: "#^Method PhpBench\\\\Model\\\\Summary\\:\\:getTotalTime\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Model/Summary.php
+
+		-
+			message: "#^Property PhpBench\\\\Model\\\\Summary\\:\\:\\$stats type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Model/Summary.php
+
+		-
+			message: "#^Method PhpBench\\\\Model\\\\Variant\\:\\:__construct\\(\\) has parameter \\$computedStats with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Model/Variant.php
+
+		-
+			message: "#^Method PhpBench\\\\Model\\\\Variant\\:\\:getIteration\\(\\) has parameter \\$index with no type specified\\.$#"
+			count: 1
+			path: lib/Model/Variant.php
+
+		-
+			message: "#^Method PhpBench\\\\Path\\\\Path\\:\\:getFilenameWithoutExtension\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Path/Path.php
+
+		-
+			message: "#^Method PhpBench\\\\PhpBench\\:\\:mergeProfile\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/PhpBench.php
+
+		-
+			message: "#^Method PhpBench\\\\PhpBench\\:\\:mergeProfile\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/PhpBench.php
+
+		-
+			message: "#^Method PhpBench\\\\Progress\\\\Logger\\\\BlinkenLogger\\:\\:drawIterations\\(\\) has parameter \\$specials with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Progress/Logger/BlinkenLogger.php
+
+		-
+			message: "#^Method PhpBench\\\\Progress\\\\Logger\\\\BlinkenLogger\\:\\:drawIterations\\(\\) has parameter \\$tag with no type specified\\.$#"
+			count: 1
+			path: lib/Progress/Logger/BlinkenLogger.php
+
+		-
+			message: "#^Method PhpBench\\\\Progress\\\\Logger\\\\HistogramLogger\\:\\:drawBlocks\\(\\) has parameter \\$freqs with no type specified\\.$#"
+			count: 1
+			path: lib/Progress/Logger/HistogramLogger.php
+
+		-
+			message: "#^Property PhpBench\\\\Progress\\\\Logger\\\\HistogramLogger\\:\\:\\$blocks type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Progress/Logger/HistogramLogger.php
+
+		-
+			message: "#^Method PhpBench\\\\Progress\\\\LoggerInterface\\:\\:benchmarkEnd\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Progress/LoggerInterface.php
+
+		-
+			message: "#^Method PhpBench\\\\Progress\\\\LoggerInterface\\:\\:benchmarkStart\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Progress/LoggerInterface.php
+
+		-
+			message: "#^Method PhpBench\\\\Progress\\\\LoggerInterface\\:\\:endSuite\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Progress/LoggerInterface.php
+
+		-
+			message: "#^Method PhpBench\\\\Progress\\\\LoggerInterface\\:\\:iterationEnd\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Progress/LoggerInterface.php
+
+		-
+			message: "#^Method PhpBench\\\\Progress\\\\LoggerInterface\\:\\:iterationStart\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Progress/LoggerInterface.php
+
+		-
+			message: "#^Method PhpBench\\\\Progress\\\\LoggerInterface\\:\\:retryStart\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Progress/LoggerInterface.php
+
+		-
+			message: "#^Method PhpBench\\\\Progress\\\\LoggerInterface\\:\\:startSuite\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Progress/LoggerInterface.php
+
+		-
+			message: "#^Method PhpBench\\\\Progress\\\\LoggerInterface\\:\\:subjectEnd\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Progress/LoggerInterface.php
+
+		-
+			message: "#^Method PhpBench\\\\Progress\\\\LoggerInterface\\:\\:subjectStart\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Progress/LoggerInterface.php
+
+		-
+			message: "#^Method PhpBench\\\\Progress\\\\LoggerInterface\\:\\:variantEnd\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Progress/LoggerInterface.php
+
+		-
+			message: "#^Method PhpBench\\\\Progress\\\\LoggerInterface\\:\\:variantStart\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Progress/LoggerInterface.php
+
+		-
+			message: "#^Method PhpBench\\\\Progress\\\\LoggerRegistry\\:\\:addProgressLogger\\(\\) has parameter \\$name with no type specified\\.$#"
+			count: 1
+			path: lib/Progress/LoggerRegistry.php
+
+		-
+			message: "#^Method PhpBench\\\\Progress\\\\LoggerRegistry\\:\\:getProgressLogger\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Progress/LoggerRegistry.php
+
+		-
+			message: "#^Method PhpBench\\\\Progress\\\\LoggerRegistry\\:\\:getProgressLogger\\(\\) has parameter \\$name with no type specified\\.$#"
+			count: 1
+			path: lib/Progress/LoggerRegistry.php
+
+		-
+			message: "#^Property PhpBench\\\\Progress\\\\LoggerRegistry\\:\\:\\$progressLoggers type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Progress/LoggerRegistry.php
+
+		-
+			message: "#^Property PhpBench\\\\Reflection\\\\ReflectionClass\\:\\:\\$abstract has no type specified\\.$#"
+			count: 1
+			path: lib/Reflection/ReflectionClass.php
+
+		-
+			message: "#^Property PhpBench\\\\Reflection\\\\ReflectionClass\\:\\:\\$attributes has no type specified\\.$#"
+			count: 1
+			path: lib/Reflection/ReflectionClass.php
+
+		-
+			message: "#^Property PhpBench\\\\Reflection\\\\ReflectionClass\\:\\:\\$class has no type specified\\.$#"
+			count: 1
+			path: lib/Reflection/ReflectionClass.php
+
+		-
+			message: "#^Property PhpBench\\\\Reflection\\\\ReflectionClass\\:\\:\\$comment has no type specified\\.$#"
+			count: 1
+			path: lib/Reflection/ReflectionClass.php
+
+		-
+			message: "#^Property PhpBench\\\\Reflection\\\\ReflectionClass\\:\\:\\$interfaces has no type specified\\.$#"
+			count: 1
+			path: lib/Reflection/ReflectionClass.php
+
+		-
+			message: "#^Property PhpBench\\\\Reflection\\\\ReflectionClass\\:\\:\\$namespace has no type specified\\.$#"
+			count: 1
+			path: lib/Reflection/ReflectionClass.php
+
+		-
+			message: "#^Property PhpBench\\\\Reflection\\\\ReflectionClass\\:\\:\\$path has no type specified\\.$#"
+			count: 1
+			path: lib/Reflection/ReflectionClass.php
+
+		-
+			message: "#^Method PhpBench\\\\Reflection\\\\ReflectionHierarchy\\:\\:getIterator\\(\\) return type with generic class ArrayObject does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: lib/Reflection/ReflectionHierarchy.php
+
+		-
+			message: "#^Property PhpBench\\\\Reflection\\\\ReflectionMethod\\:\\:\\$attributes has no type specified\\.$#"
+			count: 1
+			path: lib/Reflection/ReflectionMethod.php
+
+		-
+			message: "#^Method PhpBench\\\\Remote\\\\IniStringBuilder\\:\\:build\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Remote/IniStringBuilder.php
+
+		-
+			message: "#^Method PhpBench\\\\Remote\\\\Launcher\\:\\:__construct\\(\\) has parameter \\$phpConfig with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Remote/Launcher.php
+
+		-
+			message: "#^Method PhpBench\\\\Remote\\\\Launcher\\:\\:payload\\(\\) has parameter \\$template with no type specified\\.$#"
+			count: 1
+			path: lib/Remote/Launcher.php
+
+		-
+			message: "#^Method PhpBench\\\\Remote\\\\Launcher\\:\\:payload\\(\\) has parameter \\$tokens with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Remote/Launcher.php
+
+		-
+			message: "#^Method PhpBench\\\\Remote\\\\Launcher\\:\\:resolvePhpBinary\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Remote/Launcher.php
+
+		-
+			message: "#^Method PhpBench\\\\Remote\\\\Payload\\:\\:launch\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Remote/Payload.php
+
+		-
+			message: "#^Method PhpBench\\\\Remote\\\\Payload\\:\\:mergePhpConfig\\(\\) has parameter \\$phpConfig with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Remote/Payload.php
+
+		-
+			message: "#^Method PhpBench\\\\Remote\\\\Payload\\:\\:setWrapper\\(\\) has parameter \\$wrapper with no type specified\\.$#"
+			count: 1
+			path: lib/Remote/Payload.php
+
+		-
+			message: "#^Property PhpBench\\\\Remote\\\\Payload\\:\\:\\$phpConfig type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Remote/Payload.php
+
+		-
+			message: "#^Property PhpBench\\\\Remote\\\\Payload\\:\\:\\$wrapper has no type specified\\.$#"
+			count: 1
+			path: lib/Remote/Payload.php
+
+		-
+			message: "#^Method PhpBench\\\\Remote\\\\ProcessFactory\\:\\:__construct\\(\\) has parameter \\$env with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Remote/ProcessFactory.php
+
+		-
+			message: "#^Method PhpBench\\\\Report\\\\Func\\\\FitToAxis\\:\\:__invoke\\(\\) has parameter \\$axis with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Report/Func/FitToAxis.php
+
+		-
+			message: "#^Method PhpBench\\\\Report\\\\Func\\\\FitToAxis\\:\\:__invoke\\(\\) has parameter \\$rows with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Report/Func/FitToAxis.php
+
+		-
+			message: "#^Method PhpBench\\\\Report\\\\Func\\\\FitToAxis\\:\\:__invoke\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Report/Func/FitToAxis.php
+
+		-
+			message: "#^Function PhpBench\\\\Report\\\\Func\\\\fit_to_axis\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Report/Func/functions.php
+
+		-
+			message: "#^Function PhpBench\\\\Report\\\\Func\\\\fit_to_axis\\(\\) has parameter \\$axis with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Report/Func/functions.php
+
+		-
+			message: "#^Function PhpBench\\\\Report\\\\Func\\\\fit_to_axis\\(\\) has parameter \\$rows with no type specified\\.$#"
+			count: 1
+			path: lib/Report/Func/functions.php
+
+		-
+			message: "#^Method PhpBench\\\\Report\\\\Generator\\\\ExpressionGenerator\\:\\:evaluate\\(\\) has parameter \\$baselineExprMap with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Report/Generator/ExpressionGenerator.php
+
+		-
+			message: "#^Method PhpBench\\\\Report\\\\Generator\\\\ExpressionGenerator\\:\\:evaluate\\(\\) has parameter \\$exprMap with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Report/Generator/ExpressionGenerator.php
+
+		-
+			message: "#^Method PhpBench\\\\Report\\\\Model\\\\Builder\\\\TableBuilder\\:\\:addRowArray\\(\\) has parameter \\$row with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Report/Model/Builder/TableBuilder.php
+
+		-
+			message: "#^Method PhpBench\\\\Report\\\\Model\\\\Reports\\:\\:getIterator\\(\\) return type with generic class ArrayIterator does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: lib/Report/Model/Reports.php
+
+		-
+			message: "#^Method PhpBench\\\\Report\\\\Model\\\\Table\\:\\:columnGroups\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Report/Model/Table.php
+
+		-
+			message: "#^Method PhpBench\\\\Report\\\\Model\\\\Table\\:\\:getIterator\\(\\) return type with generic class ArrayIterator does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: lib/Report/Model/Table.php
+
+		-
+			message: "#^Method PhpBench\\\\Report\\\\Model\\\\TableRow\\:\\:cells\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Report/Model/TableRow.php
+
+		-
+			message: "#^Method PhpBench\\\\Report\\\\Model\\\\TableRow\\:\\:fromArray\\(\\) has parameter \\$row with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Report/Model/TableRow.php
+
+		-
+			message: "#^Method PhpBench\\\\Report\\\\Model\\\\TableRow\\:\\:getIterator\\(\\) return type with generic class ArrayIterator does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: lib/Report/Model/TableRow.php
+
+		-
+			message: "#^Method PhpBench\\\\Report\\\\Renderer\\\\DelimitedRenderer\\:\\:renderTable\\(\\) has parameter \\$config with no type specified\\.$#"
+			count: 1
+			path: lib/Report/Renderer/DelimitedRenderer.php
+
+		-
+			message: "#^Method PhpBench\\\\Report\\\\RendererInterface\\:\\:render\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Report/RendererInterface.php
+
+		-
+			message: "#^Method PhpBench\\\\Report\\\\Transform\\\\SuiteCollectionTransformer\\:\\:suiteToTable\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Report/Transform/SuiteCollectionTransformer.php
+
+		-
+			message: "#^Method PhpBench\\\\Serializer\\\\XmlDecoder\\:\\:getComputedStats\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Serializer/XmlDecoder.php
+
+		-
+			message: "#^Method PhpBench\\\\Serializer\\\\XmlDecoder\\:\\:getParameters\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Serializer/XmlDecoder.php
+
+		-
+			message: "#^Method PhpBench\\\\Serializer\\\\XmlDecoder\\:\\:processBenchmark\\(\\) has parameter \\$resultClasses with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Serializer/XmlDecoder.php
+
+		-
+			message: "#^Method PhpBench\\\\Serializer\\\\XmlDecoder\\:\\:processSubject\\(\\) has parameter \\$resultClasses with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Serializer/XmlDecoder.php
+
+		-
+			message: "#^Method PhpBench\\\\Serializer\\\\XmlDecoder\\:\\:processVariant\\(\\) has parameter \\$resultClasses with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Serializer/XmlDecoder.php
+
+		-
+			message: "#^Method PhpBench\\\\Serializer\\\\XmlEncoder\\:\\:createParameter\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Serializer/XmlEncoder.php
+
+		-
+			message: "#^Method PhpBench\\\\Serializer\\\\XmlEncoder\\:\\:createParameter\\(\\) has parameter \\$name with no type specified\\.$#"
+			count: 1
+			path: lib/Serializer/XmlEncoder.php
+
+		-
+			message: "#^Method PhpBench\\\\Serializer\\\\XmlEncoder\\:\\:createParameter\\(\\) has parameter \\$parentEl with no type specified\\.$#"
+			count: 1
+			path: lib/Serializer/XmlEncoder.php
+
+		-
+			message: "#^Method PhpBench\\\\Serializer\\\\XmlEncoder\\:\\:createParameter\\(\\) has parameter \\$value with no type specified\\.$#"
+			count: 1
+			path: lib/Serializer/XmlEncoder.php
+
+		-
+			message: "#^Method PhpBench\\\\Serializer\\\\XmlEncoder\\:\\:isBinary\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Serializer/XmlEncoder.php
+
+		-
+			message: "#^Method PhpBench\\\\Serializer\\\\XmlEncoder\\:\\:isBinary\\(\\) has parameter \\$value with no type specified\\.$#"
+			count: 1
+			path: lib/Serializer/XmlEncoder.php
+
+		-
+			message: "#^Method PhpBench\\\\Storage\\\\ArchiverInterface\\:\\:archive\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Storage/ArchiverInterface.php
+
+		-
+			message: "#^Method PhpBench\\\\Storage\\\\ArchiverInterface\\:\\:restore\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Storage/ArchiverInterface.php
+
+		-
+			message: "#^Property PhpBench\\\\Storage\\\\Driver\\\\Fake\\\\FakeHistoryIterator\\:\\:\\$entries type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Storage/Driver/Fake/FakeHistoryIterator.php
+
+		-
+			message: "#^Method PhpBench\\\\Storage\\\\Driver\\\\Xml\\\\HistoryIterator\\:\\:__construct\\(\\) has parameter \\$path with no type specified\\.$#"
+			count: 1
+			path: lib/Storage/Driver/Xml/HistoryIterator.php
+
+		-
+			message: "#^Method PhpBench\\\\Storage\\\\Driver\\\\Xml\\\\HistoryIterator\\:\\:getDirectoryIterator\\(\\) has parameter \\$path with no type specified\\.$#"
+			count: 1
+			path: lib/Storage/Driver/Xml/HistoryIterator.php
+
+		-
+			message: "#^Method PhpBench\\\\Storage\\\\Driver\\\\Xml\\\\HistoryIterator\\:\\:getDirectoryIterator\\(\\) return type with generic class ArrayIterator does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: lib/Storage/Driver/Xml/HistoryIterator.php
+
+		-
+			message: "#^Method PhpBench\\\\Storage\\\\Driver\\\\Xml\\\\HistoryIterator\\:\\:getEntryIterator\\(\\) return type with generic class ArrayIterator does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: lib/Storage/Driver/Xml/HistoryIterator.php
+
+		-
+			message: "#^Property PhpBench\\\\Storage\\\\Driver\\\\Xml\\\\HistoryIterator\\:\\:\\$days with generic class ArrayIterator does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: lib/Storage/Driver/Xml/HistoryIterator.php
+
+		-
+			message: "#^Property PhpBench\\\\Storage\\\\Driver\\\\Xml\\\\HistoryIterator\\:\\:\\$entries with generic class ArrayIterator does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: lib/Storage/Driver/Xml/HistoryIterator.php
+
+		-
+			message: "#^Property PhpBench\\\\Storage\\\\Driver\\\\Xml\\\\HistoryIterator\\:\\:\\$months with generic class ArrayIterator does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: lib/Storage/Driver/Xml/HistoryIterator.php
+
+		-
+			message: "#^Property PhpBench\\\\Storage\\\\Driver\\\\Xml\\\\HistoryIterator\\:\\:\\$years with generic class ArrayIterator does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: lib/Storage/Driver/Xml/HistoryIterator.php
+
+		-
+			message: "#^Method PhpBench\\\\Storage\\\\Driver\\\\Xml\\\\XmlDriver\\:\\:__construct\\(\\) has parameter \\$path with no type specified\\.$#"
+			count: 1
+			path: lib/Storage/Driver/Xml/XmlDriver.php
+
+		-
+			message: "#^Method PhpBench\\\\Storage\\\\Driver\\\\Xml\\\\XmlDriver\\:\\:has\\(\\) has parameter \\$runId with no type specified\\.$#"
+			count: 1
+			path: lib/Storage/Driver/Xml/XmlDriver.php
+
+		-
+			message: "#^Method PhpBench\\\\Storage\\\\DriverInterface\\:\\:has\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Storage/DriverInterface.php
+
+		-
+			message: "#^Method PhpBench\\\\Storage\\\\DriverInterface\\:\\:has\\(\\) has parameter \\$runId with no type specified\\.$#"
+			count: 1
+			path: lib/Storage/DriverInterface.php
+
+		-
+			message: "#^Method PhpBench\\\\Storage\\\\HistoryEntry\\:\\:__construct\\(\\) has parameter \\$branch with no type specified\\.$#"
+			count: 1
+			path: lib/Storage/HistoryEntry.php
+
+		-
+			message: "#^Method PhpBench\\\\Storage\\\\HistoryEntry\\:\\:__construct\\(\\) has parameter \\$maxTime with no type specified\\.$#"
+			count: 1
+			path: lib/Storage/HistoryEntry.php
+
+		-
+			message: "#^Method PhpBench\\\\Storage\\\\HistoryEntry\\:\\:__construct\\(\\) has parameter \\$meanRelStDev with no type specified\\.$#"
+			count: 1
+			path: lib/Storage/HistoryEntry.php
+
+		-
+			message: "#^Method PhpBench\\\\Storage\\\\HistoryEntry\\:\\:__construct\\(\\) has parameter \\$meanTime with no type specified\\.$#"
+			count: 1
+			path: lib/Storage/HistoryEntry.php
+
+		-
+			message: "#^Method PhpBench\\\\Storage\\\\HistoryEntry\\:\\:__construct\\(\\) has parameter \\$minTime with no type specified\\.$#"
+			count: 1
+			path: lib/Storage/HistoryEntry.php
+
+		-
+			message: "#^Method PhpBench\\\\Storage\\\\HistoryEntry\\:\\:__construct\\(\\) has parameter \\$nbIterations with no type specified\\.$#"
+			count: 1
+			path: lib/Storage/HistoryEntry.php
+
+		-
+			message: "#^Method PhpBench\\\\Storage\\\\HistoryEntry\\:\\:__construct\\(\\) has parameter \\$nbRevolutions with no type specified\\.$#"
+			count: 1
+			path: lib/Storage/HistoryEntry.php
+
+		-
+			message: "#^Method PhpBench\\\\Storage\\\\HistoryEntry\\:\\:__construct\\(\\) has parameter \\$nbSubjects with no type specified\\.$#"
+			count: 1
+			path: lib/Storage/HistoryEntry.php
+
+		-
+			message: "#^Method PhpBench\\\\Storage\\\\HistoryEntry\\:\\:__construct\\(\\) has parameter \\$runId with no type specified\\.$#"
+			count: 1
+			path: lib/Storage/HistoryEntry.php
+
+		-
+			message: "#^Method PhpBench\\\\Storage\\\\HistoryEntry\\:\\:__construct\\(\\) has parameter \\$tag with no type specified\\.$#"
+			count: 1
+			path: lib/Storage/HistoryEntry.php
+
+		-
+			message: "#^Method PhpBench\\\\Storage\\\\HistoryEntry\\:\\:__construct\\(\\) has parameter \\$totalTime with no type specified\\.$#"
+			count: 1
+			path: lib/Storage/HistoryEntry.php
+
+		-
+			message: "#^Method PhpBench\\\\Storage\\\\HistoryEntry\\:\\:getMaxTime\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Storage/HistoryEntry.php
+
+		-
+			message: "#^Method PhpBench\\\\Storage\\\\HistoryEntry\\:\\:getMeanRelStDev\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Storage/HistoryEntry.php
+
+		-
+			message: "#^Method PhpBench\\\\Storage\\\\HistoryEntry\\:\\:getMeanTime\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Storage/HistoryEntry.php
+
+		-
+			message: "#^Method PhpBench\\\\Storage\\\\HistoryEntry\\:\\:getMinTime\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Storage/HistoryEntry.php
+
+		-
+			message: "#^Method PhpBench\\\\Storage\\\\HistoryEntry\\:\\:getNbIterations\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Storage/HistoryEntry.php
+
+		-
+			message: "#^Method PhpBench\\\\Storage\\\\HistoryEntry\\:\\:getNbRevolutions\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Storage/HistoryEntry.php
+
+		-
+			message: "#^Method PhpBench\\\\Storage\\\\HistoryEntry\\:\\:getNbSubjects\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Storage/HistoryEntry.php
+
+		-
+			message: "#^Method PhpBench\\\\Storage\\\\HistoryEntry\\:\\:getRunId\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Storage/HistoryEntry.php
+
+		-
+			message: "#^Method PhpBench\\\\Storage\\\\HistoryEntry\\:\\:getTotalTime\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Storage/HistoryEntry.php
+
+		-
+			message: "#^Method PhpBench\\\\Storage\\\\HistoryEntry\\:\\:getVcsBranch\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Storage/HistoryEntry.php
+
+		-
+			message: "#^Interface PhpBench\\\\Storage\\\\HistoryIteratorInterface extends generic interface Iterator but does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: lib/Storage/HistoryIteratorInterface.php
+
+		-
+			message: "#^Method PhpBench\\\\Storage\\\\UuidResolver\\\\ChainResolver\\:\\:__construct\\(\\) has parameter \\$resolvers with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Storage/UuidResolver/ChainResolver.php
+
+		-
+			message: "#^Method PhpBench\\\\Storage\\\\UuidResolver\\\\LatestResolver\\:\\:__construct\\(\\) has parameter \\$driverRegistry with generic class PhpBench\\\\Registry\\\\Registry but does not specify its types\\: T$#"
+			count: 1
+			path: lib/Storage/UuidResolver/LatestResolver.php
+
+		-
+			message: "#^Method PhpBench\\\\Storage\\\\UuidResolver\\\\LatestResolver\\:\\:getLatestUuid\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Storage/UuidResolver/LatestResolver.php
+
+		-
+			message: "#^Method PhpBench\\\\Storage\\\\UuidResolver\\\\LatestResolver\\:\\:getNthUuid\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Storage/UuidResolver/LatestResolver.php
+
+		-
+			message: "#^Method PhpBench\\\\Storage\\\\UuidResolver\\\\LatestResolver\\:\\:getNthUuid\\(\\) has parameter \\$nth with no type specified\\.$#"
+			count: 1
+			path: lib/Storage/UuidResolver/LatestResolver.php
+
+		-
+			message: "#^Method PhpBench\\\\Template\\\\ObjectPathResolver\\\\MappedObjectPathResolver\\:\\:__construct\\(\\) has parameter \\$map with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Template/ObjectPathResolver/MappedObjectPathResolver.php
+
+		-
+			message: "#^Method PhpBench\\\\Template\\\\ObjectRenderer\\:\\:__construct\\(\\) has parameter \\$templatePaths with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Template/ObjectRenderer.php
+
+		-
+			message: "#^Method PhpBench\\\\Template\\\\TemplateService\\\\ContainerTemplateService\\:\\:__construct\\(\\) has parameter \\$serviceMap with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Template/TemplateService/ContainerTemplateService.php
+
+		-
+			message: "#^Method PhpBench\\\\Template\\\\TemplateService\\\\MappedTemplateService\\:\\:__construct\\(\\) has parameter \\$serviceMap with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Template/TemplateService/MappedTemplateService.php
+
+		-
+			message: "#^Property PhpBench\\\\Util\\\\MemoryUnit\\:\\:\\$aliases type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Util/MemoryUnit.php
+
+		-
+			message: "#^Property PhpBench\\\\Util\\\\MemoryUnit\\:\\:\\$suffixes type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Util/MemoryUnit.php
+
+		-
+			message: "#^Method PhpBench\\\\Util\\\\TextTruncate\\:\\:centered\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Util/TextTruncate.php
+
+		-
+			message: "#^Method PhpBench\\\\Util\\\\TimeUnit\\:\\:convert\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Util/TimeUnit.php
+
+		-
+			message: "#^Method PhpBench\\\\Util\\\\TimeUnit\\:\\:convertInto\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Util/TimeUnit.php
+
+		-
+			message: "#^Method PhpBench\\\\Util\\\\TimeUnit\\:\\:resolveDestUnit\\(\\) has parameter \\$unit with no type specified\\.$#"
+			count: 1
+			path: lib/Util/TimeUnit.php
+
+		-
+			message: "#^Method PhpBench\\\\Util\\\\TimeUnit\\:\\:resolveMode\\(\\) has parameter \\$mode with no type specified\\.$#"
+			count: 1
+			path: lib/Util/TimeUnit.php
+
+		-
+			message: "#^Method PhpBench\\\\Util\\\\TimeUnit\\:\\:resolvePrecision\\(\\) has parameter \\$precision with no type specified\\.$#"
+			count: 1
+			path: lib/Util/TimeUnit.php
+
+		-
+			message: "#^Method PhpBench\\\\Util\\\\TimeUnit\\:\\:toDestUnit\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Util/TimeUnit.php
+
+		-
+			message: "#^Property PhpBench\\\\Util\\\\TimeUnit\\:\\:\\$aliases type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Util/TimeUnit.php
+
+		-
+			message: "#^Property PhpBench\\\\Util\\\\TimeUnit\\:\\:\\$map type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Util/TimeUnit.php
+
+		-
+			message: "#^Property PhpBench\\\\Util\\\\TimeUnit\\:\\:\\$suffixes type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Util/TimeUnit.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\TestCase\\:\\:prophesize\\(\\) has parameter \\$classOrInterface with no type specified\\.$#"
+			count: 1
+			path: tests/TestCase.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\TestCase\\:\\:prophesize\\(\\) return type with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy does not specify its types\\: T$#"
+			count: 1
+			path: tests/TestCase.php
+
+		-
+			message: "#^Unable to resolve the template type T in call to method Prophecy\\\\Prophet\\:\\:prophesize\\(\\)$#"
+			count: 1
+			path: tests/TestCase.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Benchmark\\\\Metadata\\\\Driver\\\\ChainDriverTest\\:\\:prophesize\\(\\) has parameter \\$classOrInterface with no type specified\\.$#"
+			count: 1
+			path: tests/Unit/Benchmark/Metadata/Driver/ChainDriverTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Benchmark\\\\Metadata\\\\Driver\\\\ChainDriverTest\\:\\:prophesize\\(\\) return type with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy does not specify its types\\: T$#"
+			count: 1
+			path: tests/Unit/Benchmark/Metadata/Driver/ChainDriverTest.php
+
+		-
+			message: "#^Unable to resolve the template type T in call to method Prophecy\\\\Prophet\\:\\:prophesize\\(\\)$#"
+			count: 1
+			path: tests/Unit/Benchmark/Metadata/Driver/ChainDriverTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Benchmark\\\\Metadata\\\\Driver\\\\ConfigDriverTest\\:\\:prophesize\\(\\) has parameter \\$classOrInterface with no type specified\\.$#"
+			count: 1
+			path: tests/Unit/Benchmark/Metadata/Driver/ConfigDriverTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Benchmark\\\\Metadata\\\\Driver\\\\ConfigDriverTest\\:\\:prophesize\\(\\) return type with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy does not specify its types\\: T$#"
+			count: 1
+			path: tests/Unit/Benchmark/Metadata/Driver/ConfigDriverTest.php
+
+		-
+			message: "#^Unable to resolve the template type T in call to method Prophecy\\\\Prophet\\:\\:prophesize\\(\\)$#"
+			count: 1
+			path: tests/Unit/Benchmark/Metadata/Driver/ConfigDriverTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Benchmark\\\\SamplerManagerTest\\:\\:samplerExample\\(\\) has parameter \\$revs with no type specified\\.$#"
+			count: 1
+			path: tests/Unit/Benchmark/SamplerManagerTest.php
+
+		-
+			message: "#^Property PhpBench\\\\Tests\\\\Unit\\\\Benchmark\\\\SamplerManagerTest\\:\\:\\$callCount has no type specified\\.$#"
+			count: 1
+			path: tests/Unit/Benchmark/SamplerManagerTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Config\\\\ConfigLoaderTest\\:\\:createLoader\\(\\) has parameter \\$processors with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/Unit/Config/ConfigLoaderTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Config\\\\ConfigLoaderTest\\:\\:prophesize\\(\\) has parameter \\$classOrInterface with no type specified\\.$#"
+			count: 1
+			path: tests/Unit/Config/ConfigLoaderTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Config\\\\ConfigLoaderTest\\:\\:prophesize\\(\\) return type with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy does not specify its types\\: T$#"
+			count: 1
+			path: tests/Unit/Config/ConfigLoaderTest.php
+
+		-
+			message: "#^Unable to resolve the template type T in call to method Prophecy\\\\Prophet\\:\\:prophesize\\(\\)$#"
+			count: 1
+			path: tests/Unit/Config/ConfigLoaderTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Console\\\\Command\\\\LogCommandTest\\:\\:createHistoryEntry\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Console/Command/LogCommandTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Console\\\\Command\\\\LogCommandTest\\:\\:createHistoryEntry\\(\\) has parameter \\$index with no type specified\\.$#"
+			count: 1
+			path: tests/Unit/Console/Command/LogCommandTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Console\\\\Command\\\\LogCommandTest\\:\\:replaceDate\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Console/Command/LogCommandTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Console\\\\Command\\\\LogCommandTest\\:\\:replaceDate\\(\\) has parameter \\$string with no type specified\\.$#"
+			count: 1
+			path: tests/Unit/Console/Command/LogCommandTest.php
+
+		-
+			message: "#^Property PhpBench\\\\Tests\\\\Unit\\\\Console\\\\Command\\\\LogCommandTest\\:\\:\\$driver with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy does not specify its types\\: T$#"
+			count: 1
+			path: tests/Unit/Console/Command/LogCommandTest.php
+
+		-
+			message: "#^Property PhpBench\\\\Tests\\\\Unit\\\\Console\\\\Command\\\\LogCommandTest\\:\\:\\$history with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy does not specify its types\\: T$#"
+			count: 1
+			path: tests/Unit/Console/Command/LogCommandTest.php
+
+		-
+			message: "#^Property PhpBench\\\\Tests\\\\Unit\\\\Console\\\\Command\\\\LogCommandTest\\:\\:\\$storage with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy does not specify its types\\: T$#"
+			count: 1
+			path: tests/Unit/Console/Command/LogCommandTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Data\\\\Func\\\\PartitionTest\\:\\:testPartition\\(\\) has parameter \\$expected with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/Unit/Data/Func/PartitionTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Data\\\\Func\\\\PartitionTest\\:\\:testPartition\\(\\) has parameter \\$records with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/Unit/Data/Func/PartitionTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Environment\\\\Provider\\\\OpcacheTest\\:\\:createProvider\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Environment/Provider/OpcacheTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Environment\\\\Provider\\\\PhpTest\\:\\:createProvider\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Environment/Provider/PhpTest.php
+
+		-
+			message: "#^Property PhpBench\\\\Tests\\\\Unit\\\\Environment\\\\Provider\\\\SamplerTest\\:\\:\\$manager with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy does not specify its types\\: T$#"
+			count: 1
+			path: tests/Unit/Environment/Provider/SamplerTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Executor\\\\Benchmark\\\\DebugExecutorTest\\:\\:provideConstantTimes\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Executor/Benchmark/DebugExecutorTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Executor\\\\Benchmark\\\\DebugExecutorTest\\:\\:testConstantTimes\\(\\) has parameter \\$expectedTimes with no type specified\\.$#"
+			count: 1
+			path: tests/Unit/Executor/Benchmark/DebugExecutorTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Executor\\\\Benchmark\\\\DebugExecutorTest\\:\\:testConstantTimes\\(\\) has parameter \\$nbCollections with no type specified\\.$#"
+			count: 1
+			path: tests/Unit/Executor/Benchmark/DebugExecutorTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Executor\\\\Benchmark\\\\DebugExecutorTest\\:\\:testConstantTimes\\(\\) has parameter \\$nbIterations with no type specified\\.$#"
+			count: 1
+			path: tests/Unit/Executor/Benchmark/DebugExecutorTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Executor\\\\Benchmark\\\\DebugExecutorTest\\:\\:testConstantTimes\\(\\) has parameter \\$spread with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/Unit/Executor/Benchmark/DebugExecutorTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Executor\\\\Benchmark\\\\DebugExecutorTest\\:\\:testConstantTimes\\(\\) has parameter \\$times with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/Unit/Executor/Benchmark/DebugExecutorTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Executor\\\\Method\\\\LocalMethodExecutorTest\\:\\:executeMethod\\(\\) has parameter \\$className with no type specified\\.$#"
+			count: 1
+			path: tests/Unit/Executor/Method/LocalMethodExecutorTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Executor\\\\ParameterSetExtractorTest\\:\\:provideParams\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/Unit/Executor/ParameterSetExtractorTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Expression\\\\FunctionTestCase\\:\\:eval\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Expression/FunctionTestCase.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Expression\\\\NodePrinter\\\\HighlightingNodePrinterTest\\:\\:prophesize\\(\\) has parameter \\$classOrInterface with no type specified\\.$#"
+			count: 1
+			path: tests/Unit/Expression/NodePrinter/HighlightingNodePrinterTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Expression\\\\NodePrinter\\\\HighlightingNodePrinterTest\\:\\:prophesize\\(\\) return type with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy does not specify its types\\: T$#"
+			count: 1
+			path: tests/Unit/Expression/NodePrinter/HighlightingNodePrinterTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Expression\\\\NodePrinter\\\\HighlightingNodePrinterTest\\:\\:testPrint\\(\\) has parameter \\$map with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/Unit/Expression/NodePrinter/HighlightingNodePrinterTest.php
+
+		-
+			message: "#^Unable to resolve the template type T in call to method Prophecy\\\\Prophet\\:\\:prophesize\\(\\)$#"
+			count: 1
+			path: tests/Unit/Expression/NodePrinter/HighlightingNodePrinterTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Expression\\\\NodePrinter\\\\UnrepresentableValuePrinterTest\\:\\:prophesize\\(\\) has parameter \\$classOrInterface with no type specified\\.$#"
+			count: 1
+			path: tests/Unit/Expression/NodePrinter/UnrepresentableValuePrinterTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Expression\\\\NodePrinter\\\\UnrepresentableValuePrinterTest\\:\\:prophesize\\(\\) return type with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy does not specify its types\\: T$#"
+			count: 1
+			path: tests/Unit/Expression/NodePrinter/UnrepresentableValuePrinterTest.php
+
+		-
+			message: "#^Unable to resolve the template type T in call to method Prophecy\\\\Prophet\\:\\:prophesize\\(\\)$#"
+			count: 1
+			path: tests/Unit/Expression/NodePrinter/UnrepresentableValuePrinterTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Expression\\\\NodePrinterTestCase\\:\\:print\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/Unit/Expression/NodePrinterTestCase.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Expression\\\\Printer\\\\EvaluatingPrinterTest\\:\\:testEvaluate\\(\\) has parameter \\$params with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/Unit/Expression/Printer/EvaluatingPrinterTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Json\\\\JsonDecoderTest\\:\\:provideNormalizer\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Json/JsonDecoderTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Json\\\\JsonDecoderTest\\:\\:testNormalizer\\(\\) has parameter \\$expected with no type specified\\.$#"
+			count: 1
+			path: tests/Unit/Json/JsonDecoderTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Json\\\\JsonDecoderTest\\:\\:testNormalizer\\(\\) has parameter \\$string with no type specified\\.$#"
+			count: 1
+			path: tests/Unit/Json/JsonDecoderTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Tests\\\\Unit\\\\Unit\\\\Math\\\\KdeTest\\:\\:provideEvaluate\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Math/KdeTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Tests\\\\Unit\\\\Unit\\\\Math\\\\KdeTest\\:\\:testEvaluate\\(\\) has parameter \\$bwMethod with no type specified\\.$#"
+			count: 1
+			path: tests/Unit/Math/KdeTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Tests\\\\Unit\\\\Unit\\\\Math\\\\KdeTest\\:\\:testEvaluate\\(\\) has parameter \\$dataSet with no type specified\\.$#"
+			count: 1
+			path: tests/Unit/Math/KdeTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Tests\\\\Unit\\\\Unit\\\\Math\\\\KdeTest\\:\\:testEvaluate\\(\\) has parameter \\$expected with no type specified\\.$#"
+			count: 1
+			path: tests/Unit/Math/KdeTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Tests\\\\Unit\\\\Unit\\\\Math\\\\KdeTest\\:\\:testEvaluate\\(\\) has parameter \\$space with no type specified\\.$#"
+			count: 1
+			path: tests/Unit/Math/KdeTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Math\\\\StatisticsTest\\:\\:provideHistogram\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Math/StatisticsTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Math\\\\StatisticsTest\\:\\:provideKdeMode\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Math/StatisticsTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Math\\\\StatisticsTest\\:\\:provideLinearSpace\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Math/StatisticsTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Math\\\\StatisticsTest\\:\\:testHistogram\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/Unit/Math/StatisticsTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Math\\\\StatisticsTest\\:\\:testHistogram\\(\\) has parameter \\$expected with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/Unit/Math/StatisticsTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Math\\\\StatisticsTest\\:\\:testHistogram\\(\\) has parameter \\$lower with no type specified\\.$#"
+			count: 1
+			path: tests/Unit/Math/StatisticsTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Math\\\\StatisticsTest\\:\\:testHistogram\\(\\) has parameter \\$steps with no type specified\\.$#"
+			count: 1
+			path: tests/Unit/Math/StatisticsTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Math\\\\StatisticsTest\\:\\:testHistogram\\(\\) has parameter \\$upper with no type specified\\.$#"
+			count: 1
+			path: tests/Unit/Math/StatisticsTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Math\\\\StatisticsTest\\:\\:testKdeMode\\(\\) has parameter \\$bandwidth with no type specified\\.$#"
+			count: 1
+			path: tests/Unit/Math/StatisticsTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Math\\\\StatisticsTest\\:\\:testKdeMode\\(\\) has parameter \\$expected with no type specified\\.$#"
+			count: 1
+			path: tests/Unit/Math/StatisticsTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Math\\\\StatisticsTest\\:\\:testKdeMode\\(\\) has parameter \\$population with no type specified\\.$#"
+			count: 1
+			path: tests/Unit/Math/StatisticsTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Math\\\\StatisticsTest\\:\\:testKdeMode\\(\\) has parameter \\$space with no type specified\\.$#"
+			count: 1
+			path: tests/Unit/Math/StatisticsTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Math\\\\StatisticsTest\\:\\:testLinearSpace\\(\\) has parameter \\$endpoint with no type specified\\.$#"
+			count: 1
+			path: tests/Unit/Math/StatisticsTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Math\\\\StatisticsTest\\:\\:testLinearSpace\\(\\) has parameter \\$expected with no type specified\\.$#"
+			count: 1
+			path: tests/Unit/Math/StatisticsTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Math\\\\StatisticsTest\\:\\:testLinearSpace\\(\\) has parameter \\$max with no type specified\\.$#"
+			count: 1
+			path: tests/Unit/Math/StatisticsTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Math\\\\StatisticsTest\\:\\:testLinearSpace\\(\\) has parameter \\$min with no type specified\\.$#"
+			count: 1
+			path: tests/Unit/Math/StatisticsTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Math\\\\StatisticsTest\\:\\:testLinearSpace\\(\\) has parameter \\$steps with no type specified\\.$#"
+			count: 1
+			path: tests/Unit/Math/StatisticsTest.php
+
+		-
+			message: "#^Property PhpBench\\\\Tests\\\\Unit\\\\Model\\\\BenchmarkTest\\:\\:\\$suite with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy does not specify its types\\: T$#"
+			count: 1
+			path: tests/Unit/Model/BenchmarkTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Model\\\\ParameterSetTest\\:\\:testMatches\\(\\) has parameter \\$patterns with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/Unit/Model/ParameterSetTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Model\\\\SuiteTest\\:\\:createSuite\\(\\) has parameter \\$benchmarks with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/Unit/Model/SuiteTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Model\\\\SuiteTest\\:\\:createSuite\\(\\) has parameter \\$informations with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/Unit/Model/SuiteTest.php
+
+		-
+			message: "#^Property PhpBench\\\\Tests\\\\Unit\\\\Model\\\\SummaryTest\\:\\:\\$bench1 with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy does not specify its types\\: T$#"
+			count: 1
+			path: tests/Unit/Model/SummaryTest.php
+
+		-
+			message: "#^Property PhpBench\\\\Tests\\\\Unit\\\\Model\\\\SummaryTest\\:\\:\\$stats with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy does not specify its types\\: T$#"
+			count: 1
+			path: tests/Unit/Model/SummaryTest.php
+
+		-
+			message: "#^Property PhpBench\\\\Tests\\\\Unit\\\\Model\\\\SummaryTest\\:\\:\\$subject1 with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy does not specify its types\\: T$#"
+			count: 1
+			path: tests/Unit/Model/SummaryTest.php
+
+		-
+			message: "#^Property PhpBench\\\\Tests\\\\Unit\\\\Model\\\\SummaryTest\\:\\:\\$suite with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy does not specify its types\\: T$#"
+			count: 1
+			path: tests/Unit/Model/SummaryTest.php
+
+		-
+			message: "#^Property PhpBench\\\\Tests\\\\Unit\\\\Model\\\\SummaryTest\\:\\:\\$variant1 with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy does not specify its types\\: T$#"
+			count: 1
+			path: tests/Unit/Model/SummaryTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Model\\\\TagTest\\:\\:provideInvalidTag\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Model/TagTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Model\\\\TagTest\\:\\:provideValidTag\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Model/TagTest.php
+
+		-
+			message: "#^Property PhpBench\\\\Tests\\\\Unit\\\\Model\\\\VariantTest\\:\\:\\$subject with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy does not specify its types\\: T$#"
+			count: 1
+			path: tests/Unit/Model/VariantTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Progress\\\\Logger\\\\PhpBenchLoggerTestCase\\:\\:getLogger\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Progress/Logger/PhpBenchLoggerTestCase.php
+
+		-
+			message: "#^Property PhpBench\\\\Tests\\\\Unit\\\\Progress\\\\Logger\\\\PhpBenchLoggerTestCase\\:\\:\\$benchmark has no type specified\\.$#"
+			count: 1
+			path: tests/Unit/Progress/Logger/PhpBenchLoggerTestCase.php
+
+		-
+			message: "#^Property PhpBench\\\\Tests\\\\Unit\\\\Progress\\\\Logger\\\\PhpBenchLoggerTestCase\\:\\:\\$document has no type specified\\.$#"
+			count: 1
+			path: tests/Unit/Progress/Logger/PhpBenchLoggerTestCase.php
+
+		-
+			message: "#^Property PhpBench\\\\Tests\\\\Unit\\\\Progress\\\\Logger\\\\PhpBenchLoggerTestCase\\:\\:\\$logger has no type specified\\.$#"
+			count: 1
+			path: tests/Unit/Progress/Logger/PhpBenchLoggerTestCase.php
+
+		-
+			message: "#^Property PhpBench\\\\Tests\\\\Unit\\\\Progress\\\\Logger\\\\PhpBenchLoggerTestCase\\:\\:\\$stats has no type specified\\.$#"
+			count: 1
+			path: tests/Unit/Progress/Logger/PhpBenchLoggerTestCase.php
+
+		-
+			message: "#^Property PhpBench\\\\Tests\\\\Unit\\\\Progress\\\\Logger\\\\PhpBenchLoggerTestCase\\:\\:\\$subject has no type specified\\.$#"
+			count: 1
+			path: tests/Unit/Progress/Logger/PhpBenchLoggerTestCase.php
+
+		-
+			message: "#^Property PhpBench\\\\Tests\\\\Unit\\\\Progress\\\\Logger\\\\PhpBenchLoggerTestCase\\:\\:\\$variant has no type specified\\.$#"
+			count: 1
+			path: tests/Unit/Progress/Logger/PhpBenchLoggerTestCase.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Progress\\\\Logger\\\\PlainLoggerTest\\:\\:getLogger\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Progress/Logger/PlainLoggerTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Progress\\\\Logger\\\\VerboseLoggerTest\\:\\:getLogger\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Progress/Logger/VerboseLoggerTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Registry\\\\ConfigTest\\:\\:provideGoodName\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Registry/ConfigTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Registry\\\\ConfigTest\\:\\:provideInvalidName\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Registry/ConfigTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Registry\\\\ConfigTest\\:\\:testGoodName\\(\\) has parameter \\$name with no type specified\\.$#"
+			count: 1
+			path: tests/Unit/Registry/ConfigTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Registry\\\\ConfigTest\\:\\:testInvalidName\\(\\) has parameter \\$name with no type specified\\.$#"
+			count: 1
+			path: tests/Unit/Registry/ConfigTest.php
+
+		-
+			message: "#^Property PhpBench\\\\Tests\\\\Unit\\\\Registry\\\\RegistryTest\\:\\:\\$container has no type specified\\.$#"
+			count: 1
+			path: tests/Unit/Registry/RegistryTest.php
+
+		-
+			message: "#^Property PhpBench\\\\Tests\\\\Unit\\\\Registry\\\\RegistryTest\\:\\:\\$registry has no type specified\\.$#"
+			count: 1
+			path: tests/Unit/Registry/RegistryTest.php
+
+		-
+			message: "#^Property PhpBench\\\\Tests\\\\Unit\\\\Registry\\\\RegistryTest\\:\\:\\$service1 has no type specified\\.$#"
+			count: 1
+			path: tests/Unit/Registry/RegistryTest.php
+
+		-
+			message: "#^Property PhpBench\\\\Tests\\\\Unit\\\\Registry\\\\RegistryTest\\:\\:\\$service2 has no type specified\\.$#"
+			count: 1
+			path: tests/Unit/Registry/RegistryTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Remote\\\\IniStringBuilderTest\\:\\:provideBuild\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Remote/IniStringBuilderTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Remote\\\\IniStringBuilderTest\\:\\:testBuild\\(\\) has parameter \\$example with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/Unit/Remote/IniStringBuilderTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Remote\\\\LauncherTest\\:\\:createLiveLauncher\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/Unit/Remote/LauncherTest.php
+
+		-
+			message: "#^Property PhpBench\\\\Tests\\\\Unit\\\\Remote\\\\LauncherTest\\:\\:\\$factory with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy does not specify its types\\: T$#"
+			count: 1
+			path: tests/Unit/Remote/LauncherTest.php
+
+		-
+			message: "#^Property PhpBench\\\\Tests\\\\Unit\\\\Remote\\\\LauncherTest\\:\\:\\$finder with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy does not specify its types\\: T$#"
+			count: 1
+			path: tests/Unit/Remote/LauncherTest.php
+
+		-
+			message: "#^Property PhpBench\\\\Tests\\\\Unit\\\\Remote\\\\LauncherTest\\:\\:\\$payload with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy does not specify its types\\: T$#"
+			count: 1
+			path: tests/Unit/Remote/LauncherTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Remote\\\\PayloadTest\\:\\:validPayloadWithPhpConfig\\(\\) has parameter \\$phpConfig with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/Unit/Remote/PayloadTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Report\\\\ComponentGenerator\\\\TableAggregate\\\\GroupHelperTest\\:\\:testResolveGroupSizes\\(\\) has parameter \\$colSizes with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/Unit/Report/ComponentGenerator/TableAggregate/GroupHelperTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Report\\\\ComponentGenerator\\\\TableAggregate\\\\GroupHelperTest\\:\\:testResolveGroupSizes\\(\\) has parameter \\$expectedGroupSizes with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/Unit/Report/ComponentGenerator/TableAggregate/GroupHelperTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Report\\\\ComponentGenerator\\\\TableAggregate\\\\GroupHelperTest\\:\\:testResolveGroupSizes\\(\\) has parameter \\$groupNameByColumn with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/Unit/Report/ComponentGenerator/TableAggregate/GroupHelperTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Report\\\\Func\\\\FitToAxisTest\\:\\:testFitToAxis\\(\\) has parameter \\$expectedSeriesSets with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/Unit/Report/Func/FitToAxisTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Report\\\\Func\\\\FitToAxisTest\\:\\:testFitToAxis\\(\\) has parameter \\$keys with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/Unit/Report/Func/FitToAxisTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Report\\\\Func\\\\FitToAxisTest\\:\\:testFitToAxis\\(\\) has parameter \\$rows with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/Unit/Report/Func/FitToAxisTest.php
+
+		-
+			message: "#^Property PhpBench\\\\Tests\\\\Unit\\\\Report\\\\Generator\\\\CompositeGeneratorTest\\:\\:\\$manager with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy does not specify its types\\: T$#"
+			count: 1
+			path: tests/Unit/Report/Generator/CompositeGeneratorTest.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Report\\\\Generator\\\\GeneratorTestCase\\:\\:generate\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/Unit/Report/Generator/GeneratorTestCase.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Report\\\\Renderer\\\\AbstractRendererCase\\:\\:renderReport\\(\\) has parameter \\$reports with no type specified\\.$#"
+			count: 1
+			path: tests/Unit/Report/Renderer/AbstractRendererCase.php
+
+		-
+			message: "#^Method PhpBench\\\\Tests\\\\Unit\\\\Report\\\\Renderer\\\\AbstractRendererCase\\:\\:reports\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/Unit/Report/Renderer/AbstractRendererCase.php
+
+		-
+			message: "#^Property PhpBench\\\\Tests\\\\Unit\\\\Report\\\\ReportManagerTest\\:\\:\\$generator with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy does not specify its types\\: T$#"
+			count: 1
+			path: tests/Unit/Report/ReportManagerTest.php
+
+		-
+			message: "#^Property PhpBench\\\\Tests\\\\Unit\\\\Report\\\\ReportManagerTest\\:\\:\\$generatorRegistry with generic class PhpBench\\\\Registry\\\\ConfigurableRegistry does not specify its types\\: T$#"
+			count: 1
+			path: tests/Unit/Report/ReportManagerTest.php
+
+		-
+			message: "#^Property PhpBench\\\\Tests\\\\Unit\\\\Report\\\\ReportManagerTest\\:\\:\\$rendererRegistry with generic class PhpBench\\\\Registry\\\\ConfigurableRegistry does not specify its types\\: T$#"
+			count: 1
+			path: tests/Unit/Report/ReportManagerTest.php

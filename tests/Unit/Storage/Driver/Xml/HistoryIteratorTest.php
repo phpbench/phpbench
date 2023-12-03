@@ -27,6 +27,7 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class HistoryIteratorTest extends IntegrationTestCase
 {
+    /** @var ObjectProphecy<XmlDecoder> */
     private ObjectProphecy $xmlDecoder;
     private HistoryIterator $iterator;
     private Filesystem $filesystem;
@@ -72,12 +73,12 @@ class HistoryIteratorTest extends IntegrationTestCase
     public function testIterate(): void
     {
         $collections = [];
-        $collections[1] = $this->createEntry(1, new DateTime('2014-02-03'));
-        $collections[2] = $this->createEntry(2, new DateTime('2016-01-01'));
-        $collections[3] = $this->createEntry(3, new DateTime('2016-02-01'));
-        $collections[4] = $this->createEntry(4, new DateTime('2016-02-03'));
-        $collections[5] = $this->createEntry(5, new DateTime('2016-02-08 12:00:00'));
-        $collections[6] = $this->createEntry(6, new DateTime('2016-02-08 06:00:00'));
+        $collections[1] = $this->createEntry('1', new DateTime('2014-02-03'));
+        $collections[2] = $this->createEntry('2', new DateTime('2016-01-01'));
+        $collections[3] = $this->createEntry('3', new DateTime('2016-02-01'));
+        $collections[4] = $this->createEntry('4', new DateTime('2016-02-03'));
+        $collections[5] = $this->createEntry('5', new DateTime('2016-02-08 12:00:00'));
+        $collections[6] = $this->createEntry('6', new DateTime('2016-02-08 06:00:00'));
 
         $this->xmlDecoder->decode(Argument::type(Document::class))->will(function ($args) use (&$collections) {
             $dom = $args[0];
@@ -103,7 +104,10 @@ class HistoryIteratorTest extends IntegrationTestCase
         $this->assertEquals('2014-02-03', $last->getDate()->format('Y-m-d'));
     }
 
-    private function createEntry($uuid, DateTime $date)
+    /**
+     * @return ObjectProphecy<SuiteCollection>
+     */
+    private function createEntry(string $uuid, DateTime $date)
     {
         $dom = new Document();
         $test = $dom->createRoot('test');
@@ -119,7 +123,10 @@ class HistoryIteratorTest extends IntegrationTestCase
         return $this->createCollection($uuid, $date);
     }
 
-    private function createCollection($uuid, DateTime $date)
+    /**
+     * @return ObjectProphecy<SuiteCollection>
+     */
+    private function createCollection(string $uuid, DateTime $date)
     {
         $collection = $this->prophesize(SuiteCollection::class);
         $suite = $this->prophesize(Suite::class);

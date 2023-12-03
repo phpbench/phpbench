@@ -79,7 +79,7 @@ EOT;
         $this->assertCount(2, $annotations);
     }
 
-    private function createReader($useImports = false)
+    private function createReader(bool $useImports = false): AnnotationReader
     {
         return new AnnotationReader($useImports);
     }

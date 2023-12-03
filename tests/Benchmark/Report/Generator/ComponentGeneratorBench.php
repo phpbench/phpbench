@@ -22,6 +22,7 @@ class ComponentGeneratorBench extends IntegrationBenchCase
 
     private Suite $suite;
 
+    /** @var mixed[] */
     private array $config;
 
     public function __construct()

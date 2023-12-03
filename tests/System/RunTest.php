@@ -380,7 +380,7 @@ class RunTest extends SystemTestCase
      *
      * @dataProvider provideProgressLoggers
      */
-    public function testProgressLogger($progress): void
+    public function testProgressLogger(string $progress): void
     {
         $process = $this->phpbench(
             'run --progress=' . $progress . ' benchmarks/set1/BenchmarkBench.php'
@@ -388,6 +388,9 @@ class RunTest extends SystemTestCase
         $this->assertExitCode(0, $process);
     }
 
+    /**
+     * @return list<list{string}>
+     */
     public static function provideProgressLoggers(): array
     {
         return [

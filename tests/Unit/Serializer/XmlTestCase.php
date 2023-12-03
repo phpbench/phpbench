@@ -78,7 +78,10 @@ abstract class XmlTestCase extends TestCase
         $this->iteration1 = $this->prophesize(Iteration::class);
     }
 
-    public function getSuiteCollection($params)
+    /**
+     * @param array<string, mixed> $params
+     */
+    public function getSuiteCollection(array $params): SuiteCollection
     {
         $params = array_merge([
             'error' => false,
@@ -170,7 +173,10 @@ abstract class XmlTestCase extends TestCase
         return $this->suiteCollection->reveal();
     }
 
-    public static function provideEncode()
+    /**
+     * @return \Generator<list{string}>
+     */
+    public static function provideEncode(): \Generator
     {
         foreach (glob(__DIR__ . '/examples/*.test') as $path) {
             yield [
@@ -200,5 +206,6 @@ abstract class XmlTestCase extends TestCase
     }
 
     abstract public function doTestBinary(SuiteCollection $collection): void;
+
     abstract public function doTestDate(SuiteCollection $collection): void;
 }

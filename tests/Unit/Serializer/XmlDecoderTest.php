@@ -238,11 +238,8 @@ EOT
         );
     }
 
-    private function encode(SuiteCollection $collection)
+    private function encode(SuiteCollection $collection): Document
     {
-        $xmlEncoder = new XmlEncoder();
-        $dom = $xmlEncoder->encode($collection);
-
-        return $dom;
+        return (new XmlEncoder())->encode($collection);
     }
 }

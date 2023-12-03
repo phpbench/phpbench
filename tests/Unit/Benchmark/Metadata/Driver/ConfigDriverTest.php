@@ -33,6 +33,8 @@ class ConfigDriverTest extends TestCase
 
     /**
      * @dataProvider provideDriver
+     *
+     * @param mixed[] $config
      */
     public function testDriver(array $config, callable $assertion): void
     {
@@ -49,6 +51,9 @@ class ConfigDriverTest extends TestCase
         $assertion($driver->getMetadataForHierarchy($this->hierarchy)->getOrCreateSubject(self::EXAMPLE_SUBJECT));
     }
 
+    /**
+     * @return Generator<mixed>
+     */
     public static function provideDriver(): Generator
     {
         yield [

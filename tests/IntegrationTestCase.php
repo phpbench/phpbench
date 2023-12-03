@@ -13,11 +13,14 @@ use PhpBench\Tests\Util\Workspace;
 
 class IntegrationTestCase extends TestCase
 {
-    protected static function workspace(): Workspace
+    protected function workspace(): Workspace
     {
         return Workspace::create(__DIR__ . '/Workspace');
     }
 
+    /**
+     * @param mixed[] $config
+     */
     protected function container(array $config = []): Container
     {
         return (function (Container $container) {

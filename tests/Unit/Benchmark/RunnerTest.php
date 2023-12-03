@@ -47,47 +47,33 @@ class RunnerTest extends TestCase
     private TestExecutor $executor;
 
     /**
-     * @var ObjectProphecy<ConfigurableRegistry>
+     * @var ObjectProphecy<ConfigurableRegistry<TestExecutor>>
      */
     private ObjectProphecy $executorRegistry;
-
-    /**
-     * @var ObjectProphecy<AssertionProcessor>
-     */
-    private ObjectProphecy $assertion;
-
-    /**
-     * @var Config
-     */
-    private $executorConfig;
 
     /**
      * @var ObjectProphecy<Supplier>
      */
     private ObjectProphecy $envSupplier;
 
-    /**
-     * @var array<mixed>
-     */
-    private array $informations;
-
     private Runner $runner;
 
     protected function setUp(): void
     {
         $this->benchmark = $this->prophesize(BenchmarkMetadata::class);
-        $this->executorRegistry = $this->prophesize(ConfigurableRegistry::class);
+        /** @var ObjectProphecy<ConfigurableRegistry<TestExecutor>> $configurableRegistry */
+        $configurableRegistry = $this->prophesize(ConfigurableRegistry::class);
+        $this->executorRegistry = $configurableRegistry;
         $this->executor = new TestExecutor();
-        $this->assertion = $this->prophesize(AssertionProcessor::class);
+        $assertion = $this->prophesize(AssertionProcessor::class);
         $this->setUpExecutorConfig();
         $this->envSupplier = $this->prophesize(Supplier::class);
-        $this->informations = [];
-        $this->envSupplier->getInformations()->willReturn($this->informations);
+        $this->envSupplier->getInformations()->willReturn([]);
 
         $this->runner = new Runner(
             $this->executorRegistry->reveal(),
             $this->envSupplier->reveal(),
-            $this->assertion->reveal(),
+            $assertion->reveal(),
             null,
         );
 
@@ -98,8 +84,13 @@ class RunnerTest extends TestCase
 
     /**
      * @dataProvider provideRunner
+     *
+     * @param int[] $iterations
+     * @param int[] $revs
+     * @param mixed[] $parameters
+     * @param callable(self, Suite): void $assertionCallback
      */
-    public function testRunner($iterations, $revs, array $parameters, $assertionCallbacks): void
+    public function testRunner(array $iterations, array $revs, array $parameters, callable $assertionCallback): void
     {
         $subject = new SubjectMetadata($this->benchmark->reveal(), 'name');
         $subject->setIterations($iterations);
@@ -113,16 +104,13 @@ class RunnerTest extends TestCase
             $subject,
         ]);
 
-        $suite = $this->runner->run([ $this->benchmark->reveal() ], RunnerConfig::create()->withTag('context'));
+        $suite = $this->runner->run([$this->benchmark->reveal()], RunnerConfig::create()->withTag('context'));
 
-        $this->assertInstanceOf(Suite::class, $suite);
         $this->assertNoErrors($suite);
 
         self::assertEquals((int)(count($revs) * array_sum($iterations)), $this->executor->getExecutedContextCount());
 
-        foreach ($assertionCallbacks as $callback) {
-            $callback($this, $suite);
-        }
+        $assertionCallback($this, $suite);
     }
 
     /**
@@ -143,8 +131,8 @@ class RunnerTest extends TestCase
             [1],
             [3],
             [],
-            function ($test, $suite): void {
-                $test->assertEquals(1, $iterations = $suite->getIterations());
+            function (self $test, Suite $suite): void {
+                $test->assertCount(1, $iterations = $suite->getIterations());
                 $iteration = reset($iterations);
                 $test->assertEquals(3, $iteration->getVariant()->getRevolutions());
             },
@@ -154,8 +142,8 @@ class RunnerTest extends TestCase
             [4],
             [3],
             [],
-            function ($test, $suite): void {
-                $test->assertEquals(4, $iterations = $suite->getIterations());
+            function (self $test, Suite $suite): void {
+                $test->assertCount(4, $iterations = $suite->getIterations());
                 $iteration = reset($iterations);
                 $test->assertEquals(3, $iteration->getVariant()->getRevolutions());
             },
@@ -165,12 +153,12 @@ class RunnerTest extends TestCase
             [1],
             [1],
             ['one' => 'two', 'three' => 'four'],
-            function ($test, $suite): void {
-                $test->assertEquals(1, $iterations = $suite->getIterations());
+            function (self $test, Suite $suite): void {
+                $test->assertCount(1, $iterations = $suite->getIterations());
                 $iteration = reset($iterations);
                 $parameters = $iteration->getVariant()->getParameterSet();
-                $test->assertEquals('two', $parameters['one']);
-                $test->assertEquals('four', $parameters['four']);
+                $test->assertEquals('two', $parameters->toUnserializedParameters()['one']);
+                $test->assertEquals('four', $parameters->toUnserializedParameters()['three']);
             },
         ];
 
@@ -178,12 +166,12 @@ class RunnerTest extends TestCase
             [1],
             [1],
             ['one', 'two'],
-            function ($test, $suite): void {
-                $test->assertEquals(1, $iterations = $suite->getIterations());
+            function (self $test, Suite $suite): void {
+                $test->assertCount(1, $iterations = $suite->getIterations());
                 $iteration = reset($iterations);
                 $parameters = $iteration->getVariant()->getParameterSet();
-                $test->assertEquals('one', $parameters[0]);
-                $test->assertEquals('two', $parameters[1]);
+                $test->assertEquals('one', $parameters->toUnserializedParameters()[0]);
+                $test->assertEquals('two', $parameters->toUnserializedParameters()[1]);
             },
         ];
 
@@ -191,11 +179,11 @@ class RunnerTest extends TestCase
             [1],
             [1],
             ['one' => ['three' => 'four']],
-            function ($test, $suite): void {
-                $test->assertEquals(1, $iterations = $suite->getIterations());
+            function (self $test, Suite $suite): void {
+                $test->assertCount(1, $iterations = $suite->getIterations());
                 $iteration = reset($iterations);
                 $parameters = $iteration->getVariant()->getParameterSet();
-                $test->assertEquals(['three', 'four'], $parameters[0]);
+                $test->assertEquals(['three' => 'four'], $parameters->toUnserializedParameters()['one']);
             },
         ];
     }
@@ -217,7 +205,7 @@ class RunnerTest extends TestCase
         ]);
         TestUtil::configureBenchmarkMetadata($this->benchmark);
 
-        $suite = $this->runner->run([ $this->benchmark->reveal() ], RunnerConfig::create());
+        $suite = $this->runner->run([$this->benchmark->reveal()], RunnerConfig::create());
 
         $this->assertInstanceOf(Suite::class, $suite);
         $this->assertNoErrors($suite);
@@ -238,7 +226,7 @@ class RunnerTest extends TestCase
         TestUtil::configureBenchmarkMetadata($this->benchmark);
 
         $start = microtime(true);
-        $suite = $this->runner->run([ $this->benchmark->reveal() ], RunnerConfig::create());
+        $suite = $this->runner->run([$this->benchmark->reveal()], RunnerConfig::create());
         $end = microtime(true);
         self::assertGreaterThanOrEqual(10000, ($end - $start) * 1E6, 'Should take at least 10 milliseconds');
     }
@@ -252,7 +240,7 @@ class RunnerTest extends TestCase
         ]);
         TestUtil::configureBenchmarkMetadata($this->benchmark);
 
-        $suite = $this->runner->run([ $this->benchmark->reveal() ], RunnerConfig::create()
+        $suite = $this->runner->run([$this->benchmark->reveal()], RunnerConfig::create()
             ->withSleep(100)
             ->withRetryThreshold(12)
             ->withWarmup([66])
@@ -290,7 +278,7 @@ class RunnerTest extends TestCase
         ]);
 
         $this->runner->run(
-            [ $this->benchmark->reveal() ],
+            [$this->benchmark->reveal()],
             RunnerConfig::create()->withRetryThreshold(10)
         );
     }
@@ -316,7 +304,7 @@ class RunnerTest extends TestCase
         ]);
 
         $this->runner->run(
-            [ $this->benchmark->reveal() ],
+            [$this->benchmark->reveal()],
             RunnerConfig::create()->withRetryThreshold(10)
         );
 
@@ -332,7 +320,7 @@ class RunnerTest extends TestCase
 
         $this->benchmark->getSubjects()->willReturn([]);
 
-        $this->runner->run([ $this->benchmark->reveal() ], RunnerConfig::create());
+        $this->runner->run([$this->benchmark->reveal()], RunnerConfig::create());
         self::assertFalse($this->executor->hasHealthBeenChecked());
         self::assertTrue($this->executor->hasMethodBeenExecuted('afterClass'));
         self::assertTrue($this->executor->hasMethodBeenExecuted('beforeClass'));
@@ -356,7 +344,7 @@ class RunnerTest extends TestCase
             'executor' => 'debug',
         ]));
 
-        $this->runner->run([ $this->benchmark->reveal() ], RunnerConfig::create());
+        $this->runner->run([$this->benchmark->reveal()], RunnerConfig::create());
         self::assertFalse($this->executor->hasHealthBeenChecked());
         self::assertTrue($this->executor->hasMethodBeenExecuted('beforeClass'), 'before');
         self::assertTrue($this->executor->hasMethodBeenExecuted('afterClass'), 'after');
@@ -386,7 +374,7 @@ class RunnerTest extends TestCase
             'executor' => 'executor_2'
         ]));
 
-        $this->runner->run([ $this->benchmark->reveal() ], RunnerConfig::create());
+        $this->runner->run([$this->benchmark->reveal()], RunnerConfig::create());
 
         self::assertEquals(1, $executor1->getExecutedContextCount());
         self::assertEquals(1, $executor2->getExecutedContextCount());
@@ -409,7 +397,7 @@ class RunnerTest extends TestCase
             'exception' => new Exception('Foobar', 0, new InvalidArgumentException('Barfoo'))
         ]);
 
-        $suite = $this->runner->run([ $this->benchmark->reveal() ], RunnerConfig::create());
+        $suite = $this->runner->run([$this->benchmark->reveal()], RunnerConfig::create());
 
         $errorStacks = $suite->getErrorStacks();
         $this->assertCount(1, $errorStacks);
@@ -437,9 +425,9 @@ class RunnerTest extends TestCase
         ]);
 
         TestUtil::configureBenchmarkMetadata($this->benchmark);
-        $suite = $this->runner->run([ $this->benchmark->reveal() ], RunnerConfig::create());
+        $suite = $this->runner->run([$this->benchmark->reveal()], RunnerConfig::create());
         $envInformations = $suite->getEnvInformations();
-        $this->assertSame((array) $informations, (array) $envInformations);
+        $this->assertSame((array)$informations, (array)$envInformations);
     }
 
     private function assertNoErrors(Suite $suite): void
@@ -460,13 +448,16 @@ class RunnerTest extends TestCase
      */
     private function setUpExecutorConfig(array $config = []): void
     {
-        $this->executorConfig = $this->resolveExecutorConfig($config);
-        $this->executorRegistry->getConfig($this->executorConfig['executor'])->willReturn(
-            $this->executorConfig
+        $executorConfig = $this->resolveExecutorConfig($config);
+        $this->executorRegistry->getConfig($executorConfig['executor'])->willReturn(
+            $executorConfig
         );
     }
 
-    private function resolveExecutorConfig(array $config)
+    /**
+     * @param mixed[] $config
+     */
+    private function resolveExecutorConfig(array $config): Config
     {
         return new Config('remote', array_merge([
             'exception' => null,

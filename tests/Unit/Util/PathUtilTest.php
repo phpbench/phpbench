@@ -10,6 +10,9 @@ class PathUtilTest extends IntegrationTestCase
 {
     /**
      * @dataProvider provideNormalizePaths
+     *
+     * @param list<string> $paths
+     * @param list<string> $expected
      */
     public function testNormalizePath(string $baseDir, array $paths, array $expected): void
     {
@@ -65,6 +68,10 @@ class PathUtilTest extends IntegrationTestCase
         ]));
     }
 
+    /**
+     * @param list<string> $paths
+     * @param list<string> $expected
+     */
     private static function assertPaths(array $paths, array $expected): void
     {
         sort($paths);
