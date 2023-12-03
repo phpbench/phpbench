@@ -18,7 +18,7 @@ use PhpBench\Tests\TestCase;
 
 class PayloadFactoryTest extends TestCase
 {
-    private $factory;
+    private PayloadFactory $factory;
 
     protected function setUp(): void
     {

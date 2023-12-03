@@ -12,6 +12,8 @@
 
 namespace PhpBench\Benchmark;
 
+use InvalidArgumentException;
+
 /**
  * The sampler manager is responsible for collecting and executing
  * sampler benchmarks.
@@ -28,7 +30,7 @@ class SamplerManager
     /**
      * @var mixed[]
      */
-    private $callables;
+    private ?array $callables = null;
 
     /**
      * Add a sampler callable. The callable can be any
@@ -38,19 +40,19 @@ class SamplerManager
      * already been registered.
      *
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function addSamplerCallable(string $name, $callable): void
     {
         if (isset($this->callables[$name])) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'Baseline callable "%s" has already been registered.',
                 $name
             ));
         }
 
         if (!is_callable($callable)) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'Given sampler "%s" callable "%s" is not callable.',
                 $name,
                 is_string($callable) ? $callable : gettype($callable)
@@ -67,7 +69,7 @@ class SamplerManager
     public function sample($name, $revs): float
     {
         if (!isset($this->callables[$name])) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'Unknown sampler callable "%s", known baseline callables: "%s"',
                 $name,
                 implode('", "', array_keys($this->callables))

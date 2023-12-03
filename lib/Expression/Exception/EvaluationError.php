@@ -8,14 +8,8 @@ use Throwable;
 
 class EvaluationError extends RuntimeException
 {
-    /**
-     * @var Node
-     */
-    private $node;
-
-    public function __construct(Node $node, string $message, ?Throwable $previous = null)
+    public function __construct(private readonly Node $node, string $message, ?Throwable $previous = null)
     {
-        $this->node = $node;
         parent::__construct($message, 0, $previous);
     }
 

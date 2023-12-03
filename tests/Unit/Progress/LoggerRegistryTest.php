@@ -20,12 +20,12 @@ use Prophecy\Prophecy\ObjectProphecy;
 
 class LoggerRegistryTest extends TestCase
 {
-    private $registry;
+    private LoggerRegistry $registry;
 
     /**
      * @var ObjectProphecy<LoggerInterface>
      */
-    private $progressLogger;
+    private ObjectProphecy $progressLogger;
 
 
     protected function setUp(): void

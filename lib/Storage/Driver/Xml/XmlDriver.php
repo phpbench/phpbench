@@ -12,6 +12,10 @@
 
 namespace PhpBench\Storage\Driver\Xml;
 
+use InvalidArgumentException;
+use PhpBench\Storage\HistoryIteratorInterface;
+use DateTime;
+use Exception;
 use PhpBench\Dom\Document;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Serializer\XmlDecoder;
@@ -27,18 +31,11 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 class XmlDriver implements DriverInterface
 {
-    public const UUID_LENGTH = 40;
+    final public const UUID_LENGTH = 40;
+    private readonly Filesystem $filesystem;
 
-    private $path;
-    private $xmlEncoder;
-    private $xmlDecoder;
-    private $filesystem;
-
-    public function __construct($path, XmlEncoder $xmlEncoder, XmlDecoder $xmlDecoder, Filesystem $filesystem = null)
+    public function __construct(private $path, private readonly XmlEncoder $xmlEncoder, private readonly XmlDecoder $xmlDecoder, Filesystem $filesystem = null)
     {
-        $this->path = $path;
-        $this->xmlEncoder = $xmlEncoder;
-        $this->xmlDecoder = $xmlDecoder;
         $this->filesystem = $filesystem ?: new Filesystem();
     }
 
@@ -65,7 +62,7 @@ class XmlDriver implements DriverInterface
     public function fetch(string $runId): SuiteCollection
     {
         if (!$this->has($runId)) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'Cannot find run with reference "%s"',
                 $runId
             ));
@@ -97,7 +94,7 @@ class XmlDriver implements DriverInterface
     /**
      * {@inheritdoc}
      */
-    public function history(): \PhpBench\Storage\HistoryIteratorInterface
+    public function history(): HistoryIteratorInterface
     {
         return new HistoryIterator($this->xmlDecoder, $this->path);
     }
@@ -109,8 +106,8 @@ class XmlDriver implements DriverInterface
         }
 
         try {
-            $date = new \DateTime((string) hexdec(substr($uuid, 0, 7)));
-        } catch (\Exception $e) {
+            $date = new DateTime((string) hexdec(substr($uuid, 0, 7)));
+        } catch (Exception) {
             return null;
         }
 

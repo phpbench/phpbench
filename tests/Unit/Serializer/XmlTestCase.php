@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Serializer;
 
+use ArrayIterator;
 use DateTime;
 use PhpBench\Assertion\AssertionResult;
 use PhpBench\Assertion\VariantAssertionResults;
@@ -40,31 +41,31 @@ abstract class XmlTestCase extends TestCase
     /**
      * @var ObjectProphecy<SuiteCollection>
      */
-    private $suiteCollection;
+    private ObjectProphecy $suiteCollection;
     /**
      * @var ObjectProphecy<Suite>
      */
-    private $suite;
+    private ObjectProphecy $suite;
     /**
      * @var ObjectProphecy<Information>
      */
-    private $env1;
+    private ObjectProphecy $env1;
     /**
      * @var ObjectProphecy<Benchmark>
      */
-    private $bench1;
+    private ObjectProphecy $bench1;
     /**
      * @var ObjectProphecy<Subject>
      */
-    private $subject1;
+    private ObjectProphecy $subject1;
     /**
      * @var ObjectProphecy<Variant>
      */
-    private $variant1;
+    private ObjectProphecy $variant1;
     /**
      * @var ObjectProphecy<Iteration>
      */
-    private $iteration1;
+    private ObjectProphecy $iteration1;
 
     protected function setUp(): void
     {
@@ -88,14 +89,14 @@ abstract class XmlTestCase extends TestCase
 
         $this->suiteCollection->getSuites()->willReturn([$this->suite->reveal()]);
         $this->suite->getUuid()->willReturn(1234);
-        $this->suite->getDate()->willReturn(new \DateTime('2015-01-01T00:00:00+00:00'));
+        $this->suite->getDate()->willReturn(new DateTime('2015-01-01T00:00:00+00:00'));
         $this->suite->getTag()->willReturn(new Tag('test'));
         $this->suite->getConfigPath()->willReturn('/path/to/config.json');
         $this->suite->getEnvInformations()->willReturn([
             $this->env1,
         ]);
         $this->env1->getName()->willReturn('info1');
-        $this->env1->getIterator()->willReturn(new \ArrayIterator([
+        $this->env1->getIterator()->willReturn(new ArrayIterator([
             'foo' => 'fooo & bar',
         ]));
         $this->suite->getBenchmarks()->willReturn([
@@ -157,7 +158,7 @@ abstract class XmlTestCase extends TestCase
         $this->variant1->getAssertionResults()->willReturn(new VariantAssertionResults($this->variant1->reveal(), $results));
 
         $this->variant1->getStats()->willReturn(new Distribution([0.1]));
-        $this->variant1->getIterator()->willReturn(new \ArrayIterator([
+        $this->variant1->getIterator()->willReturn(new ArrayIterator([
             $this->iteration1->reveal(),
         ]));
         $this->iteration1->getResults()->willReturn([

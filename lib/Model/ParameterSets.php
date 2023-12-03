@@ -13,16 +13,10 @@ use PhpBench\Model\Exception\InvalidParameterSets;
 final class ParameterSets implements IteratorAggregate, Countable
 {
     /**
-     * @var array<string, ParameterSet>
-     */
-    private $parameterSets;
-
-    /**
      * @param array<string, ParameterSet> $parameterSets
      */
-    private function __construct(array $parameterSets)
+    private function __construct(private readonly array $parameterSets)
     {
-        $this->parameterSets = $parameterSets;
     }
 
     /**
@@ -85,10 +79,7 @@ final class ParameterSets implements IteratorAggregate, Countable
         );
     }
 
-    /**
-     * @param mixed $parameterSet
-     */
-    private static function assertParameterSet($parameterSet): void
+    private static function assertParameterSet(mixed $parameterSet): void
     {
         if (is_array($parameterSet)) {
             return;
@@ -96,7 +87,7 @@ final class ParameterSets implements IteratorAggregate, Countable
 
         throw new InvalidParameterSets(sprintf(
             'Each parameter set must be an array, got "%s"',
-            is_object($parameterSet) ? get_class($parameterSet) : gettype($parameterSet)
+            get_debug_type($parameterSet)
         ));
     }
 }

@@ -2,6 +2,23 @@
 
 namespace PhpBench\Benchmark\Metadata\Driver;
 
+use InvalidArgumentException;
+use PhpBench\Attributes\BeforeMethods;
+use PhpBench\Attributes\AfterMethods;
+use PhpBench\Attributes\ParamProviders;
+use PhpBench\Attributes\Iterations;
+use PhpBench\Attributes\Sleep;
+use PhpBench\Attributes\Groups;
+use PhpBench\Attributes\Revs;
+use PhpBench\Attributes\Warmup;
+use PhpBench\Attributes\Skip;
+use PhpBench\Attributes\OutputTimeUnit;
+use PhpBench\Attributes\OutputMode;
+use PhpBench\Attributes\Assert;
+use PhpBench\Attributes\Format;
+use PhpBench\Attributes\Executor;
+use PhpBench\Attributes\Timeout;
+use PhpBench\Attributes\RetryThreshold;
 use PhpBench\Attributes;
 use PhpBench\Attributes\AfterClassMethods;
 use PhpBench\Attributes\BeforeClassMethods;
@@ -18,14 +35,8 @@ use function array_key_exists;
 
 class AttributeDriver implements DriverInterface
 {
-    /**
-     * @var string
-     */
-    private $subjectPattern;
-
-    public function __construct(string $subjectPattern = '^bench')
+    public function __construct(private readonly string $subjectPattern = '^bench')
     {
-        $this->subjectPattern = $subjectPattern;
     }
 
     public function getMetadataForHierarchy(ReflectionHierarchy $hierarchy): BenchmarkMetadata
@@ -107,14 +118,14 @@ class AttributeDriver implements DriverInterface
     {
         foreach ($attributes as $attribute) {
             if ($attribute instanceof BeforeClassMethods) {
-                throw new \InvalidArgumentException(sprintf(
+                throw new InvalidArgumentException(sprintf(
                     '@BeforeClassMethods attribute can only be applied at the class level (%s)',
                     $subject->getBenchmark()->getClass() . '::' . $subject->getName()
                 ));
             }
 
             if ($attribute instanceof AfterClassMethods) {
-                throw new \InvalidArgumentException(sprintf(
+                throw new InvalidArgumentException(sprintf(
                     '@AfterClassMethods attribute can only be applied at the class level (%s)',
                     $subject->getBenchmark()->getClass() . '::' . $subject->getName()
                 ));
@@ -129,80 +140,80 @@ class AttributeDriver implements DriverInterface
      */
     private function processSubject(SubjectMetadata $subject, $attribute): void
     {
-        if ($attribute instanceof Attributes\BeforeMethods) {
+        if ($attribute instanceof BeforeMethods) {
             $subject->setBeforeMethods(array_merge(
                 $subject->getBeforeMethods(),
                 $attribute->methods
             ));
         }
 
-        if ($attribute instanceof Attributes\AfterMethods) {
+        if ($attribute instanceof AfterMethods) {
             $subject->setAfterMethods(array_merge(
                 $subject->getAfterMethods(),
                 $attribute->methods
             ));
         }
 
-        if ($attribute instanceof Attributes\ParamProviders) {
+        if ($attribute instanceof ParamProviders) {
             $subject->setParamProviders(array_merge(
                 $subject->getParamProviders(),
                 $attribute->providers
             ));
         }
 
-        if ($attribute instanceof Attributes\Iterations) {
+        if ($attribute instanceof Iterations) {
             $subject->setIterations($attribute->iterations);
         }
 
-        if ($attribute instanceof Attributes\Sleep) {
+        if ($attribute instanceof Sleep) {
             $subject->setSleep($attribute->sleep);
         }
 
-        if ($attribute instanceof Attributes\Groups) {
+        if ($attribute instanceof Groups) {
             $subject->setGroups(array_merge(
                 $subject->getGroups(),
                 $attribute->groups
             ));
         }
 
-        if ($attribute instanceof Attributes\Revs) {
+        if ($attribute instanceof Revs) {
             $subject->setRevs($attribute->revs);
         }
 
-        if ($attribute instanceof Attributes\Warmup) {
+        if ($attribute instanceof Warmup) {
             $subject->setWarmup($attribute->revs);
         }
 
-        if ($attribute instanceof Attributes\Skip) {
+        if ($attribute instanceof Skip) {
             $subject->setSkip(true);
         }
 
-        if ($attribute instanceof Attributes\OutputTimeUnit) {
+        if ($attribute instanceof OutputTimeUnit) {
             $subject->setOutputTimeUnit($attribute->timeUnit);
             $subject->setOutputTimePrecision($attribute->precision);
         }
 
-        if ($attribute instanceof Attributes\OutputMode) {
+        if ($attribute instanceof OutputMode) {
             $subject->setOutputMode($attribute->getMode());
         }
 
-        if ($attribute instanceof Attributes\Assert) {
+        if ($attribute instanceof Assert) {
             $subject->addAssertion($attribute->expression);
         }
 
-        if ($attribute instanceof Attributes\Format) {
+        if ($attribute instanceof Format) {
             $subject->setFormat($attribute->format);
         }
 
-        if ($attribute instanceof Attributes\Executor) {
+        if ($attribute instanceof Executor) {
             $subject->setExecutor(new ExecutorMetadata($attribute->name, $attribute->config));
         }
 
-        if ($attribute instanceof Attributes\Timeout) {
+        if ($attribute instanceof Timeout) {
             $subject->setTimeout($attribute->timeout);
         }
 
-        if ($attribute instanceof Attributes\RetryThreshold) {
+        if ($attribute instanceof RetryThreshold) {
             $subject->setRetryThreshold($attribute->retryThreshold);
         }
     }
@@ -212,7 +223,7 @@ class AttributeDriver implements DriverInterface
      */
     public function processBenchmark(BenchmarkMetadata $benchmark, $attribute): void
     {
-        if ($attribute instanceof Attributes\Executor) {
+        if ($attribute instanceof Executor) {
             $benchmark->setExecutor(new ExecutorMetadata($attribute->name, $attribute->config));
         }
 

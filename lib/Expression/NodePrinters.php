@@ -8,16 +8,10 @@ use PhpBench\Expression\Exception\PrinterError;
 final class NodePrinters implements NodePrinter
 {
     /**
-     * @var NodePrinter[]
-     */
-    private $printers;
-
-    /**
      * @param NodePrinter[] $printers
      */
-    public function __construct(array $printers)
+    public function __construct(private readonly array $printers)
     {
-        $this->printers = $printers;
     }
 
     /**
@@ -36,7 +30,7 @@ final class NodePrinters implements NodePrinter
 
         throw new PrinterError(sprintf(
             'Could not find printer for node of class "%s"',
-            get_class($node)
+            $node::class
         ));
     }
 }

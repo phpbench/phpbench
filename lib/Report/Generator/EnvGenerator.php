@@ -74,8 +74,8 @@ class EnvGenerator implements GeneratorInterface
         return Reports::fromReport(
             Report::fromTables(
                 $tables,
-                isset($config['title']) ? $config['title'] : null,
-                isset($config['description']) ? $config['description'] : null
+                $config['title'] ?? null,
+                $config['description'] ?? null
             )
         );
     }

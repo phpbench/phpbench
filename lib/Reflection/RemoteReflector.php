@@ -23,16 +23,9 @@ use function array_filter;
 class RemoteReflector implements ReflectorInterface
 {
     /**
-     * @var Launcher
      */
-    private $launcher;
-
-    /**
-     */
-    public function __construct(
-        Launcher $launcher
-    ) {
-        $this->launcher = $launcher;
+    public function __construct(private readonly Launcher $launcher)
+    {
     }
 
     /**
@@ -122,7 +115,7 @@ class RemoteReflector implements ReflectorInterface
             }
             $tokens = @\token_get_all($buffer);
 
-            if (strpos($buffer, '{') === false) {
+            if (!str_contains($buffer, '{')) {
                 continue;
             }
 

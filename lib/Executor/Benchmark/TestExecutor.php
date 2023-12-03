@@ -14,27 +14,18 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TestExecutor implements BenchmarkExecutorInterface, MethodExecutorInterface, HealthCheckInterface
 {
-    /**
-     * @var array
-     */
-    private $executedMethods = [];
+    private array $executedMethods = [];
 
-    /**
-     * @var bool
-     */
-    private $healthChecked = false;
+    private bool $healthChecked = false;
 
     /**
      * @var array<ExecutionContext>
      */
-    private $executedContexts = [];
+    private array $executedContexts = [];
 
-    /**
-     * @var ExecutionContext|null
-     */
-    private $lastContext;
+    private ?ExecutionContext $lastContext = null;
 
-    private $index = 0;
+    private int $index = 0;
 
     /**
      * {@inheritDoc}

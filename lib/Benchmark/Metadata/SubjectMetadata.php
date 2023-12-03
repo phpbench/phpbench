@@ -20,11 +20,6 @@ use PhpBench\Model\ParameterSetsCollection;
 class SubjectMetadata
 {
     /**
-     * @var string
-     */
-    private $name;
-
-    /**
      * @var ParameterSetsCollection
      */
     private $parameterSets;
@@ -95,11 +90,6 @@ class SubjectMetadata
     private $outputMode = null;
 
     /**
-     * @var BenchmarkMetadata
-     */
-    private $benchmarkMetadata;
-
-    /**
      * @var null|array<string>
      */
     private $assertions;
@@ -126,10 +116,8 @@ class SubjectMetadata
 
     /**
      */
-    public function __construct(BenchmarkMetadata $benchmarkMetadata, string $name)
+    public function __construct(private readonly BenchmarkMetadata $benchmarkMetadata, private readonly string $name)
     {
-        $this->name = $name;
-        $this->benchmarkMetadata = $benchmarkMetadata;
         $this->parameterSets = ParameterSetsCollection::empty();
     }
 

@@ -12,24 +12,22 @@
 
 namespace PhpBench\Storage\UuidResolver;
 
+use InvalidArgumentException;
 use PhpBench\Registry\Registry;
 use PhpBench\Storage\UuidResolverInterface;
 use RuntimeException;
 
 class LatestResolver implements UuidResolverInterface
 {
-    public const LATEST_KEYWORD = 'latest';
+    final public const LATEST_KEYWORD = 'latest';
 
-    private $driverRegistry;
-
-    public function __construct(Registry $driver)
+    public function __construct(private readonly Registry $driverRegistry)
     {
-        $this->driverRegistry = $driver;
     }
 
     public function resolve(string $ref): ?string
     {
-        if (0 !== strpos($ref, self::LATEST_KEYWORD)) {
+        if (!str_starts_with($ref, self::LATEST_KEYWORD)) {
             return null;
         }
 
@@ -54,7 +52,7 @@ class LatestResolver implements UuidResolverInterface
         $current = $history->current();
 
         if (!$current) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'No history present, therefore cannot retrieve latest UUID'
             );
         }

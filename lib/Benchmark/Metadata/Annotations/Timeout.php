@@ -24,7 +24,7 @@ namespace PhpBench\Benchmark\Metadata\Annotations;
  */
 class Timeout
 {
-    private $timeout;
+    private readonly float $timeout;
 
     public function __construct($params)
     {

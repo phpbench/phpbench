@@ -10,25 +10,22 @@ use PhpBench\Report\Model\TableRow;
 
 class TableBuilder
 {
-    /**
-     * @var string
-     */
-    private $title;
+    private ?string $title = null;
 
     /**
      * @var TableRow[]
      */
-    private $rows = [];
+    private array $rows = [];
 
     /**
      * @var Node[]|string[]|null
      */
-    private $headers;
+    private ?array $headers = null;
 
     /**
      * @var TableColumnGroup[]
      */
-    private $columnGroups = [];
+    private array $columnGroups = [];
 
 
     final private function __construct()

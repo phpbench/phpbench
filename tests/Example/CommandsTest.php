@@ -30,7 +30,7 @@ class CommandsTest extends IntegrationTestCase
 
         $approval = Approval::create($path, 3);
         $commands = array_map(function (string $command) {
-            if (0 !== strpos($command, 'phpbench')) {
+            if (!str_starts_with($command, 'phpbench')) {
                 throw new RuntimeException(sprintf(
                     'Command test command must start with `phpbench`, got "%s"',
                     $command

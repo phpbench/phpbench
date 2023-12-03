@@ -18,20 +18,20 @@ use PhpBench\Tests\TestCase;
 
 class RunnerConfigTest extends TestCase
 {
-    public const TEST_TAG_NAME = 'tag_name';
-    public const TEST_FILTERS = ['filter_one', 'filter_two'];
-    public const TEST_ITERATIONS = [5];
-    public const TEST_REVOLUTIONS = [6];
-    public const TEST_PARAMETERS = ['one' => 1];
-    public const TEST_SLEEP = 100;
-    public const TEST_RETRY_THRESHOLD = 10;
-    public const TEST_WARMUP = [10];
-    public const TEST_GROUPS = ['group1'];
-    public const TEST_OUTPUT_TIME_UNIT = 'milliseconds';
-    public const TEST_OUTPUT_TIME_PRECISION = 2;
-    public const TEST_EXECUTOR = 'microtimre';
-    public const TEST_STOP_ON_ERROR = true;
-    public const TEST_ASSERTIONS = ['x > y'];
+    final public const TEST_TAG_NAME = 'tag_name';
+    final public const TEST_FILTERS = ['filter_one', 'filter_two'];
+    final public const TEST_ITERATIONS = [5];
+    final public const TEST_REVOLUTIONS = [6];
+    final public const TEST_PARAMETERS = ['one' => 1];
+    final public const TEST_SLEEP = 100;
+    final public const TEST_RETRY_THRESHOLD = 10;
+    final public const TEST_WARMUP = [10];
+    final public const TEST_GROUPS = ['group1'];
+    final public const TEST_OUTPUT_TIME_UNIT = 'milliseconds';
+    final public const TEST_OUTPUT_TIME_PRECISION = 2;
+    final public const TEST_EXECUTOR = 'microtimre';
+    final public const TEST_STOP_ON_ERROR = true;
+    final public const TEST_ASSERTIONS = ['x > y'];
 
     /**
      * It should throw an exception if the retry threshold is less than zero.

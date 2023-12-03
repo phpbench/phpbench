@@ -38,20 +38,15 @@ class ArithmeticOperatorEvaluator implements NodeEvaluator
      */
     private function evaluateNode(ArithmeticOperatorNode $node, $leftValue, $rightValue)
     {
-        switch ($node->operator()) {
-            case '+':
-                return $leftValue + $rightValue;
-            case '*':
-                return $leftValue * $rightValue;
-            case '/':
-                return $leftValue / $rightValue;
-            case '-':
-                return $leftValue - $rightValue;
-        }
-
-        throw new EvaluationError($node, sprintf(
-            'Unknown operator "%s"',
-            $node->operator()
-        ));
+        return match ($node->operator()) {
+            '+' => $leftValue + $rightValue,
+            '*' => $leftValue * $rightValue,
+            '/' => $leftValue / $rightValue,
+            '-' => $leftValue - $rightValue,
+            default => throw new EvaluationError($node, sprintf(
+                'Unknown operator "%s"',
+                $node->operator()
+            )),
+        };
     }
 }

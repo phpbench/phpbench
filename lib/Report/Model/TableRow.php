@@ -13,16 +13,10 @@ use PhpBench\Expression\Ast\Node;
 final class TableRow implements IteratorAggregate, Countable
 {
     /**
-     * @var array<string,Node>
-     */
-    private $cells;
-
-    /**
      * @param array<string,Node> $cells
      */
-    private function __construct(array $cells)
+    private function __construct(private readonly array $cells)
     {
-        $this->cells = $cells;
     }
 
     public static function fromArray(array $row): self

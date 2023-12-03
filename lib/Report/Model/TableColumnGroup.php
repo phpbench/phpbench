@@ -6,19 +6,8 @@ use PhpBench\Report\ComponentGenerator\TableAggregate\GroupHelper;
 
 final class TableColumnGroup
 {
-    /**
-     * @var string
-     */
-    private $label;
-    /**
-     * @var int
-     */
-    private $size;
-
-    public function __construct(string $label, int $size)
+    public function __construct(private readonly string $label, private readonly int $size)
     {
-        $this->label = $label;
-        $this->size = $size;
     }
 
     public function size(): int

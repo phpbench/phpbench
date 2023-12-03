@@ -21,12 +21,12 @@ use Prophecy\Prophecy\ObjectProphecy;
 
 class IterationTest extends TestCase
 {
-    private $iteration;
+    private Iteration $iteration;
 
     /**
      * @var ObjectProphecy<Variant>
      */
-    private $variant;
+    private ObjectProphecy $variant;
 
 
     protected function setUp(): void

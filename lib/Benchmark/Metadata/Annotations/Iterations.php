@@ -24,7 +24,7 @@ namespace PhpBench\Benchmark\Metadata\Annotations;
  */
 class Iterations
 {
-    private $iterations;
+    private readonly array $iterations;
 
     public function __construct($params)
     {

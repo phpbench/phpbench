@@ -17,7 +17,7 @@ use PhpBench\Tests\TestCase;
 
 class JsonDecoderTest extends TestCase
 {
-    private $jsonDecoder;
+    private JsonDecoder $jsonDecoder;
 
     protected function setUp(): void
     {

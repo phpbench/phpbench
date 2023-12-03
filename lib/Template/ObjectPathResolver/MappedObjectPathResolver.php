@@ -6,19 +6,13 @@ use PhpBench\Template\ObjectPathResolver;
 
 class MappedObjectPathResolver implements ObjectPathResolver
 {
-    /**
-     * @var array
-     */
-    private $map;
-
-    public function __construct(array $map)
+    public function __construct(private array $map)
     {
-        $this->map = $map;
     }
 
     public function resolvePaths(object $object): array
     {
-        $fqn = get_class($object);
+        $fqn = $object::class;
 
         if (isset($this->map[$fqn])) {
             return [$this->map[$fqn]];

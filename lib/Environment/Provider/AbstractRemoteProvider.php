@@ -18,14 +18,8 @@ use PhpBench\Remote\Launcher;
 
 abstract class AbstractRemoteProvider implements ProviderInterface
 {
-    /**
-     * @var Launcher
-     */
-    private $launcher;
-
-    public function __construct(Launcher $launcher)
+    public function __construct(private readonly Launcher $launcher)
     {
-        $this->launcher = $launcher;
     }
 
     public function isApplicable(): bool

@@ -4,14 +4,8 @@ namespace PhpBench\Expression\Ast;
 
 class StringNode extends ScalarValue
 {
-    /**
-     * @var string
-     */
-    private $string;
-
-    public function __construct(string $string)
+    public function __construct(private readonly string $string)
     {
-        $this->string = $string;
     }
 
     /**

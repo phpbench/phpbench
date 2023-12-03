@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Remote;
 
+use Prophecy\Prophecy\ObjectProphecy;
 use InvalidArgumentException;
 use PhpBench\Remote\Launcher;
 use PhpBench\Remote\Payload;
@@ -21,9 +22,9 @@ use Symfony\Component\Process\ExecutableFinder;
 
 class LauncherTest extends TestCase
 {
-    private $factory;
-    private $payload;
-    private $finder;
+    private ObjectProphecy $factory;
+    private ObjectProphecy $payload;
+    private ObjectProphecy $finder;
 
     protected function setUp(): void
     {

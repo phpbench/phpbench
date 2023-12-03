@@ -13,29 +13,17 @@ use RuntimeException;
 final class SubjectBuilder
 {
     /**
-     * @var string
-     */
-    private $name;
-
-    /**
      * @var VariantBuilder[]
      */
-    private $variantBuilders = [];
-
-    /**
-     * @var BenchmarkBuilder|null
-     */
-    private $benchmarkBuilder;
+    private array $variantBuilders = [];
 
     /**
      * @var string[]
      */
-    private $groups = [];
+    private array $groups = [];
 
-    public function __construct(?BenchmarkBuilder $benchmarkBuilder, string $name)
+    public function __construct(private readonly ?BenchmarkBuilder $benchmarkBuilder, private readonly string $name)
     {
-        $this->name = $name;
-        $this->benchmarkBuilder = $benchmarkBuilder;
     }
 
     public static function create(string $name): self

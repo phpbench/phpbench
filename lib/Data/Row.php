@@ -2,6 +2,7 @@
 
 namespace PhpBench\Data;
 
+use ReturnTypeWillChange;
 use ArrayAccess;
 use ArrayIterator;
 use IteratorAggregate;
@@ -15,16 +16,10 @@ use RuntimeException;
 final class Row implements IteratorAggregate, ArrayAccess
 {
     /**
-     * @var array<string,mixed>
-     */
-    private $map;
-
-    /**
      * @param array<string,mixed> $map
      */
-    public function __construct(array $map)
+    public function __construct(private array $map)
     {
-        $this->map = $map;
     }
 
     /**
@@ -74,7 +69,7 @@ final class Row implements IteratorAggregate, ArrayAccess
     /**
      * {@inheritDoc}
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         return isset($this->map[$offset]);
@@ -83,7 +78,7 @@ final class Row implements IteratorAggregate, ArrayAccess
     /**
      * {@inheritDoc}
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->get($offset);
@@ -92,7 +87,7 @@ final class Row implements IteratorAggregate, ArrayAccess
     /**
      * {@inheritDoc}
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetSet($offset, $value): void
     {
         throw new BadMethodCallException('Not implemented');
@@ -101,7 +96,7 @@ final class Row implements IteratorAggregate, ArrayAccess
     /**
      * {@inheritDoc}
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetUnset($offset): void
     {
         throw new BadMethodCallException('Not implemented');

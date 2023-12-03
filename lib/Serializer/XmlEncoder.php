@@ -33,18 +33,12 @@ use function base64_encode;
  */
 class XmlEncoder
 {
-    public const PARAM_TYPE_BINARY = 'binary';
-    public const PARAM_TYPE_COLLECTION = 'collection';
-    public const PARAM_TYPE_SERIALIZED = 'serialized';
+    final public const PARAM_TYPE_BINARY = 'binary';
+    final public const PARAM_TYPE_COLLECTION = 'collection';
+    final public const PARAM_TYPE_SERIALIZED = 'serialized';
 
-    /**
-     * @var bool
-     */
-    private $storeBinary;
-
-    public function __construct(bool $storeBinary = true)
+    public function __construct(private readonly bool $storeBinary = true)
     {
-        $this->storeBinary = $storeBinary;
     }
 
     /**
@@ -172,7 +166,7 @@ class XmlEncoder
             foreach ($iteration->getResults() as $result) {
                 // we need to store the class FQNs of the results for deserialization later.
                 if (!isset($resultClasses[$result->getKey()])) {
-                    $resultClasses[$result->getKey()] = get_class($result);
+                    $resultClasses[$result->getKey()] = $result::class;
                 }
 
                 $prefix = $result->getKey();
@@ -182,7 +176,7 @@ class XmlEncoder
                     $iterationEl->setAttribute(sprintf(
                         '%s-%s',
                         $prefix,
-                        str_replace('_', '-', $key)
+                        str_replace('_', '-', (string) $key)
                     ), $value);
                 }
             }
@@ -253,7 +247,7 @@ class XmlEncoder
 
         try {
             $serialized = @serialize($value);
-        } catch (Exception $e) {
+        } catch (Exception) {
             throw new RuntimeException(sprintf(
                 'Cannot serialize object of type "%s" for parameter "%s"',
                 gettype($value),
@@ -298,6 +292,6 @@ class XmlEncoder
 
     private function isBinary($value)
     {
-        return !preg_match('//u', $value);
+        return !preg_match('//u', (string) $value);
     }
 }

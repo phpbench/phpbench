@@ -26,8 +26,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class DebugExecutor implements BenchmarkExecutorInterface
 {
-    private $variantTimes = [];
-    private $index = 0;
+    private array $variantTimes = [];
+    private int $index = 0;
 
     /**
      * {@inheritdoc}

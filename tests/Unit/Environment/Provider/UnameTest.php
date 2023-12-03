@@ -12,16 +12,17 @@
 
 namespace PhpBench\Tests\Unit\Environment\Provider;
 
+use PhpBench\Environment\Provider\Uname;
 use PhpBench\Environment\Provider;
 use PhpBench\Tests\TestCase;
 
 class UnameTest extends TestCase
 {
-    private $provider;
+    private Uname $provider;
 
     protected function setUp(): void
     {
-        $this->provider = new Provider\Uname();
+        $this->provider = new Uname();
     }
 
     /**

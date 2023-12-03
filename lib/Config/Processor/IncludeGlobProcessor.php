@@ -9,7 +9,7 @@ use Webmozart\Glob\Glob;
 
 class IncludeGlobProcessor implements ConfigProcessor
 {
-    public const DIRECTIVE = '$include-glob';
+    final public const DIRECTIVE = '$include-glob';
 
     public function process(ConfigLoader $loader, string $path, array $config): array
     {

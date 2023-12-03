@@ -6,20 +6,8 @@ use PhpBench\Report\ComponentInterface;
 
 class Text implements ComponentInterface
 {
-    /**
-     * @var string
-     */
-    private $text;
-
-    /**
-     * @var string|null
-     */
-    private $title;
-
-    public function __construct(string $text, ?string $title = null)
+    public function __construct(private readonly string $text, private readonly ?string $title = null)
     {
-        $this->text = $text;
-        $this->title = $title;
     }
 
     public function title(): ?string

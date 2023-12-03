@@ -9,21 +9,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class ConfigSchemaDumpCommand extends Command
 {
-    /**
-     * @var ConfigSchemaDumper
-     */
-    private $schemaDumper;
-
-    /**
-     * @var OutputInterface
-     */
-    private $stdOut;
-
-    public function __construct(ConfigSchemaDumper $schemaDumper, OutputInterface $stdOut)
+    public function __construct(private readonly ConfigSchemaDumper $schemaDumper, private readonly OutputInterface $stdOut)
     {
         parent::__construct();
-        $this->schemaDumper = $schemaDumper;
-        $this->stdOut = $stdOut;
     }
 
     protected function configure(): void

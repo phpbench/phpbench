@@ -12,6 +12,8 @@
 
 namespace Test;
 
+use ReflectionClass;
+
 /**
  * @revs(10000)
  *
@@ -19,7 +21,7 @@ namespace Test;
  */
 class ClassWithClassKeywords
 {
-    protected $class = \Test\B::class;
+    protected $class = B::class;
 
     public function benchIsSubclassOf(): void
     {
@@ -28,7 +30,7 @@ class ClassWithClassKeywords
 
     public function benchReflectionClass(): void
     {
-        $c = new \ReflectionClass($this->class);
+        $c = new ReflectionClass($this->class);
         $c->isSubclassOf(\Test\A::class);
     }
 }

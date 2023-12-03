@@ -12,6 +12,7 @@
 
 namespace PhpBench\Remote;
 
+use InvalidArgumentException;
 use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\PhpExecutableFinder;
 
@@ -21,57 +22,21 @@ use Symfony\Component\Process\PhpExecutableFinder;
  */
 class Launcher
 {
-    /**
-     * @var string
-     */
-    private $bootstrap;
+    private readonly PayloadFactory $payloadFactory;
 
-    /**
-     * @var PayloadFactory
-     */
-    private $payloadFactory;
-
-    /**
-     * @var string
-     */
-    private $phpBinary;
-
-    /**
-     * @var array
-     */
-    private $phpConfig;
-
-    /**
-     * @var string
-     */
-    private $phpWrapper;
-
-    /**
-     * @var ExecutableFinder
-     */
-    private $finder;
-
-    /**
-     * @var bool
-     */
-    private $phpDisableIni;
+    private readonly ExecutableFinder $finder;
 
     public function __construct(
         PayloadFactory $payloadFactory = null,
         ExecutableFinder $finder = null,
-        ?string $bootstrap = null,
-        ?string $phpBinary = null,
-        array $phpConfig = [],
-        ?string $phpWrapper = null,
-        bool $phpDisableIni = false
+        private ?string $bootstrap = null,
+        private readonly ?string $phpBinary = null,
+        private readonly array $phpConfig = [],
+        private readonly ?string $phpWrapper = null,
+        private readonly bool $phpDisableIni = false
     ) {
-        $this->bootstrap = $bootstrap;
         $this->payloadFactory = $payloadFactory ?: new PayloadFactory();
-        $this->phpBinary = $phpBinary;
-        $this->phpConfig = $phpConfig;
-        $this->phpWrapper = $phpWrapper;
         $this->finder = $finder ?: new ExecutableFinder();
-        $this->phpDisableIni = $phpDisableIni;
     }
 
     public function payload($template, array $tokens = [], ?float $timeout = null): Payload
@@ -80,7 +45,7 @@ class Launcher
 
         if (null !== $this->bootstrap) {
             if (!file_exists($this->bootstrap)) {
-                throw new \InvalidArgumentException(sprintf(
+                throw new InvalidArgumentException(sprintf(
                     'Bootstrap file "%s" does not exist.',
                     $this->bootstrap
                 ));
@@ -118,7 +83,7 @@ class Launcher
         }
 
         // if the php binary is absolute, fine.
-        if (substr($this->phpBinary, 0, 1) === '/') {
+        if (str_starts_with($this->phpBinary, '/')) {
             return $this->phpBinary;
         }
 
@@ -127,7 +92,7 @@ class Launcher
         $phpBinary = $this->finder->find($this->phpBinary);
 
         if (null === $phpBinary) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'Could not find PHP binary "%s"',
                 $this->phpBinary
             ));

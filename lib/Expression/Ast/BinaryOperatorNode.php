@@ -4,24 +4,8 @@ namespace PhpBench\Expression\Ast;
 
 abstract class BinaryOperatorNode extends Node
 {
-    /**
-     * @var Node
-     */
-    private $left;
-    /**
-     * @var string
-     */
-    private $operator;
-    /**
-     * @var Node
-     */
-    private $right;
-
-    public function __construct(Node $left, string $operator, Node $right)
+    public function __construct(private readonly Node $left, private readonly string $operator, private readonly Node $right)
     {
-        $this->left = $left;
-        $this->operator = $operator;
-        $this->right = $right;
     }
 
     public function left(): Node

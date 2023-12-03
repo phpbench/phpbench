@@ -12,6 +12,7 @@
 
 namespace PhpBench\Console;
 
+use Symfony\Component\Console\Input\InputDefinition;
 use PhpBench\PhpBench;
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Input\InputOption;
@@ -34,7 +35,7 @@ class Application extends BaseApplication
     /**
      * {@inheritdoc}
      */
-    protected function getDefaultInputDefinition(): \Symfony\Component\Console\Input\InputDefinition
+    protected function getDefaultInputDefinition(): InputDefinition
     {
         $default = parent::getDefaultInputDefinition();
         $default->addOptions([

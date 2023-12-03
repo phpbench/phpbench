@@ -16,7 +16,7 @@ use Prophecy\Prophecy\ObjectProphecy;
 class ConfigDriverTest extends TestCase
 {
     use ProphecyTrait;
-    public const EXAMPLE_SUBJECT = 'testSubject';
+    final public const EXAMPLE_SUBJECT = 'testSubject';
 
     /**
      * @var ObjectProphecy<DriverInterface>

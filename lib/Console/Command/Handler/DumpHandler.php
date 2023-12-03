@@ -21,23 +21,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class DumpHandler
 {
-    public const OPT_DUMP_FILE = 'dump-file';
-    public const OPT_DUMP = 'dump';
+    final public const OPT_DUMP_FILE = 'dump-file';
+    final public const OPT_DUMP = 'dump';
 
-    /**
-     * @var XmlEncoder
-     */
-    private $xmlEncoder;
-
-    /**
-     * @var OutputInterface
-     */
-    private $stdout;
-
-    public function __construct(XmlEncoder $xmlEncoder, OutputInterface $stdout)
+    public function __construct(private readonly XmlEncoder $xmlEncoder, private readonly OutputInterface $stdout)
     {
-        $this->xmlEncoder = $xmlEncoder;
-        $this->stdout = $stdout;
     }
 
     public static function configure(Command $command): void

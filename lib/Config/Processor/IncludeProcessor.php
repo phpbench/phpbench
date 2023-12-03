@@ -8,7 +8,7 @@ use PhpBench\Path\Path;
 
 class IncludeProcessor implements ConfigProcessor
 {
-    public const DIRECTIVE = '$include';
+    final public const DIRECTIVE = '$include';
 
     public function process(ConfigLoader $loader, string $path, array $config): array
     {

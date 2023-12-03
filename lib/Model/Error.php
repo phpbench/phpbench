@@ -20,34 +20,15 @@ use Throwable;
  */
 class Error
 {
-    private $message;
-    private $code;
-    private $line;
-    private $file;
-    private $class;
-    private $trace;
-
-    public function __construct(
-        $message,
-        $class,
-        $code,
-        $file,
-        $line,
-        $trace
-    ) {
-        $this->message = $message;
-        $this->class = $class;
-        $this->line = $line;
-        $this->file = $file;
-        $this->code = $code;
-        $this->trace = $trace;
+    public function __construct(private $message, private $class, private $code, private $file, private $line, private $trace)
+    {
     }
 
     public static function fromException(Throwable $exception): Error
     {
         return new self(
             $exception->getMessage(),
-            get_class($exception),
+            $exception::class,
             $exception->getCode(),
             $exception->getFile(),
             $exception->getLine(),

@@ -24,7 +24,7 @@ namespace PhpBench\Benchmark\Metadata\Annotations;
  */
 class Sleep
 {
-    private $sleep;
+    private readonly int $sleep;
 
     public function __construct($params)
     {

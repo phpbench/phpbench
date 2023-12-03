@@ -19,10 +19,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
 
 class DelimitedRendererTest extends AbstractRendererCase
 {
-    /**
-     * @var BufferedOutput
-     */
-    private $output;
+    private BufferedOutput $output;
 
     protected function setUp(): void
     {

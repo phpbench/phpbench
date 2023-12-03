@@ -10,14 +10,8 @@ use PhpBench\Expression\ExpressionEvaluator;
 
 class ExpressionBridge
 {
-    /**
-     * @var ExpressionEvaluator
-     */
-    private $evaluator;
-
-    public function __construct(ExpressionEvaluator $evaluator)
+    public function __construct(private readonly ExpressionEvaluator $evaluator)
     {
-        $this->evaluator = $evaluator;
     }
 
     /**

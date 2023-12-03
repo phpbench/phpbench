@@ -2,6 +2,13 @@
 
 namespace PhpBench\Extension;
 
+use PhpBench\Environment\Provider\Uname;
+use PhpBench\Environment\Provider\Php;
+use PhpBench\Environment\Provider\Opcache;
+use PhpBench\Environment\Provider\UnixSysload;
+use PhpBench\Environment\Provider\Git;
+use PhpBench\Environment\Provider\Sampler;
+use PhpBench\Environment\Provider\TestProvider;
 use PhpBench\Assertion\AssertionProcessor;
 use PhpBench\Assertion\ParameterProvider;
 use PhpBench\Benchmark\BenchmarkFinder;
@@ -22,7 +29,6 @@ use PhpBench\Console\Command\Handler\TimeUnitHandler;
 use PhpBench\Console\Command\RunCommand;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
-use PhpBench\Environment\Provider;
 use PhpBench\Environment\Supplier;
 use PhpBench\Executor\Benchmark\DebugExecutor;
 use PhpBench\Executor\Benchmark\LocalExecutor;
@@ -62,53 +68,53 @@ use Symfony\Component\Process\ExecutableFinder;
 
 class RunnerExtension implements ExtensionInterface
 {
-    public const ENV_PROVIDER_SAMPLER = 'sampler';
-    public const ENV_PROVIDER_GIT = 'git';
-    public const ENV_PROVIDER_OPCACHE = 'opcache';
-    public const ENV_PROVIDER_PHP = 'php';
-    public const ENV_PROVIDER_TEST = 'test';
-    public const ENV_PROVIDER_UNAME = 'uname';
-    public const ENV_PROVIDER_UNIX_SYSLOAD = 'unix_sysload';
+    final public const ENV_PROVIDER_SAMPLER = 'sampler';
+    final public const ENV_PROVIDER_GIT = 'git';
+    final public const ENV_PROVIDER_OPCACHE = 'opcache';
+    final public const ENV_PROVIDER_PHP = 'php';
+    final public const ENV_PROVIDER_TEST = 'test';
+    final public const ENV_PROVIDER_UNAME = 'uname';
+    final public const ENV_PROVIDER_UNIX_SYSLOAD = 'unix_sysload';
 
-    public const PARAM_ANNOTATIONS = 'runner.annotations';
-    public const PARAM_ANNOTATION_IMPORT_USE = 'runner.annotation_import_use';
-    public const PARAM_ATTRIBUTES = 'runner.attributes';
-    public const PARAM_BOOTSTRAP = 'runner.bootstrap';
-    public const PARAM_ENABLED_PROVIDERS = 'runner.env_enabled_providers';
-    public const PARAM_ENV_SAMPLERS = 'runner.env_samplers';
-    public const PARAM_ENV_SAMPLER_CALLABLES = 'runner.env_sampler_callables';
-    public const PARAM_EXECUTORS = 'runner.executors';
-    public const PARAM_PATH = 'runner.path';
-    public const PARAM_PHP_BINARY = 'runner.php_binary';
-    public const PARAM_PHP_CONFIG = 'runner.php_config';
-    public const PARAM_PHP_DISABLE_INI = 'runner.php_disable_ini';
-    public const PARAM_PHP_WRAPPER = 'runner.php_wrapper';
-    public const PARAM_PHP_ENV = 'runner.php_env';
-    public const PARAM_PROGRESS = 'runner.progress';
-    public const PARAM_PROGRESS_SUMMARY_BASELINE_FORMAT = 'runner.progress_summary_baseline_format';
-    public const PARAM_PROGRESS_SUMMARY_FORMAT = 'runner.progress_summary_variant_format';
-    public const PARAM_REMOTE_SCRIPT_PATH = 'runner.remote_script_path';
-    public const PARAM_REMOTE_SCRIPT_REMOVE = 'runner.remote_script_remove';
-    public const PARAM_RUNNER_ASSERT = 'runner.assert';
-    public const PARAM_RUNNER_EXECUTOR = 'runner.executor';
-    public const PARAM_RUNNER_FORMAT = 'runner.format';
-    public const PARAM_RUNNER_ITERATIONS = 'runner.iterations';
-    public const PARAM_RUNNER_OUTPUT_MODE = 'runner.output_mode';
-    public const PARAM_RUNNER_OUTPUT_TIME_UNIT = 'runner.time_unit';
-    public const PARAM_RUNNER_RETRY_THRESHOLD = 'runner.retry_threshold';
-    public const PARAM_RUNNER_REVS = 'runner.revs';
-    public const PARAM_RUNNER_TIMEOUT = 'runner.timeout';
-    public const PARAM_RUNNER_WARMUP = 'runner.warmup';
-    public const PARAM_SUBJECT_PATTERN = 'runner.subject_pattern';
-    public const PARAM_FILE_PATTERN = 'runner.file_pattern';
+    final public const PARAM_ANNOTATIONS = 'runner.annotations';
+    final public const PARAM_ANNOTATION_IMPORT_USE = 'runner.annotation_import_use';
+    final public const PARAM_ATTRIBUTES = 'runner.attributes';
+    final public const PARAM_BOOTSTRAP = 'runner.bootstrap';
+    final public const PARAM_ENABLED_PROVIDERS = 'runner.env_enabled_providers';
+    final public const PARAM_ENV_SAMPLERS = 'runner.env_samplers';
+    final public const PARAM_ENV_SAMPLER_CALLABLES = 'runner.env_sampler_callables';
+    final public const PARAM_EXECUTORS = 'runner.executors';
+    final public const PARAM_PATH = 'runner.path';
+    final public const PARAM_PHP_BINARY = 'runner.php_binary';
+    final public const PARAM_PHP_CONFIG = 'runner.php_config';
+    final public const PARAM_PHP_DISABLE_INI = 'runner.php_disable_ini';
+    final public const PARAM_PHP_WRAPPER = 'runner.php_wrapper';
+    final public const PARAM_PHP_ENV = 'runner.php_env';
+    final public const PARAM_PROGRESS = 'runner.progress';
+    final public const PARAM_PROGRESS_SUMMARY_BASELINE_FORMAT = 'runner.progress_summary_baseline_format';
+    final public const PARAM_PROGRESS_SUMMARY_FORMAT = 'runner.progress_summary_variant_format';
+    final public const PARAM_REMOTE_SCRIPT_PATH = 'runner.remote_script_path';
+    final public const PARAM_REMOTE_SCRIPT_REMOVE = 'runner.remote_script_remove';
+    final public const PARAM_RUNNER_ASSERT = 'runner.assert';
+    final public const PARAM_RUNNER_EXECUTOR = 'runner.executor';
+    final public const PARAM_RUNNER_FORMAT = 'runner.format';
+    final public const PARAM_RUNNER_ITERATIONS = 'runner.iterations';
+    final public const PARAM_RUNNER_OUTPUT_MODE = 'runner.output_mode';
+    final public const PARAM_RUNNER_OUTPUT_TIME_UNIT = 'runner.time_unit';
+    final public const PARAM_RUNNER_RETRY_THRESHOLD = 'runner.retry_threshold';
+    final public const PARAM_RUNNER_REVS = 'runner.revs';
+    final public const PARAM_RUNNER_TIMEOUT = 'runner.timeout';
+    final public const PARAM_RUNNER_WARMUP = 'runner.warmup';
+    final public const PARAM_SUBJECT_PATTERN = 'runner.subject_pattern';
+    final public const PARAM_FILE_PATTERN = 'runner.file_pattern';
 
-    public const SERVICE_REGISTRY_EXECUTOR = 'runner.benchmark_registry.executor';
-    public const SERVICE_VARIANT_SUMMARY_FORMATTER = 'runner.progress_logger_variant_summary_formatter';
-    public const SERVICE_REGISTRY_LOGGER = 'runner.progress_logger_registry';
+    final public const SERVICE_REGISTRY_EXECUTOR = 'runner.benchmark_registry.executor';
+    final public const SERVICE_VARIANT_SUMMARY_FORMATTER = 'runner.progress_logger_variant_summary_formatter';
+    final public const SERVICE_REGISTRY_LOGGER = 'runner.progress_logger_registry';
 
-    public const TAG_ENV_PROVIDER = 'runner.environment_provider';
-    public const TAG_EXECUTOR = 'runner.benchmark_executor';
-    public const TAG_PROGRESS_LOGGER = 'runner.progress_logger';
+    final public const TAG_ENV_PROVIDER = 'runner.environment_provider';
+    final public const TAG_EXECUTOR = 'runner.benchmark_executor';
+    final public const TAG_PROGRESS_LOGGER = 'runner.progress_logger';
 
     public function configure(OptionsResolver $resolver): void
     {
@@ -237,42 +243,42 @@ class RunnerExtension implements ExtensionInterface
 
     public function registerEnvironment(Container $container): void
     {
-        $container->register(Provider\Uname::class, function (Container $container) {
-            return new Provider\Uname();
+        $container->register(Uname::class, function (Container $container) {
+            return new Uname();
         }, [self::TAG_ENV_PROVIDER => [
             'name' => self::ENV_PROVIDER_UNAME,
         ]]);
 
-        $container->register(Provider\Php::class, function (Container $container) {
-            return new Provider\Php(
+        $container->register(Php::class, function (Container $container) {
+            return new Php(
                 $container->get(Launcher::class)
             );
         }, [self::TAG_ENV_PROVIDER => [
             'name' => self::ENV_PROVIDER_PHP,
         ]]);
 
-        $container->register(Provider\Opcache::class, function (Container $container) {
-            return new Provider\Opcache(
+        $container->register(Opcache::class, function (Container $container) {
+            return new Opcache(
                 $container->get(Launcher::class)
             );
         }, [self::TAG_ENV_PROVIDER => [
             'name' => self::ENV_PROVIDER_OPCACHE,
         ]]);
 
-        $container->register(Provider\UnixSysload::class, function (Container $container) {
-            return new Provider\UnixSysload();
+        $container->register(UnixSysload::class, function (Container $container) {
+            return new UnixSysload();
         }, [self::TAG_ENV_PROVIDER => [
             'name' => self::ENV_PROVIDER_UNIX_SYSLOAD,
         ]]);
 
-        $container->register(Provider\Git::class, function (Container $container) {
-            return new Provider\Git($container->getParameter(CoreExtension::PARAM_WORKING_DIR));
+        $container->register(Git::class, function (Container $container) {
+            return new Git($container->getParameter(CoreExtension::PARAM_WORKING_DIR));
         }, [self::TAG_ENV_PROVIDER => [
             'name' => self::ENV_PROVIDER_GIT,
         ]]);
 
-        $container->register(Provider\Sampler::class, function (Container $container) {
-            return new Provider\Sampler(
+        $container->register(Sampler::class, function (Container $container) {
+            return new Sampler(
                 $container->get(SamplerManager::class),
                 $container->getParameter(self::PARAM_ENV_SAMPLERS)
             );
@@ -280,8 +286,8 @@ class RunnerExtension implements ExtensionInterface
             'name' => self::ENV_PROVIDER_SAMPLER,
         ]]);
 
-        $container->register(Provider\TestProvider::class, function (Container $container) {
-            return new Provider\TestProvider();
+        $container->register(TestProvider::class, function (Container $container) {
+            return new TestProvider();
         }, [self::TAG_ENV_PROVIDER => [
             'name' => self::ENV_PROVIDER_TEST,
         ]]);
@@ -519,7 +525,7 @@ class RunnerExtension implements ExtensionInterface
         }
 
         $container->setParameter(self::PARAM_PATH, PathNormalizer::normalizePaths(
-            dirname($container->getParameter(CoreExtension::PARAM_CONFIG_PATH)),
+            dirname((string) $container->getParameter(CoreExtension::PARAM_CONFIG_PATH)),
             $paths
         ));
     }

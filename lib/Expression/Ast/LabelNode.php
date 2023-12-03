@@ -4,14 +4,8 @@ namespace PhpBench\Expression\Ast;
 
 class LabelNode extends PhpValue
 {
-    /**
-     * @var PhpValue
-     */
-    private $label;
-
-    public function __construct(PhpValue $label)
+    public function __construct(private readonly PhpValue $label)
     {
-        $this->label = $label;
     }
 
     /**

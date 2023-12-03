@@ -26,32 +26,11 @@ use Psr\Log\NullLogger;
  */
 class MetadataFactory
 {
-    /**
-     * @var ReflectorInterface
-     */
-    private $reflector;
+    private readonly LoggerInterface $logger;
 
-    /**
-     * @var DriverInterface
-     */
-    private $driver;
-
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
-     * @var bool
-     */
-    private $warnOnMetadataError = false;
-
-    public function __construct(ReflectorInterface $reflector, DriverInterface $driver, LoggerInterface $logger = null, bool $warnOnMetadataError = false)
+    public function __construct(private readonly ReflectorInterface $reflector, private readonly DriverInterface $driver, LoggerInterface $logger = null, private readonly bool $warnOnMetadataError = false)
     {
-        $this->reflector = $reflector;
-        $this->driver = $driver;
         $this->logger = $logger ?: new NullLogger();
-        $this->warnOnMetadataError = $warnOnMetadataError;
     }
 
     /**
@@ -69,7 +48,7 @@ class MetadataFactory
 
         try {
             $top = $hierarchy->getTop();
-        } catch (\InvalidArgumentException $exception) {
+        } catch (InvalidArgumentException) {
             return null;
         }
 
@@ -139,7 +118,7 @@ class MetadataFactory
     private function validateMethodExists($context, ReflectionHierarchy $benchmarkReflection, $method, $isStatic = false): void
     {
         if (false === $benchmarkReflection->hasMethod($method)) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'Unknown %s method "%s" in benchmark class "%s"',
                 $context,
                 $method,
@@ -148,7 +127,7 @@ class MetadataFactory
         }
 
         if ($isStatic !== $benchmarkReflection->hasStaticMethod($method)) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 '%s method "%s" must %s static in benchmark class "%s"',
                 $context,
                 $method,

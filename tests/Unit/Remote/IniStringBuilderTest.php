@@ -17,10 +17,7 @@ use PhpBench\Tests\TestCase;
 
 class IniStringBuilderTest extends TestCase
 {
-    /**
-     * @var IniStringBuilder
-     */
-    private $builder;
+    private IniStringBuilder $builder;
 
     protected function setUp(): void
     {

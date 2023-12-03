@@ -13,14 +13,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CatLogger implements LoggerInterface
 {
-    /**
-     * @var OutputInterface
-     */
-    private $output;
-
-    public function __construct(OutputInterface $output)
+    public function __construct(private readonly OutputInterface $output)
     {
-        $this->output = $output;
     }
 
     public function startSuite(RunnerConfig $config, Suite $suite)

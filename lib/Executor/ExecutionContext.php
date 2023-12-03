@@ -8,60 +8,7 @@ use PhpBench\Model\ParameterSet;
 
 final class ExecutionContext
 {
-    /**
-     * @var string
-     */
-    private $className;
-
-    /**
-     * @var ParameterSet
-     */
-    private $parameters;
-
-    /**
-     * @var string
-     */
-    private $classPath;
-
-    /**
-     * @var int
-     */
-    private $iterationIndex;
-
-    /**
-     * @var int
-     */
-    private $warmup;
-
-    /**
-     * @var array<string>
-     */
-    private $afterMethods;
-
-    /**
-     * @var array<string>
-     */
-    private $beforeMethods;
-
-    /**
-     * @var int
-     */
-    private $revolutions;
-
-    /**
-     * @var string
-     */
-    private $methodName;
-
-    /**
-     * @var float|null
-     */
-    private $timeOut;
-
-    /**
-     * @var string
-     */
-    private $parameterSetName;
+    private readonly ParameterSet $parameters;
 
     /**
      * @param ParameterSet|array<string,mixed>|null $parameters The type array is deprecated and will be removed in 2.0
@@ -69,29 +16,19 @@ final class ExecutionContext
      * @param string[] $afterMethods
      */
     public function __construct(
-        string $className,
-        string $classPath,
-        string $methodName,
-        int $revolutions = 1,
-        array $beforeMethods = [],
-        array $afterMethods = [],
+        private readonly string $className,
+        private readonly string $classPath,
+        private readonly string $methodName,
+        private readonly int $revolutions = 1,
+        private readonly array $beforeMethods = [],
+        private readonly array $afterMethods = [],
         $parameters = null,
-        int $warmup = 0,
-        int $iterationIndex = 0,
-        ?float $timeOut = null,
-        string $parameterSetName = ''
+        private readonly int $warmup = 0,
+        private readonly int $iterationIndex = 0,
+        private readonly ?float $timeOut = null,
+        private readonly string $parameterSetName = ''
     ) {
-        $this->className = $className;
-        $this->classPath = $classPath;
-        $this->methodName = $methodName;
-        $this->revolutions = $revolutions;
-        $this->beforeMethods = $beforeMethods;
-        $this->afterMethods = $afterMethods;
         $this->parameters = $parameters instanceof ParameterSet ? $parameters : ParameterSet::fromUnserializedValues('default', $parameters ?? []);
-        $this->warmup = $warmup;
-        $this->iterationIndex = $iterationIndex;
-        $this->timeOut = $timeOut;
-        $this->parameterSetName = $parameterSetName;
     }
 
     public static function fromSubjectMetadataAndIteration(SubjectMetadata $subjectMetadata, Iteration $iteration): self

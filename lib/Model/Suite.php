@@ -28,16 +28,7 @@ use RuntimeException;
  */
 class Suite implements IteratorAggregate
 {
-    private $tag;
-    private $date;
-    private $configPath;
-    private $envInformations = [];
-
-    /**
-     * @var Benchmark[]
-     */
-    private $benchmarks = [];
-    private $uuid;
+    private ?Tag $tag = null;
 
     /**
      * __construct.
@@ -46,18 +37,16 @@ class Suite implements IteratorAggregate
      */
     public function __construct(
         ?string $tag,
-        DateTime $date,
-        ?string $configPath = null,
-        array $benchmarks = [],
-        array $envInformations = [],
-        $uuid = null
+        private DateTime $date,
+        private ?string $configPath = null,
+        /**
+         * @var Benchmark[]
+         */
+        private array $benchmarks = [],
+        private array $envInformations = [],
+        private $uuid = null
     ) {
         $this->tag = $tag ? new Tag($tag) : null;
-        $this->date = $date;
-        $this->configPath = $configPath;
-        $this->envInformations = $envInformations;
-        $this->benchmarks = $benchmarks;
-        $this->uuid = $uuid;
     }
 
     /**
@@ -263,7 +252,7 @@ class Suite implements IteratorAggregate
     public function generateUuid(): void
     {
         $serialized = serialize($this->envInformations);
-        $this->uuid = dechex((int)$this->getDate()->format('Ymd')) . substr(sha1(implode([
+        $this->uuid = dechex((int)$this->getDate()->format('Ymd')) . substr(sha1(implode('', [
             microtime(),
             $serialized,
             $this->configPath,

@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Progress\Logger;
 
+use ArrayIterator;
 use PhpBench\Assertion\AssertionResult;
 use PhpBench\Assertion\VariantAssertionResults;
 use PhpBench\Math\Distribution;
@@ -42,12 +43,12 @@ abstract class PhpBenchLoggerTestCase extends LoggerTestCase
     /**
      * @var ObjectProphecy<Suite>
      */
-    private $suite;
+    private ObjectProphecy $suite;
 
     /**
      * @var ObjectProphecy<Summary>
      */
-    private $summary;
+    private ObjectProphecy $summary;
 
     protected function setUp(): void
     {
@@ -107,7 +108,7 @@ abstract class PhpBenchLoggerTestCase extends LoggerTestCase
         $error2->getTrace()->willReturn('-- trace --');
         $errorStack = $this->prophesize(ErrorStack::class);
         $errorStack->getVariant()->willReturn($this->variant->reveal());
-        $errorStack->getIterator()->willReturn(new \ArrayIterator([$error1->reveal(), $error2->reveal()]));
+        $errorStack->getIterator()->willReturn(new ArrayIterator([$error1->reveal(), $error2->reveal()]));
 
         $this->setUpSummary();
         $this->suite->getFailures()->willReturn([]);

@@ -19,29 +19,11 @@ use PhpBench\Util\TimeUnit;
 
 class DisplayAsPrinter implements NodePrinter
 {
-    public const PARAM_OUTPUT_TIME_UNIT = 'output_time_unit';
-    public const PARAM_OUTPUT_TIME_PRECISION = 'output_time_precision';
+    final public const PARAM_OUTPUT_TIME_UNIT = 'output_time_unit';
+    final public const PARAM_OUTPUT_TIME_PRECISION = 'output_time_precision';
 
-    /**
-     * @var TimeUnit
-     */
-    private $timeUnit;
-
-    /**
-     * @var bool
-     */
-    private $memoryAsBinary;
-
-    /**
-     * @var bool
-     */
-    private $stripTailingZeros;
-
-    public function __construct(TimeUnit $timeUnit, bool $memoryAsBinary, bool $stripTailingZeros = false)
+    public function __construct(private readonly TimeUnit $timeUnit, private readonly bool $memoryAsBinary, private readonly bool $stripTailingZeros = false)
     {
-        $this->timeUnit = $timeUnit;
-        $this->memoryAsBinary = $memoryAsBinary;
-        $this->stripTailingZeros = $stripTailingZeros;
     }
 
     public function print(Printer $printer, Node $node): ?string
@@ -56,7 +38,7 @@ class DisplayAsPrinter implements NodePrinter
         $unit = $unitNode->unit();
 
         if (!$unit instanceof StringNode) {
-            throw new PrinterError(sprintf('Unit must evaluate to string, got "%s"', get_class($unit)));
+            throw new PrinterError(sprintf('Unit must evaluate to string, got "%s"', $unit::class));
         }
 
         $unit = $unit->value();
@@ -172,7 +154,7 @@ class DisplayAsPrinter implements NodePrinter
         }
 
         if (!$mode instanceof StringNode) {
-            throw new PrinterError(sprintf('Time mode must evaluate to string, got "%s"', get_class($mode)));
+            throw new PrinterError(sprintf('Time mode must evaluate to string, got "%s"', $mode::class));
         }
 
         return $mode->value();

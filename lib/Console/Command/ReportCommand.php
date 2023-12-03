@@ -12,6 +12,7 @@
 
 namespace PhpBench\Console\Command;
 
+use InvalidArgumentException;
 use PhpBench\Console\Command\Handler\DumpHandler;
 use PhpBench\Console\Command\Handler\ReportHandler;
 use PhpBench\Console\Command\Handler\RunnerHandler;
@@ -23,37 +24,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ReportCommand extends Command
 {
-    /**
-     * @var ReportHandler
-     */
-    private $reportHandler;
-
-    /**
-     * @var TimeUnitHandler
-     */
-    private $timeUnitHandler;
-
-    /**
-     * @var SuiteCollectionHandler
-     */
-    private $collectionHandler;
-
-    /**
-     * @var DumpHandler
-     */
-    private $dumpHandler;
-
     public function __construct(
-        ReportHandler $reportHandler,
-        TimeUnitHandler $timeUnitHandler,
-        SuiteCollectionHandler $collectionHandler,
-        DumpHandler $dumpHandler
+        private readonly ReportHandler $reportHandler,
+        private readonly TimeUnitHandler $timeUnitHandler,
+        private readonly SuiteCollectionHandler $collectionHandler,
+        private readonly DumpHandler $dumpHandler
     ) {
         parent::__construct();
-        $this->reportHandler = $reportHandler;
-        $this->timeUnitHandler = $timeUnitHandler;
-        $this->collectionHandler = $collectionHandler;
-        $this->dumpHandler = $dumpHandler;
     }
 
     public function configure(): void
@@ -94,7 +71,7 @@ EOT
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         if (!$input->getOption('report')) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'You must specify or configure at least one report, e.g.: --report=default'
             );
         }

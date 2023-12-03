@@ -12,6 +12,9 @@
 
 namespace PhpBench\Storage\Driver\Xml;
 
+use ArrayIterator;
+use ReturnTypeWillChange;
+use DirectoryIterator;
 use PhpBench\Dom\Document;
 use PhpBench\Serializer\XmlDecoder;
 use PhpBench\Storage\HistoryEntry;
@@ -25,27 +28,20 @@ use PhpBench\Storage\HistoryIteratorInterface;
  */
 class HistoryIterator implements HistoryIteratorInterface
 {
-    private $xmlDecoder;
-    private $path;
+    private ?ArrayIterator $years = null;
+    private ?ArrayIterator $months = null;
+    private ?ArrayIterator $days = null;
+    private ?ArrayIterator $entries = null;
+    private ?bool $initialized = null;
 
-    private $years;
-    private $months;
-    private $days;
-    private $entries;
-    private $initialized;
-
-    public function __construct(
-        XmlDecoder $xmlDecoder,
-        $path
-    ) {
-        $this->xmlDecoder = $xmlDecoder;
-        $this->path = $path;
+    public function __construct(private readonly XmlDecoder $xmlDecoder, private $path)
+    {
     }
 
     /**
      * {@inheritdoc}
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function current()
     {
         $this->init();
@@ -137,7 +133,7 @@ class HistoryIterator implements HistoryIteratorInterface
         if (file_exists($this->path)) {
             $this->years = $this->getDirectoryIterator($this->path);
         } else {
-            $this->years = new \ArrayIterator();
+            $this->years = new ArrayIterator();
         }
 
         // create directory iterators for each part of the date sharding
@@ -146,19 +142,19 @@ class HistoryIterator implements HistoryIteratorInterface
         if ($this->years->valid()) {
             $this->months = $this->getDirectoryIterator($this->years->current());
         } else {
-            $this->months = new \ArrayIterator();
+            $this->months = new ArrayIterator();
         }
 
         if ($this->months->valid()) {
             $this->days = $this->getDirectoryIterator($this->months->current());
         } else {
-            $this->days = new \ArrayIterator();
+            $this->days = new ArrayIterator();
         }
 
         if ($this->days->valid()) {
             $this->entries = $this->getEntryIterator();
         } else {
-            $this->entries = new \ArrayIterator();
+            $this->entries = new ArrayIterator();
         }
     }
 
@@ -167,10 +163,10 @@ class HistoryIterator implements HistoryIteratorInterface
      *
      * We hydrate all of the entries for the "current" day.
      */
-    private function getEntryIterator(): \ArrayIterator
+    private function getEntryIterator(): ArrayIterator
     {
         $files = $this->days->current();
-        $files = new \DirectoryIterator($this->days->current());
+        $files = new DirectoryIterator($this->days->current());
         $historyEntries = [];
 
         foreach ($files as $file) {
@@ -188,7 +184,7 @@ class HistoryIterator implements HistoryIteratorInterface
             return $entry2->getDate()->format('U') <=> $entry1->getDate()->format('U');
         });
 
-        return new \ArrayIterator($historyEntries);
+        return new ArrayIterator($historyEntries);
     }
 
     /**
@@ -239,9 +235,9 @@ class HistoryIterator implements HistoryIteratorInterface
      *
      * We sort by date in descending order.
      */
-    private function getDirectoryIterator($path): \ArrayIterator
+    private function getDirectoryIterator($path): ArrayIterator
     {
-        $nodes = new \DirectoryIterator($path);
+        $nodes = new DirectoryIterator($path);
         $dirs = [];
 
         foreach ($nodes as $dir) {
@@ -258,6 +254,6 @@ class HistoryIterator implements HistoryIteratorInterface
 
         krsort($dirs);
 
-        return new \ArrayIterator($dirs);
+        return new ArrayIterator($dirs);
     }
 }

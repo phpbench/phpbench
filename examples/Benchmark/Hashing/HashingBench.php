@@ -18,10 +18,7 @@ namespace PhpBench\Examples\Benchmark;
  */
 class HashingBench
 {
-    /**
-     * @var string
-     */
-    private $string = '';
+    private string $string = '';
 
     public function setUp(array $params): void
     {
@@ -36,7 +33,7 @@ class HashingBench
      */
     public function benchAlgos($params): void
     {
-        hash($params['algo'], $this->string);
+        hash((string) $params['algo'], $this->string);
     }
 
     public function provideAlgos()

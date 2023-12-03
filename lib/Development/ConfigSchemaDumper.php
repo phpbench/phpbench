@@ -13,16 +13,10 @@ use function method_exists;
 class ConfigSchemaDumper
 {
     /**
-     * @var class-string[]
-     */
-    private $extensions;
-
-    /**
      * @param class-string[] $extensions
      */
-    public function __construct(array $extensions)
+    public function __construct(private readonly array $extensions)
     {
-        $this->extensions = $extensions;
     }
 
     public function dump(): string
@@ -67,7 +61,7 @@ class ConfigSchemaDumper
                 try {
                     $values = $inspector->getAllowedValues($option);
                     $meta['enum'] = $values;
-                } catch (NoConfigurationException $e) {
+                } catch (NoConfigurationException) {
                 }
                 $schema['properties'][$option] = $meta;
             }
@@ -100,7 +94,7 @@ class ConfigSchemaDumper
                 return 'number';
             }
 
-            if (substr($type, -2) === '[]') {
+            if (str_ends_with($type, '[]')) {
                 return 'array';
             }
 

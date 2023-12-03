@@ -2,26 +2,20 @@
 
 namespace PhpBench\Report\ComponentGenerator\TableAggregate;
 
+use RuntimeException;
 use PhpBench\Data\DataFrame;
 use PhpBench\Report\Bridge\ExpressionBridge;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ExpandColumnProcessor implements ColumnProcessorInterface
 {
-    public const PARAM_VAR = 'var';
-    public const PARAM_COLS = 'cols';
-    public const PARAM_PARTITION = 'partition';
-    public const PARAM_KEY_VAR = 'key_var';
+    final public const PARAM_VAR = 'var';
+    final public const PARAM_COLS = 'cols';
+    final public const PARAM_PARTITION = 'partition';
+    final public const PARAM_KEY_VAR = 'key_var';
 
-
-    /**
-     * @var ExpressionBridge
-     */
-    private $evaluator;
-
-    public function __construct(ExpressionBridge $evaluator)
+    public function __construct(private readonly ExpressionBridge $evaluator)
     {
-        $this->evaluator = $evaluator;
     }
 
     /**
@@ -61,7 +55,7 @@ class ExpandColumnProcessor implements ColumnProcessorInterface
                 $colName = $this->evaluator->renderTemplate($template, $iterationParams);
 
                 if (isset($row[$colName])) {
-                    throw new \RuntimeException(sprintf(
+                    throw new RuntimeException(sprintf(
                         'Column name "%s" has already been set. All column keys must currently be unique (regardless of grouping)',
                         $colName
                     ));

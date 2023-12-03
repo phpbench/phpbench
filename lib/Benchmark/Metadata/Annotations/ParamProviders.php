@@ -24,7 +24,7 @@ namespace PhpBench\Benchmark\Metadata\Annotations;
  */
 class ParamProviders extends AbstractArrayAnnotation
 {
-    private $providers;
+    private readonly array $providers;
 
     public function __construct($params)
     {

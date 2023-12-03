@@ -2,6 +2,7 @@
 
 namespace PhpBench\Executor\Benchmark;
 
+use Exception;
 use PhpBench\Executor\BenchmarkExecutorInterface;
 use PhpBench\Executor\Exception\ExecutionError;
 use PhpBench\Executor\ExecutionContext;
@@ -12,14 +13,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class LocalExecutor implements BenchmarkExecutorInterface
 {
-    /**
-     * @var ?string
-     */
-    private $bootstrap;
-
-    public function __construct(?string $bootstrap = null)
+    public function __construct(private readonly ?string $bootstrap = null)
     {
-        $this->bootstrap = $bootstrap;
     }
 
     /**
@@ -33,9 +28,9 @@ class LocalExecutor implements BenchmarkExecutorInterface
     {
         try {
             return $this->doExecute($context, $config);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw new ExecutionError(
-                sprintf("Exception encountered in benchmark: %s\n\n[%s]\n\n%s", $e->getMessage(), get_class($e), $e->getTraceAsString()),
+                sprintf("Exception encountered in benchmark: %s\n\n[%s]\n\n%s", $e->getMessage(), $e::class, $e->getTraceAsString()),
             );
         }
     }

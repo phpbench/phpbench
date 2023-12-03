@@ -70,8 +70,8 @@ class BenchmarkMetadataTest extends TestCase
 
     public function testMerge(): void
     {
-        $benchmark1 = new BenchmarkMetadata(__FILE__, __CLASS__);
-        $benchmark2 = new BenchmarkMetadata(__FILE__, __CLASS__);
+        $benchmark1 = new BenchmarkMetadata(__FILE__, self::class);
+        $benchmark2 = new BenchmarkMetadata(__FILE__, self::class);
 
         $benchmark1->setBeforeClassMethods(['one', 'two']);
         $benchmark2->setBeforeClassMethods(['three', 'four']);

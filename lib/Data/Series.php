@@ -7,14 +7,8 @@ use RuntimeException;
 
 final class Series implements Countable
 {
-    /**
-     * @var array
-     */
-    private $values;
-
-    public function __construct(array $values)
+    public function __construct(private array $values)
     {
-        $this->values = $values;
     }
 
     public function toValues(): array

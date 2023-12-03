@@ -21,10 +21,6 @@ final class VariantBuilder
 
     private int $revs = 1;
 
-    private ?SubjectBuilder $subjectBuilder;
-
-    private ?string $name;
-
     /**
      * @var Error[]
      */
@@ -35,10 +31,8 @@ final class VariantBuilder
     /**
      * @param string $name @deprecated Variants are not named, and this was used as the parameter set name.
      */
-    public function __construct(?SubjectBuilder $subjectBuilder, ?string $name = null)
+    public function __construct(private readonly ?SubjectBuilder $subjectBuilder, private readonly ?string $name = null)
     {
-        $this->subjectBuilder = $subjectBuilder;
-        $this->name = $name;
     }
 
     public static function create(string $name = 'foo'): self

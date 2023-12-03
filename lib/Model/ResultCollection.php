@@ -12,12 +12,15 @@
 
 namespace PhpBench\Model;
 
+use RuntimeException;
+use InvalidArgumentException;
+
 /**
  * Represents the result of a single iteration executed by an executor.
  */
 class ResultCollection
 {
-    private $results = [];
+    private array $results = [];
 
     /**
      * @param ResultInterface[] $results
@@ -37,7 +40,7 @@ class ResultCollection
      */
     public function setResult(ResultInterface $result): void
     {
-        $class = get_class($result);
+        $class = $result::class;
         $this->results[$class] = $result;
     }
 
@@ -60,12 +63,12 @@ class ResultCollection
      *
      * @return T
      *
-     * @throws \RuntimeException
+     * @throws RuntimeException
      */
     public function getResult(string $class): ResultInterface
     {
         if (!isset($this->results[$class])) {
-            throw new \RuntimeException(sprintf(
+            throw new RuntimeException(sprintf(
                 'Result of class "%s" has not been set',
                 $class
             ));
@@ -78,15 +81,14 @@ class ResultCollection
      * Return the named metric for the given result class.
      *
      *
-     * @throws \InvalidArgumentException
-     *
+     * @throws InvalidArgumentException
      */
     public function getMetric(string $class, string $metric)
     {
         $metrics = $this->getResult($class)->getMetrics();
 
         if (!isset($metrics[$metric])) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'Unknown metric "%s" for result class "%s". Available metrics: "%s"',
                 $metric,
                 $class,

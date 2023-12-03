@@ -22,17 +22,8 @@ use PhpBench\Environment\ProviderInterface;
  */
 class Sampler implements ProviderInterface
 {
-    /**
-     * @var SamplerManager
-     */
-    private $manager;
-
-    private $enabled = [];
-
-    public function __construct(SamplerManager $manager, array $enabled)
+    public function __construct(private readonly SamplerManager $manager, private readonly array $enabled)
     {
-        $this->manager = $manager;
-        $this->enabled = $enabled;
     }
 
     /**

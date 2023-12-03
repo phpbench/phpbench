@@ -25,15 +25,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class CompositeGenerator implements GeneratorInterface
 {
     /**
-     * @var ReportManager
      */
-    private $reportManager;
-
-    /**
-     */
-    public function __construct(ReportManager $reportManager)
+    public function __construct(private readonly ReportManager $reportManager)
     {
-        $this->reportManager = $reportManager;
     }
 
     /**

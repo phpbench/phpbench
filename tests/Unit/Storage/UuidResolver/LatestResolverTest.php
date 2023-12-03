@@ -12,6 +12,8 @@
 
 namespace PhpBench\Tests\Unit\Storage\UuidResolver;
 
+use Prophecy\Prophecy\ObjectProphecy;
+use InvalidArgumentException;
 use PhpBench\Registry\Registry;
 use PhpBench\Storage\DriverInterface;
 use PhpBench\Storage\HistoryEntry;
@@ -22,11 +24,11 @@ use RuntimeException;
 
 class LatestResolverTest extends TestCase
 {
-    private $resolver;
-    private $storage;
-    private $history;
-    private $historyEntry;
-    private $historyEntry1;
+    private LatestResolver $resolver;
+    private ObjectProphecy $storage;
+    private ObjectProphecy $history;
+    private ObjectProphecy $historyEntry;
+    private ObjectProphecy $historyEntry1;
 
     protected function setUp(): void
     {
@@ -97,7 +99,7 @@ class LatestResolverTest extends TestCase
      */
     public function testNoHistory(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('No history present');
         $this->storage->history()->willReturn($this->history->reveal());
         $this->history->current()->willReturn(false);

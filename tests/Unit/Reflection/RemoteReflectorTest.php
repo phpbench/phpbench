@@ -12,13 +12,14 @@
 
 namespace PhpBench\Tests\Unit\Reflection;
 
+use PhpBench\Tests\Unit\Reflection\reflector\ExampleClass;
+use Test\ClassWithClassKeywords;
 use Generator;
 use PhpBench\Attributes\Iterations;
 use PhpBench\Attributes\Revs;
 use PhpBench\Reflection\ReflectionClass;
 use PhpBench\Reflection\ReflectionHierarchy;
 use PhpBench\Reflection\ReflectionMethod;
-use PhpBench\Reflection\ReflectorInterface;
 use PhpBench\Reflection\RemoteReflector;
 use PhpBench\Remote\Launcher;
 use PhpBench\Tests\IntegrationTestCase;
@@ -28,10 +29,7 @@ use PhpBench\Tests\Unit\Reflection\reflector\Class3;
 
 class RemoteReflectorTest extends IntegrationTestCase
 {
-    /**
-     * @var ReflectorInterface
-     */
-    private $reflector;
+    private RemoteReflector $reflector;
 
     protected function setUp(): void
     {
@@ -49,7 +47,7 @@ class RemoteReflectorTest extends IntegrationTestCase
         $this->assertInstanceOf(ReflectionHierarchy::class, $classHierarchy);
         $reflection = $classHierarchy->getTop();
         $this->assertInstanceOf(ReflectionClass::class, $reflection);
-        $this->assertEquals('\PhpBench\Tests\Unit\Reflection\reflector\ExampleClass', $reflection->class);
+        $this->assertEquals('\\' . ExampleClass::class, $reflection->class);
         $this->assertStringContainsString('Some doc comment', $reflection->comment);
         $this->assertEquals($fname, $reflection->path);
         $this->assertEquals([
@@ -256,6 +254,7 @@ EOT
         $fname = __DIR__ . '/reflector/ClassWithClassKeywords.php';
         $classHierarchy = $this->reflector->reflect($fname);
         $reflection = $classHierarchy->getTop();
-        $this->assertEquals('\Test\ClassWithClassKeywords', $reflection->class);
+        /** @phpstan-ignore-next-line */
+        $this->assertEquals('\\' . ClassWithClassKeywords::class, $reflection->class);
     }
 }

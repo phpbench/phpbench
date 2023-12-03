@@ -23,43 +23,8 @@ use PhpBench\Model\Variant;
 
 class AssertionProcessor
 {
-    /**
-     * @var Evaluator
-     */
-    private $evaluator;
-
-    /**
-     * @var Printer
-     */
-    private $printer;
-
-    /**
-     * @var ParameterProvider
-     */
-    private $provider;
-
-    /**
-     * @var EvaluatingPrinter
-     */
-    private $evaluatingPrinter;
-
-    /**
-     * @var ExpressionLanguage
-     */
-    private $expressionLanaugage;
-
-    public function __construct(
-        ExpressionLanguage $expressionLanaugage,
-        Evaluator $evaluator,
-        Printer $printer,
-        EvaluatingPrinter $evaluatingPrinter,
-        ParameterProvider $provider
-    ) {
-        $this->evaluator = $evaluator;
-        $this->printer = $printer;
-        $this->provider = $provider;
-        $this->evaluatingPrinter = $evaluatingPrinter;
-        $this->expressionLanaugage = $expressionLanaugage;
+    public function __construct(private readonly ExpressionLanguage $expressionLanaugage, private readonly Evaluator $evaluator, private readonly Printer $printer, private readonly EvaluatingPrinter $evaluatingPrinter, private readonly ParameterProvider $provider)
+    {
     }
 
     public function assert(Variant $variant, string $assertion): AssertionResult
@@ -89,7 +54,7 @@ class AssertionProcessor
 
         throw new AssertionError(sprintf(
             'Assertion expression must evaluate to a boolean-like value, got "%s" as "%s"',
-            get_class($evaluated),
+            $evaluated::class,
             $this->printer->print($evaluated)
         ));
     }

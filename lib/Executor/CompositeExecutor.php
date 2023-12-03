@@ -8,25 +8,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CompositeExecutor implements BenchmarkExecutorInterface, HealthCheckInterface, MethodExecutorInterface
 {
-    /**
-     * @var BenchmarkExecutorInterface
-     */
-    private $benchmarkExecutor;
+    private readonly HealthCheckInterface $healthCheck;
 
-    /**
-     * @var MethodExecutorInterface
-     */
-    private $methodExecutor;
-
-    /**
-     * @var HealthCheckInterface
-     */
-    private $healthCheck;
-
-    public function __construct(BenchmarkExecutorInterface $benchmarkExecutor, MethodExecutorInterface $methodExecutor, HealthCheckInterface $healthCheck = null)
+    public function __construct(private readonly BenchmarkExecutorInterface $benchmarkExecutor, private readonly MethodExecutorInterface $methodExecutor, HealthCheckInterface $healthCheck = null)
     {
-        $this->benchmarkExecutor = $benchmarkExecutor;
-        $this->methodExecutor = $methodExecutor;
         $this->healthCheck = $healthCheck ?: new AlwaysFineHealthCheck();
     }
 

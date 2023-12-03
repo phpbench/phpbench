@@ -28,7 +28,7 @@ abstract class ColumnProcessorTestCase extends IntegrationTestCase
 
         return array_map(function (Node $node) {
             if (!$node instanceof PhpValue) {
-                throw new RuntimeException(sprintf('Value did not resolve to a php value, got "%s"', get_class($node)));
+                throw new RuntimeException(sprintf('Value did not resolve to a php value, got "%s"', $node::class));
             }
 
             return $node->value();

@@ -12,6 +12,8 @@
 
 namespace PhpBench\Tests\System\benchmarks\set3;
 
+use Exception;
+
 /**
  * This benchmark throws exceptions.
  */
@@ -21,9 +23,9 @@ class ErrorBench
     {
     }
 
-    public function benchException(): void
+    public function benchException(): never
     {
-        throw new \Exception('Arff');
+        throw new Exception('Arff');
     }
 
     public function benchNothingElse(): void

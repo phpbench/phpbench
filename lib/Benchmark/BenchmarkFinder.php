@@ -12,6 +12,7 @@
 
 namespace PhpBench\Benchmark;
 
+use InvalidArgumentException;
 use Generator;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\MetadataFactory;
@@ -26,32 +27,8 @@ use Symfony\Component\Finder\Finder;
  */
 class BenchmarkFinder
 {
-    /**
-     * @var MetadataFactory
-     */
-    private $factory;
-
-    /**
-     * @var string
-     */
-    private $cwd;
-
-    /**
-     * @var string
-     */
-    private $benchPattern;
-
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    public function __construct(MetadataFactory $factory, string $cwd, LoggerInterface $logger, ?string $benchPattern = null)
+    public function __construct(private readonly MetadataFactory $factory, private readonly string $cwd, private readonly LoggerInterface $logger, private readonly ?string $benchPattern = null)
     {
-        $this->factory = $factory;
-        $this->cwd = $cwd;
-        $this->benchPattern = $benchPattern;
-        $this->logger = $logger;
     }
 
     /**
@@ -102,7 +79,7 @@ class BenchmarkFinder
             $path = Path::makeAbsolute($path, $this->cwd);
 
             if (!file_exists($path)) {
-                throw new \InvalidArgumentException(sprintf(
+                throw new InvalidArgumentException(sprintf(
                     'File or directory "%s" does not exist (cwd: %s)',
                     $path,
                     $this->cwd
@@ -111,7 +88,7 @@ class BenchmarkFinder
 
             if (is_dir($path)) {
                 $search = true;
-                $finder->in($path)->name($this->benchPattern === null ? '*.php' : $this->benchPattern);
+                $finder->in($path)->name($this->benchPattern ?? '*.php');
 
                 continue;
             }
@@ -130,7 +107,7 @@ class BenchmarkFinder
         foreach ($finder as $file) {
             assert($file instanceof SplFileInfo);
 
-            if ($this->benchPattern === null && substr($file->getFilename(), -9) !== 'Bench.php') {
+            if ($this->benchPattern === null && !str_ends_with($file->getFilename(), 'Bench.php')) {
                 $this->logger->warning(sprintf(
                     'File "%s" has been identified as a benchmark file but it does not end with ' .
                     '`Bench.php`. This behavior is incorrect and will be fixed in a future version. ' .

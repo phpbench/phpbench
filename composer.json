@@ -45,7 +45,7 @@
         "phpstan/phpstan": "^1.0",
         "phpstan/phpstan-phpunit": "^1.0",
         "phpunit/phpunit": "^10.4",
-        "rector/rector": "^0.18.10",
+        "rector/rector": "^0.18.11",
         "symfony/error-handler": "^5.2 || ^6.0 || ^7.0",
         "symfony/var-dumper": "^4.0 || ^5.0 || ^6.0 || ^7.0"
     },
@@ -98,7 +98,7 @@
         "integrate": [
             "@composer normalize",
             "vendor/bin/php-cs-fixer fix",
-            "vendor/bin/phpstan analyse -c phpstan.neon.dist",
+            "vendor/bin/phpstan analyse -c phpstan.neon.dist --memory-limit=-1",
             "vendor/bin/phpunit",
             "bin/phpbench run --revs=1 --iterations=2",
             "bin/phpbench run --profile=examples --revs=1 --iterations=1 --report=examples",

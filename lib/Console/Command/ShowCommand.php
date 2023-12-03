@@ -27,25 +27,14 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ShowCommand extends Command
 {
-    private $storage;
-    private $reportHandler;
-    private $timeUnitHandler;
-    private $dumpHandler;
-    private $refResolver;
-
     public function __construct(
-        Registry $storage,
-        ReportHandler $reportHandler,
-        TimeUnitHandler $timeUnitHandler,
-        DumpHandler $dumpHandler,
-        UuidResolver $refResolver
+        private readonly Registry $storage,
+        private readonly ReportHandler $reportHandler,
+        private readonly TimeUnitHandler $timeUnitHandler,
+        private readonly DumpHandler $dumpHandler,
+        private readonly UuidResolver $refResolver
     ) {
         parent::__construct();
-        $this->storage = $storage;
-        $this->reportHandler = $reportHandler;
-        $this->timeUnitHandler = $timeUnitHandler;
-        $this->dumpHandler = $dumpHandler;
-        $this->refResolver = $refResolver;
     }
 
     /**

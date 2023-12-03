@@ -28,38 +28,17 @@ use function iterator_to_array;
 
 class ExpressionGenerator implements GeneratorInterface
 {
-    public const PARAM_TITLE = 'title';
-    public const PARAM_DESCRIPTION = 'description';
-    public const PARAM_COLS = 'cols';
-    public const PARAM_EXPRESSIONS = 'expressions';
-    public const PARAM_BASELINE_EXPRESSIONS = 'baseline_expressions';
-    public const PARAM_AGGREGATE = 'aggregate';
-    public const PARAM_BREAK = 'break';
-    public const PARAM_INCLUDE_BASELINE = 'include_baseline';
+    final public const PARAM_TITLE = 'title';
+    final public const PARAM_DESCRIPTION = 'description';
+    final public const PARAM_COLS = 'cols';
+    final public const PARAM_EXPRESSIONS = 'expressions';
+    final public const PARAM_BASELINE_EXPRESSIONS = 'baseline_expressions';
+    final public const PARAM_AGGREGATE = 'aggregate';
+    final public const PARAM_BREAK = 'break';
+    final public const PARAM_INCLUDE_BASELINE = 'include_baseline';
 
-    /**
-     * @var ExpressionEvaluator
-     */
-    private $evaluator;
-
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
-     * @var SuiteCollectionTransformer
-     */
-    private $transformer;
-
-    public function __construct(
-        ExpressionEvaluator $evaluator,
-        SuiteCollectionTransformer $transformer,
-        LoggerInterface $logger
-    ) {
-        $this->evaluator = $evaluator;
-        $this->logger = $logger;
-        $this->transformer = $transformer;
+    public function __construct(private readonly ExpressionEvaluator $evaluator, private readonly SuiteCollectionTransformer $transformer, private readonly LoggerInterface $logger)
+    {
     }
 
     /**
@@ -228,8 +207,8 @@ EOT
             array_map(function (array $table, string $title) {
                 return Table::fromRowArray($table, $title);
             }, $tables, array_keys($tables)),
-            isset($config[self::PARAM_TITLE]) ? $config[self::PARAM_TITLE] : null,
-            isset($config[self::PARAM_DESCRIPTION]) ? $config[self::PARAM_DESCRIPTION] : null
+            $config[self::PARAM_TITLE] ?? null,
+            $config[self::PARAM_DESCRIPTION] ?? null
         ));
     }
 
@@ -259,7 +238,7 @@ EOT
                     throw new RuntimeException(sprintf(
                         'Partition value for "%s" must be a string, got "%s"',
                         $key,
-                        get_class($value)
+                        $value::class
                     ));
                 }
 
@@ -290,7 +269,7 @@ EOT
 
         foreach ($config[self::PARAM_COLS] as $key => $expr) {
             if (is_int($key) || null === $expr) {
-                $expr = null === $expr ? $key : $expr;
+                $expr ??= $key;
 
                 if (!isset($expressions[$expr])) {
                     throw new RuntimeException(sprintf(

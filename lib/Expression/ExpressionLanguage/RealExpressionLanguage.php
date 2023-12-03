@@ -9,19 +9,8 @@ use PhpBench\Expression\Parser;
 
 class RealExpressionLanguage implements ExpressionLanguage
 {
-    /**
-     * @var Lexer
-     */
-    private $lexer;
-    /**
-     * @var Parser
-     */
-    private $parser;
-
-    public function __construct(Lexer $lexer, Parser $parser)
+    public function __construct(private readonly Lexer $lexer, private readonly Parser $parser)
     {
-        $this->lexer = $lexer;
-        $this->parser = $parser;
     }
 
     public function parse(string $expression): Node

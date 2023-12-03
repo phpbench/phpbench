@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Environment\Provider;
 
+use Prophecy\Prophecy\ObjectProphecy;
 use PhpBench\Benchmark\SamplerManager;
 use PhpBench\Environment\Information;
 use PhpBench\Environment\Provider\Sampler;
@@ -19,8 +20,8 @@ use PhpBench\Tests\TestCase;
 
 class SamplerTest extends TestCase
 {
-    private $manager;
-    private $provider;
+    private ObjectProphecy $manager;
+    private Sampler $provider;
 
     protected function setUp(): void
     {

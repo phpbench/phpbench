@@ -7,43 +7,13 @@ use PhpBench\Report\ComponentInterface;
 final class Report implements ComponentInterface
 {
     /**
-     * @var string|null
-     */
-    private $title;
-
-    /**
-     * @var string|null
-     */
-    private $description;
-
-    /**
-     * @var object[]
-     */
-    private $objects;
-
-    /**
-     * @var bool
-     */
-    private $tabbed;
-
-    /**
-     * @var string[] $tabLabels
-     */
-    private $tabLabels;
-
-    /**
      * @internal Use the ReportBuilder
      *
      * @param ComponentInterface[] $objects
      * @param string[] $tabLabels
      */
-    public function __construct(array $objects, ?string $title, bool $tabbed = false, ?string $description = null, array $tabLabels = [])
+    public function __construct(private readonly array $objects, private readonly ?string $title, private readonly bool $tabbed = false, private readonly ?string $description = null, private readonly array $tabLabels = [])
     {
-        $this->objects = $objects;
-        $this->title = $title;
-        $this->description = $description;
-        $this->tabbed = $tabbed;
-        $this->tabLabels = $tabLabels;
     }
 
     /**

@@ -39,16 +39,13 @@ class LogicalOperatorEvaluator implements NodeEvaluator
 
     private function evaluateNode(LogicalOperatorNode $node, bool $leftValue, bool $rightValue): bool
     {
-        switch ($node->operator()) {
-            case 'or':
-                return $leftValue || $rightValue;
-            case 'and':
-                return $leftValue && $rightValue;
-        }
-
-        throw new EvaluationError($node, sprintf(
-            'Unknown operator "%s"',
-            $node->operator()
-        ));
+        return match ($node->operator()) {
+            'or' => $leftValue || $rightValue,
+            'and' => $leftValue && $rightValue,
+            default => throw new EvaluationError($node, sprintf(
+                'Unknown operator "%s"',
+                $node->operator()
+            )),
+        };
     }
 }

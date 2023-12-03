@@ -8,20 +8,8 @@ use PhpBench\Expression\Printer;
 
 final class UnderlinePrinter implements Printer
 {
-    /**
-     * @var NodePrinter
-     */
-    private $printers;
-
-    /**
-     * @var Node
-     */
-    private $targetNode;
-
-    public function __construct(NodePrinter $printers, Node $targetNode)
+    public function __construct(private readonly NodePrinter $printers, private readonly Node $targetNode)
     {
-        $this->printers = $printers;
-        $this->targetNode = $targetNode;
     }
 
     public function print(Node $node): string

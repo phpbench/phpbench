@@ -10,15 +10,9 @@ use PhpBench\Expression\NodeEvaluator;
 final class MainEvaluator implements Evaluator
 {
     /**
-     * @var NodeEvaluator
      */
-    private $evaluators;
-
-    /**
-     */
-    public function __construct(NodeEvaluator $evaluators)
+    public function __construct(private readonly NodeEvaluator $evaluators)
     {
-        $this->evaluators = $evaluators;
     }
 
     /**
@@ -40,7 +34,7 @@ final class MainEvaluator implements Evaluator
         throw new EvaluationError($node, sprintf(
             'Expected "%s" but got "%s"',
             $expectedType,
-            get_class($evaluated)
+            $evaluated::class
         ));
     }
 

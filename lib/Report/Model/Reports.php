@@ -12,16 +12,10 @@ use RuntimeException;
 final class Reports implements IteratorAggregate
 {
     /**
-     * @var Report[]
-     */
-    private $reports;
-
-    /**
      * @param Report[] $reports
      */
-    private function __construct(array $reports)
+    private function __construct(private array $reports)
     {
-        $this->reports = $reports;
     }
 
     public static function fromReport(Report $report): self

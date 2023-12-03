@@ -12,6 +12,8 @@
 
 namespace PhpBench\Tests\System\benchmarks\foobar;
 
+use Test\Foobar;
+
 /**
  * This benchmark requires the bootstrap/foobar_bootstrap.php to be loaded in
  * order that Foobar be defined.
@@ -20,6 +22,6 @@ class FoobarBench
 {
     public function benchFoobar(): void
     {
-        new \Test\Foobar();
+        new Foobar();
     }
 }

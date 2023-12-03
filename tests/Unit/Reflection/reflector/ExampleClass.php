@@ -12,6 +12,8 @@
 
 namespace PhpBench\Tests\Unit\Reflection\reflector;
 
+use stdClass;
+
 /**
  * Some doc comment.
  */
@@ -56,7 +58,7 @@ class ExampleClass
         return [
             [
                 'five' => 'six',
-                'seven' => new \stdClass(),
+                'seven' => new stdClass(),
             ],
         ];
     }

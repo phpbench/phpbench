@@ -127,18 +127,18 @@ class ExpressionExtension implements ExtensionInterface
     private const PREFIX_BINARY = 'binary';
     private const PREFIX_DECIMAL = 'decimal';
 
-    public const PARAM_SYNTAX_HIGHLIGHTING = 'expression.syntax_highlighting';
-    public const PARAM_THEME = 'expression.theme';
-    public const PARAM_MEMORY_UNIT_PREFIX = 'expression.memory_unit_prefix';
-    public const PARAM_STRIP_TAILING_ZEROS = 'expression.strip_tailing_zeros';
+    final public const PARAM_SYNTAX_HIGHLIGHTING = 'expression.syntax_highlighting';
+    final public const PARAM_THEME = 'expression.theme';
+    final public const PARAM_MEMORY_UNIT_PREFIX = 'expression.memory_unit_prefix';
+    final public const PARAM_STRIP_TAILING_ZEROS = 'expression.strip_tailing_zeros';
 
-    public const SERVICE_PLAIN_PRINTER = 'expression.printer.plain';
-    public const SERVICE_BARE_PRINTER = 'expression.printer.bare';
+    final public const SERVICE_PLAIN_PRINTER = 'expression.printer.plain';
+    final public const SERVICE_BARE_PRINTER = 'expression.printer.bare';
 
-    public const TAG_THEME = 'expression.theme';
+    final public const TAG_THEME = 'expression.theme';
 
-    public const THEME_BASIC = 'basic';
-    public const THEME_SOLARIZED = 'solarized';
+    final public const THEME_BASIC = 'basic';
+    final public const THEME_SOLARIZED = 'solarized';
 
     /**
      * {@inheritDoc}

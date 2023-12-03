@@ -18,7 +18,7 @@ final class DisplayAsTimeFunction
         }
 
         if (!$as instanceof StringNode) {
-            throw new EvaluationError($value, sprintf('Unit must be a string, got "%s"', get_class($as)));
+            throw new EvaluationError($value, sprintf('Unit must be a string, got "%s"', $as::class));
         }
 
         return new DisplayAsTimeNode($value, new UnitNode($as), $precision, $throughput);

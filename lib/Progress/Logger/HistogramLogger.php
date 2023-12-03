@@ -22,8 +22,8 @@ use PhpBench\Model\Variant;
 
 class HistogramLogger extends AnsiLogger
 {
-    private $rows = 1;
-    private $blocks = ['▁',  '▂',  '▃',  '▄',  '▅',  '▆', '▇', '█'];
+    private int $rows = 1;
+    private array $blocks = ['▁',  '▂',  '▃',  '▄',  '▅',  '▆', '▇', '█'];
 
     /**
      * {@inheritdoc}

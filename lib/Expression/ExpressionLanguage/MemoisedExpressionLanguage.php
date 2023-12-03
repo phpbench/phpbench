@@ -10,16 +10,10 @@ class MemoisedExpressionLanguage implements ExpressionLanguage
     /**
      * @var array<string, Node>
      */
-    private $cache = [];
+    private array $cache = [];
 
-    /**
-     * @var ExpressionLanguage
-     */
-    private $inner;
-
-    public function __construct(ExpressionLanguage $inner)
+    public function __construct(private readonly ExpressionLanguage $inner)
     {
-        $this->inner = $inner;
     }
 
     public function parse(string $expression): Node

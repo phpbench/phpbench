@@ -11,82 +11,12 @@ use PhpBench\Reflection\ReflectionHierarchy;
 class ConfigDriver implements DriverInterface
 {
     /**
-     * @var array|null
-     */
-    private $assert;
-    /**
-     * @var array|null
-     */
-    private $revs;
-    /**
-     * @var string|null
-     */
-    private $executor;
-    /**
-     * @var array
-     */
-    private $warmup;
-    /**
-     * @var float|null
-     */
-    private $timeout;
-
-    /**
-     * @var string|null
-     */
-    private $timeUnit;
-    /**
-     * @var string|null
-     */
-    private $mode;
-    /**
-     * @var array|null
-     */
-    private $iterations;
-    /**
-     * @var string|null
-     */
-    private $format;
-
-    /**
-     * @var DriverInterface
-     */
-    private $innerDriver;
-
-    /**
-     * @var float|null
-     */
-    private $retryThreshold;
-
-    /**
      * @param string[] $assert
      * @param int[] $iterations
      * @param int[] $revs
      */
-    public function __construct(
-        DriverInterface $innerDriver,
-        ?array $assert,
-        ?string $executor,
-        ?string $format,
-        ?array $iterations,
-        ?string $mode,
-        ?string $timeUnit,
-        ?array $revs,
-        ?float $timeout,
-        ?array $warmup,
-        ?float $retryThreshold
-    ) {
-        $this->assert = $assert;
-        $this->executor = $executor;
-        $this->format = $format;
-        $this->iterations = $iterations;
-        $this->mode = $mode;
-        $this->timeUnit = $timeUnit;
-        $this->revs = $revs;
-        $this->timeout = $timeout;
-        $this->warmup = $warmup;
-        $this->innerDriver = $innerDriver;
-        $this->retryThreshold = $retryThreshold;
+    public function __construct(private readonly DriverInterface $innerDriver, private readonly ?array $assert, private readonly ?string $executor, private readonly ?string $format, private readonly ?array $iterations, private readonly ?string $mode, private readonly ?string $timeUnit, private readonly ?array $revs, private readonly ?float $timeout, private readonly ?array $warmup, private readonly ?float $retryThreshold)
+    {
     }
 
 

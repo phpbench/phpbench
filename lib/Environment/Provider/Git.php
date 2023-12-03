@@ -12,6 +12,8 @@
 
 namespace PhpBench\Environment\Provider;
 
+use PhpBench\Environment\Information;
+use RuntimeException;
 use PhpBench\Environment\ProviderInterface;
 use PhpBench\Environment\VcsInformation;
 use Symfony\Component\Process\ExecutableFinder;
@@ -22,20 +24,12 @@ use Symfony\Component\Process\Process;
  */
 class Git implements ProviderInterface
 {
-    private $exeFinder;
-    private $exeName;
-    private $exePath;
+    private readonly ExecutableFinder $exeFinder;
+    private ?string $exePath = null;
 
-    /**
-     * @var string
-     */
-    private $cwd;
-
-    public function __construct(string $cwd, ExecutableFinder $exeFinder = null, $exeName = 'git')
+    public function __construct(private readonly string $cwd, ExecutableFinder $exeFinder = null, private $exeName = 'git')
     {
         $this->exeFinder = $exeFinder ?: new ExecutableFinder();
-        $this->exeName = $exeName;
-        $this->cwd = $cwd;
     }
 
     /**
@@ -59,7 +53,7 @@ class Git implements ProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getInformation(): \PhpBench\Environment\Information
+    public function getInformation(): Information
     {
         $process = $this->exec('symbolic-ref HEAD');
 
@@ -69,7 +63,7 @@ class Git implements ProviderInterface
             preg_match('{^refs/heads/(.*)$}', $process->getOutput(), $matches);
             $branchName = $matches[1];
         } else {
-            throw new \RuntimeException(sprintf(
+            throw new RuntimeException(sprintf(
                 'Encountered error when determining git branch exit code: %s, stderr: "%s"',
                 $process->getExitCode(),
                 $process->getErrorOutput()

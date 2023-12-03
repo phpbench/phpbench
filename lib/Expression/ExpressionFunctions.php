@@ -10,7 +10,7 @@ final class ExpressionFunctions
     /**
      * @var array<string,callable>
      */
-    private $functionMap = [];
+    private array $functionMap = [];
 
     /**
      * @param array<string, callable> $functionMap

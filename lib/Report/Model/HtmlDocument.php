@@ -4,20 +4,8 @@ namespace PhpBench\Report\Model;
 
 final class HtmlDocument
 {
-    /**
-     * @var string
-     */
-    private $title;
-
-    /**
-     * @var Reports
-     */
-    private $reports;
-
-    public function __construct(string $title, Reports $reports)
+    public function __construct(private readonly string $title, private readonly Reports $reports)
     {
-        $this->title = $title;
-        $this->reports = $reports;
     }
 
     public function reports(): Reports

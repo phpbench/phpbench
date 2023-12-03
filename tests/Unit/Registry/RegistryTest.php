@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Registry;
 
+use stdClass;
 use InvalidArgumentException;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\Registry\RegistrableInterface;
@@ -79,7 +80,7 @@ class RegistryTest extends TestCase
             $this->container->reveal(),
             'foo'
         );
-        $service = new \stdClass();
+        $service = new stdClass();
         $registry->setService('foo', $service);
         $this->assertEquals($registry->getService(), $service);
     }
@@ -96,7 +97,7 @@ class RegistryTest extends TestCase
             'test',
             $this->container->reveal()
         );
-        $service = new \stdClass();
+        $service = new stdClass();
         $registry->setService('foo', $service);
         $this->assertEquals($registry->getService(), $service);
     }

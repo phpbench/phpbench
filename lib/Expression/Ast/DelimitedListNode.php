@@ -5,16 +5,10 @@ namespace PhpBench\Expression\Ast;
 abstract class DelimitedListNode extends PhpValue
 {
     /**
-     * @var Node[]
-     */
-    private $nodes;
-
-    /**
      * @param Node[] $nodes
      */
-    public function __construct(array $nodes = [])
+    public function __construct(private readonly array $nodes = [])
     {
-        $this->nodes = $nodes;
     }
 
     /**

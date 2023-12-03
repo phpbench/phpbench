@@ -12,16 +12,14 @@
 
 namespace PhpBench\Model;
 
+use Stringable;
 use PhpBench\Storage\Exception\InvalidTagException;
 
-final class Tag
+final class Tag implements Stringable
 {
     public const REGEX_PATTERN = '[\\w\.]+';
 
-    /**
-     * @var string
-     */
-    private $tag;
+    private readonly string $tag;
 
     public function __construct(string $tag)
     {

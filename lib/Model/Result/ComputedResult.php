@@ -20,9 +20,6 @@ use PhpBench\Model\ResultInterface;
  */
 class ComputedResult implements ResultInterface
 {
-    private $zValue;
-    private $deviation;
-
     /**
      * {@inheritdoc}
      */
@@ -36,10 +33,8 @@ class ComputedResult implements ResultInterface
 
     /**
      */
-    public function __construct(float $zValue, float $deviation)
+    public function __construct(private readonly float $zValue, private readonly float $deviation)
     {
-        $this->zValue = $zValue;
-        $this->deviation = $deviation;
     }
 
     /**

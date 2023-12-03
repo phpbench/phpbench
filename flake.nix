@@ -27,7 +27,6 @@
       }: let 
         phpForPhpTui = (pkgs.php81.buildEnv {
           extensions = ({ enabled, all }: enabled ++ (with all; [
-            imagick
           ]));
           extraConfig = ''
           '';
@@ -42,10 +41,10 @@
 
           buildInputs = [
             pkgs.bash
-            pkgs.vhs
-            pkgs.hugo
-            phpForPhpTui
             pkgs.php81.packages.composer
+            pkgs.sphinx
+            phpForPhpTui
+            pkgs.python311Packages.sphinx-tabs
           ];
           shellHook = ''
           if [ ! -d ".venv" ]; then

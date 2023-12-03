@@ -9,16 +9,10 @@ use PhpBench\Expression\Exception\EvaluationError;
 final class NodeEvaluators implements NodeEvaluator
 {
     /**
-     * @var NodeEvaluator[]
-     */
-    private $evaluators;
-
-    /**
      * @param NodeEvaluator[] $evaluators
      */
-    public function __construct(array $evaluators)
+    public function __construct(private readonly array $evaluators)
     {
-        $this->evaluators = $evaluators;
     }
 
     /**
@@ -38,7 +32,7 @@ final class NodeEvaluators implements NodeEvaluator
 
         throw new EvaluationError($node, sprintf(
             'Could not find evaluator for node of type "%s"',
-            get_class($node)
+            $node::class
         ));
     }
 }

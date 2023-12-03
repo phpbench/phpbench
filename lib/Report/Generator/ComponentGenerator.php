@@ -22,48 +22,20 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ComponentGenerator implements ComponentGeneratorInterface, GeneratorInterface
 {
-    public const PARAM_TITLE = 'title';
-    public const PARAM_DESCRIPTION = 'description';
-    public const PARAM_PARTITION = 'partition';
-    public const PARAM_FILTER = 'filter';
-    public const PARAM_COMPONENTS = 'components';
-    public const PARAM_TABBED = 'tabbed';
-    public const PARAM_TAB_LABELS = 'tab_labels';
-    public const KEY_COMPONENT_TYPE = 'component';
-
-    /**
-     * @var ConfigurableRegistry<ComponentGeneratorInterface>
-     */
-    private $registry;
-
-    /**
-     * @var ExpressionBridge
-     */
-    private $evaluator;
-
-    /**
-     * @var SuiteCollectionTransformer
-     */
-    private $transformer;
-
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    final public const PARAM_TITLE = 'title';
+    final public const PARAM_DESCRIPTION = 'description';
+    final public const PARAM_PARTITION = 'partition';
+    final public const PARAM_FILTER = 'filter';
+    final public const PARAM_COMPONENTS = 'components';
+    final public const PARAM_TABBED = 'tabbed';
+    final public const PARAM_TAB_LABELS = 'tab_labels';
+    final public const KEY_COMPONENT_TYPE = 'component';
 
     /**
      * @param ConfigurableRegistry<ComponentGeneratorInterface> $registry
      */
-    public function __construct(
-        SuiteCollectionTransformer $transformer,
-        ConfigurableRegistry $registry,
-        ExpressionBridge $evaluator,
-        LoggerInterface $logger
-    ) {
-        $this->registry = $registry;
-        $this->evaluator = $evaluator;
-        $this->transformer = $transformer;
-        $this->logger = $logger;
+    public function __construct(private readonly SuiteCollectionTransformer $transformer, private readonly ConfigurableRegistry $registry, private readonly ExpressionBridge $evaluator, private readonly LoggerInterface $logger)
+    {
     }
 
     /**
@@ -177,9 +149,9 @@ class ComponentGenerator implements ComponentGeneratorInterface, GeneratorInterf
         );
         $this->logger->debug(sprintf(
             'Rendered component "%s" (%s) for "%s" in "%ss"',
-            get_class($component),
+            $component::class,
             $component->title(),
-            get_class($componentGenerator),
+            $componentGenerator::class,
             number_format(microtime(true) - $start, 2)
         ));
 

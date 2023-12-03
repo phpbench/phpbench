@@ -42,26 +42,8 @@ final class Token
     public const T_PARAMETER = 'parameter';
     public const T_QUESTION = 'question';
 
-    /**
-     * @var string
-     */
-    public $type;
-
-    /**
-     * @var string
-     */
-    public $value;
-
-    /**
-     * @var int
-     */
-    public $offset;
-
-    public function __construct(string $type, string $value, int $offset)
+    public function __construct(public string $type, public string $value, public int $offset)
     {
-        $this->type = $type;
-        $this->value = $value;
-        $this->offset = $offset;
     }
 
     public function length(): int

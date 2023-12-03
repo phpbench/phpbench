@@ -5,20 +5,14 @@ namespace PhpBench\Color;
 final class GradientBuilder
 {
     /**
-     * @var string
-     */
-    private $startColor;
-
-    /**
      * @var array<int, array{string, int}>
      */
     private $series = [];
 
-    private $cache = [];
+    private array $cache = [];
 
-    public function __construct(string $startColor = '#000000')
+    public function __construct(private string $startColor = '#000000')
     {
-        $this->startColor = $startColor;
     }
 
     public function create(string $startColor): self

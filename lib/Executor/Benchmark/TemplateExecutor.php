@@ -12,6 +12,7 @@
 
 namespace PhpBench\Executor\Benchmark;
 
+use RuntimeException;
 use PhpBench\Compat\SymfonyOptionsResolverCompat;
 use PhpBench\Executor\BenchmarkExecutorInterface;
 use PhpBench\Executor\Exception\ExecutionError;
@@ -26,25 +27,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TemplateExecutor implements BenchmarkExecutorInterface
 {
-    public const OPTION_PHP_CONFIG = 'php_config';
-    public const OPTION_SAFE_PARAMETERS = 'safe_parameters';
+    final public const OPTION_PHP_CONFIG = 'php_config';
+    final public const OPTION_SAFE_PARAMETERS = 'safe_parameters';
 
     private const PHP_OPTION_MAX_EXECUTION_TIME = 'max_execution_time';
 
-    /**
-     * @var Launcher
-     */
-    private $launcher;
-
-    /**
-     * @var string
-     */
-    private $templatePath;
-
-    public function __construct(Launcher $launcher, string $templatePath)
+    public function __construct(private readonly Launcher $launcher, private readonly string $templatePath)
     {
-        $this->launcher = $launcher;
-        $this->templatePath = $templatePath;
     }
 
     public function execute(ExecutionContext $context, Config $config): ExecutionResults
@@ -69,7 +58,7 @@ class TemplateExecutor implements BenchmarkExecutorInterface
         }
 
         if (isset($result['buffer']) && $result['buffer']) {
-            throw new \RuntimeException(sprintf(
+            throw new RuntimeException(sprintf(
                 'Benchmark made some noise: %s',
                 $result['buffer']
             ));

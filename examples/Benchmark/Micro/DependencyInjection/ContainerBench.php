@@ -12,6 +12,7 @@
 
 namespace PhpBench\Examples\Benchmark\Micro\DependencyInjection;
 
+use PhpBench\Extension\CoreExtension;
 use PhpBench\DependencyInjection\Container;
 
 /**
@@ -30,7 +31,7 @@ class ContainerBench
     public function benchInitCoreExtension()
     {
         $container = new Container([
-            'PhpBench\Extension\CoreExtension',
+            CoreExtension::class,
         ]);
         $container->init();
     }

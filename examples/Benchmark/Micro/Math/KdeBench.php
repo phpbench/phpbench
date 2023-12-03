@@ -24,7 +24,7 @@ use PhpBench\Math\Statistics;
  */
 class KdeBench
 {
-    private $points = [];
+    private array $points = [];
 
     public function generatePoints($params)
     {

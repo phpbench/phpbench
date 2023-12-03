@@ -18,15 +18,9 @@ use Attribute;
 final class Groups
 {
     /**
-     * @var string[]
-     */
-    public $groups;
-
-    /**
      * @param string[] $groups
      */
-    public function __construct(array $groups)
+    public function __construct(public array $groups)
     {
-        $this->groups = $groups;
     }
 }

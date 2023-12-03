@@ -49,7 +49,7 @@ class AcmeExtension implements ExtensionInterface
             ConsoleExtension::TAG_CONSOLE_COMMAND => []
         ]);
         // endsection: command_di
-        
+
         // section: progress_logger_di
         $container->register(CatLogger::class, function (Container $container) {
             return new CatLogger(

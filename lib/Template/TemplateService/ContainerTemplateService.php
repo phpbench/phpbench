@@ -8,19 +8,8 @@ use RuntimeException;
 
 final class ContainerTemplateService implements TemplateService
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
-    /**
-     * @var array
-     */
-    private $serviceMap;
-
-    public function __construct(ContainerInterface $container, array $serviceMap)
+    public function __construct(private readonly ContainerInterface $container, private array $serviceMap)
     {
-        $this->container = $container;
-        $this->serviceMap = $serviceMap;
     }
 
     public function get(string $serviceName): object

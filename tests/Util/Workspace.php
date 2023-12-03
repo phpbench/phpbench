@@ -11,14 +11,8 @@ use SplFileInfo;
 
 class Workspace
 {
-    /**
-     * @var string
-     */
-    private $path;
-
-    public function __construct(string $path)
+    public function __construct(private readonly string $path)
     {
-        $this->path = $path;
     }
 
     public static function create(string $path): self

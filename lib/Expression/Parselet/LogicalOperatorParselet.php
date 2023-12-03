@@ -10,19 +10,8 @@ use PhpBench\Expression\Tokens;
 
 class LogicalOperatorParselet implements InfixParselet
 {
-    /**
-     * @var string
-     */
-    private $tokenType;
-    /**
-     * @var int
-     */
-    private $precedence;
-
-    public function __construct(string $tokenType, int $precedence)
+    public function __construct(private readonly string $tokenType, private readonly int $precedence)
     {
-        $this->tokenType = $tokenType;
-        $this->precedence = $precedence;
     }
 
     public function tokenType(): string

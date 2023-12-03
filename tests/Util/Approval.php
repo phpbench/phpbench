@@ -11,25 +11,10 @@ use function json_decode;
 class Approval
 {
     /**
-     * @var string[]
-     */
-    private array $sections;
-
-    private ?string $expected;
-
-    private string $path;
-
-    /**
      * @param string[] $sections
      */
-    public function __construct(
-        string $path,
-        array $sections,
-        ?string $expected
-    ) {
-        $this->sections = $sections;
-        $this->expected = $expected;
-        $this->path = $path;
+    public function __construct(private readonly string $path, private array $sections, private readonly ?string $expected)
+    {
     }
 
     public static function create(string $path, int $configCount, string $delimiter = '---'): self

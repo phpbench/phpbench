@@ -23,25 +23,11 @@ use PhpBench\Report\Model\Reports;
 class ReportManager
 {
     /**
-     * @var ConfigurableRegistry<GeneratorInterface>
-     */
-    private $generatorRegistry;
-
-    /**
-     * @var ConfigurableRegistry<RendererInterface>
-     */
-    private $rendererRegistry;
-
-    /**
      * @param ConfigurableRegistry<GeneratorInterface> $generatorRegistry
      * @param ConfigurableRegistry<RendererInterface> $rendererRegistry
      */
-    public function __construct(
-        ConfigurableRegistry $generatorRegistry,
-        ConfigurableRegistry $rendererRegistry
-    ) {
-        $this->generatorRegistry = $generatorRegistry;
-        $this->rendererRegistry = $rendererRegistry;
+    public function __construct(private readonly ConfigurableRegistry $generatorRegistry, private readonly ConfigurableRegistry $rendererRegistry)
+    {
     }
 
     /**

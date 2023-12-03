@@ -24,11 +24,11 @@ class PayloadTest extends IntegrationTestCase
     /**
      * @var Process&MockObject
      */
-    private $process;
+    private MockObject $process;
     /**
      * @var ProcessFactoryInterface&MockObject
      */
-    private $processFactory;
+    private MockObject $processFactory;
 
     protected function setUp(): void
     {

@@ -4,19 +4,8 @@ namespace PhpBench\Expression\Ast;
 
 class ConcatNode extends Node
 {
-    /**
-     * @var Node
-     */
-    private $left;
-    /**
-     * @var Node
-     */
-    private $right;
-
-    public function __construct(Node $left, Node $right)
+    public function __construct(private readonly Node $left, private Node $right)
     {
-        $this->left = $left;
-        $this->right = $right;
     }
 
     public function left(): Node

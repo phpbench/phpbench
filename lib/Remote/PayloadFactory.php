@@ -14,25 +14,10 @@ namespace PhpBench\Remote;
 
 class PayloadFactory
 {
-    /**
-     * @var string|null
-     */
-    private $remoteScriptPath;
+    private readonly ProcessFactory $processFactory;
 
-    /**
-     * @var bool
-     */
-    private $remoteScriptRemove;
-
-    /**
-     * @var ProcessFactory
-     */
-    private $processFactory;
-
-    public function __construct(?ProcessFactory $processFactory = null, ?string $remoteScriptPath = null, bool $remoteScriptRemove = false)
+    public function __construct(?ProcessFactory $processFactory = null, private readonly ?string $remoteScriptPath = null, private readonly bool $remoteScriptRemove = false)
     {
-        $this->remoteScriptPath = $remoteScriptPath;
-        $this->remoteScriptRemove = $remoteScriptRemove;
         $this->processFactory = $processFactory ?: new ProcessFactory();
     }
 

@@ -12,6 +12,9 @@
 
 namespace PhpBench\Tests\Unit\Model;
 
+use Prophecy\Prophecy\ObjectProphecy;
+use Exception;
+use PhpBench\Model\ErrorStack;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\ParameterSet;
 use PhpBench\Model\Result\ComputedResult;
@@ -25,8 +28,8 @@ use RuntimeException;
 
 class VariantTest extends TestCase
 {
-    private $subject;
-    private $parameterSet;
+    private ObjectProphecy $subject;
+    private ParameterSet $parameterSet;
 
     protected function setUp(): void
     {
@@ -47,7 +50,7 @@ class VariantTest extends TestCase
         $this->assertCount(4, $variant);
 
         foreach ($variant as $iteration) {
-            $this->assertInstanceOf('PhpBench\Model\Iteration', $iteration);
+            $this->assertInstanceOf(Iteration::class, $iteration);
         }
     }
 
@@ -134,7 +137,7 @@ class VariantTest extends TestCase
     public function testExceptionAwareness(): void
     {
         $variant = new Variant($this->subject->reveal(), $this->parameterSet, 10, 20);
-        $error = new \Exception('Test');
+        $error = new Exception('Test');
 
         $this->assertFalse($variant->hasErrorStack());
         $variant->setException($error);
@@ -149,7 +152,7 @@ class VariantTest extends TestCase
     {
         $variant = new Variant($this->subject->reveal(), $this->parameterSet, 10, 20);
         $errorStack = $variant->getErrorStack();
-        $this->assertInstanceOf('PhpBench\Model\ErrorStack', $errorStack);
+        $this->assertInstanceOf(ErrorStack::class, $errorStack);
     }
 
     /**
@@ -179,7 +182,7 @@ class VariantTest extends TestCase
         $variant->createIteration(TestUtil::createResults(4, 10));
         $variant->createIteration(TestUtil::createResults(4, 10));
         $variant->computeStats();
-        $variant->setException(new \Exception('Test'));
+        $variant->setException(new Exception('Test'));
         $variant->getStats();
     }
 

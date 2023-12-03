@@ -14,22 +14,10 @@ class TemplateNodePrinter implements NodePrinter
     /**
      * @var array<string, string>
      */
-    private $cached = [];
+    private array $cached = [];
 
-    /**
-     * @var NodePrinters
-     */
-    private $nodePrinters;
-
-    /**
-     * @var ObjectRenderer
-     */
-    private $renderer;
-
-    public function __construct(ObjectRenderer $renderer, NodePrinters $nodePrinters)
+    public function __construct(private readonly ObjectRenderer $renderer, private readonly NodePrinters $nodePrinters)
     {
-        $this->nodePrinters = $nodePrinters;
-        $this->renderer = $renderer;
     }
 
     /**
@@ -51,7 +39,7 @@ class TemplateNodePrinter implements NodePrinter
             $this->cached[$hash] = $this->renderer->render($node);
 
             return $this->cached[$hash];
-        } catch (CouldNotFindTemplateForObject $couldNotFind) {
+        } catch (CouldNotFindTemplateForObject) {
             return $this->nodePrinters->print($printer, $node);
         }
     }

@@ -12,9 +12,11 @@
 
 namespace PhpBench\Progress;
 
+use InvalidArgumentException;
+
 class LoggerRegistry
 {
-    private $progressLoggers;
+    private ?array $progressLoggers = null;
 
     public function addProgressLogger($name, LoggerInterface $progressLogger): void
     {
@@ -24,7 +26,7 @@ class LoggerRegistry
     public function getProgressLogger($name)
     {
         if (!isset($this->progressLoggers[$name])) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'No progress logger with name "%s" has been registered, known progress loggers: "%s"',
                 $name,
                 implode('", "', array_keys($this->progressLoggers))

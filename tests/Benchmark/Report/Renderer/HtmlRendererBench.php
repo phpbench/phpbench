@@ -11,9 +11,9 @@ use PhpBench\Tests\Benchmark\IntegrationBenchCase;
 
 final class HtmlRendererBench extends IntegrationBenchCase
 {
-    private Reports $reports;
+    private readonly Reports $reports;
 
-    private HtmlRenderer $renderer;
+    private readonly HtmlRenderer $renderer;
 
     public function __construct()
     {

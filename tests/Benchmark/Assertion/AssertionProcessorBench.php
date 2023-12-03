@@ -10,9 +10,9 @@ use PhpBench\Tests\Util\VariantBuilder;
 
 class AssertionProcessorBench extends IntegrationBenchCase
 {
-    private AssertionProcessor $processor;
+    private readonly AssertionProcessor $processor;
 
-    private Variant $variant;
+    private readonly Variant $variant;
 
     public function __construct()
     {

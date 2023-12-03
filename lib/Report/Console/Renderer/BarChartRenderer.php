@@ -14,24 +14,12 @@ use function mb_substr;
 
 class BarChartRenderer implements ObjectRendererInterface
 {
-    public const HEIGHT = 8;
-    public const COLORS = ['red', 'green', 'blue', 'cyan', 'magenta', 'yellow', 'white'];
-    public const BLOCKS = ['▁', '▂', '▃', '▄', '▅', '▆', '▇', '█'];
+    final public const HEIGHT = 8;
+    final public const COLORS = ['red', 'green', 'blue', 'cyan', 'magenta', 'yellow', 'white'];
+    final public const BLOCKS = ['▁', '▂', '▃', '▄', '▅', '▆', '▇', '█'];
 
-    /**
-     * @var Printer
-     */
-    private $printer;
-
-    /**
-     * @var ExpressionEvaluator
-     */
-    private $evaluator;
-
-    public function __construct(ExpressionEvaluator $evaluator, Printer $printer)
+    public function __construct(private readonly ExpressionEvaluator $evaluator, private readonly Printer $printer)
     {
-        $this->printer = $printer;
-        $this->evaluator = $evaluator;
     }
 
     public function render(OutputInterface $output, ObjectRenderer $renderer, object $object): bool

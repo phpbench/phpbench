@@ -22,10 +22,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
 
 class HtmlRendererTest extends AbstractRendererCase
 {
-    /**
-     * @var BufferedOutput
-     */
-    private $output;
+    private BufferedOutput $output;
 
     protected function setUp(): void
     {

@@ -21,41 +21,26 @@ use PhpBench\Model\Subject;
 class BenchmarkMetadata
 {
     /**
-     * @var string
-     */
-    private $path;
-
-    /**
-     * @var string
-     */
-    private $class;
-
-    /**
      * @var array<string, SubjectMetadata> indexed by subject name
      */
-    private $subjects = [];
+    private array $subjects = [];
 
     /**
      * @var string[]
      */
-    private $beforeClassMethods = [];
+    private array $beforeClassMethods = [];
 
     /**
      * @var string[]
      */
-    private $afterClassMethods = [];
+    private array $afterClassMethods = [];
 
-    /**
-     * @var ExecutorMetadata|null
-     */
-    private $executorMetadata;
+    private ?ExecutorMetadata $executorMetadata = null;
 
     /**
      */
-    public function __construct(string $path, string $class)
+    public function __construct(private readonly string $path, private readonly string $class)
     {
-        $this->path = $path;
-        $this->class = $class;
     }
 
     /**

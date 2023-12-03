@@ -22,14 +22,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ConsoleRenderer implements RendererInterface
 {
-    /**
-     * @var ObjectRenderer
-     */
-    private $renderer;
-
-    public function __construct(ObjectRenderer $renderer)
+    public function __construct(private readonly ObjectRenderer $renderer)
     {
-        $this->renderer = $renderer;
     }
 
     /**

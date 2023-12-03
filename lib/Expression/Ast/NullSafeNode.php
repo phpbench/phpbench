@@ -4,14 +4,8 @@ namespace PhpBench\Expression\Ast;
 
 class NullSafeNode extends Node
 {
-    /**
-     * @var Node
-     */
-    private $variable;
-
-    public function __construct(Node $variable)
+    public function __construct(private readonly Node $variable)
     {
-        $this->variable = $variable;
     }
 
     public function node(): Node
