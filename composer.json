@@ -44,6 +44,7 @@
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan": "^1.0",
         "phpstan/phpstan-phpunit": "^1.0",
+        "phpunit/phpunit": "^10.4",
         "rector/rector": "^0.18.11",
         "symfony/error-handler": "^5.2 || ^6.0 || ^7.0",
         "symfony/var-dumper": "^4.0 || ^5.0 || ^6.0 || ^7.0"

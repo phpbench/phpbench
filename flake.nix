@@ -43,6 +43,7 @@
             pkgs.bash
             pkgs.php81.packages.composer
             pkgs.sphinx
+            phpForPhpTui
             pkgs.python311Packages.sphinx-tabs
           ];
           shellHook = ''
