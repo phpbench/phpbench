@@ -25,9 +25,17 @@ use RuntimeException;
 class LatestResolverTest extends TestCase
 {
     private LatestResolver $resolver;
+
+    /** @var ObjectProphecy<DriverInterface>  */
     private ObjectProphecy $storage;
+
+    /** @var ObjectProphecy<HistoryIteratorInterface> */
     private ObjectProphecy $history;
+
+    /** @var ObjectProphecy<HistoryEntry> */
     private ObjectProphecy $historyEntry;
+
+    /** @var ObjectProphecy<HistoryEntry> */
     private ObjectProphecy $historyEntry1;
 
     protected function setUp(): void

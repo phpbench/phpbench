@@ -69,6 +69,9 @@ class TagResolverTest extends TestCase
         $this->assertEquals(1234, $uuid);
     }
 
+    /**
+     * @return list<list{string}>
+     */
     public static function provideTags(): array
     {
         return [

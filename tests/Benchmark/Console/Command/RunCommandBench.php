@@ -63,6 +63,10 @@ EOT
         );
     }
 
+    /**
+     * @param mixed[] $args
+     * @param mixed[] $config
+     */
     private function runCommand(array $args, array $config = []): void
     {
         chdir($this->workspace()->path());

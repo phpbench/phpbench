@@ -49,7 +49,7 @@ final class Runner
 
     public function __construct(
         /**
-         * @var ConfigurableRegistry<BenchmarkExecutorInterface>
+         * @var ConfigurableRegistry<covariant BenchmarkExecutorInterface>
          */
         private readonly ConfigurableRegistry $executorRegistry,
         private readonly Supplier $envSupplier,

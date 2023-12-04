@@ -218,7 +218,7 @@ EOT;
      *
      * @dataProvider provideClassMethodsOnMethodException
      */
-    public function testClassMethodsOnException($annotation): void
+    public function testClassMethodsOnException(string $annotation): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('annotation can only be applied');
@@ -238,7 +238,10 @@ EOT;
         $this->createDriver()->getMetadataForHierarchy($hierarchy);
     }
 
-    public static function provideClassMethodsOnMethodException()
+    /**
+     * @return list<list{string}>
+     */
+    public static function provideClassMethodsOnMethodException(): array
     {
         return [
             [
@@ -521,7 +524,7 @@ EOT;
         $this->assertArrayHasKey('foo_bar_Foo', $metadata->getSubjects());
     }
 
-    private function createDriver($prefix = '^bench'): DriverInterface
+    private function createDriver(string $prefix = '^bench'): DriverInterface
     {
         return new AnnotationDriver(
             $prefix

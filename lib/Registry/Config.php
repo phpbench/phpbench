@@ -29,8 +29,13 @@ class Config extends ArrayObject
      */
     final public const NAME_REGEX = '{^[0-9a-zA-Z_-]+$}';
 
+    /** @var string */
     private $name;
 
+    /**
+     * @param string $name
+     * @param mixed[] $config
+     */
     public function __construct($name, array $config)
     {
         if (!preg_match(self::NAME_REGEX, (string) $name)) {
@@ -57,6 +62,9 @@ class Config extends ArrayObject
         return parent::offsetGet($offset);
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
         return $this->name;

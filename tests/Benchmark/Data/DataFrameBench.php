@@ -8,10 +8,13 @@ use function array_fill;
 
 class DataFrameBench
 {
-    private ?array $series = null;
+    /** @var list<list<int>> */
+    private array $series;
 
-    private ?array $columns = null;
+    /** @var list<int> */
+    private array $columns;
 
+    /** @var list<list<int>> */
     private ?array $records = null;
 
     public function setUpRowArrays(): void

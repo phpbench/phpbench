@@ -42,6 +42,7 @@ class Registry
     private array $serviceMap = [];
 
     /**
+     * @param string $serviceType
      * @param string $defaultService
      */
     public function __construct(protected $serviceType, private readonly ContainerInterface $container, private $defaultService = null)
@@ -119,6 +120,9 @@ class Registry
         return array_key_exists($name, $this->services);
     }
 
+    /**
+     * @return list<string>
+     */
     public function getServiceNames(): array
     {
         return array_keys($this->services);

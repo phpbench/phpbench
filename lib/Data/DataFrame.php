@@ -17,7 +17,7 @@ use function array_reduce;
 use function array_search;
 
 /**
- * @implements IteratorAggregate<Series>
+ * @implements IteratorAggregate<Row>
  * @implements ArrayAccess<string,mixed[]>
  */
 final class DataFrame implements IteratorAggregate, ArrayAccess
@@ -55,7 +55,7 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
 
     /**
      * @param array<int, array<int|string,mixed>> $rows
-     * @param string[] $columns
+     * @param array<string|int> $columns
      */
     public static function fromRowSeries(array $rows, array $columns): self
     {
@@ -65,7 +65,7 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param array<int, array<string,mixed>> $records
+     * @param array<int, array<mixed>> $records
      */
     public static function fromRecords(array $records): self
     {
@@ -163,7 +163,7 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @return ArrayIterator<Row>
+     * @return ArrayIterator<int, Row>
      */
     public function getIterator(): ArrayIterator
     {

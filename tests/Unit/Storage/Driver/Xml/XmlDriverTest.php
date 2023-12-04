@@ -27,14 +27,22 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class XmlDriverTest extends TestCase
 {
-    private ObjectProphecy $xmlEncoder;
+    /** @var ObjectProphecy<XmlDecoder> */
     private ObjectProphecy $xmlDecoder;
+
+    /** @var ObjectProphecy<XmlEncoder> */
+    private ObjectProphecy $xmlEncoder;
+
+    /** @var ObjectProphecy<Filesystem> */
     private ObjectProphecy $filesystem;
+
+    /** @var ObjectProphecy<SuiteCollection> */
     private ObjectProphecy $collection;
+
+    /** @var ObjectProphecy<Suite> */
     private ObjectProphecy $suite;
 
-    /**
-     */
+    /** @var ObjectProphecy<Document> */
     private ObjectProphecy $document;
 
     private XmlDriver $driver;

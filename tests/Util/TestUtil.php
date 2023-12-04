@@ -13,6 +13,8 @@
 namespace PhpBench\Tests\Util;
 
 use DateTime;
+use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
+use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Environment\Information;
 use PhpBench\Model\ParameterSet;
 use PhpBench\Model\Result\MemoryResult;
@@ -29,6 +31,10 @@ use RuntimeException;
  */
 class TestUtil
 {
+    /**
+     * @param ObjectProphecy<SubjectMetadata> $subject
+     * @param array<string, mixed> $options
+     */
     public static function configureSubjectMetadata(ObjectProphecy $subject, array $options = []): void
     {
         $options = array_merge([
@@ -75,6 +81,10 @@ class TestUtil
         return $variant;
     }
 
+    /**
+     * @param ObjectProphecy<BenchmarkMetadata> $benchmark
+     * @param array<string, mixed> $options
+     */
     public static function configureBenchmarkMetadata(ObjectProphecy $benchmark, array $options = []): void
     {
         $options = array_merge([
@@ -94,7 +104,7 @@ class TestUtil
     /**
      * @param array<string,mixed> $options
      */
-    public static function createSuite(array $options = [], $suiteIndex = null): Suite
+    public static function createSuite(array $options = [], string $suiteIndex = null): Suite
     {
         $options = array_merge([
             'uuid' => $suiteIndex,
@@ -169,6 +179,9 @@ class TestUtil
         return $suite;
     }
 
+    /**
+     * @param array<array<string,mixed>> $suiteConfigs
+     */
     public static function createCollection(array $suiteConfigs = []): SuiteCollection
     {
         $suites = [];
@@ -180,7 +193,10 @@ class TestUtil
         return new SuiteCollection($suites);
     }
 
-    public static function createResults($time, $memory = 0)
+    /**
+     * @return list{TimeResult, MemoryResult, RejectionCountResult}
+     */
+    public static function createResults(int $time, int $memory = 0): array
     {
         return [
             new TimeResult($time),

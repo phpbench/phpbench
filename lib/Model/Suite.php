@@ -24,24 +24,23 @@ use RuntimeException;
  *
  * This is the base of the object graph created by the Runner.
  *
- * @implements IteratorAggregate<Benchmark>
+ * @implements IteratorAggregate<array-key, Benchmark>
  */
 class Suite implements IteratorAggregate
 {
-    private ?Tag $tag = null;
+    private ?Tag $tag;
 
     /**
      * __construct.
      *
      * @param Information[] $envInformations
+     * @param Benchmark[] $benchmarks
+     * @param string|null $uuid
      */
     public function __construct(
         ?string $tag,
         private DateTime $date,
         private ?string $configPath = null,
-        /**
-         * @var Benchmark[]
-         */
         private array $benchmarks = [],
         private array $envInformations = [],
         private $uuid = null
@@ -101,7 +100,7 @@ class Suite implements IteratorAggregate
     }
 
     /**
-     * @return ArrayIterator<Benchmark>
+     * @return ArrayIterator<array-key, Benchmark>
      */
     public function getIterator(): ArrayIterator
     {
@@ -128,6 +127,9 @@ class Suite implements IteratorAggregate
         return new Summary($this);
     }
 
+    /**
+     * @return list<Iteration>
+     */
     public function getIterations(): array
     {
         $iterations = [];
@@ -173,6 +175,9 @@ class Suite implements IteratorAggregate
         return $variants;
     }
 
+    /**
+     * @return list<ErrorStack>
+     */
     public function getErrorStacks(): array
     {
         $errorStacks = [];

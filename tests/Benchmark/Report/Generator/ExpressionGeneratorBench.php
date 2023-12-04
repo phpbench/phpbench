@@ -20,6 +20,7 @@ class ExpressionGeneratorBench extends IntegrationBenchCase
 
     private readonly Suite $suite;
 
+    /** @var mixed[] */
     private readonly array $config;
 
     public function __construct()

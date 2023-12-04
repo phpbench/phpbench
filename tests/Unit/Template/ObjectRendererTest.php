@@ -27,7 +27,7 @@ class ObjectRendererTest extends IntegrationTestCase
         $this->workspace()->put('foo.html', 'Hello <?php echo $this->foobar->hello() ?>');
         self::assertEquals('Hello Hello', $this->createRenderer([
             'foobar' => new class () {
-                public function hello()
+                public function hello(): string
                 {
                     return 'Hello';
                 }
@@ -42,6 +42,9 @@ class ObjectRendererTest extends IntegrationTestCase
         $this->createRenderer([])->render(new Foobar());
     }
 
+    /**
+     * @param array<string, object> $services
+     */
     public function createRenderer(array $services = []): ObjectRenderer
     {
         return new ObjectRenderer(

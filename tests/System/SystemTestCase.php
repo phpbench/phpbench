@@ -23,10 +23,7 @@ use Symfony\Component\Process\Process;
 
 class SystemTestCase extends IntegrationTestCase
 {
-    /**
-     * @var string
-     */
-    protected $fname;
+    protected string $fname;
 
     protected function setUp(): void
     {
@@ -40,7 +37,7 @@ class SystemTestCase extends IntegrationTestCase
         $filesystem->mirror(__DIR__ . '/bootstrap', $this->workspace()->path('/bootstrap'));
     }
 
-    public function getBenchResult($benchmark = null, $extraCmd = '')
+    public function getBenchResult(string $benchmark = null, string $extraCmd = ''): Document
     {
         $benchmark = $benchmark ?: 'benchmarks/set4';
 
@@ -69,7 +66,7 @@ class SystemTestCase extends IntegrationTestCase
         return $process;
     }
 
-    protected function assertExitCode($expected, Process $process): void
+    protected function assertExitCode(int $expected, Process $process): void
     {
         $exitCode = $process->getExitCode();
 
@@ -87,12 +84,12 @@ class SystemTestCase extends IntegrationTestCase
         $this->assertEquals($expected, $exitCode);
     }
 
-    protected function assertXPathCount($count, $xmlString, $query): void
+    protected function assertXPathCount(int $count, string $xmlString, string $query): void
     {
         $this->assertXPathExpression($count, $xmlString, sprintf('count(%s)', $query));
     }
 
-    protected function assertXPathExpression($expected, $xmlString, $expression): void
+    protected function assertXPathExpression(int $expected, string $xmlString, string $expression): void
     {
         $dom = new DOMDocument();
         $result = @$dom->loadXML($xmlString);

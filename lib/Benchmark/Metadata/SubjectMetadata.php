@@ -161,41 +161,65 @@ class SubjectMetadata
         return $this->groups ?: [];
     }
 
+    /**
+     * @param string[] $groups
+     */
     public function inGroups(array $groups): bool
     {
         return (bool) count(array_intersect($this->groups, $groups));
     }
 
+    /**
+     * @param string[] $groups
+     */
     public function setGroups(array $groups): void
     {
         $this->groups = $groups;
     }
 
+    /**
+     * @return string[]
+     */
     public function getBeforeMethods(): array
     {
         return $this->beforeMethods ?: [];
     }
 
+    /**
+     * @param string[] $beforeMethods
+     */
     public function setBeforeMethods(array $beforeMethods): void
     {
         $this->beforeMethods = $beforeMethods;
     }
 
+    /**
+     * @return string[]
+     */
     public function getAfterMethods(): array
     {
         return $this->afterMethods ?: [];
     }
 
+    /**
+     * @param string[] $afterMethods
+     */
     public function setAfterMethods(array $afterMethods): void
     {
         $this->afterMethods = $afterMethods;
     }
 
+    /**
+     * @return string[]
+     */
     public function getParamProviders(): array
     {
         return $this->paramProviders ?: [];
     }
 
+    /**
+     * @param string[] $paramProviders
+     */
     public function setParamProviders(array $paramProviders): self
     {
         $this->paramProviders = $paramProviders;
@@ -203,21 +227,33 @@ class SubjectMetadata
         return $this;
     }
 
+    /**
+     * @return int[]|null
+     */
     public function getIterations(): ?array
     {
         return $this->iterations;
     }
 
+    /**
+     * @param int[] $iterations
+     */
     public function setIterations(array $iterations): void
     {
         $this->iterations = $iterations;
     }
 
+    /**
+     * @return int[]|null
+     */
     public function getRevs(): ?array
     {
         return $this->revs;
     }
 
+    /**
+     * @param int[] $revs
+     */
     public function setRevs(array $revs): void
     {
         $this->revs = $revs;

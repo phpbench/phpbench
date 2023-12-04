@@ -22,9 +22,11 @@ class CartesianParameterIteratorTest extends TestCase
     /**
      * It should generate the cartestian product of all sets for each iteration.
      *
+     * @param mixed[] $parameterSets
+     *
      * @dataProvider provideIterate
      */
-    public function testIterate($parameterSets, $expected): void
+    public function testIterate(array $parameterSets, mixed $expected): void
     {
         $iterator = new CartesianParameterIterator(ParameterSetsCollection::fromUnserializedParameterSetsCollection($parameterSets));
         $result = [];
@@ -37,6 +39,9 @@ class CartesianParameterIteratorTest extends TestCase
         $this->assertEquals($expected, $result);
     }
 
+    /**
+     * @return \Generator<mixed>
+     */
     public static function provideIterate()
     {
         yield '0 x 0' => [

@@ -79,15 +79,13 @@ class XmlEncoderTest extends XmlTestCase
         $approval->approve($this->dumpNormalized($dom));
     }
 
-    private function dumpNormalized(Document $dom)
+    private function dumpNormalized(Document $dom): string
     {
         return str_replace(PhpBench::version(), 'PHPBENCH_VERSION', $dom->dump());
     }
 
     private function encode(SuiteCollection $collection): Document
     {
-        $xmlEncoder = new XmlEncoder();
-
-        return $xmlEncoder->encode($collection);
+        return (new XmlEncoder())->encode($collection);
     }
 }
