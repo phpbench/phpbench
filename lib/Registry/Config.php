@@ -34,7 +34,7 @@ class Config extends ArrayObject
 
     /**
      * @param string $name
-     * @param mixed[] $config
+     * @param array<string, mixed> $config
      */
     public function __construct($name, array $config)
     {

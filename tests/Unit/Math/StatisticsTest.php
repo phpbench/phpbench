@@ -51,14 +51,19 @@ class StatisticsTest extends TestCase
      * It should generate a linear space.
      *
      * @dataProvider provideLinearSpace
+     *
+     * @param float[] $expected
      */
-    public function testLinearSpace($min, $max, $steps, $endpoint, $expected): void
+    public function testLinearSpace(float $min, float $max, int $steps, bool $endpoint, array $expected): void
     {
         $result = Statistics::linspace($min, $max, $steps, $endpoint);
         $this->assertEquals($expected, $result);
     }
 
-    public static function provideLinearSpace()
+    /**
+     * @return list<list{int,int, int, bool, float[]}>
+     */
+    public static function provideLinearSpace(): array
     {
         return [
             [
@@ -98,14 +103,19 @@ class StatisticsTest extends TestCase
 
     /**
      * @dataProvider provideKdeMode
+     *
+     * @param array<int|float> $population
      */
-    public function testKdeMode($population, $space, $bandwidth, $expected): void
+    public function testKdeMode(array $population, int $space, string|float $bandwidth, float $expected): void
     {
         $result = Statistics::kdeMode($population, $space, $bandwidth);
         $this->assertEquals($expected, round($result, 2));
     }
 
-    public static function provideKdeMode()
+    /**
+     * @return list<list{int[], int, string|float, float}>
+     */
+    public static function provideKdeMode(): array
     {
         return [
             [
@@ -158,14 +168,21 @@ class StatisticsTest extends TestCase
      * It should return histogram data.
      *
      * @dataProvider provideHistogram
+     *
+     * @param array<int|float> $data
+     * @param array<int> $expected
+     *
      */
-    public function testHistogram(array $data, $steps, $lower, $upper, array $expected): void
+    public function testHistogram(array $data, int $steps, ?float $lower, ?float $upper, array $expected): void
     {
         $result = Statistics::histogram($data, $steps, $lower, $upper);
         $this->assertEquals($expected, $result);
     }
 
-    public static function provideHistogram()
+    /**
+     * @return list<list{list<int>, int, ?float, ?float, array<int>}>
+     */
+    public static function provideHistogram(): array
     {
         return [
             [
@@ -204,15 +221,7 @@ class StatisticsTest extends TestCase
                 ],
             ],
             [
-                [
-                    -3,
-                    -2,
-                    -1,
-                    0,
-                    1,
-                    2,
-                    3,
-                ],
+                [-3, -2, -1, 0, 1, 2, 3,],
                 10,
                 -3,
                 3,

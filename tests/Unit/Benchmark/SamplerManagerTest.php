@@ -27,8 +27,6 @@ class SamplerManagerTest extends TestCase
 {
     private SamplerManager $manager;
 
-    public static $callCount = false;
-
     protected function setUp(): void
     {
         $this->manager = new SamplerManager();
@@ -42,8 +40,8 @@ class SamplerManagerTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Baseline callable "foo" has already been registered.');
-        $this->manager->addSamplerCallable('foo', self::class . '::samplerExample');
-        $this->manager->addSamplerCallable('foo', self::class . '::samplerExample');
+        $this->manager->addSamplerCallable('foo', fn () => null);
+        $this->manager->addSamplerCallable('foo', fn () => null);
     }
 
     /**
@@ -55,10 +53,15 @@ class SamplerManagerTest extends TestCase
      */
     public function testCallable(): void
     {
-        static::$callCount = 0;
-        $this->manager->addSamplerCallable('foo', self::class . '::samplerExample');
+        $callCount = 0;
+        $callable = function (int $revs) use (&$callCount): void {
+            $callCount = $revs;
+        };
+
+        $this->manager->addSamplerCallable('foo', $callable);
         $this->manager->sample('foo', 100);
-        $this->assertEquals(100, static::$callCount);
+
+        $this->assertEquals(100, $callCount);
     }
 
     /**
@@ -69,7 +72,7 @@ class SamplerManagerTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Given sampler "foo" callable "does_not_exist" is not callable.');
-        $this->manager->addSamplerCallable('foo', 'does_not_exist');
+        $this->manager->addSamplerCallable('foo', 'does_not_exist'); // @phpstan-ignore-line
         $this->manager->sample('foo', 100);
     }
 
@@ -83,10 +86,5 @@ class SamplerManagerTest extends TestCase
         $this->expectExceptionMessage('Given sampler "foo" callable "object" is not callable.');
         $this->manager->addSamplerCallable('foo', new stdClass());
         $this->manager->sample('foo', 100);
-    }
-
-    public static function samplerExample($revs): void
-    {
-        self::$callCount = $revs;
     }
 }

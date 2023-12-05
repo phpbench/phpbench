@@ -45,10 +45,8 @@ class PhpTest extends TestCase
         $this->assertEquals(php_ini_loaded_file(), $info['ini']);
     }
 
-    private function createProvider()
+    private function createProvider(): Php
     {
-        return new Php(
-            new Launcher()
-        );
+        return new Php(new Launcher());
     }
 }

@@ -12,6 +12,9 @@ class PartitionTest extends TestCase
 {
     /**
      * @dataProvider providePartition
+     *
+     * @param mixed[] $records
+     * @param mixed[] $expected
      */
     public function testPartition(array $records, Closure $paritioner, array $expected): void
     {
@@ -21,33 +24,30 @@ class PartitionTest extends TestCase
         );
     }
 
+    /**
+     * @return Generator<mixed>
+     */
     public static function providePartition(): Generator
     {
         yield [
-            [
-            ],
-            function (): void {
-            },
-            [
-            ]
+            [],
+            function (): void {},
+            []
         ];
 
         yield [
-            [
-            ],
+            [],
             function (Row $data) {
                 return $data['a'];
             },
-            [
-            ]
+            []
         ];
 
         yield [
             [
                 ['a' => 'two', 'b' => 1],
             ],
-            function (Row $data): void {
-            },
+            function (Row $data): void {},
             [
                 '' => [
                     ['a' => 'two', 'b' => 1],

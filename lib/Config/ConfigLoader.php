@@ -9,11 +9,11 @@ use PhpBench\Config\Processor\IncludeProcessor;
 
 class ConfigLoader
 {
+    /**
+     * @param  ConfigProcessor[] $processors
+     */
     public function __construct(
         private readonly ConfigLinter $linter,
-        /**
-         * @var ConfigProcessor[]
-         */
         private readonly array $processors
     ) {
     }
@@ -26,6 +26,9 @@ class ConfigLoader
         ]);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function load(string $path): array
     {
         if (!file_exists($path)) {
