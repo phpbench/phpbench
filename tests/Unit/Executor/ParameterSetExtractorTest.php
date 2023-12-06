@@ -92,6 +92,8 @@ class ParameterSetExtractorTest extends TestCase
 
     /**
      * @param string[] $providers
+     *
+     * @return array<string, mixed>
      */
     private function provideParams(array $providers): array
     {

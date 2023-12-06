@@ -92,6 +92,9 @@ class Payload
         $this->phpPath = $phpPath;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function launch(): array
     {
         $script = $this->readFile();

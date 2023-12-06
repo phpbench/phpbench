@@ -49,7 +49,7 @@ class OpcacheTest extends TestCase
         $this->assertEquals(false, $info['enabled']);
     }
 
-    private function createProvider(bool $opcacheEnabled)
+    private function createProvider(bool $opcacheEnabled): Opcache
     {
         $phpConfig = [
             'opcache.enable_cli' => $opcacheEnabled,

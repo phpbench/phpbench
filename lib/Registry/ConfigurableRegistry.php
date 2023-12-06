@@ -113,7 +113,7 @@ class ConfigurableRegistry extends Registry
      * Note that all configurations must be associated with a named service
      * via a configuration key equal to the configuration service type of this registry.
      *
-     * @param mixed[] $config
+     * @param array<string, mixed> $config
      *
      */
     public function setConfig(string $name, array $config): void

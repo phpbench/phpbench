@@ -26,7 +26,7 @@ class LocalMethodExecutorTest extends TestCase
 
         self::assertFalse(LocalTestClass::$executed);
 
-        $this->executeMethod('NotExist', 'method');
+        $this->executeMethod('NotExist', 'method'); // @phpstan-ignore-line
 
         self::assertTrue(LocalTestClass::$executed);
     }
@@ -43,7 +43,10 @@ class LocalMethodExecutorTest extends TestCase
         self::assertTrue(LocalTestClass::$executed);
     }
 
-    private function executeMethod($className, string $methodName): void
+    /**
+     * @param class-string $className
+     */
+    private function executeMethod(string $className, string $methodName): void
     {
         $context = new MethodExecutorContext(__FILE__, $className);
 

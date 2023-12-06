@@ -28,9 +28,9 @@ use InvalidArgumentException;
 class SamplerManager
 {
     /**
-     * @var mixed[]
+     * @var array<string, callable(int):mixed>
      */
-    private ?array $callables = null;
+    private array $callables = [];
 
     /**
      * Add a sampler callable. The callable can be any
@@ -39,6 +39,7 @@ class SamplerManager
      * Throws an invalid argument exception if the name has
      * already been registered.
      *
+     * @param callable(int):mixed $callable
      *
      * @throws InvalidArgumentException
      */
@@ -55,7 +56,7 @@ class SamplerManager
             throw new InvalidArgumentException(sprintf(
                 'Given sampler "%s" callable "%s" is not callable.',
                 $name,
-                is_string($callable) ? $callable : gettype($callable)
+                is_string($callable) ? $callable : gettype($callable) // @phpstan-ignore-line
             ));
         }
 
@@ -65,6 +66,9 @@ class SamplerManager
     /**
      * Return mean time taken to execute the named sampler
      * callable in microseconds.
+     *
+     * @param string $name
+     * @param int $revs
      */
     public function sample($name, $revs): float
     {

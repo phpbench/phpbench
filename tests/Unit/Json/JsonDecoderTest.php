@@ -28,14 +28,19 @@ class JsonDecoderTest extends TestCase
      * It should convert "non-strict" JSON to JSON.
      *
      * @dataProvider provideNormalizer
+     *
+     * @param mixed[] $expected
      */
-    public function testNormalizer($string, $expected): void
+    public function testNormalizer(string $string, array $expected): void
     {
         $result = $this->jsonDecoder->decode($string);
         $this->assertEquals($expected, $result);
     }
 
-    public static function provideNormalizer()
+    /**
+     * @return list<list{string, mixed[]}>
+     */
+    public static function provideNormalizer(): array
     {
         return [
             [

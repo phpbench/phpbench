@@ -20,6 +20,7 @@ use PhpBench\Tests\TestCase;
 
 class SamplerTest extends TestCase
 {
+    /** @var ObjectProphecy<SamplerManager> */
     private ObjectProphecy $manager;
     private Sampler $provider;
 
