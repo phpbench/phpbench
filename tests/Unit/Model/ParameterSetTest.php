@@ -55,6 +55,8 @@ class ParameterSetTest extends TestCase
 
     /**
      * @dataProvider provideMatches
+     *
+     * @param string[] $patterns
      */
     public function testMatches(string $name, array $patterns, bool $shouldMatch): void
     {

@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Registry;
 
+use Prophecy\Prophecy\ObjectProphecy;
 use stdClass;
 use InvalidArgumentException;
 use PhpBench\DependencyInjection\Container;
@@ -22,10 +23,17 @@ use RuntimeException;
 
 class RegistryTest extends TestCase
 {
-    protected $registry;
-    protected $container;
-    protected $service1;
-    protected $service2;
+    /** @var Registry<RegistrableInterface> */
+    protected Registry $registry;
+
+    /** @var ObjectProphecy<Container> */
+    protected ObjectProphecy $container;
+
+    /** @var ObjectProphecy<RegistrableInterface> */
+    protected ObjectProphecy $service1;
+
+    /** @var ObjectProphecy<RegistrableInterface> */
+    protected ObjectProphecy $service2;
 
     protected function setUp(): void
     {
@@ -33,10 +41,7 @@ class RegistryTest extends TestCase
         $this->service1 = $this->prophesize(RegistrableInterface::class);
         $this->service2 = $this->prophesize(RegistrableInterface::class);
 
-        $this->registry = new Registry(
-            'test',
-            $this->container->reveal()
-        );
+        $this->registry = new Registry('test', $this->container->reveal());
     }
 
     /**

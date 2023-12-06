@@ -24,6 +24,8 @@ use Prophecy\Prophecy\ObjectProphecy;
 class CompositeGeneratorTest extends TestCase
 {
     private CompositeGenerator $generator;
+
+    /** @var ObjectProphecy<ReportManager> */
     private ObjectProphecy $manager;
 
     /**

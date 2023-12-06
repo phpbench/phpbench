@@ -52,6 +52,9 @@ abstract class GeneratorTestCase extends IntegrationTestCase
         return new Config('test', $options->resolve($config));
     }
 
+    /**
+     * @param parameters $config
+     */
     protected function generate(SuiteCollection $collection, array $config): string
     {
         $container = $this->container();

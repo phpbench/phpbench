@@ -26,6 +26,8 @@ class BenchmarkTest extends TestCase
     final public const EXAMPLE_FORMAT = 'foobar';
 
     private Benchmark $benchmark;
+
+    /** @var ObjectProphecy<Suite> */
     private ObjectProphecy $suite;
 
     protected function setUp(): void

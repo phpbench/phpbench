@@ -26,6 +26,8 @@ class IniStringBuilderTest extends TestCase
 
     /**
      * @dataProvider provideBuild
+     *
+     * @param array<string, mixed> $example
      */
     public function testBuild(array $example, string $expectedIniString): void
     {
@@ -33,26 +35,22 @@ class IniStringBuilderTest extends TestCase
         $this->assertEquals($expectedIniString, $iniString);
     }
 
+    /**
+     * @return list<list{array<string, mixed>, string}>
+     */
     public static function provideBuild()
     {
         return [
             [
-                [
-                    'a' => 'b',
-                ],
+                ['a' => 'b',],
                 '-da=b',
             ],
             [
-                [
-                    'a' => 'b',
-                    'b' => 'a',
-                ],
+                ['a' => 'b', 'b' => 'a',],
                 '-da=b -db=a',
             ],
             [
-                [
-                    'a' => ['b', 'c', 'd'],
-                ],
+                ['a' => ['b', 'c', 'd'],],
                 '-da=b -da=c -da=d',
             ],
         ];

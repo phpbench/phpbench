@@ -22,8 +22,11 @@ use Symfony\Component\Process\ExecutableFinder;
 
 class LauncherTest extends TestCase
 {
+    /** @var ObjectProphecy<PayloadFactory> */
     private ObjectProphecy $factory;
+    /** @var ObjectProphecy<Payload> */
     private ObjectProphecy $payload;
+    /** @var ObjectProphecy<ExecutableFinder> */
     private ObjectProphecy $finder;
 
     protected function setUp(): void
@@ -100,7 +103,7 @@ class LauncherTest extends TestCase
         );
     }
 
-    private function createLiveLauncher()
+    private function createLiveLauncher(): Launcher
     {
         return new Launcher(
             new PayloadFactory(),

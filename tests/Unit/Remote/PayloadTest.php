@@ -173,7 +173,7 @@ class PayloadTest extends IntegrationTestCase
         return $this->validPayloadWithPhpConfig();
     }
 
-    private function validPayloadWithPhpConfig(array $phpConfig = []): Payload
+    private function validPayloadWithPhpConfig(): Payload
     {
         return new Payload(
             __DIR__ . '/template/foo.template',

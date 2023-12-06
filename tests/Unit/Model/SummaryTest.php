@@ -28,14 +28,19 @@ use Prophecy\Prophecy\ObjectProphecy;
 
 class SummaryTest extends TestCase
 {
+    /** @var ObjectProphecy<Suite> */
     private ObjectProphecy $suite;
 
+    /** @var ObjectProphecy<Benchmark> */
     private ObjectProphecy $bench1;
 
+    /** @var ObjectProphecy<Subject> */
     private ObjectProphecy $subject1;
 
+    /** @var ObjectProphecy<Variant> */
     private ObjectProphecy $variant1;
 
+    /** @var ObjectProphecy<Distribution> */
     private ObjectProphecy $stats;
 
     protected function setUp(): void

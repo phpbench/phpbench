@@ -10,6 +10,10 @@ class GroupHelperTest extends TestCase
 {
     /**
      * @dataProvider provideResolveGroupSizes
+     *
+     * @param array<string, int> $colSizes
+     * @param array<string, string> $groupNameByColumn
+     * @param list<array{string,int}> $expectedGroupSizes
      */
     public static function testResolveGroupSizes(array $colSizes, array $groupNameByColumn, array $expectedGroupSizes): void
     {
@@ -18,7 +22,7 @@ class GroupHelperTest extends TestCase
     }
 
     /**
-     * @return Generator<mixed>
+     * @return Generator<list{array<string, int>, array<string, string>, list<array{string,int}>}>
      */
     public static function provideResolveGroupSizes(): Generator
     {

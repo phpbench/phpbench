@@ -28,6 +28,7 @@ use RuntimeException;
 
 class VariantTest extends TestCase
 {
+    /** @var ObjectProphecy<Subject> */
     private ObjectProphecy $subject;
     private ParameterSet $parameterSet;
 
