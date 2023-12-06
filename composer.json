@@ -96,7 +96,7 @@
             "make -C docs html"
         ],
         "integrate": [
-            "@composer normalize",
+            "@composer normalize --indent-size=4 --indent-style=space",
             "vendor/bin/php-cs-fixer fix",
             "vendor/bin/phpstan analyse -c phpstan.neon.dist --memory-limit=-1",
             "vendor/bin/phpunit",

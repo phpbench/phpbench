@@ -73,7 +73,7 @@ jobs:
 
             -
                 name: "Run composer normalize"
-                run: "composer normalize --dry-run"
+                run: "composer normalize --dry-run --indent-size=4 --indent-style=space"
 
     php-cs-fixer:
         needs:
