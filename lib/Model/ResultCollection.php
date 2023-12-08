@@ -20,6 +20,9 @@ use InvalidArgumentException;
  */
 class ResultCollection
 {
+    /**
+     * @var array<class-string<ResultInterface>, ResultInterface>
+     */
     private array $results = [];
 
     /**
@@ -47,6 +50,7 @@ class ResultCollection
     /**
      * Return true if there is a result for the given class name.
      *
+     * @param class-string<ResultInterface> $class
      */
     public function hasResult(string $class): bool
     {
@@ -80,6 +84,9 @@ class ResultCollection
     /**
      * Return the named metric for the given result class.
      *
+     * @param class-string<ResultInterface> $class
+     *
+     * @return float|int
      *
      * @throws InvalidArgumentException
      */
@@ -106,7 +113,12 @@ class ResultCollection
      * If the metric does not exist but the class *does* exist then there is
      * clearly a problem and we should allow an error to be thrown.
      *
+     * @template TDefault
      *
+     * @param class-string<ResultInterface> $class
+     * @param TDefault $default
+     *
+     * @return int|float|TDefault
      */
     public function getMetricOrDefault(string $class, string $metric, $default = null)
     {
@@ -120,7 +132,7 @@ class ResultCollection
     /**
      * Return all results.
      *
-     * @return ResultInterface[]
+     * @return array<class-string<ResultInterface>, ResultInterface>
      */
     public function getResults(): ?array
     {

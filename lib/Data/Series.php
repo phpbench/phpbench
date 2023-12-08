@@ -7,17 +7,23 @@ use RuntimeException;
 
 final class Series implements Countable
 {
+    /**
+     * @param array<int, scalar|null> $values
+     */
     public function __construct(private array $values)
     {
     }
 
+    /**
+     * @return array<int, scalar|null>
+     */
     public function toValues(): array
     {
         return $this->values;
     }
 
     /**
-     * @return scalarOrNull
+     * @return scalar|null
      */
     public function value(int $index)
     {

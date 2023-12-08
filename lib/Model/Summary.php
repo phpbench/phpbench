@@ -26,6 +26,8 @@ class Summary
     private int $nbFailures = 0;
     private int $nbAssertions = 0;
     private int $nbErrors = 0;
+
+    /** @var array<string, array<int|float>> */
     private array $stats = [
         'stdev' => [],
         'mean' => [],
@@ -120,41 +122,65 @@ class Summary
         return $this->nbAssertions;
     }
 
+    /**
+     * @return array<string, array<int|float>>
+     */
     public function getStats(): array
     {
         return $this->stats;
     }
 
+    /**
+     * @return int|float
+     */
     public function getMinTime()
     {
         return $this->stats['min'] ? min($this->stats['min']) : 0;
     }
 
+    /**
+     * @return int|float
+     */
     public function getMaxTime()
     {
         return $this->stats['max'] ? min($this->stats['max']) : 0;
     }
 
+    /**
+     * @return int|float
+     */
     public function getMeanTime()
     {
         return Statistics::mean($this->stats['mean']);
     }
 
+    /**
+     * @return int|float
+     */
     public function getModeTime()
     {
         return Statistics::mean($this->stats['mode']);
     }
 
+    /**
+     * @return int|float
+     */
     public function getTotalTime()
     {
         return array_sum($this->stats['sum']);
     }
 
+    /**
+     * @return int|float
+     */
     public function getMeanStDev()
     {
         return Statistics::mean($this->stats['stdev']);
     }
 
+    /**
+     * @return int|float
+     */
     public function getMeanRelStDev()
     {
         return Statistics::mean($this->stats['rstdev']);

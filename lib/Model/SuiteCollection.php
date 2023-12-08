@@ -17,9 +17,11 @@ use IteratorAggregate;
 use RuntimeException;
 
 /**
- * @implements IteratorAggregate<Suite>
+ * @final
+ *
+ * @implements IteratorAggregate<array-key, Suite>
  */
-/** final */class SuiteCollection implements IteratorAggregate
+class SuiteCollection implements IteratorAggregate
 {
     /**
      * @param Suite[] $suites

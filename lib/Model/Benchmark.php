@@ -24,13 +24,9 @@ use RuntimeException;
  */
 class Benchmark implements IteratorAggregate
 {
-    /**
-     * @var Subject[]
-     */
+    /** @var Subject[] */
     private $subjects = [];
 
-    /**
-     */
     public function __construct(private Suite $suite, private string $class)
     {
     }
@@ -110,7 +106,7 @@ class Benchmark implements IteratorAggregate
     }
 
     /**
-     * @return ArrayIterator<Subject>
+     * @return ArrayIterator<array-key, Subject>
      */
     public function getIterator(): ArrayIterator
     {

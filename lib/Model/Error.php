@@ -20,6 +20,14 @@ use Throwable;
  */
 class Error
 {
+    /**
+     * @param string $message
+     * @param string $class
+     * @param int $code
+     * @param string $file
+     * @param int $line
+     * @param string $trace
+     */
     public function __construct(private $message, private $class, private $code, private $file, private $line, private $trace)
     {
     }
@@ -36,31 +44,49 @@ class Error
         );
     }
 
+    /**
+     * @return int
+     */
     public function getCode()
     {
         return $this->code;
     }
 
+    /**
+     * @return int
+     */
     public function getLine()
     {
         return $this->line;
     }
 
+    /**
+     * @return string
+     */
     public function getFile()
     {
         return $this->file;
     }
 
+    /**
+     * @return string
+     */
     public function getMessage()
     {
         return $this->message;
     }
 
+    /**
+     * @return string
+     */
     public function getClass()
     {
         return $this->class;
     }
 
+    /**
+     * @return string
+     */
     public function getTrace()
     {
         return $this->trace;

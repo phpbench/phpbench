@@ -142,9 +142,9 @@ class XmlEncoder
             foreach ($variant->getErrorStack() as $error) {
                 $errorEl = $errorsEl->appendTextNode('error', $error->getMessage());
                 $errorEl->setAttribute('exception-class', $error->getClass());
-                $errorEl->setAttribute('code', $error->getCode());
+                $errorEl->setAttribute('code', (string)$error->getCode());
                 $errorEl->setAttribute('file', $error->getFile());
-                $errorEl->setAttribute('line', $error->getLine());
+                $errorEl->setAttribute('line', (string)$error->getLine());
             }
 
             return;
@@ -177,7 +177,7 @@ class XmlEncoder
                         '%s-%s',
                         $prefix,
                         str_replace('_', '-', (string) $key)
-                    ), $value);
+                    ), (string)$value);
                 }
             }
         }
@@ -286,7 +286,7 @@ class XmlEncoder
         ksort($stats);
 
         foreach ($stats as $statName => $statValue) {
-            $statsEl->setAttribute($statName, $statValue);
+            $statsEl->setAttribute($statName, (string)$statValue);
         }
     }
 

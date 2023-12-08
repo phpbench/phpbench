@@ -46,7 +46,7 @@ interface ResultInterface
      * <iteration foo-stat-1="1234" foo-stat-2="5678"/>
      * ```
      *
-     * @retrun array
+     * @return array<string, float|int>
      */
     public function getMetrics();
 

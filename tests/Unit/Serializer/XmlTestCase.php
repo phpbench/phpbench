@@ -143,7 +143,7 @@ abstract class XmlTestCase extends TestCase
                             'This is an error',
                             'ErrorClass',
                             0,
-                            1,
+                            '1',
                             2,
                             '-- trace --'
                         ),
