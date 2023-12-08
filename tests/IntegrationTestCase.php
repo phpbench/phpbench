@@ -19,7 +19,7 @@ class IntegrationTestCase extends TestCase
     }
 
     /**
-     * @param mixed[] $config
+     * @param array<string, mixed> $config
      */
     protected function container(array $config = []): Container
     {

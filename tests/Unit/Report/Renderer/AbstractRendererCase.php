@@ -27,7 +27,7 @@ abstract class AbstractRendererCase extends IntegrationTestCase
     /**
      * @param parameters $config
      */
-    protected function renderReport($reports, $config): void
+    protected function renderReport(Reports $reports, array $config): void
     {
         $renderer = $this->getRenderer();
         $options = new OptionsResolver();
@@ -36,6 +36,9 @@ abstract class AbstractRendererCase extends IntegrationTestCase
         $renderer->render($reports, new Config('test', $options->resolve($config)));
     }
 
+    /**
+     * @param array<string, mixed> $config
+     */
     public function reports(array $config = []): Reports
     {
         $collection = TestUtil::createCollection([]);

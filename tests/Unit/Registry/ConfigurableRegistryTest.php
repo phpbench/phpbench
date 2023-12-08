@@ -16,21 +16,28 @@ use InvalidArgumentException;
 use PhpBench\Json\JsonDecoder;
 use PhpBench\Registry\Config;
 use PhpBench\Registry\ConfigurableRegistry;
+use PhpBench\Registry\RegistrableInterface;
+use PhpBench\Registry\Registry;
 use Prophecy\Argument;
 use Seld\JsonLint\ParsingException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ConfigurableRegistryTest extends RegistryTest
 {
+    /** @var ConfigurableRegistry<RegistrableInterface> */
+    protected Registry $registry;
+
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->registry = new ConfigurableRegistry(
+        /** @var ConfigurableRegistry<RegistrableInterface> $configurableRegistry */
+        $configurableRegistry = new ConfigurableRegistry(
             'test',
             $this->container->reveal(),
             new JsonDecoder()
         );
+        $this->registry = $configurableRegistry;
     }
 
     /**

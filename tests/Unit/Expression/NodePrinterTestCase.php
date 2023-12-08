@@ -9,6 +9,7 @@ use PhpBench\Tests\IntegrationTestCase;
 class NodePrinterTestCase extends IntegrationTestCase
 {
     /**
+     * @param array<string, mixed> $config
      * @param parameters $params
      */
     public function print(Node $node, array $params = [], array $config = []): string

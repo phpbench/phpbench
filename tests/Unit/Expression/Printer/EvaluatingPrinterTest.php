@@ -14,7 +14,7 @@ class EvaluatingPrinterTest extends ParserTestCase
     /**
      * @dataProvider provideEvaluate
      */
-    public function testEvaluate(string $expr, array $params, string $expected): void
+    public function testEvaluate(string $expr, string $expected): void
     {
         $printer = new EvaluatingPrinter(
             $this->container()->get(NodePrinter::class),
@@ -27,29 +27,28 @@ class EvaluatingPrinterTest extends ParserTestCase
         self::assertEquals($expected, $printer->print($this->parse($expr)));
     }
 
+    /**
+     * @return Generator<list{string, string}>
+     */
     public static function provideEvaluate(): Generator
     {
         yield [
             '2 > 10',
-            [],
             '2 > 10',
         ];
 
         yield [
             'mean([1, 2, 3])',
-            [],
             '2',
         ];
 
         yield [
             'mean([1, 2, 3]) / 2',
-            [],
             '2 / 2',
         ];
 
         yield [
             'mode([1, 2, 3])',
-            [],
             '1.998043052838',
         ];
     }

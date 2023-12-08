@@ -24,30 +24,31 @@ use PhpBench\Model\Subject;
 use PhpBench\Model\Suite;
 use PhpBench\Model\Summary;
 use PhpBench\Model\Variant;
+use PhpBench\Progress\Logger\PhpBenchLogger;
 use Prophecy\Prophecy\ObjectProphecy;
 
 abstract class PhpBenchLoggerTestCase extends LoggerTestCase
 {
-    protected $logger;
-    protected $document;
-    protected $benchmark;
-    protected $variant;
-    protected $subject;
+    protected PhpBenchLogger $logger;
 
-    /**
-     * @var ParameterSet
-     */
-    protected $parameterSet;
-    protected $stats;
+    /** @var ObjectProphecy<Benchmark> */
+    protected ObjectProphecy $benchmark;
 
-    /**
-     * @var ObjectProphecy<Suite>
-     */
+    /** @var ObjectProphecy<Variant> */
+    protected ObjectProphecy $variant;
+
+    /** @var ObjectProphecy<Subject> */
+    protected ObjectProphecy $subject;
+
+    protected ParameterSet $parameterSet;
+
+    /** @var ObjectProphecy<Distribution>  */
+    protected ObjectProphecy $stats;
+
+    /** @var ObjectProphecy<Suite> */
     private ObjectProphecy $suite;
 
-    /**
-     * @var ObjectProphecy<Summary>
-     */
+    /** @var ObjectProphecy<Summary> */
     private ObjectProphecy $summary;
 
     protected function setUp(): void
@@ -75,7 +76,7 @@ abstract class PhpBenchLoggerTestCase extends LoggerTestCase
         $this->stats->getRstdev()->willReturn(20);
     }
 
-    abstract public function getLogger();
+    abstract public function getLogger(): PhpBenchLogger;
 
     /**
      * It should show the PHPBench version.
@@ -164,7 +165,6 @@ abstract class PhpBenchLoggerTestCase extends LoggerTestCase
         $meanStDev = 321;
         $meanRelStDev = 231;
         $nbFailures = 0;
-        $nbAssertions = 0;
 
         $this->summary->getNbSubjects()->willReturn($nbSubjects);
         $this->summary->getNbAssertions()->willReturn(0);

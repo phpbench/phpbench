@@ -116,7 +116,7 @@ class SuiteTest extends TestCase
 
     public function testFindVariant(): void
     {
-        $suite = $this->createSuite([]);
+        $suite = $this->createSuite();
         $variant = $suite->createBenchmark('Foobar')->createSubject('barfoo')->createVariant(
             ParameterSet::fromSerializedParameters('one', []),
             1,
@@ -192,14 +192,14 @@ class SuiteTest extends TestCase
         self::assertCount(2, $suite->getVariants(), 'Post filter');
     }
 
-    private function createSuite(array $benchmarks = [], array $informations = []): Suite
+    /**
+     */
+    private function createSuite(): Suite
     {
         return new Suite(
             'context',
             new DateTime('2016-01-25'),
-            'path/to/config',
-            $benchmarks,
-            $informations
+            'path/to/config'
         );
     }
 }

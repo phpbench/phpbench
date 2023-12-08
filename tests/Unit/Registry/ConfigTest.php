@@ -29,12 +29,12 @@ class ConfigTest extends TestCase
         $config = new Config(
             'test',
             [
-            'foo' => 'bar',
-            'bar' => [
-                'one' => 1,
-                'two' => 2,
-            ],
-        ]
+                'foo' => 'bar',
+                'bar' => [
+                    'one' => 1,
+                    'two' => 2,
+                ],
+            ]
         );
         $config['offset_not_exist']; // @phpstan-ignore-line
     }
@@ -44,13 +44,16 @@ class ConfigTest extends TestCase
      *
      * @dataProvider provideInvalidName
      */
-    public function testInvalidName($name): void
+    public function testInvalidName(string $name): void
     {
         $this->expectException(InvalidArgumentException::class);
         new Config($name, []);
     }
 
-    public static function provideInvalidName()
+    /**
+     * @return list<list{string}>
+     */
+    public static function provideInvalidName(): array
     {
         return [
             ['he lo'],
@@ -65,13 +68,16 @@ class ConfigTest extends TestCase
      *
      * @dataProvider provideGoodName
      */
-    public function testGoodName($name): void
+    public function testGoodName(string $name): void
     {
         $config = new Config($name, []);
         $this->assertEquals($name, $config->getName());
     }
 
-    public static function provideGoodName()
+    /**
+     * @return list<list{string}>
+     */
+    public static function provideGoodName(): array
     {
         return [
             ['helo'],

@@ -25,30 +25,32 @@ use Prophecy\Prophecy\ObjectProphecy;
 class ReportManagerTest extends TestCase
 {
     private ReportManager $reportManager;
+
+    /** @var ObjectProphecy<GeneratorInterface> */
     private ObjectProphecy $generator;
+
     private SuiteCollection $suiteCollection;
 
-    /**
-     * @var ObjectProphecy<ConfigurableRegistry>
-     */
+    /** @var ObjectProphecy<ConfigurableRegistry<RendererInterface>> */
     private ObjectProphecy $rendererRegistry;
 
-    /**
-     * @var ObjectProphecy<ConfigurableRegistry>
-     */
+    /** @var ObjectProphecy<ConfigurableRegistry<GeneratorInterface>> */
     private ObjectProphecy $generatorRegistry;
 
-    /**
-     * @var ObjectProphecy<RendererInterface>
-     */
+    /** @var ObjectProphecy<RendererInterface> */
     private ObjectProphecy $renderer;
 
     private Reports $reports;
 
     protected function setUp(): void
     {
-        $this->rendererRegistry = $this->prophesize(ConfigurableRegistry::class);
-        $this->generatorRegistry = $this->prophesize(ConfigurableRegistry::class);
+        /** @var ObjectProphecy<ConfigurableRegistry<RendererInterface>> $rendererRegistry */
+        $rendererRegistry = $this->prophesize(ConfigurableRegistry::class);
+        $this->rendererRegistry = $rendererRegistry;
+
+        /** @var ObjectProphecy<ConfigurableRegistry<GeneratorInterface>> $generatorRegistry */
+        $generatorRegistry = $this->prophesize(ConfigurableRegistry::class);
+        $this->generatorRegistry = $generatorRegistry;
 
         $this->reportManager = new ReportManager(
             $this->generatorRegistry->reveal(),
