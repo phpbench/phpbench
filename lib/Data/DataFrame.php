@@ -153,7 +153,7 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @return scalarOrNull[]
+     * @return array<scalar|null>
      */
     public function toValues(): array
     {
@@ -187,7 +187,7 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @return array<string, array<scalarOrNull>>
+     * @return array<string, array<scalar|null>>
      */
     public function columnValues(): array
     {

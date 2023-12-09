@@ -97,6 +97,6 @@ class ResultCollectionTest extends TestCase
     public function testGetMetricOrDefault(): void
     {
         $this->collection->setResult($this->timeResult);
-        $this->assertEquals(100, $this->collection->getMetricOrDefault('UnknownClass', 'barbar', 100));
+        $this->assertEquals(100, $this->collection->getMetricOrDefault('UnknownClass', 'barbar', 100)); // @phpstan-ignore-line
     }
 }

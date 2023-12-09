@@ -26,14 +26,24 @@ use IteratorAggregate;
  *
  * Lazily Provides summary statistics, also traversable.
  *
- * @implements IteratorAggregate<string,mixed>, ArrayAccess<string,mixed>
+ * @implements IteratorAggregate<string, float|int>
+ * @implements ArrayAccess<string, float|int>
  */
 class Distribution implements IteratorAggregate, ArrayAccess
 {
-    private $samples = [];
-    private array $stats = [];
-    private array $closures = [];
+    /** @var array<float|int> */
+    private array $samples;
 
+    /** @var array<string, float|int> */
+    private array $stats;
+
+    /** @var array<string, callable():float|int> */
+    private array $closures;
+
+    /**
+     * @param array<float|int> $samples
+     * @param array<string, float|int> $stats
+     */
     public function __construct(array $samples, array $stats = [])
     {
         if (count($samples) < 1) {
@@ -82,46 +92,73 @@ class Distribution implements IteratorAggregate, ArrayAccess
         $this->stats = $stats;
     }
 
+    /**
+     * @return float|int
+     */
     public function getMin()
     {
         return $this->getStat('min');
     }
 
+    /**
+     * @return float|int
+     */
     public function getMax()
     {
         return $this->getStat('max');
     }
 
+    /**
+     * @return float|int
+     */
     public function getSum()
     {
         return $this->getStat('sum');
     }
 
+    /**
+     * @return float|int
+     */
     public function getStdev()
     {
         return $this->getStat('stdev');
     }
 
+    /**
+     * @return float|int
+     */
     public function getMean()
     {
         return $this->getStat('mean');
     }
 
+    /**
+     * @return float|int
+     */
     public function getMode()
     {
         return $this->getStat('mode');
     }
 
+    /**
+     * @return float|int
+     */
     public function getRstdev()
     {
         return $this->getStat('rstdev');
     }
 
+    /**
+     * @return float|int
+     */
     public function getVariance()
     {
         return $this->getStat('variance');
     }
 
+    /**
+     * @return ArrayIterator<string, float|int>
+     */
     public function getIterator(): ArrayIterator
     {
         foreach ($this->closures as $name => $callback) {
@@ -133,6 +170,9 @@ class Distribution implements IteratorAggregate, ArrayAccess
         return new ArrayIterator($this->stats);
     }
 
+    /**
+     * @return array<string, float|int>
+     */
     public function getStats(): array
     {
         $stats = [];
@@ -144,6 +184,11 @@ class Distribution implements IteratorAggregate, ArrayAccess
         return $stats;
     }
 
+    /**
+     * @param string $name
+     *
+     * @return float|int
+     */
     private function getStat($name)
     {
         if (isset($this->stats[$name])) {
@@ -158,7 +203,7 @@ class Distribution implements IteratorAggregate, ArrayAccess
             ));
         }
 
-        $this->stats[$name] = $this->closures[$name]($this->samples, $this);
+        $this->stats[$name] = $this->closures[$name]();
 
         return $this->stats[$name];
     }

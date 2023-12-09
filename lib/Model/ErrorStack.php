@@ -38,16 +38,25 @@ class ErrorStack implements IteratorAggregate, Countable
         return $this->variant;
     }
 
+    /**
+     * @return Error[]
+     */
     public function getErrors(): array
     {
         return $this->errors;
     }
 
+    /**
+     * @return false|Error
+     */
     public function getTop()
     {
         return reset($this->errors);
     }
 
+    /**
+     * @return ArrayIterator<array-key, Error>
+     */
     public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->errors);

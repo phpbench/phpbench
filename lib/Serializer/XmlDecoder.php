@@ -271,9 +271,9 @@ class XmlDecoder
                 $error = new Error(
                     $errorEl->nodeValue,
                     $errorEl->getAttribute('exception-class'),
-                    $errorEl->getAttribute('code'),
+                    (int)$errorEl->getAttribute('code'),
                     $errorEl->getAttribute('file'),
-                    $errorEl->getAttribute('line'),
+                    (int)$errorEl->getAttribute('line'),
                     '' // we don't serialize the trace..
                 );
                 $errors[] = $error;

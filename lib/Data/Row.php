@@ -10,20 +10,20 @@ use PHPUnit\Framework\MockObject\BadMethodCallException;
 use RuntimeException;
 
 /**
- * @implements IteratorAggregate<string,mixed>
- * @implements ArrayAccess<string,mixed>
+ * @implements IteratorAggregate<string, scalar|null>
+ * @implements ArrayAccess<string, scalar|null>
  */
 final class Row implements IteratorAggregate, ArrayAccess
 {
     /**
-     * @param array<string,mixed> $map
+     * @param array<string, scalar|null> $map
      */
     public function __construct(private array $map)
     {
     }
 
     /**
-     * @return scalarOrNull
+     * @return scalar|null
      */
     public function get(string $column)
     {
@@ -51,6 +51,9 @@ final class Row implements IteratorAggregate, ArrayAccess
         return new Series(array_values($this->map));
     }
 
+    /**
+     * @return array<string, scalar|null>
+     */
     public function toRecord(): array
     {
         return $this->map;

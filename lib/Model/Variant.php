@@ -31,19 +31,15 @@ use RuntimeException;
  * Stores Iterations and calculates the deviations and rejection
  * status for each based on the given rejection threshold.
  *
- * @implements IteratorAggregate<Iteration>
- * @implements ArrayAccess<array-key, Iteration>
+ * @implements IteratorAggregate<int, Iteration>
+ * @implements ArrayAccess<int, Iteration>
  */
 class Variant implements IteratorAggregate, ArrayAccess, Countable
 {
-    /**
-     * @var Iteration[]
-     */
+    /** @var list<Iteration> */
     private array $iterations = [];
 
-    /**
-     * @var Iteration[]
-     */
+    /** @var list<Iteration> */
     private array $rejects = [];
 
     private ?ErrorStack $errorStack = null;
@@ -56,6 +52,9 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
 
     private VariantAssertionResults $assertionResults;
 
+    /**
+     * @param array<string, int|float> $computedStats
+     */
     public function __construct(
         private readonly Subject $subject,
         private readonly ParameterSet $parameterSet,
@@ -94,6 +93,7 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
     /**
      * Return the iteration at the given index.
      *
+     * @param int $index
      */
     public function getIteration($index): ?Iteration
     {

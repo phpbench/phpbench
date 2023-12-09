@@ -15,7 +15,6 @@ parameters:
         - tests/Unit/Executor/benchmarks
     typeAliases:
         parameters: 'array<string,mixed>'
-        scalarOrNull: 'int|float|string|bool|null'
         scalar: 'int|float|string|bool'
         number: 'int|float'
         tableRowArray: 'array<string,\PhpBench\Expression\Ast\Node>'

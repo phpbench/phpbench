@@ -10,25 +10,28 @@ use IteratorAggregate;
  */
 final class DataFrames implements IteratorAggregate
 {
+    /**
+     * @param DataFrame[] $dataFrames
+     */
     public function __construct(
-        /**
-         * @var DataFrame[]
-         */
         private readonly array $dataFrames
     ) {
     }
 
     /**
-     * {@inheritDoc}
+     * @return ArrayIterator<array-key, DataFrame>
      */
     public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->dataFrames);
     }
 
+    /**
+     * @return array<array-key, array<array<string, mixed>>>
+     */
     public function toArray(): array
     {
-        return array_map(function (DataFrame $frame) {
+        return array_map(static function (DataFrame $frame) {
             return $frame->toRecords();
         }, $this->dataFrames);
     }
