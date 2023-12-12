@@ -28,6 +28,7 @@ class MemoryUnit
         self::GIBIBYTES => 1_073_741_824,
     ];
 
+    /** @var array<string, string> */
     private static array $aliases = [
         'b' => self::BYTES,
         'k' => self::KILOBYTES,
@@ -39,6 +40,7 @@ class MemoryUnit
         'gib' => self::GIBIBYTES
     ];
 
+    /** @var array<string, string> */
     private static array $suffixes = [
         self::BYTES => 'b',
         self::KILOBYTES => 'kb',

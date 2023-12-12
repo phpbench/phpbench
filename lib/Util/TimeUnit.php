@@ -37,6 +37,7 @@ class TimeUnit
     final public const MODE_TIME = 'time';
     final public const AUTO = 'time';
 
+    /** @var array<string, positive-int> */
     private static array $map = [
         self::MICROSECONDS => 1,
         self::MILLISECONDS => 1000,
@@ -46,6 +47,7 @@ class TimeUnit
         self::DAYS => 86_400_000_000,
     ];
 
+    /** @var array<string, string> */
     private static array $aliases = [
         self::MICROSECOND => self::MICROSECONDS,
         self::MILLISECOND => self::MILLISECONDS,
@@ -59,6 +61,7 @@ class TimeUnit
         'm' => self::MINUTES,
     ];
 
+    /** @var array<string, string> */
     private static array $suffixes = [
         self::MICROSECONDS => 'μs',
         self::MILLISECONDS => 'ms',
@@ -94,6 +97,8 @@ class TimeUnit
 
     /**
      * Convert instance value to given unit.
+     *
+     * @return float
      */
     public function toDestUnit(float $time, string $destUnit = null, string $mode = null)
     {
@@ -156,6 +161,8 @@ class TimeUnit
      * Utility method, if the dest unit is overridden, return the overridden
      * value.
      *
+     * @param string $unit
+     *
      * @return string
      */
     public function resolveDestUnit($unit, float $value = null)
@@ -175,6 +182,8 @@ class TimeUnit
      * Utility method, if the mode is overridden, return the overridden
      * value.
      *
+     * @param string $mode
+     *
      * @return string
      */
     public function resolveMode($mode)
@@ -189,6 +198,8 @@ class TimeUnit
     /**
      * Utility method, if the precision is overridden, return the overridden
      * value.
+     *
+     * @param ?int $precision
      */
     public function resolvePrecision($precision): ?int
     {
@@ -246,6 +257,8 @@ class TimeUnit
 
     /**
      * Convert given time in given unit to given destination unit in given mode.
+     *
+     * @return float
      */
     public static function convert(float $time, string $unit, string $destUnit, string $mode)
     {
@@ -261,6 +274,8 @@ class TimeUnit
     /**
      * Convert a given time INTO the given unit. That is, how many times the
      * given time will fit into the the destination unit. i.e. `x` per unit.
+     *
+     * @return float
      */
     public static function convertInto(float $time, string $unit, string $destUnit)
     {
