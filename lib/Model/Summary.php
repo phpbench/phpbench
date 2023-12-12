@@ -16,6 +16,8 @@ use PhpBench\Math\Statistics;
 
 /**
  * Provides summary statistics for the entires suite.
+ *
+ * @phpstan-type Stats array{stdev: array<int|float>, mean: array<int|float>, mode: array<int|float>, rstdev: array<int|float>, variance: array<int|float>, min: array<int|float>, max: array<int|float>, sum: array<int|float>}
  */
 class Summary
 {
@@ -27,7 +29,7 @@ class Summary
     private int $nbAssertions = 0;
     private int $nbErrors = 0;
 
-    /** @var array<string, array<int|float>> */
+    /** @var Stats */
     private array $stats = [
         'stdev' => [],
         'mean' => [],
@@ -68,7 +70,7 @@ class Summary
                         continue;
                     }
 
-                    foreach ($variant->getStats() as $name => $value) {
+                    foreach ($variant->getStats()->getStats() as $name => $value) {
                         $this->stats[$name][] = $value;
                     }
                 }
@@ -123,7 +125,7 @@ class Summary
     }
 
     /**
-     * @return array<string, array<int|float>>
+     * @return Stats
      */
     public function getStats(): array
     {

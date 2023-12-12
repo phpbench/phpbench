@@ -12,7 +12,6 @@
 
 namespace PhpBench\Tests\Unit\Model;
 
-use ArrayIterator;
 use PhpBench\Assertion\AssertionResult;
 use PhpBench\Assertion\VariantAssertionResults;
 use PhpBench\Environment\Information;
@@ -127,16 +126,16 @@ class SummaryTest extends TestCase
             ])
         );
         $this->variant1->getErrorStack()->willReturn(new ErrorStack($this->variant1->reveal(), []));
-        $this->stats->getIterator()->willReturn(new ArrayIterator([
-            'min' => '1',
-            'max' => '2',
+        $this->stats->getStats()->willReturn([
+            'min' => 1,
+            'max' => 2,
             'mean' => 5,
             'mode' => 6,
             'sum' => 7,
             'stdev' => 8,
             'rstdev' => 9,
 
-        ]));
+        ]);
         $this->suite->getBenchmarks()->willReturn([$this->bench1]);
     }
 }
