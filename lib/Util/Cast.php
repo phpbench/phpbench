@@ -4,11 +4,17 @@ namespace PhpBench\Util;
 
 class Cast
 {
+    /**
+     * @param scalar|null $value
+     */
     public static function toInt(mixed $value): int
     {
         return (int)$value;
     }
 
+    /**
+     * @param scalar|null $value
+     */
     public static function toIntOrNull(mixed $value): ?int
     {
         if (null === $value) {
@@ -18,6 +24,9 @@ class Cast
         return (int)$value;
     }
 
+    /**
+     * @param scalar|null $value
+     */
     public static function toStringOrNull(mixed $value): ?string
     {
         if (null === $value) {
