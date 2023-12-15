@@ -26,6 +26,9 @@ class RetryThreshold
 {
     private readonly float $retryThreshold;
 
+    /**
+     * @param array{value: float} $params
+     */
     public function __construct($params)
     {
         $this->retryThreshold = (float) $params['value'];

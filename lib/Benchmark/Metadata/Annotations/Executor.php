@@ -9,17 +9,24 @@ namespace PhpBench\Benchmark\Metadata\Annotations;
  */
 class Executor
 {
-    private $name;
-    private $config;
+    private string $name;
+    /** @var array<string, mixed> */
+    private array $config;
 
+    /**
+     * @param array{value: string} $params
+     */
     public function __construct($params)
     {
         $this->name = $params['value'];
         unset($params['value']);
 
-        $this->config = $params ?? [];
+        $this->config = $params;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getConfig(): array
     {
         return $this->config;

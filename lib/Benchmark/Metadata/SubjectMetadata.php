@@ -19,103 +19,68 @@ use PhpBench\Model\ParameterSetsCollection;
  */
 class SubjectMetadata
 {
-    /**
-     * @var ParameterSetsCollection
-     */
-    private $parameterSets;
+    private ParameterSetsCollection $parameterSets;
 
     /**
      * @var string[]|null
      */
-    private $groups;
+    private ?array $groups = null;
 
     /**
      * @var string[]|null
      */
-    private $beforeMethods;
+    private ?array $beforeMethods = null;
 
     /**
      * @var string[]|null
      */
-    private $afterMethods;
+    private ?array $afterMethods = null;
 
     /**
      * @var string[]|null
      */
-    private $paramProviders;
+    private ?array $paramProviders = null;
 
-    /**
-     * @var float|null
-     */
-    private $retryThreshold;
+    private ?float $retryThreshold = null;
 
     /**
      * @var null|int[]
      */
-    private $iterations = null;
+    private ?array $iterations = null;
 
     /**
      * @var null|int[]
      */
-    private $revs = null;
+    private ?array $revs = null;
 
     /**
      * @var null|int[]
      */
-    private $warmup;
+    private ?array $warmup = null;
 
-    /**
-     * @var bool|null
-     */
-    private $skip;
+    private ?bool $skip = null;
 
-    /**
-     * @var int|null
-     */
-    private $sleep;
+    private ?int $sleep = null;
 
-    /**
-     * @var string|null
-     */
-    private $outputTimeUnit = null;
+    private ?string $outputTimeUnit = null;
 
-    /**
-     * @var int|null
-     */
-    private $outputTimePrecision = null;
+    private ?int $outputTimePrecision = null;
 
-    /**
-     * @var string|null
-     */
-    private $outputMode = null;
+    private ?string $outputMode = null;
 
     /**
      * @var null|array<string>
      */
-    private $assertions;
+    private ?array $assertions = null;
 
-    /**
-     * @var ExecutorMetadata|null
-     */
-    private $executorMetadata;
+    private ?ExecutorMetadata $executorMetadata = null;
 
-    /**
-     * @var float|null
-     */
-    private $timeout;
+    private ?float $timeout = null;
 
-    /**
-     * @var int|null
-     */
-    private $retryLimit = null;
+    private ?int $retryLimit = null;
 
-    /**
-     * @var string|null
-     */
-    private $format = null;
+    private ?string $format = null;
 
-    /**
-     */
     public function __construct(private readonly BenchmarkMetadata $benchmarkMetadata, private readonly string $name)
     {
         $this->parameterSets = ParameterSetsCollection::empty();
@@ -166,6 +131,10 @@ class SubjectMetadata
      */
     public function inGroups(array $groups): bool
     {
+        if ($this->groups === null) {
+            return false;
+        }
+
         return (bool) count(array_intersect($this->groups, $groups));
     }
 

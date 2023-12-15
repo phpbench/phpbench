@@ -115,7 +115,7 @@ class MetadataFactory
         }
     }
 
-    private function validateMethodExists($context, ReflectionHierarchy $benchmarkReflection, $method, $isStatic = false): void
+    private function validateMethodExists(string $context, ReflectionHierarchy $benchmarkReflection, string $method, bool $isStatic = false): void
     {
         if (false === $benchmarkReflection->hasMethod($method)) {
             throw new InvalidArgumentException(sprintf(

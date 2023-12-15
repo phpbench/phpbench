@@ -24,13 +24,10 @@ namespace PhpBench\Benchmark\Metadata\Annotations;
  */
 class Assert
 {
-    /**
-     * @var string
-     */
-    private $expression;
+    private string $expression;
 
     /**
-     * @param array<string,mixed> $params
+     * @param array{value: string} $params
      */
     public function __construct(array $params)
     {

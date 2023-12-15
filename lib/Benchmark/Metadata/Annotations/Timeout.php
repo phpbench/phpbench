@@ -26,6 +26,9 @@ class Timeout
 {
     private readonly float $timeout;
 
+    /**
+     * @param array{value: float} $params
+     */
     public function __construct($params)
     {
         $this->timeout = (float) $params['value'];

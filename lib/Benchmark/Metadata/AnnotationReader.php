@@ -43,8 +43,10 @@ use PhpBench\Benchmark\Metadata\Exception\CouldNotLoadMetadataException;
  */
 class AnnotationReader
 {
+    /** @var array<class-string, string[]> */
     private array $useImports = [];
 
+    /** @var array<string, class-string> */
     private static array $phpBenchImports = [
         'BeforeMethods' => BeforeMethods::class,
         'BeforeClassMethods' => BeforeClassMethods::class,
@@ -67,6 +69,7 @@ class AnnotationReader
         'RetryThreshold' => RetryThreshold::class,
     ];
 
+    /** @var array<string, bool> */
     private static array $globalIgnoredNames = [
         // Annotation tags
         'Annotation' => true, 'Attribute' => true, 'Attributes' => true,
@@ -160,15 +163,20 @@ class AnnotationReader
 
     /**
      * Return annotations for the given class.
+     *
+     * @return list<object>
      */
-    public function getClassAnnotations(ReflectionClass $class)
+    public function getClassAnnotations(ReflectionClass $class): array
     {
         $this->collectImports($class);
 
         return $this->parse($class->comment, sprintf('benchmark: %s', $class->class));
     }
 
-    public function getMethodAnnotations(ReflectionMethod $method)
+    /**
+     * @return list<object>
+     */
+    public function getMethodAnnotations(ReflectionMethod $method): array
     {
         $this->collectImports($method->reflectionClass);
 
@@ -181,7 +189,10 @@ class AnnotationReader
         $this->docParser->setImports($imports);
     }
 
-    private function getPhpBenchImports()
+    /**
+     * @return array<string, class-string>
+     */
+    private function getPhpBenchImports(): array
     {
         static $phpBenchImports;
 
@@ -190,13 +201,16 @@ class AnnotationReader
         }
 
         foreach (self::$phpBenchImports as $key => $value) {
-            $phpBenchImports[strtolower((string) $key)] = $value;
+            $phpBenchImports[strtolower($key)] = $value;
         }
 
         return $phpBenchImports;
     }
 
-    private function getUseImports(ReflectionClass $class)
+    /**
+     * @return string[]
+     */
+    private function getUseImports(ReflectionClass $class): array
     {
         if (isset($this->useImports[$class->class])) {
             return $this->useImports[$class->class];
@@ -215,8 +229,10 @@ class AnnotationReader
      * something useful.
      *
      * @see \Doctrine\Common\Annotations\DocParser
+     *
+     * @return list<object>
      */
-    private function parse($input, $context = ''): array
+    private function parse(?string $input, string $context = ''): array
     {
         try {
             $annotations = @$this->docParser->parse($input ?? '', $context);

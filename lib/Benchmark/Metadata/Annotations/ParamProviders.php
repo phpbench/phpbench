@@ -24,14 +24,21 @@ namespace PhpBench\Benchmark\Metadata\Annotations;
  */
 class ParamProviders extends AbstractArrayAnnotation
 {
+    /** @var string[] */
     private readonly array $providers;
 
+    /**
+     * @param array{value: string[]} $params
+     */
     public function __construct($params)
     {
         parent::__construct($params);
         $this->providers = (array) $params['value'];
     }
 
+    /**
+     * @return string[]
+     */
     public function getProviders(): array
     {
         return $this->providers;
