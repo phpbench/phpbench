@@ -115,6 +115,13 @@ class MemoryUnitTest extends TestCase
             ];
     }
 
+    public function testResolveSuitableUnitWithCustomUnit(): void
+    {
+        $unit = 'my-unit';
+
+        self::assertEquals($unit, MemoryUnit::resolveSuitableUnit($unit, 1.0));
+    }
+
     /**
      * @dataProvider provideSuitableUnit
      */
@@ -141,6 +148,13 @@ class MemoryUnitTest extends TestCase
         yield [1_000_000, MemoryUnit::MEGABYTES];
 
         yield [1_000_000_000, MemoryUnit::GIGABYTES];
+    }
+
+    public function testResolveSuitableBinaryUnitWithCustomUnit(): void
+    {
+        $unit = 'my-unit';
+
+        self::assertEquals($unit, MemoryUnit::resolveSuitableBinaryUnit($unit, 1.0));
     }
 
     /**

@@ -87,9 +87,9 @@ class MemoryUnit
     }
 
     /**
-     * Resolve an binary unit
+     * Resolve a binary unit
      */
-    public static function resolveSuitableBinaryUnit(?string $unit, ?float $value): string
+    public static function resolveSuitableBinaryUnit(string $unit, ?float $value): string
     {
         if ($unit !== self::AUTO) {
             return $unit;
@@ -117,7 +117,7 @@ class MemoryUnit
     /**
      * Resolve an SI unit
      */
-    public static function resolveSuitableUnit(?string $unit, ?float $value): string
+    public static function resolveSuitableUnit(string $unit, ?float $value): string
     {
         if ($unit !== self::AUTO) {
             return $unit;
