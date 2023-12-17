@@ -45,6 +45,9 @@ class AnnotationDriver implements DriverInterface
 {
     private readonly AnnotationReader $reader;
 
+    /**
+     * @param string $subjectPattern
+     */
     public function __construct(private $subjectPattern = '^bench', AnnotationReader $reader = null)
     {
         $this->reader = $reader ?: new AnnotationReader();
@@ -118,7 +121,10 @@ class AnnotationDriver implements DriverInterface
         }
     }
 
-    private function buildSubject(SubjectMetadata $subject, $annotations): void
+    /**
+     * @param object[] $annotations
+     */
+    private function buildSubject(SubjectMetadata $subject, array $annotations): void
     {
         foreach ($annotations as $annotation) {
             if ($annotation instanceof BeforeClassMethods) {
@@ -139,7 +145,7 @@ class AnnotationDriver implements DriverInterface
         }
     }
 
-    private function processSubject(SubjectMetadata $subject, $annotation): void
+    private function processSubject(SubjectMetadata $subject, object $annotation): void
     {
         if ($annotation instanceof BeforeMethods) {
             $subject->setBeforeMethods(
@@ -231,7 +237,7 @@ class AnnotationDriver implements DriverInterface
         }
     }
 
-    public function processBenchmark(BenchmarkMetadata $benchmark, $annotation): void
+    public function processBenchmark(BenchmarkMetadata $benchmark, object $annotation): void
     {
         if ($annotation instanceof Executor) {
             $benchmark->setExecutor(new ExecutorMetadata($annotation->getName(), $annotation->getConfig()));
@@ -246,15 +252,14 @@ class AnnotationDriver implements DriverInterface
         }
     }
 
-    private function resolveValue(AbstractArrayAnnotation $annotation, ?array $currentValues, ?array $annotationValues): ?array
+    /**
+     * @param string[] $currentValues
+     * @param string[] $annotationValues
+     *
+     * @return string[]
+     */
+    private function resolveValue(AbstractArrayAnnotation $annotation, array $currentValues, array $annotationValues): array
     {
-        if ($currentValues === null) {
-            return $annotationValues;
-        }
-
-        if ($annotationValues === null) {
-            return $currentValues;
-        }
         $values = $annotation->getExtend() === true ? $currentValues : [];
         $values = array_merge($values, $annotationValues);
 

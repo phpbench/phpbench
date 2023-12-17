@@ -12,12 +12,23 @@
 
 namespace PhpBench\Benchmark\Metadata;
 
+/**
+ * @deprecated
+ *
+ * @todo seems this class is not used so we can drop it
+ */
 class AssertionMetadata
 {
+    /**
+     * @param mixed[] $config
+     */
     public function __construct(private readonly array $config)
     {
     }
 
+    /**
+     * @return mixed[]
+     */
     public function getConfig(): array
     {
         return $this->config;

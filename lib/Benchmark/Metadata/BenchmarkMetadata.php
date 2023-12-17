@@ -20,25 +20,17 @@ use PhpBench\Model\Subject;
  */
 class BenchmarkMetadata
 {
-    /**
-     * @var array<string, SubjectMetadata> indexed by subject name
-     */
+    /** @var array<string, SubjectMetadata> indexed by subject name */
     private array $subjects = [];
 
-    /**
-     * @var string[]
-     */
+    /** @var string[] */
     private array $beforeClassMethods = [];
 
-    /**
-     * @var string[]
-     */
+    /** @var string[] */
     private array $afterClassMethods = [];
 
     private ?ExecutorMetadata $executorMetadata = null;
 
-    /**
-     */
     public function __construct(private readonly string $path, private readonly string $class)
     {
     }
@@ -122,6 +114,8 @@ class BenchmarkMetadata
 
     /**
      * Return any methods that should be called before the benchmark class is executed.
+     *
+     * @return string[]
      */
     public function getBeforeClassMethods(): array
     {
@@ -131,6 +125,7 @@ class BenchmarkMetadata
     /**
      * Set any methods that should be called before the benchmark class is executed.
      *
+     * @param string[] $beforeClassMethods
      */
     public function setBeforeClassMethods(array $beforeClassMethods): void
     {
@@ -139,6 +134,8 @@ class BenchmarkMetadata
 
     /**
      * Return any methods that should be called after the benchmark class is executed.
+     *
+     * @return string[]
      */
     public function getAfterClassMethods(): array
     {
@@ -148,12 +145,16 @@ class BenchmarkMetadata
     /**
      * Set any methods that should be called after the benchmark class is executed.
      *
+     * @param string[] $afterClassMethods
      */
     public function setAfterClassMethods(array $afterClassMethods): void
     {
         $this->afterClassMethods = $afterClassMethods;
     }
 
+    /**
+     * @return array<string, SubjectMetadata>
+     */
     public function getIterator(): array
     {
         return $this->subjects;

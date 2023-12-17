@@ -24,13 +24,20 @@ namespace PhpBench\Benchmark\Metadata\Annotations;
  */
 class Iterations
 {
+    /** @var int[] */
     private readonly array $iterations;
 
+    /**
+     * @param array{value: int[]} $params
+     */
     public function __construct($params)
     {
         $this->iterations = (array) $params['value'];
     }
 
+    /**
+     * @return int[]
+     */
     public function getIterations(): array
     {
         return $this->iterations;

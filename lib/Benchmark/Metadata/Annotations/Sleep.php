@@ -26,6 +26,9 @@ class Sleep
 {
     private readonly int $sleep;
 
+    /**
+     * @param array{value: int} $params
+     */
     public function __construct($params)
     {
         $this->sleep = (int) $params['value'];

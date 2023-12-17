@@ -209,11 +209,11 @@ class SubjectMetadataTest extends TestCase
 
         yield [
             function (SubjectMetadata $subject1, SubjectMetadata $subject2): void {
-                $subject1->setExecutor(new ExecutorMetadata('foobar', ['1']));
-                $subject2->setExecutor(new ExecutorMetadata('barfoo', ['2']));
+                $subject1->setExecutor(new ExecutorMetadata('foobar', ['a' => 1]));
+                $subject2->setExecutor(new ExecutorMetadata('barfoo', ['b' => 2]));
             },
             function (SubjectMetadata $merged): void {
-                self::assertEquals(new ExecutorMetadata('barfoo', ['2']), $merged->getExecutor());
+                self::assertEquals(new ExecutorMetadata('barfoo', ['b' => 2]), $merged->getExecutor());
             }
         ];
 

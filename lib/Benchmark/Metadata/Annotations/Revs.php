@@ -24,13 +24,20 @@ namespace PhpBench\Benchmark\Metadata\Annotations;
  */
 class Revs
 {
+    /** @var int[] */
     private readonly array $revs;
 
+    /**
+     * @param array{value: int[]} $revs
+     */
     public function __construct($revs)
     {
         $this->revs = (array) $revs['value'];
     }
 
+    /**
+     * @return int[]
+     */
     public function getRevs(): array
     {
         return $this->revs;

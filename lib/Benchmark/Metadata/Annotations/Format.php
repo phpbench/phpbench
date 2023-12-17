@@ -9,11 +9,11 @@ namespace PhpBench\Benchmark\Metadata\Annotations;
  */
 class Format
 {
-    /**
-     * @var string
-     */
-    private $format;
+    private string $format;
 
+    /**
+     * @param array{value: string} $params
+     */
     public function __construct($params)
     {
         $this->format = $params['value'];

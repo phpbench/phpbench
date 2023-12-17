@@ -22,14 +22,21 @@ namespace PhpBench\Benchmark\Metadata\Annotations;
  */
 abstract class AbstractMethodsAnnotation extends AbstractArrayAnnotation
 {
+    /** @var string[] */
     private readonly array $methods;
 
+    /**
+     * @param array{value: string[]} $params
+     */
     public function __construct($params)
     {
         parent::__construct($params);
         $this->methods = (array) $params['value'];
     }
 
+    /**
+     * @return string[]
+     */
     public function getMethods(): array
     {
         return $this->methods;

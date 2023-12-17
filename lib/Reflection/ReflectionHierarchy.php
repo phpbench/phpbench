@@ -24,7 +24,7 @@ use IteratorAggregate;
 class ReflectionHierarchy implements IteratorAggregate
 {
     /**
-     * @param ReflectionClass[] $reflectionClasses
+     * @param list<ReflectionClass> $reflectionClasses
      */
     public function __construct(private array $reflectionClasses = [])
     {
@@ -39,6 +39,9 @@ class ReflectionHierarchy implements IteratorAggregate
         $this->reflectionClasses[] = $reflectionClass;
     }
 
+    /**
+     * @return ArrayObject<int,ReflectionClass>
+     */
     public function getIterator(): ArrayObject
     {
         return new ArrayObject($this->reflectionClasses);

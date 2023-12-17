@@ -25,9 +25,12 @@ namespace PhpBench\Benchmark\Metadata\Annotations;
  */
 class OutputTimeUnit
 {
-    private $timeUnit;
-    private $precision;
+    private string $timeUnit;
+    private ?int $precision = null;
 
+    /**
+     * @param array{value: string, precision?: int} $timeUnit
+     */
     public function __construct($timeUnit)
     {
         $this->timeUnit = $timeUnit['value'];
@@ -37,11 +40,17 @@ class OutputTimeUnit
         }
     }
 
+    /**
+     * @return string
+     */
     public function getTimeUnit()
     {
         return $this->timeUnit;
     }
 
+    /**
+     * @return ?int
+     */
     public function getPrecision()
     {
         return $this->precision;
