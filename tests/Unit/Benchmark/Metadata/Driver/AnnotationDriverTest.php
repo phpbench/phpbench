@@ -33,7 +33,7 @@ class AnnotationDriverTest extends TestCase
     {
         $reflection = new ReflectionClass();
         $reflection->path = 'foo';
-        $reflection->class = 'Test';
+        $reflection->class = \stdClass::class;
         $reflection->comment = <<<'EOT'
 /**
  * @BeforeClassMethods({"beforeClass"})
@@ -47,7 +47,7 @@ EOT;
         $metadata = $this->createDriver()->getMetadataForHierarchy($hierarchy);
         $this->assertEquals(['beforeClass'], $metadata->getBeforeClassMethods());
         $this->assertEquals(['afterClass'], $metadata->getAfterClassMethods());
-        $this->assertEquals('Test', $metadata->getClass());
+        $this->assertEquals(\stdClass::class, $metadata->getClass());
         $this->assertEquals(new ExecutorMetadata('microtime', ['revs' => 100 ]), $metadata->getExecutor());
     }
 
@@ -58,7 +58,7 @@ EOT;
     {
         $reflection = new ReflectionClass();
         $reflection->path = 'foo';
-        $reflection->class = 'Test';
+        $reflection->class = \stdClass::class;
         $reflection->comment = <<<'EOT'
 /**
  * @since Foo
@@ -76,7 +76,7 @@ EOT;
     {
         $this->expectException(CouldNotLoadMetadataException::class);
         $reflection = new ReflectionClass();
-        $reflection->class = 'Test';
+        $reflection->class = \stdClass::class;
         $reflection->path = 'foo';
         $hierarchy = new ReflectionHierarchy();
         $hierarchy->addReflectionClass($reflection);
@@ -102,7 +102,7 @@ EOT;
     public function testLoadSubject(): void
     {
         $reflection = new ReflectionClass();
-        $reflection->class = 'Test';
+        $reflection->class = \stdClass::class;
         $reflection->path = 'foo';
         $hierarchy = new ReflectionHierarchy();
         $hierarchy->addReflectionClass($reflection);
@@ -164,7 +164,7 @@ EOT;
     public function testLoadSubjectNonPrefixed(): void
     {
         $reflection = new ReflectionClass();
-        $reflection->class = 'Test';
+        $reflection->class = \stdClass::class;
         $reflection->path = 'foo';
         $hierarchy = new ReflectionHierarchy();
         $hierarchy->addReflectionClass($reflection);
@@ -191,7 +191,7 @@ EOT;
     public function testLoadIgnoreNonPrefixed(): void
     {
         $reflection = new ReflectionClass();
-        $reflection->class = 'Test';
+        $reflection->class = \stdClass::class;
         $reflection->path = 'foo';
         $hierarchy = new ReflectionHierarchy();
         $hierarchy->addReflectionClass($reflection);
@@ -223,7 +223,7 @@ EOT;
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('annotation can only be applied');
         $reflection = new ReflectionClass();
-        $reflection->class = 'Test';
+        $reflection->class = \stdClass::class;
         $reflection->path = 'foo';
         $hierarchy = new ReflectionHierarchy();
         $hierarchy->addReflectionClass($reflection);
@@ -259,7 +259,7 @@ EOT;
     public function testSubjectOptionalValues(): void
     {
         $reflection = new ReflectionClass();
-        $reflection->class = 'Test';
+        $reflection->class = \stdClass::class;
         $reflection->path = 'foo';
         $hierarchy = new ReflectionHierarchy();
         $hierarchy->addReflectionClass($reflection);
@@ -290,7 +290,7 @@ EOT;
     {
         $reflection = new ReflectionClass();
         $reflection->path = 'foo';
-        $reflection->class = 'Test';
+        $reflection->class = \stdClass::class;
         $reflection->comment = <<<'EOT'
     /**
      * @BeforeMethods({"beforeOne", "beforeTwo"})
@@ -323,7 +323,7 @@ EOT;
     public function testLoadSubjectMerge(): void
     {
         $reflection = new ReflectionClass();
-        $reflection->class = 'TestChild';
+        $reflection->class = \stdClass::class;
         $reflection->path = 'foo';
         $reflection->comment = <<<'EOT'
     /**
@@ -355,7 +355,7 @@ EOT;
         $hierarchy->addReflectionClass($reflection);
 
         $reflection = new ReflectionClass();
-        $reflection->class = 'Test';
+        $reflection->class = \stdClass::class;
         $reflection->comment = <<<'EOT'
     /**
      * @AfterMethods({"after"})
@@ -417,7 +417,7 @@ EOT;
     public function testMetadataExtend(): void
     {
         $reflection = new ReflectionClass();
-        $reflection->class = 'TestChild';
+        $reflection->class = \stdClass::class;
         $reflection->path = 'foo';
         $reflection->comment = <<<'EOT'
     /**
@@ -452,7 +452,7 @@ EOT;
     public function testArrayElements(): void
     {
         $reflection = new ReflectionClass();
-        $reflection->class = 'Test';
+        $reflection->class = \stdClass::class;
         $reflection->path = 'foo';
 
         $method = new ReflectionMethod();
@@ -489,7 +489,7 @@ EOT;
         $hierarchy = 'test';
 
         $reflection = new ReflectionClass();
-        $reflection->class = 'TestChild';
+        $reflection->class = \stdClass::class;
         $reflection->path = 'foo';
         $reflection->comment = <<<'EOT'
     /**
@@ -509,7 +509,7 @@ EOT;
     {
         $reflection = new ReflectionClass();
         $reflection->path = 'foo';
-        $reflection->class = 'Test';
+        $reflection->class = \stdClass::class;
 
         $method = new ReflectionMethod();
         $method->reflectionClass = $reflection;

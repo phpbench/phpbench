@@ -191,9 +191,9 @@ class MetadataFactoryTest extends TestCase
     public function testValidationBeforeClassMethodsBenchmarkNotStatic(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('must be static in benchmark class "TestClass"');
+        $this->expectExceptionMessage('must be static in benchmark class "stdClass"');
         $this->hierarchy->isEmpty()->willReturn(false);
-        $this->reflection->reveal()->class = 'TestClass';
+        $this->reflection->reveal()->class = \stdClass::class;
         TestUtil::configureBenchmarkMetadata($this->metadata, [
             'beforeClassMethods' => ['beforeMe'],
         ]);
@@ -210,9 +210,9 @@ class MetadataFactoryTest extends TestCase
     public function testValidationBeforeMethodsBenchmarkIsStatic(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('before method "beforeMe" must not be static in benchmark class "TestClass"');
+        $this->expectExceptionMessage('before method "beforeMe" must not be static in benchmark class "stdClass"');
         $this->hierarchy->isEmpty()->willReturn(false);
-        $this->reflection->reveal()->class = 'TestClass';
+        $this->reflection->reveal()->class = \stdClass::class;
         TestUtil::configureBenchmarkMetadata($this->metadata, []);
         $this->metadata->getSubjects()->willReturn([
             $this->subjectMetadata->reveal(),
@@ -233,9 +233,9 @@ class MetadataFactoryTest extends TestCase
     public function testValidationBeforeMethodsSubject(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Unknown before method "beforeMe" in benchmark class "TestClass"');
+        $this->expectExceptionMessage('Unknown before method "beforeMe" in benchmark class "stdClass"');
         $this->hierarchy->isEmpty()->willReturn(false);
-        $this->reflection->reveal()->class = 'TestClass';
+        $this->reflection->reveal()->class = \stdClass::class;
         TestUtil::configureBenchmarkMetadata($this->metadata, []);
         $this->metadata->getSubjects()->willReturn([
             $this->subjectMetadata->reveal(),

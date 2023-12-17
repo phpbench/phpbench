@@ -39,7 +39,7 @@ class AttributeDriverTest extends TestCase
     public function testLoadBenchmark(array $attributes, callable $assertion): void
     {
         $reflection = new ReflectionClass();
-        $reflection->class = 'Test';
+        $reflection->class = \stdClass::class;
         $reflection->path = 'foo';
         $reflection->attributes = $attributes;
         $hierarchy = new ReflectionHierarchy();
@@ -99,7 +99,7 @@ class AttributeDriverTest extends TestCase
     public function testLoadSubject(array $attributes, callable $assertion): void
     {
         $reflection = new ReflectionClass();
-        $reflection->class = 'Test';
+        $reflection->class = \stdClass::class;
         $reflection->path = 'foo';
         $hierarchy = new ReflectionHierarchy();
         $hierarchy->addReflectionClass($reflection);
@@ -315,8 +315,8 @@ class AttributeDriverTest extends TestCase
 
     public function testInheritedMethodsWillNotAppearMultipleTimesInTheSubject(): void
     {
-        $baseClass = new ReflectionClass(__FILE__, 'BaseClassBench');
-        $childClass = new ReflectionClass(__FILE__, 'ChildClassBench');
+        $baseClass = new ReflectionClass(__FILE__, \stdClass::class);
+        $childClass = new ReflectionClass(__FILE__, \stdClass::class);
 
         $baseClassMethod = new ReflectionMethod();
         $childClassOverridingBenchMethod = new ReflectionMethod();
@@ -342,8 +342,8 @@ class AttributeDriverTest extends TestCase
 
     public function testInheritedMethodsWillNotLeadToRepeatedParameterProviderRegistration(): void
     {
-        $baseClass = new ReflectionClass(__FILE__, 'BaseClassBench');
-        $childClass = new ReflectionClass(__FILE__, 'ChildClassBench');
+        $baseClass = new ReflectionClass(__FILE__, \stdClass::class);
+        $childClass = new ReflectionClass(__FILE__, \stdClass::class);
 
         $baseClassProvider = new ReflectionMethod();
         $baseClassMethod = new ReflectionMethod();

@@ -61,16 +61,6 @@ parameters:
 			path: extensions/xdebug/lib/XDebugUtil.php
 
 		-
-			message: "#^Method PhpBench\\\\Benchmark\\\\BenchmarkFinder\\:\\:findFiles\\(\\) has parameter \\$paths with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: lib/Benchmark/BenchmarkFinder.php
-
-		-
-			message: "#^Method PhpBench\\\\Benchmark\\\\Metadata\\\\Driver\\\\ConfigDriver\\:\\:__construct\\(\\) has parameter \\$warmup with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: lib/Benchmark/Metadata/Driver/ConfigDriver.php
-
-		-
 			message: "#^Property PhpBench\\\\Color\\\\GradientBuilder\\:\\:\\$cache type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: lib/Color/GradientBuilder.php
@@ -297,11 +287,6 @@ parameters:
 
 		-
 			message: "#^Property PhpBench\\\\Reflection\\\\ReflectionClass\\:\\:\\$attributes has no type specified\\.$#"
-			count: 1
-			path: lib/Reflection/ReflectionClass.php
-
-		-
-			message: "#^Property PhpBench\\\\Reflection\\\\ReflectionClass\\:\\:\\$class has no type specified\\.$#"
 			count: 1
 			path: lib/Reflection/ReflectionClass.php
 

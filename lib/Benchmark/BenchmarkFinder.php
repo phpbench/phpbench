@@ -27,8 +27,12 @@ use Symfony\Component\Finder\Finder;
  */
 class BenchmarkFinder
 {
-    public function __construct(private readonly MetadataFactory $factory, private readonly string $cwd, private readonly LoggerInterface $logger, private readonly ?string $benchPattern = null)
-    {
+    public function __construct(
+        private readonly MetadataFactory $factory,
+        private readonly string          $cwd,
+        private readonly LoggerInterface $logger,
+        private readonly ?string         $benchPattern = null
+    ) {
     }
 
     /**
@@ -68,6 +72,8 @@ class BenchmarkFinder
     }
 
     /**
+     * @param string[] $paths
+     *
      * @return Generator<SplFileInfo>
      */
     private function findFiles(array $paths): Generator

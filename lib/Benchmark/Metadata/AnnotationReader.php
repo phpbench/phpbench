@@ -43,7 +43,7 @@ use PhpBench\Benchmark\Metadata\Exception\CouldNotLoadMetadataException;
  */
 class AnnotationReader
 {
-    /** @var array<class-string, string[]> */
+    /** @var array<class-string, array<string, class-string>> */
     private array $useImports = [];
 
     /** @var array<string, class-string> */
@@ -194,6 +194,7 @@ class AnnotationReader
      */
     private function getPhpBenchImports(): array
     {
+        /** @var array<string, class-string> $phpBenchImports */
         static $phpBenchImports;
 
         if ($phpBenchImports) {
@@ -208,18 +209,19 @@ class AnnotationReader
     }
 
     /**
-     * @return string[]
+     * @return array<string, class-string>
      */
     private function getUseImports(ReflectionClass $class): array
     {
-        if (isset($this->useImports[$class->class])) {
-            return $this->useImports[$class->class];
+        if (isset($this->useImports[$class->getClass()])) {
+            return $this->useImports[$class->getClass()];
         }
 
         $content = file_get_contents($class->path);
         $tokenizer = new TokenParser('<?php ' . $content);
+        /** @var array<string, class-string> $useImports */
         $useImports = $tokenizer->parseUseStatements($class->namespace ?? '');
-        $this->useImports[$class->class] = $useImports;
+        $this->useImports[$class->getClass()] = $useImports;
 
         return $useImports;
     }
