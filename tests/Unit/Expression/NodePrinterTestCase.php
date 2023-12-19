@@ -10,10 +10,9 @@ class NodePrinterTestCase extends IntegrationTestCase
 {
     /**
      * @param array<string, mixed> $config
-     * @param parameters $params
      */
-    public function print(Node $node, array $params = [], array $config = []): string
+    public function print(Node $node, array $config = []): string
     {
-        return $this->container($config)->get(Printer::class)->print($node, $params);
+        return $this->container($config)->get(Printer::class)->print($node);
     }
 }
