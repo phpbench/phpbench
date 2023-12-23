@@ -3,7 +3,7 @@
 namespace PhpBench\Report\Renderer;
 
 use PhpBench\Compat\SymfonyOptionsResolverCompat;
-use PhpBench\Path\Path;
+use Symfony\Component\Filesystem\Path;
 use PhpBench\Registry\Config;
 use PhpBench\Report\Model\HtmlDocument;
 use PhpBench\Report\Model\Reports;

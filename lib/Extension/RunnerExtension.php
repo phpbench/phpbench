@@ -43,7 +43,7 @@ use PhpBench\Expression\ExpressionLanguage;
 use PhpBench\Expression\Printer;
 use PhpBench\Expression\Printer\EvaluatingPrinter;
 use PhpBench\Json\JsonDecoder;
-use PhpBench\Path\Path;
+use Symfony\Component\Filesystem\Path;
 use PhpBench\Progress\Logger\BlinkenLogger;
 use PhpBench\Progress\Logger\DotsLogger;
 use PhpBench\Progress\Logger\HistogramLogger;
