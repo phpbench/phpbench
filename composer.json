@@ -24,15 +24,15 @@
         "ext-spl": "*",
         "ext-tokenizer": "*",
         "doctrine/annotations": "^2.0",
-        "phpbench/container": "^2.1",
+        "phpbench/container": "^2.2",
         "phpbench/dom": "~0.3.3",
         "psr/log": "^1.1 || ^2.0 || ^3.0",
         "seld/jsonlint": "^1.1",
-        "symfony/console": "^4.2 || ^5.0 || ^6.0 || ^7.0",
-        "symfony/filesystem": "^4.2 || ^5.0 || ^6.0 || ^7.0",
-        "symfony/finder": "^4.2 || ^5.0 || ^6.0 || ^7.0",
-        "symfony/options-resolver": "^4.2 || ^5.0 || ^6.0 || ^7.0",
-        "symfony/process": "^4.2 || ^5.0 || ^6.0 || ^7.0",
+        "symfony/console": "^6.1 || ^7.0",
+        "symfony/filesystem": "^6.1 || ^7.0",
+        "symfony/finder": "^6.1 || ^7.0",
+        "symfony/options-resolver": "^6.1 || ^7.0",
+        "symfony/process": "^6.1 || ^7.0",
         "webmozart/glob": "^4.6"
     },
     "require-dev": {
@@ -46,8 +46,8 @@
         "phpstan/phpstan-phpunit": "^1.0",
         "phpunit/phpunit": "^10.4",
         "rector/rector": "^0.18.11",
-        "symfony/error-handler": "^5.2 || ^6.0 || ^7.0",
-        "symfony/var-dumper": "^4.0 || ^5.0 || ^6.0 || ^7.0"
+        "symfony/error-handler": "^6.1 || ^7.0",
+        "symfony/var-dumper": "^6.1 || ^7.0"
     },
     "replace": {
         "symfony/polyfill-php80": "*",
