@@ -12,9 +12,13 @@ class Parser
     /**
      * @param Parselets<PrefixParselet> $prefixParselets
      * @param Parselets<InfixParselet> $infixParselets
+     * @param Parselets<SuffixParselet> $suffixParselets
      */
-    public function __construct(private readonly Parselets $prefixParselets, private readonly Parselets $infixParselets, private readonly Parselets $suffixParselets)
-    {
+    public function __construct(
+        private readonly Parselets $prefixParselets,
+        private readonly Parselets $infixParselets,
+        private readonly Parselets $suffixParselets
+    ) {
     }
 
     public function parse(Tokens $tokens): Node

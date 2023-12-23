@@ -12,8 +12,12 @@ class EvaluatingPrinter implements Printer
     /**
      * @var parameters
      */
-    private $params;
+    private array $params;
 
+    /**
+     * @param array<class-string<Node>> $nodeClasses
+     * @param parameters $params
+     */
     public function __construct(
         private readonly NodePrinter $printers,
         private readonly Evaluator $evaluator,

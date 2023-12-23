@@ -52,10 +52,10 @@ final class Lexer
     ];
 
     /**
+     * @param string[] $unitNames
      */
-    public function __construct(
-        private readonly array $unitNames = []
-    ) {
+    public function __construct(private readonly array $unitNames = [])
+    {
         $this->pattern = sprintf(
             '{(%s)|(%s)|\n|\r}iu',
             implode(')|(', array_map(function (string $value) {
@@ -67,12 +67,16 @@ final class Lexer
 
     public function lex(string $expression): Tokens
     {
-        $chunks = (array)preg_split(
+        $chunks = preg_split(
             $this->pattern,
             $expression,
             -1,
             PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE
         );
+
+        if ($chunks === false) {
+            $chunks = [];
+        }
         $tokens = [];
 
         $prevToken = new Token(Token::T_EOF, '', 0);
@@ -91,7 +95,7 @@ final class Lexer
         return new Tokens($tokens);
     }
 
-    protected function resolveType(mixed $value, Token $prevToken): string
+    private function resolveType(string $value, Token $prevToken): string
     {
         $type = Token::T_NONE;
 
@@ -112,10 +116,10 @@ final class Lexer
             case ($prevToken->type !== Token::T_DOT && in_array($value, $this->unitNames, true)):
                 return Token::T_UNIT;
 
-            case (preg_match('{'. self::PATTERN_FUNCTION. '}', (string) $value)):
+            case (preg_match('{'. self::PATTERN_FUNCTION. '}', $value)):
                 return Token::T_FUNCTION;
 
-            case (preg_match('{'. self::PATTERN_NAME. '}', (string) $value)):
+            case (preg_match('{'. self::PATTERN_NAME. '}', $value)):
                 return Token::T_NAME;
         }
 

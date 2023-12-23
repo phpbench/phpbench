@@ -171,36 +171,6 @@ parameters:
 			path: lib/Executor/MethodExecutorInterface.php
 
 		-
-			message: "#^Method PhpBench\\\\Expression\\\\Ast\\\\ConcatNode\\:\\:nodes\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: lib/Expression/Ast/ConcatNode.php
-
-		-
-			message: "#^Method PhpBench\\\\Expression\\\\ExpressionFunctions\\:\\:execute\\(\\) has parameter \\$args with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: lib/Expression/ExpressionFunctions.php
-
-		-
-			message: "#^Method PhpBench\\\\Expression\\\\Lexer\\:\\:__construct\\(\\) has parameter \\$unitNames with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: lib/Expression/Lexer.php
-
-		-
-			message: "#^Method PhpBench\\\\Expression\\\\Parser\\:\\:__construct\\(\\) has parameter \\$suffixParselets with generic class PhpBench\\\\Expression\\\\Parselets but does not specify its types\\: T$#"
-			count: 1
-			path: lib/Expression/Parser.php
-
-		-
-			message: "#^Method PhpBench\\\\Expression\\\\Printer\\\\EvaluatingPrinter\\:\\:__construct\\(\\) has parameter \\$nodeClasses with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: lib/Expression/Printer/EvaluatingPrinter.php
-
-		-
-			message: "#^Method PhpBench\\\\Expression\\\\Printer\\\\EvaluatingPrinter\\:\\:__construct\\(\\) has parameter \\$params with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: lib/Expression/Printer/EvaluatingPrinter.php
-
-		-
 			message: "#^Method PhpBench\\\\Json\\\\JsonDecoder\\:\\:decode\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: lib/Json/JsonDecoder.php
