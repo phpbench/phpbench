@@ -35,6 +35,9 @@ abstract class AbstractRemoteProvider implements ProviderInterface
         );
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     private function getData(): array
     {
         return $this->launcher->payload($this->template())->launch();

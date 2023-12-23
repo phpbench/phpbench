@@ -27,6 +27,9 @@ class Git implements ProviderInterface
     private readonly ExecutableFinder $exeFinder;
     private ?string $exePath = null;
 
+    /**
+     * @param string $exeName
+     */
     public function __construct(private readonly string $cwd, ExecutableFinder $exeFinder = null, private $exeName = 'git')
     {
         $this->exeFinder = $exeFinder ?: new ExecutableFinder();
@@ -80,15 +83,25 @@ class Git implements ProviderInterface
         if (!file_exists($commitshRef)) {
             $version = null;
         } else {
-            $version = trim(file_get_contents($commitshRef));
+            $content = file_get_contents($commitshRef);
+
+            if ($content === false) {
+                throw new \RuntimeException(sprintf('Failed to read file %s', $commitshRef));
+            }
+            $version = trim($content);
         }
 
         return new VcsInformation('git', $branchName, $version);
     }
 
-    private function exec($cmd): Process
+    private function exec(string $cmd): Process
     {
-        $cmd = sprintf('%s %s', escapeshellarg($this->getGitPath()), $cmd);
+        $gitPath = $this->getGitPath();
+
+        if ($gitPath === null) {
+            throw new \RuntimeException('Git path is not defined');
+        }
+        $cmd = sprintf('%s %s', escapeshellarg($gitPath), $cmd);
         $process = Process::fromShellCommandline($cmd, $this->cwd);
         $process->run();
 

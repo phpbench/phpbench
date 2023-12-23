@@ -28,6 +28,10 @@ class UnixSysload implements ProviderInterface
     public function getInformation(): Information
     {
         $load = sys_getloadavg();
+
+        if ($load === false) {
+            throw new \RuntimeException('Failed to get system load average');
+        }
         $load = array_combine([
             'l1', 'l5', 'l15',
         ], $load);
