@@ -18,6 +18,9 @@ class ConcatNode extends Node
         return $this->right;
     }
 
+    /**
+     * @return list<Node>
+     */
     public function nodes()
     {
         $nodes = [$this->left()];

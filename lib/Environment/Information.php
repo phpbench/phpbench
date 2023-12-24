@@ -21,12 +21,19 @@ use ArrayIterator;
 /**
  * Represents information about the VCS system used by the current working
  * directory.
+ *
+ * @immutable
+ *
+ * @implements ArrayAccess<string, mixed>
+ * @implements IteratorAggregate<string, mixed>
  */
 class Information implements ArrayAccess, IteratorAggregate
 {
+    /** @var array<string, mixed>  */
     private array $information;
 
     /**
+     * @param array<string, mixed> $information
      */
     public function __construct(private readonly string $name, array $information)
     {
@@ -64,7 +71,7 @@ class Information implements ArrayAccess, IteratorAggregate
         throw new BadMethodCallException(sprintf(
             'Environmental information is immutable. Tried to set key "%s" with value "%s"',
             $offset,
-            $value
+            is_scalar($value) ? $value : get_debug_type($value)
         ));
     }
 
@@ -90,19 +97,27 @@ class Information implements ArrayAccess, IteratorAggregate
     }
 
     /**
-     * {@inheritdoc}
+     * @return ArrayIterator<string, mixed>
      */
     public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->information);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         return $this->information;
     }
 
-    private function flattenInformation(array $information, $prefix = ''): array
+    /**
+     * @param array<string, mixed> $information
+     *
+     * @return array<string, mixed>
+     */
+    private function flattenInformation(array $information, string $prefix = ''): array
     {
         $transformed = [];
 

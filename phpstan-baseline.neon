@@ -131,71 +131,6 @@ parameters:
 			path: lib/Development/ConfigDumper.php
 
 		-
-			message: "#^Class PhpBench\\\\Environment\\\\Information implements generic interface ArrayAccess but does not specify its types\\: TKey, TValue$#"
-			count: 1
-			path: lib/Environment/Information.php
-
-		-
-			message: "#^Class PhpBench\\\\Environment\\\\Information implements generic interface IteratorAggregate but does not specify its types\\: TKey, TValue$#"
-			count: 1
-			path: lib/Environment/Information.php
-
-		-
-			message: "#^Method PhpBench\\\\Environment\\\\Information\\:\\:__construct\\(\\) has parameter \\$information with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: lib/Environment/Information.php
-
-		-
-			message: "#^Method PhpBench\\\\Environment\\\\Information\\:\\:flattenInformation\\(\\) has parameter \\$information with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: lib/Environment/Information.php
-
-		-
-			message: "#^Method PhpBench\\\\Environment\\\\Information\\:\\:flattenInformation\\(\\) has parameter \\$prefix with no type specified\\.$#"
-			count: 1
-			path: lib/Environment/Information.php
-
-		-
-			message: "#^Method PhpBench\\\\Environment\\\\Information\\:\\:flattenInformation\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: lib/Environment/Information.php
-
-		-
-			message: "#^Method PhpBench\\\\Environment\\\\Information\\:\\:getIterator\\(\\) return type with generic class ArrayIterator does not specify its types\\: TKey, TValue$#"
-			count: 1
-			path: lib/Environment/Information.php
-
-		-
-			message: "#^Method PhpBench\\\\Environment\\\\Information\\:\\:toArray\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: lib/Environment/Information.php
-
-		-
-			message: "#^Property PhpBench\\\\Environment\\\\Information\\:\\:\\$information type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: lib/Environment/Information.php
-
-		-
-			message: "#^Method PhpBench\\\\Environment\\\\Provider\\\\AbstractRemoteProvider\\:\\:getData\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: lib/Environment/Provider/AbstractRemoteProvider.php
-
-		-
-			message: "#^Method PhpBench\\\\Environment\\\\Provider\\\\Git\\:\\:__construct\\(\\) has parameter \\$exeName with no type specified\\.$#"
-			count: 1
-			path: lib/Environment/Provider/Git.php
-
-		-
-			message: "#^Method PhpBench\\\\Environment\\\\Provider\\\\Git\\:\\:exec\\(\\) has parameter \\$cmd with no type specified\\.$#"
-			count: 1
-			path: lib/Environment/Provider/Git.php
-
-		-
-			message: "#^Method PhpBench\\\\Environment\\\\Provider\\\\Sampler\\:\\:__construct\\(\\) has parameter \\$enabled with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: lib/Environment/Provider/Sampler.php
-
-		-
 			message: "#^Method PhpBench\\\\Environment\\\\VcsInformation\\:\\:__construct\\(\\) has parameter \\$branch with no type specified\\.$#"
 			count: 1
 			path: lib/Environment/VcsInformation.php
@@ -234,36 +169,6 @@ parameters:
 			message: "#^Method PhpBench\\\\Executor\\\\MethodExecutorInterface\\:\\:executeMethods\\(\\) has parameter \\$methods with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: lib/Executor/MethodExecutorInterface.php
-
-		-
-			message: "#^Method PhpBench\\\\Expression\\\\Ast\\\\ConcatNode\\:\\:nodes\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: lib/Expression/Ast/ConcatNode.php
-
-		-
-			message: "#^Method PhpBench\\\\Expression\\\\ExpressionFunctions\\:\\:execute\\(\\) has parameter \\$args with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: lib/Expression/ExpressionFunctions.php
-
-		-
-			message: "#^Method PhpBench\\\\Expression\\\\Lexer\\:\\:__construct\\(\\) has parameter \\$unitNames with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: lib/Expression/Lexer.php
-
-		-
-			message: "#^Method PhpBench\\\\Expression\\\\Parser\\:\\:__construct\\(\\) has parameter \\$suffixParselets with generic class PhpBench\\\\Expression\\\\Parselets but does not specify its types\\: T$#"
-			count: 1
-			path: lib/Expression/Parser.php
-
-		-
-			message: "#^Method PhpBench\\\\Expression\\\\Printer\\\\EvaluatingPrinter\\:\\:__construct\\(\\) has parameter \\$nodeClasses with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: lib/Expression/Printer/EvaluatingPrinter.php
-
-		-
-			message: "#^Method PhpBench\\\\Expression\\\\Printer\\\\EvaluatingPrinter\\:\\:__construct\\(\\) has parameter \\$params with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: lib/Expression/Printer/EvaluatingPrinter.php
 
 		-
 			message: "#^Method PhpBench\\\\Json\\\\JsonDecoder\\:\\:decode\\(\\) return type has no value type specified in iterable type array\\.$#"

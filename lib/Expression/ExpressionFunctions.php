@@ -35,6 +35,9 @@ final class ExpressionFunctions
         $this->functionMap[$name] = $callable;
     }
 
+    /**
+     * @param mixed[] $args
+     */
     public function execute(string $functionName, array $args): Node
     {
         if (!isset($this->functionMap[$functionName])) {
