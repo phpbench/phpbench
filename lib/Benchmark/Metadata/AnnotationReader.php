@@ -12,31 +12,31 @@
 
 namespace PhpBench\Benchmark\Metadata;
 
-use PhpBench\Benchmark\Metadata\Annotations\BeforeMethods;
-use PhpBench\Benchmark\Metadata\Annotations\BeforeClassMethods;
-use PhpBench\Benchmark\Metadata\Annotations\AfterMethods;
-use PhpBench\Benchmark\Metadata\Annotations\AfterClassMethods;
-use PhpBench\Benchmark\Metadata\Annotations\ParamProviders;
-use PhpBench\Benchmark\Metadata\Annotations\Groups;
-use PhpBench\Benchmark\Metadata\Annotations\Iterations;
-use PhpBench\Benchmark\Metadata\Annotations\Revs;
-use PhpBench\Benchmark\Metadata\Annotations\Skip;
-use PhpBench\Benchmark\Metadata\Annotations\Sleep;
-use PhpBench\Benchmark\Metadata\Annotations\OutputTimeUnit;
-use PhpBench\Benchmark\Metadata\Annotations\OutputMode;
-use PhpBench\Benchmark\Metadata\Annotations\Warmup;
-use PhpBench\Benchmark\Metadata\Annotations\Subject;
-use PhpBench\Benchmark\Metadata\Annotations\Assert;
-use PhpBench\Benchmark\Metadata\Annotations\Executor;
-use PhpBench\Benchmark\Metadata\Annotations\Timeout;
-use PhpBench\Benchmark\Metadata\Annotations\Format;
-use PhpBench\Benchmark\Metadata\Annotations\RetryThreshold;
 use Doctrine\Common\Annotations\AnnotationException;
 use Doctrine\Common\Annotations\DocParser;
 use Doctrine\Common\Annotations\TokenParser;
+use PhpBench\Benchmark\Metadata\Annotations\AfterClassMethods;
+use PhpBench\Benchmark\Metadata\Annotations\AfterMethods;
+use PhpBench\Benchmark\Metadata\Annotations\Assert;
+use PhpBench\Benchmark\Metadata\Annotations\BeforeClassMethods;
+use PhpBench\Benchmark\Metadata\Annotations\BeforeMethods;
+use PhpBench\Benchmark\Metadata\Annotations\Executor;
+use PhpBench\Benchmark\Metadata\Annotations\Format;
+use PhpBench\Benchmark\Metadata\Annotations\Groups;
+use PhpBench\Benchmark\Metadata\Annotations\Iterations;
+use PhpBench\Benchmark\Metadata\Annotations\OutputMode;
+use PhpBench\Benchmark\Metadata\Annotations\OutputTimeUnit;
+use PhpBench\Benchmark\Metadata\Annotations\ParamProviders;
+use PhpBench\Benchmark\Metadata\Annotations\RetryThreshold;
+use PhpBench\Benchmark\Metadata\Annotations\Revs;
+use PhpBench\Benchmark\Metadata\Annotations\Skip;
+use PhpBench\Benchmark\Metadata\Annotations\Sleep;
+use PhpBench\Benchmark\Metadata\Annotations\Subject;
+use PhpBench\Benchmark\Metadata\Annotations\Timeout;
+use PhpBench\Benchmark\Metadata\Annotations\Warmup;
+use PhpBench\Benchmark\Metadata\Exception\CouldNotLoadMetadataException;
 use PhpBench\Reflection\ReflectionClass;
 use PhpBench\Reflection\ReflectionMethod;
-use PhpBench\Benchmark\Metadata\Exception\CouldNotLoadMetadataException;
 
 /**
  * Annotation reader.
@@ -228,7 +228,7 @@ class AnnotationReader
      * Delegates to the doctrine DocParser but catches annotation not found errors and throws
      * something useful.
      *
-     * @see \Doctrine\Common\Annotations\DocParser
+     * @see DocParser
      *
      * @return list<object>
      */

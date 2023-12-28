@@ -25,13 +25,13 @@ class ClassWithClassKeywords
 
     public function benchIsSubclassOf(): void
     {
-        is_subclass_of($this->class, \Test\A::class);
+        is_subclass_of($this->class, A::class);
     }
 
     public function benchReflectionClass(): void
     {
         $c = new ReflectionClass($this->class);
-        $c->isSubclassOf(\Test\A::class);
+        $c->isSubclassOf(A::class);
     }
 }
 
