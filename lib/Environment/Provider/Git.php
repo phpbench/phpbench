@@ -86,7 +86,7 @@ class Git implements ProviderInterface
             $content = file_get_contents($commitshRef);
 
             if ($content === false) {
-                throw new \RuntimeException(sprintf('Failed to read file %s', $commitshRef));
+                throw new RuntimeException(sprintf('Failed to read file %s', $commitshRef));
             }
             $version = trim($content);
         }
@@ -99,7 +99,7 @@ class Git implements ProviderInterface
         $gitPath = $this->getGitPath();
 
         if ($gitPath === null) {
-            throw new \RuntimeException('Git path is not defined');
+            throw new RuntimeException('Git path is not defined');
         }
         $cmd = sprintf('%s %s', escapeshellarg($gitPath), $cmd);
         $process = Process::fromShellCommandline($cmd, $this->cwd);
