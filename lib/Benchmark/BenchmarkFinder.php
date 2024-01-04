@@ -16,7 +16,7 @@ use InvalidArgumentException;
 use Generator;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\MetadataFactory;
-use PhpBench\Path\Path;
+use Symfony\Component\Filesystem\Path;
 use Psr\Log\LoggerInterface;
 use SplFileInfo;
 use Symfony\Component\Finder\Finder;

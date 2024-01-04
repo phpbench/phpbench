@@ -3,7 +3,7 @@
 namespace PhpBench\Tests\Util;
 
 use InvalidArgumentException;
-use PhpBench\Path\Path;
+use Symfony\Component\Filesystem\Path;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RuntimeException;

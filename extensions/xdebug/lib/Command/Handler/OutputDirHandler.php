@@ -12,7 +12,7 @@
 
 namespace PhpBench\Extensions\XDebug\Command\Handler;
 
-use PhpBench\Path\Path;
+use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;

@@ -17,7 +17,7 @@ use PhpBench\Executor\BenchmarkExecutorInterface;
 use PhpBench\Executor\ExecutionContext;
 use PhpBench\Executor\ExecutionResults;
 use PhpBench\Extensions\XDebug\XDebugUtil;
-use PhpBench\Path\Path;
+use Symfony\Component\Filesystem\Path;
 use PhpBench\Registry\Config;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 

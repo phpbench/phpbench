@@ -15,6 +15,7 @@ use Symfony\Component\Filesystem\Exception\InvalidArgumentException;
 use Symfony\Component\Filesystem\Exception\RuntimeException;
 
 /**
+ * @deprecated
  * NOTE: This class is copied as the class was "moved" from a dedicated package
  * to be part of the symfony/filesystem package which is not available in the
  * current version constraints.

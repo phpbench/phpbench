@@ -25,7 +25,7 @@ use PhpBench\Extension\RunnerExtension;
 use PhpBench\Extension\StorageExtension;
 use PhpBench\Extensions\XDebug\XDebugExtension;
 use PhpBench\Json\JsonDecoder;
-use PhpBench\Path\Path;
+use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
