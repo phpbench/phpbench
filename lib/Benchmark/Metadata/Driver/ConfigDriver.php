@@ -11,12 +11,24 @@ use PhpBench\Reflection\ReflectionHierarchy;
 class ConfigDriver implements DriverInterface
 {
     /**
-     * @param string[] $assert
-     * @param int[] $iterations
-     * @param int[] $revs
+     * @param string[]|null $assert
+     * @param int[]|null $iterations
+     * @param int[]|null $revs
+     * @param int[]|null $warmup
      */
-    public function __construct(private readonly DriverInterface $innerDriver, private readonly ?array $assert, private readonly ?string $executor, private readonly ?string $format, private readonly ?array $iterations, private readonly ?string $mode, private readonly ?string $timeUnit, private readonly ?array $revs, private readonly ?float $timeout, private readonly ?array $warmup, private readonly ?float $retryThreshold)
-    {
+    public function __construct(
+        private readonly DriverInterface $innerDriver,
+        private readonly ?array          $assert,
+        private readonly ?string         $executor,
+        private readonly ?string         $format,
+        private readonly ?array          $iterations,
+        private readonly ?string         $mode,
+        private readonly ?string         $timeUnit,
+        private readonly ?array          $revs,
+        private readonly ?float          $timeout,
+        private readonly ?array          $warmup,
+        private readonly ?float          $retryThreshold
+    ) {
     }
 
 
@@ -36,7 +48,7 @@ class ConfigDriver implements DriverInterface
 
     private function setDefaults(SubjectMetadata $subject): void
     {
-        if (empty($subject->getAssertions())) {
+        if ($this->assert && empty($subject->getAssertions())) {
             $subject->setAssertions($this->assert);
         }
 

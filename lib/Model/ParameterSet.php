@@ -23,7 +23,7 @@ final class ParameterSet
 
     public function getName(): string
     {
-        return (string) $this->name;
+        return $this->name;
     }
 
     /**
