@@ -57,7 +57,6 @@ return (new Config())
         'no_superfluous_phpdoc_tags' => [
             'allow_mixed' => true
         ],
-        'fully_qualified_strict_types' => true,
+        'fully_qualified_strict_types' => false,
     ])
-    ->setFinder($finder)
-    ;
+    ->setFinder($finder);
