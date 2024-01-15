@@ -24,7 +24,8 @@ class ConfiguredReportsTest extends IntegrationTestCase
         foreach ($generators->getConfigNames() as $generator) {
             foreach (array_unique(array_merge($renderers->getServiceNames(), $renderers->getConfigNames())) as $renderer) {
                 $manager = $this->container([
-                    ConsoleExtension::PARAM_OUTPUT_STREAM => $this->workspace()->path('test')
+                    ConsoleExtension::PARAM_OUTPUT_STREAM => $this->workspace()->path('test'),
+                    ConsoleExtension::PARAM_ANSI => false
                 ])->get(ReportManager::class);
                 assert($manager instanceof ReportManager);
                 $manager->renderReports(TestUtil::createCollection([

@@ -23,7 +23,8 @@ class ConsoleRendererTest extends AbstractRendererCase
     protected function getRenderer(): RendererInterface
     {
         return $this->container([
-            ConsoleExtension::PARAM_OUTPUT_STREAM => $this->workspace()->path('out')
+            ConsoleExtension::PARAM_OUTPUT_STREAM => $this->workspace()->path('out'),
+            ConsoleExtension::PARAM_ANSI => false
         ])->get(ConsoleRenderer::class);
     }
 
