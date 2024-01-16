@@ -59,7 +59,7 @@ class SystemTestCase extends IntegrationTestCase
     {
         $cwd = $this->workspace()->path($cwd);
 
-        $bin = __DIR__ . '/../../bin/phpbench --verbose';
+        $bin = __DIR__ . '/../../bin/phpbench --verbose --no-ansi';
         $process = Process::fromShellCommandline($bin . ' ' . $command, $cwd);
         $process->run();
 

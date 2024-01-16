@@ -50,6 +50,7 @@ class CommandsTest extends IntegrationTestCase
             RunnerExtension::PARAM_ENABLED_PROVIDERS => [],
             ConsoleExtension::PARAM_OUTPUT_STREAM => $this->workspace()->path('output'),
             ConsoleExtension::PARAM_ERROR_STREAM => 'php://temp',
+            ConsoleExtension::PARAM_ANSI => false
         ], $decoded)));
 
         foreach ($commands as $command) {
