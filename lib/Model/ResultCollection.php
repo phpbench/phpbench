@@ -134,7 +134,7 @@ class ResultCollection
      *
      * @return array<class-string<ResultInterface>, ResultInterface>
      */
-    public function getResults(): ?array
+    public function getResults(): array
     {
         return $this->results;
     }

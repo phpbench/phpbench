@@ -18,7 +18,7 @@ return (new Config())
     ->setRiskyAllowed(true)
     ->setRules([
         '@PSR12' => true,
-        'void_return' => true,
+        'void_return' => false,
         'binary_operator_spaces' => [
             'operators' => [
                 '=>' => null
