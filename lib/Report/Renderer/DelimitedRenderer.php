@@ -45,6 +45,9 @@ class DelimitedRenderer implements RendererInterface
         }
     }
 
+    /**
+     * @param Config $config
+     */
     protected function renderTable(Table $table, $config): void
     {
         $rows = [];

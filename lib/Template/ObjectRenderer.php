@@ -13,6 +13,9 @@ final class ObjectRenderer
 {
     private int $idCounter = 0;
 
+    /**
+     * @param string[] $templatePaths
+     */
     public function __construct(private readonly ObjectPathResolver $resolver, private readonly array $templatePaths, private readonly TemplateService $container)
     {
     }

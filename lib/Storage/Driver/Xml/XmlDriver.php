@@ -34,6 +34,9 @@ class XmlDriver implements DriverInterface
     final public const UUID_LENGTH = 40;
     private readonly Filesystem $filesystem;
 
+    /**
+     * @param string $path
+     */
     public function __construct(private $path, private readonly XmlEncoder $xmlEncoder, private readonly XmlDecoder $xmlDecoder, Filesystem $filesystem = null)
     {
         $this->filesystem = $filesystem ?: new Filesystem();

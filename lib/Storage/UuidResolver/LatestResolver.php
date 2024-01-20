@@ -14,6 +14,8 @@ namespace PhpBench\Storage\UuidResolver;
 
 use InvalidArgumentException;
 use PhpBench\Registry\Registry;
+use PhpBench\Storage\DriverInterface;
+use PhpBench\Storage\HistoryEntry;
 use PhpBench\Storage\UuidResolverInterface;
 use RuntimeException;
 
@@ -21,6 +23,9 @@ class LatestResolver implements UuidResolverInterface
 {
     final public const LATEST_KEYWORD = 'latest';
 
+    /**
+     * @param Registry<DriverInterface> $driverRegistry
+     */
     public function __construct(private readonly Registry $driverRegistry)
     {
     }
@@ -36,7 +41,7 @@ class LatestResolver implements UuidResolverInterface
         }
 
         if (preg_match('{' . self::LATEST_KEYWORD . '-([0-9]+)}', $ref, $matches)) {
-            return $this->getNthUuid($matches[1]);
+            return $this->getNthUuid((int)$matches[1]);
         }
 
         throw new RuntimeException(sprintf(
@@ -45,13 +50,14 @@ class LatestResolver implements UuidResolverInterface
         ));
     }
 
-    private function getLatestUuid()
+    private function getLatestUuid(): ?string
     {
         $history = $this->driverRegistry->getService()->history();
 
+        /** @var HistoryEntry|false $current */
         $current = $history->current();
 
-        if (!$current) {
+        if ($current === false) {
             throw new InvalidArgumentException(
                 'No history present, therefore cannot retrieve latest UUID'
             );
@@ -60,7 +66,7 @@ class LatestResolver implements UuidResolverInterface
         return $current->getRunId();
     }
 
-    private function getNthUuid($nth)
+    private function getNthUuid(int $nth): ?string
     {
         $history = $this->driverRegistry->getService()->history();
         $entry = $history->current();

@@ -56,16 +56,6 @@ parameters:
 			path: lib/Development/ConfigDumper.php
 
 		-
-			message: "#^Method PhpBench\\\\Environment\\\\VcsInformation\\:\\:__construct\\(\\) has parameter \\$branch with no type specified\\.$#"
-			count: 1
-			path: lib/Environment/VcsInformation.php
-
-		-
-			message: "#^Method PhpBench\\\\Environment\\\\VcsInformation\\:\\:__construct\\(\\) has parameter \\$version with no type specified\\.$#"
-			count: 1
-			path: lib/Environment/VcsInformation.php
-
-		-
 			message: "#^Property PhpBench\\\\Executor\\\\Benchmark\\\\DebugExecutor\\:\\:\\$variantTimes type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: lib/Executor/Benchmark/DebugExecutor.php
@@ -266,21 +256,6 @@ parameters:
 			path: lib/Report/Model/TableRow.php
 
 		-
-			message: "#^Method PhpBench\\\\Report\\\\Renderer\\\\DelimitedRenderer\\:\\:renderTable\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: lib/Report/Renderer/DelimitedRenderer.php
-
-		-
-			message: "#^Method PhpBench\\\\Report\\\\RendererInterface\\:\\:render\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: lib/Report/RendererInterface.php
-
-		-
-			message: "#^Method PhpBench\\\\Report\\\\Transform\\\\SuiteCollectionTransformer\\:\\:suiteToTable\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: lib/Report/Transform/SuiteCollectionTransformer.php
-
-		-
 			message: "#^Method PhpBench\\\\Serializer\\\\XmlDecoder\\:\\:getComputedStats\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: lib/Serializer/XmlDecoder.php
@@ -304,98 +279,3 @@ parameters:
 			message: "#^Method PhpBench\\\\Serializer\\\\XmlDecoder\\:\\:processVariant\\(\\) has parameter \\$resultClasses with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: lib/Serializer/XmlDecoder.php
-
-		-
-			message: "#^Method PhpBench\\\\Serializer\\\\XmlEncoder\\:\\:createParameter\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: lib/Serializer/XmlEncoder.php
-
-		-
-			message: "#^Method PhpBench\\\\Serializer\\\\XmlEncoder\\:\\:createParameter\\(\\) has parameter \\$name with no type specified\\.$#"
-			count: 1
-			path: lib/Serializer/XmlEncoder.php
-
-		-
-			message: "#^Method PhpBench\\\\Serializer\\\\XmlEncoder\\:\\:createParameter\\(\\) has parameter \\$parentEl with no type specified\\.$#"
-			count: 1
-			path: lib/Serializer/XmlEncoder.php
-
-		-
-			message: "#^Method PhpBench\\\\Serializer\\\\XmlEncoder\\:\\:createParameter\\(\\) has parameter \\$value with no type specified\\.$#"
-			count: 1
-			path: lib/Serializer/XmlEncoder.php
-
-		-
-			message: "#^Method PhpBench\\\\Serializer\\\\XmlEncoder\\:\\:isBinary\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: lib/Serializer/XmlEncoder.php
-
-		-
-			message: "#^Method PhpBench\\\\Serializer\\\\XmlEncoder\\:\\:isBinary\\(\\) has parameter \\$value with no type specified\\.$#"
-			count: 1
-			path: lib/Serializer/XmlEncoder.php
-
-		-
-			message: "#^Method PhpBench\\\\Storage\\\\ArchiverInterface\\:\\:archive\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: lib/Storage/ArchiverInterface.php
-
-		-
-			message: "#^Method PhpBench\\\\Storage\\\\ArchiverInterface\\:\\:restore\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: lib/Storage/ArchiverInterface.php
-
-		-
-			message: "#^Method PhpBench\\\\Storage\\\\Driver\\\\Xml\\\\XmlDriver\\:\\:__construct\\(\\) has parameter \\$path with no type specified\\.$#"
-			count: 1
-			path: lib/Storage/Driver/Xml/XmlDriver.php
-
-		-
-			message: "#^Method PhpBench\\\\Storage\\\\UuidResolver\\\\ChainResolver\\:\\:__construct\\(\\) has parameter \\$resolvers with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: lib/Storage/UuidResolver/ChainResolver.php
-
-		-
-			message: "#^Method PhpBench\\\\Storage\\\\UuidResolver\\\\LatestResolver\\:\\:__construct\\(\\) has parameter \\$driverRegistry with generic class PhpBench\\\\Registry\\\\Registry but does not specify its types\\: T$#"
-			count: 1
-			path: lib/Storage/UuidResolver/LatestResolver.php
-
-		-
-			message: "#^Method PhpBench\\\\Storage\\\\UuidResolver\\\\LatestResolver\\:\\:getLatestUuid\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: lib/Storage/UuidResolver/LatestResolver.php
-
-		-
-			message: "#^Method PhpBench\\\\Storage\\\\UuidResolver\\\\LatestResolver\\:\\:getNthUuid\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: lib/Storage/UuidResolver/LatestResolver.php
-
-		-
-			message: "#^Method PhpBench\\\\Storage\\\\UuidResolver\\\\LatestResolver\\:\\:getNthUuid\\(\\) has parameter \\$nth with no type specified\\.$#"
-			count: 1
-			path: lib/Storage/UuidResolver/LatestResolver.php
-
-		-
-			message: "#^Method PhpBench\\\\Template\\\\ObjectPathResolver\\\\MappedObjectPathResolver\\:\\:__construct\\(\\) has parameter \\$map with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: lib/Template/ObjectPathResolver/MappedObjectPathResolver.php
-
-		-
-			message: "#^Method PhpBench\\\\Template\\\\ObjectRenderer\\:\\:__construct\\(\\) has parameter \\$templatePaths with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: lib/Template/ObjectRenderer.php
-
-		-
-			message: "#^Method PhpBench\\\\Template\\\\TemplateService\\\\ContainerTemplateService\\:\\:__construct\\(\\) has parameter \\$serviceMap with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: lib/Template/TemplateService/ContainerTemplateService.php
-
-		-
-			message: "#^Method PhpBench\\\\Template\\\\TemplateService\\\\MappedTemplateService\\:\\:__construct\\(\\) has parameter \\$serviceMap with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: lib/Template/TemplateService/MappedTemplateService.php
-
-		-
-			message: "#^Method PhpBench\\\\Util\\\\TextTruncate\\:\\:centered\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: lib/Util/TextTruncate.php

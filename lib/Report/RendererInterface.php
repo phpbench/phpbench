@@ -26,5 +26,8 @@ use PhpBench\Report\Model\Reports;
  */
 interface RendererInterface extends RegistrableInterface
 {
+    /**
+     * @return void
+     */
     public function render(Reports $report, Config $config);
 }

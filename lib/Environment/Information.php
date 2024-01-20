@@ -13,6 +13,7 @@
 namespace PhpBench\Environment;
 
 use ArrayAccess;
+use http\Exception\InvalidArgumentException;
 use IteratorAggregate;
 use ReturnTypeWillChange;
 use BadMethodCallException;
@@ -29,7 +30,7 @@ use ArrayIterator;
  */
 class Information implements ArrayAccess, IteratorAggregate
 {
-    /** @var array<string, mixed>  */
+    /** @var array<string, scalar|null>  */
     private array $information;
 
     /**
@@ -97,7 +98,7 @@ class Information implements ArrayAccess, IteratorAggregate
     }
 
     /**
-     * @return ArrayIterator<string, mixed>
+     * @return ArrayIterator<string, scalar|null>
      */
     public function getIterator(): ArrayIterator
     {
@@ -105,7 +106,7 @@ class Information implements ArrayAccess, IteratorAggregate
     }
 
     /**
-     * @return array<string, mixed>
+     * @return array<string, scalar|null>
      */
     public function toArray(): array
     {
@@ -115,7 +116,7 @@ class Information implements ArrayAccess, IteratorAggregate
     /**
      * @param array<string, mixed> $information
      *
-     * @return array<string, mixed>
+     * @return array<string, scalar|null>
      */
     private function flattenInformation(array $information, string $prefix = ''): array
     {
@@ -128,6 +129,10 @@ class Information implements ArrayAccess, IteratorAggregate
                 $transformed = array_merge($transformed, $this->flattenInformation($value, $key));
 
                 continue;
+            }
+
+            if (!is_scalar($value) && $value !== null) {
+                throw new InvalidArgumentException(sprintf('Unsupported type %s', get_debug_type($value)));
             }
 
             $transformed[$key] = $value;
