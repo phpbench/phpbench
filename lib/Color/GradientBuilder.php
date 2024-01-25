@@ -9,6 +9,9 @@ final class GradientBuilder
      */
     private $series = [];
 
+    /**
+     * @var array<string, Gradient>
+     */
     private array $cache = [];
 
     public function __construct(private string $startColor = '#000000')

@@ -21,6 +21,9 @@ class OutputMode
     {
     }
 
+    /**
+     * @return string
+     */
     public function getMode()
     {
         return $this->mode;

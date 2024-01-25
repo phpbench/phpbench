@@ -22,6 +22,9 @@ class Iterations
      */
     public $iterations;
 
+    /**
+     * @param int|int[] $iterations
+     */
     public function __construct(int | array $iterations)
     {
         $this->iterations = (array)$iterations;

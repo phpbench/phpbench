@@ -40,6 +40,10 @@ interface DriverInterface
 
     /**
      * Return true if the driver has the given run ID.
+     *
+     * @param string $runId
+     *
+     * @return bool
      */
     public function has($runId);
 

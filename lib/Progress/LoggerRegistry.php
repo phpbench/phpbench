@@ -16,13 +16,22 @@ use InvalidArgumentException;
 
 class LoggerRegistry
 {
-    private ?array $progressLoggers = null;
+    /** @var array<string, LoggerInterface> */
+    private array $progressLoggers = [];
 
+    /**
+     * @param string $name
+     */
     public function addProgressLogger($name, LoggerInterface $progressLogger): void
     {
         $this->progressLoggers[$name] = $progressLogger;
     }
 
+    /**
+     * @param string $name
+     *
+     * @return LoggerInterface
+     */
     public function getProgressLogger($name)
     {
         if (!isset($this->progressLoggers[$name])) {

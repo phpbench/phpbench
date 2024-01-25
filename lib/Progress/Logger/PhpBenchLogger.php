@@ -38,7 +38,7 @@ abstract class PhpBenchLogger extends NullLogger
     public function __construct(
         OutputInterface $output,
         private readonly VariantFormatter $formatter,
-        TimeUnit $timeUnit = null
+        TimeUnit $timeUnit
     ) {
         $this->timeUnit = $timeUnit;
         $this->output = $output;

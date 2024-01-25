@@ -126,7 +126,7 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
      * $variant->getMetricValues(ComputedResult::class, 'z_value');
      * ```
      *
-     * @return mixed[]
+     * @return array<int|float>
      */
     public function getMetricValues(string $resultClass, string $metricName): array
     {

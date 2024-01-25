@@ -6,8 +6,6 @@ parameters:
         - extensions/xdebug/lib
         - tests
     excludePaths:
-        - lib/Attributes
-        - lib/Benchmark/Metadata/Driver/AttributeDriver.php
         - tests/Workspace
         - tests/Unit/Reflection/reflector
         - tests/Unit/Benchmark/findertest
@@ -15,8 +13,6 @@ parameters:
         - tests/Unit/Executor/benchmarks
     typeAliases:
         parameters: 'array<string,mixed>'
-        scalar: 'int|float|string|bool'
-        number: 'int|float'
         tableRowArray: 'array<string,\PhpBench\Expression\Ast\Node>'
         tableColumnDefinition: 'array<string,mixed>'
     stubFiles:

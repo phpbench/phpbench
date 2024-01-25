@@ -21,7 +21,7 @@ class ChainDriver implements DriverInterface
     public function getMetadataForHierarchy(ReflectionHierarchy $classHierarchy): BenchmarkMetadata
     {
         $primaryReflection = $classHierarchy->getTop();
-        $benchmark = new BenchmarkMetadata($primaryReflection->path, $primaryReflection->class);
+        $benchmark = new BenchmarkMetadata($primaryReflection->path, $primaryReflection->getClass());
 
         foreach ($this->drivers as $driver) {
             $benchmark->merge($driver->getMetadataForHierarchy($classHierarchy));

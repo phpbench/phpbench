@@ -7,11 +7,12 @@ use PhpBench\Storage\HistoryIteratorInterface;
 
 class FakeHistoryIterator implements HistoryIteratorInterface
 {
-    private array $entries;
+    /** @var \ArrayIterator<array-key, HistoryEntry> */
+    private \ArrayIterator $entries;
 
     public function __construct(HistoryEntry ...$entries)
     {
-        $this->entries = $entries;
+        $this->entries = new \ArrayIterator($entries);
     }
 
     /**
@@ -19,7 +20,7 @@ class FakeHistoryIterator implements HistoryIteratorInterface
      */
     public function current(): HistoryEntry
     {
-        return current($this->entries);
+        return $this->entries->current();
     }
 
     /**
@@ -27,7 +28,7 @@ class FakeHistoryIterator implements HistoryIteratorInterface
      */
     public function next(): void
     {
-        next($this->entries);
+        $this->entries->next();
     }
 
     /**
@@ -35,7 +36,7 @@ class FakeHistoryIterator implements HistoryIteratorInterface
      */
     public function key(): int
     {
-        return key($this->entries);
+        return $this->entries->key();
     }
 
     /**
@@ -43,7 +44,7 @@ class FakeHistoryIterator implements HistoryIteratorInterface
      */
     public function valid(): bool
     {
-        return (bool)current($this->entries);
+        return $this->entries->valid();
     }
 
     /**
@@ -51,6 +52,6 @@ class FakeHistoryIterator implements HistoryIteratorInterface
      */
     public function rewind(): void
     {
-        reset($this->entries);
+        $this->entries->rewind();
     }
 }

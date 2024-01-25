@@ -42,7 +42,7 @@ class AttributeDriver implements DriverInterface
     public function getMetadataForHierarchy(ReflectionHierarchy $hierarchy): BenchmarkMetadata
     {
         $primaryReflection = $hierarchy->getTop();
-        $benchmark = new BenchmarkMetadata($primaryReflection->path, $primaryReflection->class);
+        $benchmark = new BenchmarkMetadata($primaryReflection->path, $primaryReflection->getClass());
 
         $this->buildBenchmark($benchmark, $hierarchy);
 
