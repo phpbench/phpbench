@@ -8,6 +8,9 @@ use RuntimeException;
 
 final class ContainerTemplateService implements TemplateService
 {
+    /**
+     * @param array<string, class-string<object>> $serviceMap
+     */
     public function __construct(private readonly ContainerInterface $container, private array $serviceMap)
     {
     }

@@ -6,6 +6,9 @@ use PhpBench\Template\ObjectPathResolver;
 
 class MappedObjectPathResolver implements ObjectPathResolver
 {
+    /**
+     * @param array<class-string, string> $map
+     */
     public function __construct(private array $map)
     {
     }

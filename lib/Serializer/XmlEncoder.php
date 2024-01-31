@@ -74,7 +74,7 @@ class XmlEncoder
                 $infoEl = $envEl->appendElement($information->getName());
 
                 foreach ($information as $key => $value) {
-                    $valueEl = $infoEl->appendTextNode('value', $value);
+                    $valueEl = $infoEl->appendTextNode('value', (string)$value);
                     $valueEl->setAttribute('name', $key);
                     $valueEl->setAttribute('type', gettype($value));
                 }
@@ -195,13 +195,13 @@ class XmlEncoder
                 continue;
             }
 
-            $resultEl = $subjectEl->queryOne('ancestor::suite')->appendElement('result');
-            $resultEl->setAttribute('key', $resultKey);
-            $resultEl->setAttribute('class', $classFqn);
+            $resultEl = $subjectEl->queryOne('ancestor::suite')?->appendElement('result');
+            $resultEl?->setAttribute('key', $resultKey);
+            $resultEl?->setAttribute('class', $classFqn);
         }
     }
 
-    private function createParameter($parentEl, $name, $value)
+    private function createParameter(Element $parentEl, string $name, mixed $value): void
     {
         $parameterEl = $parentEl->appendElement('parameter');
         assert($parameterEl instanceof DOMElement);
@@ -214,35 +214,38 @@ class XmlEncoder
                 $this->createParameter($parameterEl, $key, $element);
             }
 
-            return $parameterEl;
+            return;
         }
 
         if (is_null($value)) {
             $parameterEl->setAttribute('xsi:nil', 'true');
 
-            return $parameterEl;
+            return;
         }
 
         if (is_scalar($value) && !$this->isBinary($value)) {
-            $parameterEl->setAttribute('value', $value);
+            $parameterEl->setAttribute('value', (string)$value);
             $parameterEl->setAttribute('type', gettype($value));
 
-            return $parameterEl;
+            return;
         }
 
         if (!$this->storeBinary) {
             $parameterEl->setAttribute('xsi:nil', 'true');
 
-            return $parameterEl;
+            return;
         }
+
+        /** @var \DOMDocument $ownerDocument */
+        $ownerDocument = $parameterEl->ownerDocument;
 
         if (is_scalar($value) && $this->isBinary($value)) {
             $parameterEl->appendChild(
-                $parameterEl->ownerDocument->createCDATASection(base64_encode($value))
+                $ownerDocument->createCDATASection(base64_encode((string)$value))
             );
             $parameterEl->setAttribute('type', self::PARAM_TYPE_BINARY);
 
-            return $parameterEl;
+            return;
         }
 
         try {
@@ -256,7 +259,7 @@ class XmlEncoder
         }
         $parameterEl->setAttribute('type', self::PARAM_TYPE_SERIALIZED);
         $parameterEl->appendChild(
-            $parameterEl->ownerDocument->createCDATASection(base64_encode($serialized))
+            $ownerDocument->createCDATASection(base64_encode($serialized))
         );
     }
 
@@ -290,8 +293,11 @@ class XmlEncoder
         }
     }
 
-    private function isBinary($value)
+    /**
+     * @param scalar $value
+     */
+    private function isBinary(mixed $value): bool
     {
-        return !preg_match('//u', (string) $value);
+        return !preg_match('//u', (string)$value);
     }
 }

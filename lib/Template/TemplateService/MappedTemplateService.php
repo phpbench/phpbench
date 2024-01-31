@@ -7,6 +7,9 @@ use RuntimeException;
 
 class MappedTemplateService implements TemplateService
 {
+    /**
+     * @param array<string, object> $serviceMap
+     */
     public function __construct(private array $serviceMap)
     {
     }

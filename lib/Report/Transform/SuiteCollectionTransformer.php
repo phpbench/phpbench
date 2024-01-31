@@ -21,6 +21,8 @@ final class SuiteCollectionTransformer
 
     /**
      * @deprecated will be removed in 2.0, use `suiteToFrame`.
+     *
+     * @return array<int,array<string,mixed>>
      */
     public function suiteToTable(SuiteCollection $collection, bool $includeBaseline = false): array
     {
