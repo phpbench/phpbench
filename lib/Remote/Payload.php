@@ -28,10 +28,12 @@ class Payload
     /**
      * Wrapper for PHP binary, e.g. "blackfire".
      */
-    private $wrapper;
+    private ?string $wrapper = null;
 
     /**
      * Associative array of PHP INI settings.
+     *
+     * @var array<string, scalar|scalar[]>
      */
     private array $phpConfig = [];
 
@@ -50,7 +52,7 @@ class Payload
      * Create a new Payload object with the given script template.
      * The template must be the path to a script template.
      *
-     * @param array<string, mixed> $tokens
+     * @param array<string, string|null> $tokens
      */
     public function __construct(
         /**
@@ -69,11 +71,17 @@ class Payload
         $this->phpPath = $phpPath ?: PHP_BINARY;
     }
 
+    /**
+     * @param string $wrapper
+     */
     public function setWrapper($wrapper): void
     {
         $this->wrapper = $wrapper;
     }
 
+    /**
+     * @param array<string, scalar|scalar[]> $phpConfig
+     */
     public function mergePhpConfig(array $phpConfig): void
     {
         $this->phpConfig = array_merge(
@@ -151,7 +159,13 @@ class Payload
             ));
         }
 
-        return file_get_contents($this->template);
+        $content = file_get_contents($this->template);
+
+        if ($content === false) {
+            throw new \RuntimeException(sprintf('Could not read template "%s"', $this->template));
+        }
+
+        return $content;
     }
 
     private function writeTempFile(string $script): string

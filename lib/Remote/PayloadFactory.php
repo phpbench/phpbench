@@ -22,7 +22,7 @@ class PayloadFactory
     }
 
     /**
-     * @param array<string, mixed> $tokens
+     * @param array<string, string|null> $tokens
      */
     public function create(string $template, array $tokens = [], ?string $phpBinary = null, ?float $timeout = null): Payload
     {

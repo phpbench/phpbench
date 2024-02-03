@@ -17,14 +17,27 @@ namespace PhpBench\Reflection;
  */
 class ReflectionClass
 {
+    /** @var object[] */
     public $attributes = [];
+
+    /** @var string|null */
     public $path;
+
+    /** @var list<string> */
     public $interfaces = [];
+
     /** @var class-string|null */
     public $class;
+
+    /** @var string|null */
     public $namespace;
+
+    /** @var bool */
     public $abstract = false;
-    public $comment;
+
+    /** @var string|false */
+    public $comment = false;
+
     /** @var array<string, ReflectionMethod> */
     public $methods = [];
 

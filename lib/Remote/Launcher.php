@@ -26,6 +26,9 @@ class Launcher
 
     private readonly ExecutableFinder $finder;
 
+    /**
+     * @param array<string, scalar|scalar[]> $phpConfig
+     */
     public function __construct(
         PayloadFactory $payloadFactory = null,
         ExecutableFinder $finder = null,
@@ -39,6 +42,10 @@ class Launcher
         $this->finder = $finder ?: new ExecutableFinder();
     }
 
+    /**
+     * @param string $template
+     * @param array<string, string|null> $tokens
+     */
     public function payload($template, array $tokens = [], ?float $timeout = null): Payload
     {
         $tokens['bootstrap'] = '';
@@ -72,14 +79,13 @@ class Launcher
         return $payload;
     }
 
-    private function resolvePhpBinary()
+    private function resolvePhpBinary(): ?string
     {
-        // if no php binary, use the PhpExecutableFinder (generally will
-        // resolve to PHP_BINARY)
+        // if no php binary, use the PhpExecutableFinder (generally will resolve to PHP_BINARY)
         if (!$this->phpBinary) {
             $finder = new PhpExecutableFinder();
 
-            return $finder->find();
+            return $finder->find() ?: null;
         }
 
         // if the php binary is absolute, fine.
