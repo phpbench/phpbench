@@ -11,6 +11,7 @@ parameters:
         - tests/Unit/Benchmark/findertest
         - tests/System/benchmarks
         - tests/Unit/Executor/benchmarks
+        - lib/Path/Path.php
     typeAliases:
         parameters: 'array<string,mixed>'
         tableRowArray: 'array<string,\PhpBench\Expression\Ast\Node>'

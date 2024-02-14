@@ -16,6 +16,7 @@ use PhpBench\Console\Application;
 use PhpBench\Console\CharacterReader;
 use PhpBench\Console\Command\Handler\TimeUnitHandler;
 use PhpBench\Registry\Registry;
+use PhpBench\Storage\DriverInterface;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,6 +28,9 @@ class LogCommand extends Command
 {
     private readonly CharacterReader $characterReader;
 
+    /**
+     * @param Registry<DriverInterface> $storage
+     */
     public function __construct(
         private readonly Registry $storage,
         private readonly TimeUnit $timeUnit,
@@ -122,7 +126,7 @@ EOT
                 ));
                 $character = $this->characterReader->read();
 
-                if ($character == 'q') {
+                if ($character === 'q') {
                     break;
                 }
                 $output->write(PHP_EOL);
@@ -141,7 +145,10 @@ EOT
         return 0;
     }
 
-    private function writeLines($output, $nbRows, $height, $lines)
+    /**
+     * @param string[] $lines
+     */
+    private function writeLines(OutputInterface $output, int $nbRows, int $height, array $lines): int
     {
         $limit = count($lines);
 

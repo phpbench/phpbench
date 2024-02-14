@@ -18,7 +18,9 @@ class TableBuilder
     private array $rows = [];
 
     /**
-     * @var Node[]|string[]|null
+     * @deprecated
+     *
+     * @var Node[]
      */
     private ?array $headers = null;
 
@@ -45,11 +47,13 @@ class TableBuilder
     }
 
     /**
-     * @param (string[]|Node[]) $headers
+     * @deprecated
+     *
+     * @param string[] $headers
      */
     public function withHeaders(array $headers): self
     {
-        $this->headers = array_map(function (string $header) {
+        $this->headers = array_map(static function (string $header) {
             return PhpValueFactory::fromValue($header);
         }, $headers);
 
@@ -75,6 +79,9 @@ class TableBuilder
         return $this;
     }
 
+    /**
+     * @param tableRowArray $row
+     */
     public function addRowArray(array $row): self
     {
         $row = array_map(function ($value) {
