@@ -111,84 +111,9 @@ parameters:
 			path: lib/PhpBench.php
 
 		-
-			message: "#^Property PhpBench\\\\Reflection\\\\ReflectionClass\\:\\:\\$abstract has no type specified\\.$#"
-			count: 1
-			path: lib/Reflection/ReflectionClass.php
-
-		-
-			message: "#^Property PhpBench\\\\Reflection\\\\ReflectionClass\\:\\:\\$attributes has no type specified\\.$#"
-			count: 1
-			path: lib/Reflection/ReflectionClass.php
-
-		-
-			message: "#^Property PhpBench\\\\Reflection\\\\ReflectionClass\\:\\:\\$comment has no type specified\\.$#"
-			count: 1
-			path: lib/Reflection/ReflectionClass.php
-
-		-
-			message: "#^Property PhpBench\\\\Reflection\\\\ReflectionClass\\:\\:\\$interfaces has no type specified\\.$#"
-			count: 1
-			path: lib/Reflection/ReflectionClass.php
-
-		-
-			message: "#^Property PhpBench\\\\Reflection\\\\ReflectionClass\\:\\:\\$namespace has no type specified\\.$#"
-			count: 1
-			path: lib/Reflection/ReflectionClass.php
-
-		-
-			message: "#^Property PhpBench\\\\Reflection\\\\ReflectionClass\\:\\:\\$path has no type specified\\.$#"
-			count: 1
-			path: lib/Reflection/ReflectionClass.php
-
-		-
-			message: "#^Property PhpBench\\\\Reflection\\\\ReflectionMethod\\:\\:\\$attributes has no type specified\\.$#"
-			count: 1
-			path: lib/Reflection/ReflectionMethod.php
-
-		-
 			message: "#^Method PhpBench\\\\Remote\\\\IniStringBuilder\\:\\:build\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: lib/Remote/IniStringBuilder.php
-
-		-
-			message: "#^Method PhpBench\\\\Remote\\\\Launcher\\:\\:__construct\\(\\) has parameter \\$phpConfig with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: lib/Remote/Launcher.php
-
-		-
-			message: "#^Method PhpBench\\\\Remote\\\\Launcher\\:\\:payload\\(\\) has parameter \\$template with no type specified\\.$#"
-			count: 1
-			path: lib/Remote/Launcher.php
-
-		-
-			message: "#^Method PhpBench\\\\Remote\\\\Launcher\\:\\:payload\\(\\) has parameter \\$tokens with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: lib/Remote/Launcher.php
-
-		-
-			message: "#^Method PhpBench\\\\Remote\\\\Launcher\\:\\:resolvePhpBinary\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: lib/Remote/Launcher.php
-
-		-
-			message: "#^Method PhpBench\\\\Remote\\\\Payload\\:\\:mergePhpConfig\\(\\) has parameter \\$phpConfig with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: lib/Remote/Payload.php
-
-		-
-			message: "#^Method PhpBench\\\\Remote\\\\Payload\\:\\:setWrapper\\(\\) has parameter \\$wrapper with no type specified\\.$#"
-			count: 1
-			path: lib/Remote/Payload.php
-
-		-
-			message: "#^Property PhpBench\\\\Remote\\\\Payload\\:\\:\\$phpConfig type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: lib/Remote/Payload.php
-
-		-
-			message: "#^Property PhpBench\\\\Remote\\\\Payload\\:\\:\\$wrapper has no type specified\\.$#"
-			count: 1
-			path: lib/Remote/Payload.php
 
 		-
 			message: "#^Method PhpBench\\\\Remote\\\\ProcessFactory\\:\\:__construct\\(\\) has parameter \\$env with no value type specified in iterable type array\\.$#"
@@ -239,21 +164,6 @@ parameters:
 			message: "#^Method PhpBench\\\\Report\\\\Model\\\\Table\\:\\:getIterator\\(\\) return type with generic class ArrayIterator does not specify its types\\: TKey, TValue$#"
 			count: 1
 			path: lib/Report/Model/Table.php
-
-		-
-			message: "#^Method PhpBench\\\\Report\\\\Model\\\\TableRow\\:\\:cells\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: lib/Report/Model/TableRow.php
-
-		-
-			message: "#^Method PhpBench\\\\Report\\\\Model\\\\TableRow\\:\\:fromArray\\(\\) has parameter \\$row with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: lib/Report/Model/TableRow.php
-
-		-
-			message: "#^Method PhpBench\\\\Report\\\\Model\\\\TableRow\\:\\:getIterator\\(\\) return type with generic class ArrayIterator does not specify its types\\: TKey, TValue$#"
-			count: 1
-			path: lib/Report/Model/TableRow.php
 
 		-
 			message: "#^Method PhpBench\\\\Serializer\\\\XmlDecoder\\:\\:getComputedStats\\(\\) return type has no value type specified in iterable type array\\.$#"

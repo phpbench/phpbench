@@ -19,6 +19,9 @@ final class TableRow implements IteratorAggregate, Countable
     {
     }
 
+    /**
+     * @param array<string, Node> $row
+     */
     public static function fromArray(array $row): self
     {
         return new self(array_map(function (Node $node) {
@@ -27,7 +30,7 @@ final class TableRow implements IteratorAggregate, Countable
     }
 
     /**
-     * {@inheritDoc}
+     * @return ArrayIterator<string, Node>
      */
     public function getIterator(): ArrayIterator
     {
@@ -42,6 +45,9 @@ final class TableRow implements IteratorAggregate, Countable
         return array_keys($this->cells);
     }
 
+    /**
+     * @return array<string, Node>
+     */
     public function cells(): array
     {
         return $this->cells;

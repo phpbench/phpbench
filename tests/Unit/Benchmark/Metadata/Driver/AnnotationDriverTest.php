@@ -387,7 +387,7 @@ EOT;
         $method->reflectionClass = $reflection;
         $method->class = 'Test';
         $method->name = 'benchNoAnnotations';
-        $method->comment = null;
+        $method->comment = false;
         $reflection->methods[$method->name] = $method;
         $hierarchy->addReflectionClass($reflection);
 
