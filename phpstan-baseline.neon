@@ -11,36 +11,6 @@ parameters:
 			path: lib/Console/Command/Handler/RunnerHandler.php
 
 		-
-			message: "#^Method PhpBench\\\\Console\\\\Command\\\\LogCommand\\:\\:__construct\\(\\) has parameter \\$storage with generic class PhpBench\\\\Registry\\\\Registry but does not specify its types\\: T$#"
-			count: 1
-			path: lib/Console/Command/LogCommand.php
-
-		-
-			message: "#^Method PhpBench\\\\Console\\\\Command\\\\LogCommand\\:\\:writeLines\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: lib/Console/Command/LogCommand.php
-
-		-
-			message: "#^Method PhpBench\\\\Console\\\\Command\\\\LogCommand\\:\\:writeLines\\(\\) has parameter \\$height with no type specified\\.$#"
-			count: 1
-			path: lib/Console/Command/LogCommand.php
-
-		-
-			message: "#^Method PhpBench\\\\Console\\\\Command\\\\LogCommand\\:\\:writeLines\\(\\) has parameter \\$lines with no type specified\\.$#"
-			count: 1
-			path: lib/Console/Command/LogCommand.php
-
-		-
-			message: "#^Method PhpBench\\\\Console\\\\Command\\\\LogCommand\\:\\:writeLines\\(\\) has parameter \\$nbRows with no type specified\\.$#"
-			count: 1
-			path: lib/Console/Command/LogCommand.php
-
-		-
-			message: "#^Method PhpBench\\\\Console\\\\Command\\\\LogCommand\\:\\:writeLines\\(\\) has parameter \\$output with no type specified\\.$#"
-			count: 1
-			path: lib/Console/Command/LogCommand.php
-
-		-
 			message: "#^Method PhpBench\\\\Console\\\\Command\\\\RunCommand\\:\\:__construct\\(\\) has parameter \\$storage with generic class PhpBench\\\\Registry\\\\Registry but does not specify its types\\: T$#"
 			count: 1
 			path: lib/Console/Command/RunCommand.php
@@ -96,11 +66,6 @@ parameters:
 			path: lib/Json/JsonDecoder.php
 
 		-
-			message: "#^Method PhpBench\\\\Path\\\\Path\\:\\:getFilenameWithoutExtension\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: lib/Path/Path.php
-
-		-
 			message: "#^Method PhpBench\\\\PhpBench\\:\\:mergeProfile\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: lib/PhpBench.php
@@ -111,29 +76,9 @@ parameters:
 			path: lib/PhpBench.php
 
 		-
-			message: "#^Method PhpBench\\\\Remote\\\\IniStringBuilder\\:\\:build\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
+			message: "#^Parameter \\#1 \\$callback of function array_map expects \\(callable\\(array\\<int, int\\>, array\\<array\\<bool\\|float\\|int\\|string\\>\\|bool\\|float\\|int\\|string\\>, int\\)\\: mixed\\)\\|null, Closure\\(array, array\\|null, string\\)\\: PhpBench\\\\Report\\\\Model\\\\BarChartDataSet given\\.$#"
 			count: 1
-			path: lib/Remote/IniStringBuilder.php
-
-		-
-			message: "#^Method PhpBench\\\\Remote\\\\ProcessFactory\\:\\:__construct\\(\\) has parameter \\$env with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: lib/Remote/ProcessFactory.php
-
-		-
-			message: "#^Function PhpBench\\\\Report\\\\Func\\\\fit_to_axis\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: lib/Report/Func/functions.php
-
-		-
-			message: "#^Function PhpBench\\\\Report\\\\Func\\\\fit_to_axis\\(\\) has parameter \\$axis with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: lib/Report/Func/functions.php
-
-		-
-			message: "#^Function PhpBench\\\\Report\\\\Func\\\\fit_to_axis\\(\\) has parameter \\$rows with no type specified\\.$#"
-			count: 1
-			path: lib/Report/Func/functions.php
+			path: lib/Report/ComponentGenerator/BarChartAggregateComponentGenerator.php
 
 		-
 			message: "#^Method PhpBench\\\\Report\\\\Generator\\\\ExpressionGenerator\\:\\:evaluate\\(\\) has parameter \\$baselineExprMap with no value type specified in iterable type array\\.$#"
@@ -144,26 +89,6 @@ parameters:
 			message: "#^Method PhpBench\\\\Report\\\\Generator\\\\ExpressionGenerator\\:\\:evaluate\\(\\) has parameter \\$exprMap with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: lib/Report/Generator/ExpressionGenerator.php
-
-		-
-			message: "#^Method PhpBench\\\\Report\\\\Model\\\\Builder\\\\TableBuilder\\:\\:addRowArray\\(\\) has parameter \\$row with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: lib/Report/Model/Builder/TableBuilder.php
-
-		-
-			message: "#^Method PhpBench\\\\Report\\\\Model\\\\Reports\\:\\:getIterator\\(\\) return type with generic class ArrayIterator does not specify its types\\: TKey, TValue$#"
-			count: 1
-			path: lib/Report/Model/Reports.php
-
-		-
-			message: "#^Method PhpBench\\\\Report\\\\Model\\\\Table\\:\\:columnGroups\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: lib/Report/Model/Table.php
-
-		-
-			message: "#^Method PhpBench\\\\Report\\\\Model\\\\Table\\:\\:getIterator\\(\\) return type with generic class ArrayIterator does not specify its types\\: TKey, TValue$#"
-			count: 1
-			path: lib/Report/Model/Table.php
 
 		-
 			message: "#^Method PhpBench\\\\Serializer\\\\XmlDecoder\\:\\:getComputedStats\\(\\) return type has no value type specified in iterable type array\\.$#"

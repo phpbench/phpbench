@@ -13,7 +13,7 @@ use PhpBench\Expression\Ast\Node;
 final class TableRow implements IteratorAggregate, Countable
 {
     /**
-     * @param array<string,Node> $cells
+     * @param array<string, Node> $cells
      */
     private function __construct(private readonly array $cells)
     {
@@ -24,9 +24,7 @@ final class TableRow implements IteratorAggregate, Countable
      */
     public static function fromArray(array $row): self
     {
-        return new self(array_map(function (Node $node) {
-            return $node;
-        }, $row));
+        return new self($row);
     }
 
     /**

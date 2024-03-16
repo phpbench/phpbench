@@ -10,6 +10,9 @@ final class ProcessFactory implements ProcessFactoryInterface
 {
     private readonly LoggerInterface $logger;
 
+    /**
+     * @param string[]|null $env
+     */
     public function __construct(?LoggerInterface $logger = null, private readonly ?array $env = null)
     {
         $this->logger = $logger ?: new NullLogger();

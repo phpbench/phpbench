@@ -6,7 +6,7 @@ final class FitToAxis
 {
     /**
      * @param array<array-key, int|string> $axis
-     * @param list<int[]> $rows
+     * @param list<array<int|float>> $rows
      *
      * @return list<list<int>>
      */

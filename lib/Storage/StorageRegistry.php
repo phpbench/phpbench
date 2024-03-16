@@ -16,8 +16,6 @@ use PhpBench\Registry\Registry;
 use Psr\Container\ContainerInterface;
 
 /**
- * @method DriverInterface getService()
- *
  * @extends Registry<DriverInterface>
  */
 class StorageRegistry extends Registry

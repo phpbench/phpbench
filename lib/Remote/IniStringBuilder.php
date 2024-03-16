@@ -14,6 +14,9 @@ namespace PhpBench\Remote;
 
 class IniStringBuilder
 {
+    /**
+     * @param array<string, scalar|scalar[]> $config
+     */
     public function build(array $config): string
     {
         $string = [];

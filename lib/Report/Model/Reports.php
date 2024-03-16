@@ -38,6 +38,9 @@ final class Reports implements IteratorAggregate
         return new self(array_merge($this->reports, $reports->reports));
     }
 
+    /**
+     * @return ArrayIterator<int, Report>
+     */
     public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->reports);
