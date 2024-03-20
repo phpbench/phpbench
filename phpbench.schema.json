@@ -83,13 +83,13 @@
         "runner.env_enabled_providers": {
             "description": "Select which environment samplers to use",
             "type": [
-                "object"
+                "array"
             ]
         },
         "runner.env_samplers": {
             "description": "Environment baselines (not to be confused with baseline comparisons when running benchmarks) are small benchmarks which run to sample the speed of the system (e.g. file I\/O, computation etc). This setting enables or disables these baselines",
             "type": [
-                "object"
+                "array"
             ]
         },
         "runner.env_sampler_callables": {
