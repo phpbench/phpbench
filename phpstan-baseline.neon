@@ -11,21 +11,6 @@ parameters:
 			path: lib/Console/Command/Handler/RunnerHandler.php
 
 		-
-			message: "#^Method PhpBench\\\\Console\\\\Command\\\\RunCommand\\:\\:__construct\\(\\) has parameter \\$storage with generic class PhpBench\\\\Registry\\\\Registry but does not specify its types\\: T$#"
-			count: 1
-			path: lib/Console/Command/RunCommand.php
-
-		-
-			message: "#^Method PhpBench\\\\Console\\\\Command\\\\ShowCommand\\:\\:__construct\\(\\) has parameter \\$storage with generic class PhpBench\\\\Registry\\\\Registry but does not specify its types\\: T$#"
-			count: 1
-			path: lib/Console/Command/ShowCommand.php
-
-		-
-			message: "#^Method PhpBench\\\\Development\\\\ConfigDumper\\:\\:prettyPrint\\(\\) has parameter \\$value with no type specified\\.$#"
-			count: 1
-			path: lib/Development/ConfigDumper.php
-
-		-
 			message: "#^Property PhpBench\\\\Executor\\\\Benchmark\\\\DebugExecutor\\:\\:\\$variantTimes type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: lib/Executor/Benchmark/DebugExecutor.php
@@ -79,16 +64,6 @@ parameters:
 			message: "#^Parameter \\#1 \\$callback of function array_map expects \\(callable\\(array\\<int, int\\>, array\\<array\\<bool\\|float\\|int\\|string\\>\\|bool\\|float\\|int\\|string\\>, int\\)\\: mixed\\)\\|null, Closure\\(array, array\\|null, string\\)\\: PhpBench\\\\Report\\\\Model\\\\BarChartDataSet given\\.$#"
 			count: 1
 			path: lib/Report/ComponentGenerator/BarChartAggregateComponentGenerator.php
-
-		-
-			message: "#^Method PhpBench\\\\Report\\\\Generator\\\\ExpressionGenerator\\:\\:evaluate\\(\\) has parameter \\$baselineExprMap with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: lib/Report/Generator/ExpressionGenerator.php
-
-		-
-			message: "#^Method PhpBench\\\\Report\\\\Generator\\\\ExpressionGenerator\\:\\:evaluate\\(\\) has parameter \\$exprMap with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: lib/Report/Generator/ExpressionGenerator.php
 
 		-
 			message: "#^Method PhpBench\\\\Serializer\\\\XmlDecoder\\:\\:getComputedStats\\(\\) return type has no value type specified in iterable type array\\.$#"
