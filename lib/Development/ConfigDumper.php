@@ -97,7 +97,7 @@ class ConfigDumper
         return str_repeat($char, mb_strlen($string));
     }
 
-    private function prettyPrint($value): string
+    private function prettyPrint(mixed $value): string
     {
         if (is_bool($value)) {
             return $value ? 'true' : 'false';
@@ -111,6 +111,6 @@ class ConfigDumper
             return 'NULL';
         }
 
-        return json_encode($value);
+        return json_encode($value, JSON_THROW_ON_ERROR);
     }
 }

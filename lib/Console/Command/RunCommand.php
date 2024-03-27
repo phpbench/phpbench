@@ -39,6 +39,9 @@ class RunCommand extends Command
     final public const OPT_STORE = 'store';
     final public const OPT_TOLERATE_FAILURE = 'tolerate-failure';
 
+    /**
+     * @param Registry<DriverInterface> $storage
+     */
     public function __construct(
         private readonly RunnerHandler $runnerHandler,
         private readonly ReportHandler $reportHandler,
@@ -83,17 +86,37 @@ EOT
         $this->timeUnitHandler->timeUnitFromInput($input);
         $this->reportHandler->validateReportsFromInput($input);
 
+        /** @var string|null $retryThreshold */
         $retryThreshold = $input->getOption(self::OPT_RETRY_THRESHOLD);
+
+        /** @var string|null $sleep */
         $sleep = $input->getOption(self::OPT_SLEEP);
+
+        /** @var list<string> $iterations */
+        $iterations = $input->getOption(self::OPT_ITERATIONS);
+        $iterations = array_map('intval', $iterations);
+
+        /** @var list<string> $warmup */
+        $warmup = $input->getOption(self::OPT_WARMUP);
+        $warmup = array_map('intval', $warmup);
+
+        /** @var string|null $tag */
+        $tag = $input->getOption(self::OPT_TAG);
+
+        /** @var bool $store */
+        $store = $input->getOption(self::OPT_STORE);
+
+        /** @var bool $tolerateFailure */
+        $tolerateFailure = $input->getOption(self::OPT_TOLERATE_FAILURE);
 
         $baselines = $this->resolveBaselines($input);
 
         $config = RunnerConfig::create()
-            ->withTag((string)$input->getOption(self::OPT_TAG))
+            ->withTag((string)$tag)
             ->withRetryThreshold($retryThreshold !== null ? (float) $retryThreshold : null)
             ->withSleep($sleep !== null ? (int) $sleep : null)
-            ->withIterations($input->getOption(self::OPT_ITERATIONS))
-            ->withWarmup($input->getOption(self::OPT_WARMUP))
+            ->withIterations($iterations)
+            ->withWarmup($warmup)
             ->withBaselines($baselines);
 
         $suite = $this->runnerHandler->runFromInput($input, $output, $config);
@@ -101,10 +124,9 @@ EOT
         $collection = new SuiteCollection([$suite]);
         $this->dumpHandler->dumpFromInput($input, $output, $collection);
 
-        if (true === $input->getOption(self::OPT_STORE) || $input->getOption(self::OPT_TAG)) {
+        if (true === $store || $tag) {
             $output->write('Storing results ... ');
 
-            /** @var DriverInterface $driver */
             $driver = $this->storage->getService();
 
             $message = $driver->store($collection);
@@ -123,7 +145,7 @@ EOT
 
         $this->reportHandler->reportsFromInput($input, $collection->mergeCollection($this->resolveBaselines($input)));
 
-        if (false === $input->getOption(self::OPT_TOLERATE_FAILURE) && $suite->getFailures()) {
+        if (false === $tolerateFailure && $suite->getFailures()) {
             return self::EXIT_CODE_FAILURE;
         }
 
