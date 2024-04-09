@@ -51,7 +51,7 @@ return (new Config())
         'concat_space' => false,
         'no_unused_imports' => true,
         'php_unit_set_up_tear_down_visibility' => true,
-        'phpdoc_align' => [],
+        'phpdoc_align' => false,
         'phpdoc_indent' => false,
         'phpdoc_separation' => true,
         'no_superfluous_phpdoc_tags' => [
