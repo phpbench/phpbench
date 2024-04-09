@@ -14,17 +14,20 @@ namespace PhpBench\Console;
 
 class CharacterReader
 {
+    private static bool $initialized = false;
+
     /**
      * If readline is installed, then prevent the user having to
      * press <return> in order to paginate.
      */
-    public function __construct()
+    private static function initialize(): void
     {
         // we could use extension_loaded but HHVM returns true and
-        // still doesn't have this function..
-        if (function_exists('readline_callback_handler_install')) {
+        // still doesn't have this function...
+        if (self::$initialized === false && function_exists('readline_callback_handler_install')) {
             readline_callback_handler_install('', function (): void {
             });
+            self::$initialized = true;
         }
     }
 
@@ -35,6 +38,8 @@ class CharacterReader
      */
     public function read(): ?string
     {
+        self::initialize();
+
         while (false !== $character = fgetc(STDIN)) {
             return $character;
         }
