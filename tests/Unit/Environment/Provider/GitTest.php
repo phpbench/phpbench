@@ -70,7 +70,7 @@ class GitTest extends IntegrationTestCase
      */
     public function testGetVcsCommitsh(): void
     {
-        $this->exec('git commit -m "test"');
+        $this->exec('git commit --no-gpg-sign -m "test"');
         $info = $this->provider->getInformation();
         $this->assertNotNull($info['version']); // no commit has yet been made
         $this->assertEquals(40, strlen((string) $info['version']));
@@ -81,7 +81,7 @@ class GitTest extends IntegrationTestCase
      */
     public function testGetVcsBranch(): void
     {
-        $this->exec('git commit -m "test"');
+        $this->exec('git commit --no-gpg-sign -m "test"');
 
         $this->exec('git branch foobar');
         $this->exec('git checkout foobar');
