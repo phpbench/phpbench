@@ -1,6 +1,17 @@
 CHANGELOG
 =========
 
+master
+------
+
+- Hide noisy log messages for missing fields #1095 @dantleech
+- Defer character reader until command execution @jbboher #1092
+- Import Attribute symbol @gsteel #1075
+- Improved types etc @aivchen #1064 #1064 #1070 #1071 #1074 #1081...
+- Improved tests @aivchen
+- Improved code-style @aivchen #1057 #1076 #1070
+- Removed useless polyfills @aivchen
+
 1.2.15
 ------
 
