@@ -197,7 +197,7 @@ EOT
                     );
                 } catch (EvaluationError $e) {
                     $evaledRow[$name] = new StringNode('ERR');
-                    $this->logger->error(sprintf(
+                    $this->logger->warning(sprintf(
                         'Expression error (column "%s"): %s %s',
                         $name,
                         $e->getMessage(),
