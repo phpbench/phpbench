@@ -25,12 +25,11 @@ class ConsoleLogger extends AbstractLogger
             case LogLevel::DEBUG:
             case LogLevel::INFO:
             case LogLevel::NOTICE:
+            case LogLevel::WARNING:
                 if (!$this->enable) {
                     return;
                 }
 
-                break;
-            case LogLevel::WARNING:
                 $decoration = 'fg=yellow';
 
                 break;
