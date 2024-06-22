@@ -17,7 +17,7 @@ class ErrorHandlingExecutorDecorator implements MethodExecutorInterface
     {
         try {
             $this->executor->executeMethods($context, $methods);
-        } catch (Throwable) {
+        } catch (Throwable $throwable) {
             throw new ExecutionError(sprintf(
                 'Could not execute method(s) "%s" on "%s"',
                 implode('", "', $methods),
