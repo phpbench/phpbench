@@ -18,7 +18,7 @@
 **optimisation_stage**:
   Type(s): ``string``, Default: ``pre``
 
-  If the count should be pre or post optimisation
+  If the count should be `pre` or `post` optimisation
 
 .. _executor_opcode_option_dump_path:
 

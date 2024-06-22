@@ -74,7 +74,7 @@ final class OpcodeExecutor extends TemplateExecutor
         $options->setAllowedValues(self::OPTION_OPTIMISATION_STAGE, [self::OPCACHE_OPTIMISATION_PRE, self::OPCACHE_OPTIMISATION_POST]);
         $options->setAllowedTypes(self::OPTION_OPTIMISATION_STAGE, ['string']);
         $options->setAllowedTypes(self::OPTION_DUMP_PATH, ['null', 'string']);
-        $options->setInfo(self::OPTION_OPTIMISATION_STAGE, 'If the count should be pre or post optimisation');
+        $options->setInfo(self::OPTION_OPTIMISATION_STAGE, 'If the count should be `pre` or `post` optimisation');
         $options->setInfo(self::OPTION_DUMP_PATH, 'If specified, dump the opcode debug output to this file on each run');
     }
 
