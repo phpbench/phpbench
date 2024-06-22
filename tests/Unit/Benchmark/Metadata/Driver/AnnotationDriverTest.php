@@ -63,6 +63,12 @@ EOT;
 /**
  * @since Foo
  * @author Daniel Leech
+ * @template TTemplate
+ * @template-covariant TTemplate
+ * @template-contravariant TTemplate
+ * @extends Foobar
+ * @implements Foobar
+ * @use Foobar
  */
 EOT;
         $hierarchy = new ReflectionHierarchy();
