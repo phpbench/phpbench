@@ -19,117 +19,70 @@ use PhpBench\Model\ParameterSetsCollection;
  */
 class SubjectMetadata
 {
-    /**
-     * @var string
-     */
-    private $name;
-
-    /**
-     * @var ParameterSetsCollection
-     */
-    private $parameterSets;
+    private ParameterSetsCollection $parameterSets;
 
     /**
      * @var string[]|null
      */
-    private $groups;
+    private ?array $groups = null;
 
     /**
      * @var string[]|null
      */
-    private $beforeMethods;
+    private ?array $beforeMethods = null;
 
     /**
      * @var string[]|null
      */
-    private $afterMethods;
+    private ?array $afterMethods = null;
 
     /**
      * @var string[]|null
      */
-    private $paramProviders;
+    private ?array $paramProviders = null;
 
-    /**
-     * @var float|null
-     */
-    private $retryThreshold;
+    private ?float $retryThreshold = null;
 
     /**
      * @var null|int[]
      */
-    private $iterations = null;
+    private ?array $iterations = null;
 
     /**
      * @var null|int[]
      */
-    private $revs = null;
+    private ?array $revs = null;
 
     /**
      * @var null|int[]
      */
-    private $warmup;
+    private ?array $warmup = null;
 
-    /**
-     * @var bool|null
-     */
-    private $skip;
+    private ?bool $skip = null;
 
-    /**
-     * @var int|null
-     */
-    private $sleep;
+    private ?int $sleep = null;
 
-    /**
-     * @var string|null
-     */
-    private $outputTimeUnit = null;
+    private ?string $outputTimeUnit = null;
 
-    /**
-     * @var int|null
-     */
-    private $outputTimePrecision = null;
+    private ?int $outputTimePrecision = null;
 
-    /**
-     * @var string|null
-     */
-    private $outputMode = null;
-
-    /**
-     * @var BenchmarkMetadata
-     */
-    private $benchmarkMetadata;
+    private ?string $outputMode = null;
 
     /**
      * @var null|array<string>
      */
-    private $assertions;
+    private ?array $assertions = null;
 
-    /**
-     * @var ExecutorMetadata|null
-     */
-    private $executorMetadata;
+    private ?ExecutorMetadata $executorMetadata = null;
 
-    /**
-     * @var float|null
-     */
-    private $timeout;
+    private ?float $timeout = null;
 
-    /**
-     * @var int|null
-     */
-    private $retryLimit = null;
+    private ?int $retryLimit = null;
 
-    /**
-     * @var string|null
-     */
-    private $format = null;
+    private ?string $format = null;
 
-    /**
-     */
-    public function __construct(BenchmarkMetadata $benchmarkMetadata, string $name)
+    public function __construct(private readonly BenchmarkMetadata $benchmarkMetadata, private readonly string $name)
     {
-        $this->name = $name;
-        $this->benchmarkMetadata = $benchmarkMetadata;
         $this->parameterSets = ParameterSetsCollection::empty();
     }
 
@@ -173,41 +126,69 @@ class SubjectMetadata
         return $this->groups ?: [];
     }
 
+    /**
+     * @param string[] $groups
+     */
     public function inGroups(array $groups): bool
     {
+        if ($this->groups === null) {
+            return false;
+        }
+
         return (bool) count(array_intersect($this->groups, $groups));
     }
 
+    /**
+     * @param string[] $groups
+     */
     public function setGroups(array $groups): void
     {
         $this->groups = $groups;
     }
 
+    /**
+     * @return string[]
+     */
     public function getBeforeMethods(): array
     {
         return $this->beforeMethods ?: [];
     }
 
+    /**
+     * @param string[] $beforeMethods
+     */
     public function setBeforeMethods(array $beforeMethods): void
     {
         $this->beforeMethods = $beforeMethods;
     }
 
+    /**
+     * @return string[]
+     */
     public function getAfterMethods(): array
     {
         return $this->afterMethods ?: [];
     }
 
+    /**
+     * @param string[] $afterMethods
+     */
     public function setAfterMethods(array $afterMethods): void
     {
         $this->afterMethods = $afterMethods;
     }
 
+    /**
+     * @return string[]
+     */
     public function getParamProviders(): array
     {
         return $this->paramProviders ?: [];
     }
 
+    /**
+     * @param string[] $paramProviders
+     */
     public function setParamProviders(array $paramProviders): self
     {
         $this->paramProviders = $paramProviders;
@@ -215,21 +196,33 @@ class SubjectMetadata
         return $this;
     }
 
+    /**
+     * @return int[]|null
+     */
     public function getIterations(): ?array
     {
         return $this->iterations;
     }
 
+    /**
+     * @param int[] $iterations
+     */
     public function setIterations(array $iterations): void
     {
         $this->iterations = $iterations;
     }
 
+    /**
+     * @return int[]|null
+     */
     public function getRevs(): ?array
     {
         return $this->revs;
     }
 
+    /**
+     * @param int[] $revs
+     */
     public function setRevs(array $revs): void
     {
         $this->revs = $revs;

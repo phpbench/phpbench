@@ -12,6 +12,8 @@
 
 namespace PhpBench\Tests\Unit\Reflection\reflector;
 
+use stdClass;
+
 /**
  * Some doc comment.
  */
@@ -31,7 +33,7 @@ class ExampleClass
     {
     }
 
-    public function provideParamsOne()
+    public static function provideParamsOne()
     {
         return [
             [
@@ -41,7 +43,7 @@ class ExampleClass
         ];
     }
 
-    public function provideParamsTwo()
+    public static function provideParamsTwo()
     {
         return [
             [
@@ -51,17 +53,17 @@ class ExampleClass
         ];
     }
 
-    public function provideParamsNonScalar()
+    public static function provideParamsNonScalar()
     {
         return [
             [
                 'five' => 'six',
-                'seven' => new \stdClass(),
+                'seven' => new stdClass(),
             ],
         ];
     }
 
-    public function provideParamsNull()
+    public static function provideParamsNull()
     {
         return [
             [

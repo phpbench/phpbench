@@ -13,12 +13,13 @@
 namespace PhpBench\Tests\Unit\Progress\Logger;
 
 use PhpBench\Assertion\VariantAssertionResults;
+use PhpBench\Progress\Logger\PhpBenchLogger;
 use PhpBench\Progress\Logger\VerboseLogger;
 use PhpBench\Util\TimeUnit;
 
-class VerboseLoggerTest extends PhpBenchLoggerTest
+class VerboseLoggerTest extends PhpBenchLoggerTestCase
 {
-    public function getLogger()
+    public function getLogger(): PhpBenchLogger
     {
         $timeUnit = new TimeUnit(TimeUnit::MICROSECONDS, TimeUnit::MILLISECONDS);
 

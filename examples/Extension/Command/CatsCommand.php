@@ -9,23 +9,17 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CatsCommand extends Command
 {
-    /**
-     * @var int
-     */
-    private $numberOfCats;
-
-    public function __construct(int $numberOfCats)
+    public function __construct(private readonly int $numberOfCats)
     {
-        $this->numberOfCats = $numberOfCats;
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('cats');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln(str_repeat('🐈', $this->numberOfCats));
 

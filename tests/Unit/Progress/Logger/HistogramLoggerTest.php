@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Progress\Logger;
 
+use Exception;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\ParameterSet;
@@ -19,9 +20,25 @@ use PhpBench\Model\Subject;
 use PhpBench\Model\Variant;
 use PhpBench\Progress\Logger\HistogramLogger;
 use PhpBench\Tests\Util\TestUtil;
+use Prophecy\Prophecy\ObjectProphecy;
 
 class HistogramLoggerTest extends LoggerTestCase
 {
+    private HistogramLogger $logger;
+    /**
+     * @var ObjectProphecy<Benchmark>
+     */
+    private ObjectProphecy $benchmark;
+    /**
+     * @var ObjectProphecy<Subject>
+     */
+    private ObjectProphecy $subject;
+    /**
+     * @var ObjectProphecy<Iteration>
+     */
+    private ObjectProphecy $iteration;
+    private Variant $variant;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -98,7 +115,7 @@ class HistogramLoggerTest extends LoggerTestCase
      */
     public function testIterationException(): void
     {
-        $this->variant->setException(new \Exception('foo'));
+        $this->variant->setException(new Exception('foo'));
         $this->logger->variantEnd($this->variant);
         $this->assertStringContainsString('ERROR', $this->output->fetch());
     }

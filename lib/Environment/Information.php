@@ -12,20 +12,32 @@
 
 namespace PhpBench\Environment;
 
+use ArrayAccess;
+use http\Exception\InvalidArgumentException;
+use IteratorAggregate;
+use ReturnTypeWillChange;
+use BadMethodCallException;
+use ArrayIterator;
+
 /**
  * Represents information about the VCS system used by the current working
  * directory.
+ *
+ * @immutable
+ *
+ * @implements ArrayAccess<string, mixed>
+ * @implements IteratorAggregate<string, mixed>
  */
-class Information implements \ArrayAccess, \IteratorAggregate
+class Information implements ArrayAccess, IteratorAggregate
 {
-    private $name;
-    private $information;
+    /** @var array<string, scalar|null>  */
+    private array $information;
 
     /**
+     * @param array<string, mixed> $information
      */
-    public function __construct(string $name, array $information)
+    public function __construct(private readonly string $name, array $information)
     {
-        $this->name = $name;
         $this->information = $this->flattenInformation($information);
     }
 
@@ -45,7 +57,7 @@ class Information implements \ArrayAccess, \IteratorAggregate
     /**
      * {@inheritdoc}
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->information[$offset];
@@ -54,20 +66,20 @@ class Information implements \ArrayAccess, \IteratorAggregate
     /**
      * {@inheritdoc}
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetSet($offset, $value): void
     {
-        throw new \BadMethodCallException(sprintf(
+        throw new BadMethodCallException(sprintf(
             'Environmental information is immutable. Tried to set key "%s" with value "%s"',
             $offset,
-            $value
+            is_scalar($value) ? $value : get_debug_type($value)
         ));
     }
 
     /**
      * {@inheritdoc}
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetExists($offset): bool
     {
         return array_key_exists($offset, $this->information);
@@ -76,29 +88,37 @@ class Information implements \ArrayAccess, \IteratorAggregate
     /**
      * {@inheritdoc}
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetUnset($offset): void
     {
-        throw new \BadMethodCallException(sprintf(
+        throw new BadMethodCallException(sprintf(
             'Environmental information is immutable. Tried to unset key "%s"',
             $offset
         ));
     }
 
     /**
-     * {@inheritdoc}
+     * @return ArrayIterator<string, scalar|null>
      */
-    public function getIterator(): \ArrayIterator
+    public function getIterator(): ArrayIterator
     {
-        return new \ArrayIterator($this->information);
+        return new ArrayIterator($this->information);
     }
 
+    /**
+     * @return array<string, scalar|null>
+     */
     public function toArray(): array
     {
         return $this->information;
     }
 
-    private function flattenInformation(array $information, $prefix = ''): array
+    /**
+     * @param array<string, mixed> $information
+     *
+     * @return array<string, scalar|null>
+     */
+    private function flattenInformation(array $information, string $prefix = ''): array
     {
         $transformed = [];
 
@@ -109,6 +129,10 @@ class Information implements \ArrayAccess, \IteratorAggregate
                 $transformed = array_merge($transformed, $this->flattenInformation($value, $key));
 
                 continue;
+            }
+
+            if (!is_scalar($value) && $value !== null) {
+                throw new InvalidArgumentException(sprintf('Unsupported type %s', get_debug_type($value)));
             }
 
             $transformed[$key] = $value;

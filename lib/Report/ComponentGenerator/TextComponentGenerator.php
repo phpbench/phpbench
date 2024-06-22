@@ -11,16 +11,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TextComponentGenerator implements ComponentGeneratorInterface
 {
-    public const PARAM_TEXT = 'text';
+    final public const PARAM_TEXT = 'text';
 
-    /**
-     * @var ExpressionEvaluator
-     */
-    private $evaluator;
-
-    public function __construct(ExpressionEvaluator $evaluator)
+    public function __construct(private readonly ExpressionEvaluator $evaluator)
     {
-        $this->evaluator = $evaluator;
     }
 
     /**

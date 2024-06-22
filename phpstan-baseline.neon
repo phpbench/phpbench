@@ -1,41 +1,91 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Call to an undefined method DOMNode\\:\\:getAttribute\\(\\)\\.$#"
-			count: 19
-			path: lib/Serializer/XmlDecoder.php
+			message: "#^Method PhpBench\\\\Console\\\\Command\\\\Handler\\\\RunnerHandler\\:\\:getParameters\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: lib/Console/Command/Handler/RunnerHandler.php
 
 		-
-			message: "#^Call to an undefined method DOMNode\\:\\:query\\(\\)\\.$#"
+			message: "#^Method PhpBench\\\\Console\\\\Command\\\\Handler\\\\RunnerHandler\\:\\:getParameters\\(\\) has parameter \\$parametersJson with no type specified\\.$#"
+			count: 1
+			path: lib/Console/Command/Handler/RunnerHandler.php
+
+		-
+			message: "#^Property PhpBench\\\\Executor\\\\Benchmark\\\\DebugExecutor\\:\\:\\$variantTimes type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Executor/Benchmark/DebugExecutor.php
+
+		-
+			message: "#^Method PhpBench\\\\Executor\\\\Benchmark\\\\TestExecutor\\:\\:executeMethods\\(\\) has parameter \\$methods with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Executor/Benchmark/TestExecutor.php
+
+		-
+			message: "#^Property PhpBench\\\\Executor\\\\Benchmark\\\\TestExecutor\\:\\:\\$executedMethods type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Executor/Benchmark/TestExecutor.php
+
+		-
+			message: "#^Method PhpBench\\\\Executor\\\\Method\\\\ErrorHandlingExecutorDecorator\\:\\:executeMethods\\(\\) has parameter \\$methods with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Executor/Method/ErrorHandlingExecutorDecorator.php
+
+		-
+			message: "#^Method PhpBench\\\\Executor\\\\Method\\\\RemoteMethodExecutor\\:\\:executeMethods\\(\\) has parameter \\$methods with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Executor/Method/RemoteMethodExecutor.php
+
+		-
+			message: "#^Method PhpBench\\\\Executor\\\\MethodExecutorInterface\\:\\:executeMethods\\(\\) has parameter \\$methods with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Executor/MethodExecutorInterface.php
+
+		-
+			message: "#^Method PhpBench\\\\Json\\\\JsonDecoder\\:\\:decode\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Json/JsonDecoder.php
+
+		-
+			message: "#^Method PhpBench\\\\Json\\\\JsonDecoder\\:\\:normalize\\(\\) has parameter \\$jsonString with no type specified\\.$#"
+			count: 1
+			path: lib/Json/JsonDecoder.php
+
+		-
+			message: "#^Method PhpBench\\\\PhpBench\\:\\:mergeProfile\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/PhpBench.php
+
+		-
+			message: "#^Method PhpBench\\\\PhpBench\\:\\:mergeProfile\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/PhpBench.php
+
+		-
+			message: "#^Parameter \\#1 \\$callback of function array_map expects \\(callable\\(array\\<int, int\\>, array\\<array\\<bool\\|float\\|int\\|string\\>\\|bool\\|float\\|int\\|string\\>, int\\)\\: mixed\\)\\|null, Closure\\(array, array\\|null, string\\)\\: PhpBench\\\\Report\\\\Model\\\\BarChartDataSet given\\.$#"
+			count: 1
+			path: lib/Report/ComponentGenerator/BarChartAggregateComponentGenerator.php
+
+		-
+			message: "#^Method PhpBench\\\\Serializer\\\\XmlDecoder\\:\\:getComputedStats\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: lib/Serializer/XmlDecoder.php
 
 		-
-			message: "#^Parameter \\#1 \\$element of closure expects DOMElement, DOMNode given\\.$#"
+			message: "#^Method PhpBench\\\\Serializer\\\\XmlDecoder\\:\\:getParameters\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: lib/Serializer/XmlDecoder.php
 
 		-
-			message: "#^Parameter \\#1 \\$element of method PhpBench\\\\Serializer\\\\XmlDecoder\\:\\:getComputedStats\\(\\) expects PhpBench\\\\Dom\\\\Element, DOMNode given\\.$#"
+			message: "#^Method PhpBench\\\\Serializer\\\\XmlDecoder\\:\\:processBenchmark\\(\\) has parameter \\$resultClasses with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: lib/Serializer/XmlDecoder.php
 
 		-
-			message: "#^Parameter \\#1 \\$element of method PhpBench\\\\Serializer\\\\XmlDecoder\\:\\:getParameters\\(\\) expects PhpBench\\\\Dom\\\\Element, DOMNode given\\.$#"
-			count: 2
-			path: lib/Serializer/XmlDecoder.php
-
-		-
-			message: "#^Parameter \\#1 \\$suiteEl of method PhpBench\\\\Serializer\\\\XmlDecoder\\:\\:processSuite\\(\\) expects PhpBench\\\\Dom\\\\Element, DOMNode given\\.$#"
+			message: "#^Method PhpBench\\\\Serializer\\\\XmlDecoder\\:\\:processSubject\\(\\) has parameter \\$resultClasses with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: lib/Serializer/XmlDecoder.php
 
 		-
-			message: "#^Parameter \\#2 \\$subjectEl of method PhpBench\\\\Serializer\\\\XmlDecoder\\:\\:processSubject\\(\\) expects PhpBench\\\\Dom\\\\Element, DOMNode given\\.$#"
-			count: 1
-			path: lib/Serializer/XmlDecoder.php
-
-		-
-			message: "#^Parameter \\#2 \\$variantEl of method PhpBench\\\\Serializer\\\\XmlDecoder\\:\\:processVariant\\(\\) expects PhpBench\\\\Dom\\\\Element, DOMNode given\\.$#"
+			message: "#^Method PhpBench\\\\Serializer\\\\XmlDecoder\\:\\:processVariant\\(\\) has parameter \\$resultClasses with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: lib/Serializer/XmlDecoder.php

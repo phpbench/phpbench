@@ -8,21 +8,21 @@ name: Append phpbench.phar to release
 jobs:
   build:
     name: Compile and upload Phar
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
             fetch-depth: 0
 
-      - name: Set PHP 7.3
+      - name: Set PHP 8.1
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.3'
+          php-version: '8.1'
 
       -
         name: "Composer install"
-        uses: "ramsey/composer-install@v2"
+        uses: "ramsey/composer-install@v3"
         with:
             composer-options: "--no-scripts --no-dev"
 

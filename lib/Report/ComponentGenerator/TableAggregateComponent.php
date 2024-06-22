@@ -16,29 +16,17 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TableAggregateComponent implements ComponentGeneratorInterface
 {
-    public const PARAM_TITLE = 'title';
-    public const PARAM_PARTITION = 'partition';
-    public const PARAM_ROW = 'row';
-    public const GROUP_DEFAULT = 'default';
-    public const PARAM_GROUPS = 'groups';
-
-    /**
-     * @var ExpressionBridge
-     */
-    private $evaluator;
-
-    /**
-     * @var array<string, ColumnProcessorInterface>
-     */
-    private $columnProcessors;
+    final public const PARAM_TITLE = 'title';
+    final public const PARAM_PARTITION = 'partition';
+    final public const PARAM_ROW = 'row';
+    final public const GROUP_DEFAULT = 'default';
+    final public const PARAM_GROUPS = 'groups';
 
     /**
      * @param array<string, ColumnProcessorInterface> $columnProcessors
      */
-    public function __construct(ExpressionBridge $evaluator, array $columnProcessors = [])
+    public function __construct(private readonly ExpressionBridge $evaluator, private array $columnProcessors = [])
     {
-        $this->evaluator = $evaluator;
-        $this->columnProcessors = $columnProcessors;
     }
 
     /**

@@ -12,6 +12,7 @@
 
 namespace PhpBench\Model;
 
+use ArrayIterator;
 use Countable;
 use IteratorAggregate;
 
@@ -26,22 +27,10 @@ use IteratorAggregate;
 class ErrorStack implements IteratorAggregate, Countable
 {
     /**
-     * @var Error[]
-     */
-    private $errors;
-
-    /**
-     * @var Variant
-     */
-    private $variant;
-
-    /**
      * @param Error[] $errors
      */
-    public function __construct(Variant $variant, array $errors)
+    public function __construct(private readonly Variant $variant, private array $errors)
     {
-        $this->variant = $variant;
-        $this->errors = $errors;
     }
 
     public function getVariant(): Variant
@@ -49,19 +38,28 @@ class ErrorStack implements IteratorAggregate, Countable
         return $this->variant;
     }
 
+    /**
+     * @return Error[]
+     */
     public function getErrors(): array
     {
         return $this->errors;
     }
 
+    /**
+     * @return false|Error
+     */
     public function getTop()
     {
         return reset($this->errors);
     }
 
-    public function getIterator(): \ArrayIterator
+    /**
+     * @return ArrayIterator<array-key, Error>
+     */
+    public function getIterator(): ArrayIterator
     {
-        return new \ArrayIterator($this->errors);
+        return new ArrayIterator($this->errors);
     }
 
     /**

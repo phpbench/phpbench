@@ -16,10 +16,31 @@ use PhpBench\Environment\Information;
 use PhpBench\Environment\ProviderInterface;
 use PhpBench\Environment\Supplier;
 use PhpBench\Tests\TestCase;
+use Prophecy\Prophecy\ObjectProphecy;
 
 class SupplierTest extends TestCase
 {
-    private $supplier;
+    /**
+     * @var ObjectProphecy<ProviderInterface>
+     */
+    private ObjectProphecy $provider1;
+
+    /**
+     * @var ObjectProphecy<ProviderInterface>
+     */
+    private ObjectProphecy $provider2;
+
+    /**
+     * @var ObjectProphecy<Information>
+     */
+    private ObjectProphecy $information1;
+
+    /**
+     * @var ObjectProphecy<Information>
+     */
+    private ObjectProphecy $information2;
+
+    private Supplier $supplier;
 
     protected function setUp(): void
     {

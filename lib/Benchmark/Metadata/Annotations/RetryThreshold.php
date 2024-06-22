@@ -16,17 +16,19 @@ namespace PhpBench\Benchmark\Metadata\Annotations;
  * @Annotation
  *
  * @Taget({"METHOD", "CLASS"})
+ *
  * @Attributes({
+ *
  *    @Attribute("value", required = true, type="float")
  * })
  */
 class RetryThreshold
 {
-    /**
-     * @var float
-     */
-    private $retryThreshold;
+    private readonly float $retryThreshold;
 
+    /**
+     * @param array{value: float} $params
+     */
     public function __construct($params)
     {
         $this->retryThreshold = (float) $params['value'];

@@ -4,14 +4,8 @@ namespace PhpBench\Expression\Ast;
 
 final class UnitNode extends Node
 {
-    /**
-     * @var Node
-     */
-    private $unit;
-
-    public function __construct(Node $unit)
+    public function __construct(private readonly Node $unit)
     {
-        $this->unit = $unit;
     }
 
     public function unit(): Node

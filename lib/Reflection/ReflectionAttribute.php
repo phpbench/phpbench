@@ -2,38 +2,28 @@
 
 namespace PhpBench\Reflection;
 
+/**
+ * @template T of object
+ */
 final class ReflectionAttribute
 {
     /**
-     * @var string
-     */
-    public $name;
-
-    /**
-     * @var mixed[]
-     */
-    public $args;
-
-    /**
+     * @param class-string<T> $name
      * @param mixed[] $args
      */
-    public function __construct(string $name, array $args)
+    public function __construct(public string $name, public array $args)
     {
-        $this->name = $name;
-        $this->args = $args;
     }
 
     /**
-     * @return ?object
+     * @return T|null
      */
-    public function instantiate()
+    public function instantiate(): ?object
     {
-        return (function (string $name) {
-            if (!class_exists($name)) {
-                return null;
-            }
+        if (!class_exists($this->name)) {
+            return null;
+        }
 
-            return new $name(...$this->args);
-        })($this->name);
+        return new $this->name(...$this->args);
     }
 }

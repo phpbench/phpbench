@@ -3,7 +3,7 @@
 namespace PhpBench\Report\Renderer;
 
 use PhpBench\Compat\SymfonyOptionsResolverCompat;
-use PhpBench\Path\Path;
+use Symfony\Component\Filesystem\Path;
 use PhpBench\Registry\Config;
 use PhpBench\Report\Model\HtmlDocument;
 use PhpBench\Report\Model\Reports;
@@ -15,30 +15,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class HtmlRenderer implements RendererInterface
 {
-    public const PARAM_TITLE = 'title';
-    public const PARAM_PATH = 'path';
+    final public const PARAM_TITLE = 'title';
+    final public const PARAM_PATH = 'path';
 
-
-    /**
-     * @var ObjectRenderer
-     */
-    private $renderer;
-
-    /**
-     * @var OutputInterface
-     */
-    private $output;
-
-    /**
-     * @var string
-     */
-    private $cwd;
-
-    public function __construct(OutputInterface $output, ObjectRenderer $renderer, string $cwd)
+    public function __construct(private readonly OutputInterface $output, private readonly ObjectRenderer $renderer, private readonly string $cwd)
     {
-        $this->output = $output;
-        $this->renderer = $renderer;
-        $this->cwd = $cwd;
     }
 
     /**
@@ -61,7 +42,7 @@ class HtmlRenderer implements RendererInterface
     public function render(Reports $report, Config $config): void
     {
         $outputPath = Path::makeAbsolute($config[self::PARAM_PATH], $this->cwd);
-        $outputDir = dirname($outputPath);
+        $outputDir = dirname((string) $outputPath);
 
         if (!file_exists($outputDir)) {
             if (!@mkdir($outputDir, 0777, true)) {

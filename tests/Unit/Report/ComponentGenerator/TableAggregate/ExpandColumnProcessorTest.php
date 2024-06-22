@@ -136,7 +136,7 @@ class ExpandColumnProcessorTest extends ColumnProcessorTestCase
     public function testThrowsExceptionIfColumnNameIsDuplicated(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectErrorMessage('already been set');
+        $this->expectExceptionMessage('already been set');
         self::assertEquals(
             [
                 'Item: apples' => 'apples',

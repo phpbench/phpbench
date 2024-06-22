@@ -9,21 +9,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ConfigReferenceCommand extends Command
 {
-    /**
-     * @var ConfigDumper
-     */
-    private $dumper;
-
-    /**
-     * @var OutputInterface
-     */
-    private $stdout;
-
-    public function __construct(ConfigDumper $dumper, OutputInterface $stdout)
+    public function __construct(private readonly ConfigDumper $dumper, private readonly OutputInterface $stdout)
     {
         parent::__construct();
-        $this->dumper = $dumper;
-        $this->stdout = $stdout;
     }
 
     protected function configure(): void

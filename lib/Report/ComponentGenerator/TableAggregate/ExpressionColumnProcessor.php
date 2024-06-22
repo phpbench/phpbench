@@ -8,14 +8,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ExpressionColumnProcessor implements ColumnProcessorInterface
 {
-    /**
-     * @var ExpressionBridge
-     */
-    private $evaluator;
-
-    public function __construct(ExpressionBridge $evaluator)
+    public function __construct(private readonly ExpressionBridge $evaluator)
     {
-        $this->evaluator = $evaluator;
     }
 
     /**

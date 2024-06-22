@@ -12,19 +12,22 @@
 
 namespace PhpBench\Tests\Unit\Model;
 
-use PhpBench\Model\Result\MemoryResult;
+use RuntimeException;
+use stdClass;
+use InvalidArgumentException;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\ResultCollection;
 use PhpBench\Tests\TestCase;
 
 class ResultCollectionTest extends TestCase
 {
-    private $collection;
+    private ResultCollection $collection;
+
+    private TimeResult $timeResult;
 
     protected function setUp(): void
     {
         $this->timeResult = new TimeResult(1);
-        $this->memoryResult = new MemoryResult(1, 0, 0);
 
         $this->collection = new ResultCollection([]);
     }
@@ -61,9 +64,9 @@ class ResultCollectionTest extends TestCase
      */
     public function testNonExistantClass(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Result of class "stdClass" has not been set');
-        $this->collection->getResult(\stdClass::class);
+        $this->collection->getResult(stdClass::class); // @phpstan-ignore-line
     }
 
     /**
@@ -81,7 +84,7 @@ class ResultCollectionTest extends TestCase
      */
     public function testNamedMetricDoesNotExist(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Unknown metric "foobar" for result class "PhpBench\Model\Result\TimeResult". Available metrics: "net"');
         $this->collection->setResult($this->timeResult);
         $this->assertEquals(1, $this->collection->getMetric(TimeResult::class, 'foobar'));
@@ -94,6 +97,6 @@ class ResultCollectionTest extends TestCase
     public function testGetMetricOrDefault(): void
     {
         $this->collection->setResult($this->timeResult);
-        $this->assertEquals(100, $this->collection->getMetricOrDefault('UnknownClass', 'barbar', 100));
+        $this->assertEquals(100, $this->collection->getMetricOrDefault('UnknownClass', 'barbar', 100)); // @phpstan-ignore-line
     }
 }

@@ -22,9 +22,9 @@ class BlinkenLogger extends AnsiLogger
     /**
      * Number of measurements to show per row.
      */
-    public const NUMBER_COLS = 10;
+    final public const NUMBER_COLS = 10;
 
-    public const INDENT = 4;
+    final public const INDENT = 4;
 
     /**
      * Track rejected iterations.
@@ -42,11 +42,9 @@ class BlinkenLogger extends AnsiLogger
 
     /**
      * Column width.
-     *
-     * @var int
      */
-    private $colWidth = 6;
-    private $firstTime = true;
+    private int $colWidth = 6;
+    private bool $firstTime = true;
 
     /**
      * {@inheritdoc}
@@ -169,7 +167,10 @@ class BlinkenLogger extends AnsiLogger
         return $time;
     }
 
-    private function drawIterations(Variant $variant, array $specials, $tag): void
+    /**
+     * @param array<int, mixed> $specials
+     */
+    private function drawIterations(Variant $variant, array $specials, ?string $tag): void
     {
         $this->output->write("\x1B[2K"); // clear line
 
@@ -179,9 +180,7 @@ class BlinkenLogger extends AnsiLogger
         $line = sprintf('%-' . self::INDENT . 's', '#' . $variant->getSubject()->getIndex());
         $nbIterations = $variant->count();
 
-        for ($index = 0; $index < $nbIterations; $index++) {
-            $iteration = $variant->getIteration($index);
-
+        foreach ($variant as $index => $iteration) {
             $displayTime = $this->formatIterationTime($iteration);
 
             if (isset($specials[$iteration->getIndex()])) {

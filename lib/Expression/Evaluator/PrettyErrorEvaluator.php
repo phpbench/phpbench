@@ -11,29 +11,8 @@ use PhpBench\Expression\Printer\UnderlinePrinterFactory;
 
 class PrettyErrorEvaluator implements Evaluator
 {
-    /**
-     * @var Evaluator
-     */
-    private $innerEvaluator;
-
-    /**
-     * @var Printer
-     */
-    private $printer;
-
-    /**
-     * @var Printer\UnderlinePrinterFactory
-     */
-    private $underlineFactory;
-
-    public function __construct(
-        Evaluator $innerEvaluator,
-        Printer $printer,
-        UnderlinePrinterFactory $underlineFactory
-    ) {
-        $this->innerEvaluator = $innerEvaluator;
-        $this->printer = $printer;
-        $this->underlineFactory = $underlineFactory;
+    public function __construct(private readonly Evaluator $innerEvaluator, private readonly Printer $printer, private readonly UnderlinePrinterFactory $underlineFactory)
+    {
     }
 
     /**
@@ -72,7 +51,7 @@ class PrettyErrorEvaluator implements Evaluator
                 '    ' . $this->printer->print($rootNode),
                 '    ' . $this->underlineFactory->underline($error->node())->print($rootNode),
             ]), $error);
-        } catch (PrinterError $printError) {
+        } catch (PrinterError) {
             throw $error;
         }
     }

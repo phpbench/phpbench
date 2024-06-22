@@ -10,19 +10,12 @@ use PhpBench\Config\Processor\IncludeProcessor;
 class ConfigLoader
 {
     /**
-     * @var ConfigProcessor[]
+     * @param  ConfigProcessor[] $processors
      */
-    private $processors;
-
-    /**
-     * @var ConfigLinter
-     */
-    private $linter;
-
-    public function __construct(ConfigLinter $linter, array $processors)
-    {
-        $this->processors = $processors;
-        $this->linter = $linter;
+    public function __construct(
+        private readonly ConfigLinter $linter,
+        private readonly array $processors
+    ) {
     }
 
     public static function create(): self
@@ -33,6 +26,9 @@ class ConfigLoader
         ]);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function load(string $path): array
     {
         if (!file_exists($path)) {

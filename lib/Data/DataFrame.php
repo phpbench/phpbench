@@ -2,6 +2,7 @@
 
 namespace PhpBench\Data;
 
+use ReturnTypeWillChange;
 use ArrayAccess;
 use ArrayIterator;
 use Closure;
@@ -16,7 +17,7 @@ use function array_reduce;
 use function array_search;
 
 /**
- * @implements IteratorAggregate<Series>
+ * @implements IteratorAggregate<Row>
  * @implements ArrayAccess<string,mixed[]>
  */
 final class DataFrame implements IteratorAggregate, ArrayAccess
@@ -24,12 +25,12 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
     /**
      * @var Series[]
      */
-    private $rows;
+    private array $rows;
 
     /**
      * @var string[]
      */
-    private $columns;
+    private readonly array $columns;
 
     /**
      * @param Series[] $rows
@@ -54,7 +55,7 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
 
     /**
      * @param array<int, array<int|string,mixed>> $rows
-     * @param string[] $columns
+     * @param array<string|int> $columns
      */
     public static function fromRowSeries(array $rows, array $columns): self
     {
@@ -64,7 +65,7 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param array<int, array<string,mixed>> $records
+     * @param array<int, array<mixed>> $records
      */
     public static function fromRecords(array $records): self
     {
@@ -93,7 +94,7 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @return array<array<string|int, array<string,mixed>>>
+     * @return array<array<string, mixed>>
      */
     public function toRecords(): array
     {
@@ -152,7 +153,7 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @return scalarOrNull[]
+     * @return array<scalar|null>
      */
     public function toValues(): array
     {
@@ -162,7 +163,7 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @return ArrayIterator<Row>
+     * @return ArrayIterator<int, Row>
      */
     public function getIterator(): ArrayIterator
     {
@@ -186,7 +187,7 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @return array<string, array<scalarOrNull>>
+     * @return array<string, array<scalar|null>>
      */
     public function columnValues(): array
     {
@@ -217,7 +218,7 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
     /**
      * {@inheritDoc}
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         return in_array($offset, $this->columns);
@@ -226,7 +227,7 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
     /**
      * {@inheritDoc}
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->column($offset)->toValues();
@@ -235,7 +236,7 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
     /**
      * {@inheritDoc}
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetSet($offset, $value): void
     {
         throw new BadMethodCallException('Not implemented');
@@ -244,7 +245,7 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
     /**
      * {@inheritDoc}
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetUnset($offset): void
     {
         throw new BadMethodCallException('Not implemented');

@@ -12,6 +12,8 @@
 
 namespace PhpBench\Tests\Unit\Model;
 
+use Prophecy\Prophecy\ObjectProphecy;
+use PhpBench\Model\Subject;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\ResolvedExecutor;
@@ -21,13 +23,12 @@ use PhpBench\Tests\TestCase;
 
 class BenchmarkTest extends TestCase
 {
-    public const EXAMPLE_FORMAT = 'foobar';
+    final public const EXAMPLE_FORMAT = 'foobar';
 
-    /**
-     * @var Benchmark
-     */
-    private $benchmark;
-    private $suite;
+    private Benchmark $benchmark;
+
+    /** @var ObjectProphecy<Suite> */
+    private ObjectProphecy $suite;
 
     protected function setUp(): void
     {
@@ -53,7 +54,7 @@ class BenchmarkTest extends TestCase
     /**
      * @return array<array<string>>
      */
-    public function provideName(): array
+    public static function provideName(): array
     {
         return [
             [ '', '' ],
@@ -81,7 +82,7 @@ class BenchmarkTest extends TestCase
         $executor = ResolvedExecutor::fromNameAndConfig('foo', new Config('one', ['foo' => 'bar']));
 
         $subject = $this->benchmark->createSubjectFromMetadataAndExecutor($metadata->reveal(), $executor);
-        $this->assertInstanceOf('PhpBench\Model\Subject', $subject);
+        $this->assertInstanceOf(Subject::class, $subject);
         $this->assertEquals('hello', $subject->getName());
         $this->assertEquals(['one', 'two'], $subject->getGroups());
         $this->assertEquals(30, $subject->getSleep());
@@ -94,7 +95,7 @@ class BenchmarkTest extends TestCase
         $subjects = $this->benchmark->getSubjects();
         $this->assertCount(1, $subjects);
         $bSubject = current($subjects);
-        $this->assertInstanceOf('PhpBench\Model\Subject', $bSubject);
+        $this->assertInstanceOf(Subject::class, $bSubject);
         $this->assertSame($subject, $bSubject);
     }
 }

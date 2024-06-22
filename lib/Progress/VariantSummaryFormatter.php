@@ -24,43 +24,8 @@ percent_diff(mode(baseline.time.avg), mode(variant.time.avg), (rstdev(variant.ti
 EOT
     ;
 
-    /**
-     * @var string
-     */
-    private $format;
-
-    /**
-     * @var string
-     */
-    private $baselineFormat;
-
-    /**
-     * @var ExpressionLanguage
-     */
-    private $parser;
-
-    /**
-     * @var EvaluatingPrinter
-     */
-    private $printer;
-
-    /**
-     * @var ParameterProvider
-     */
-    private $paramProvider;
-
-    public function __construct(
-        ExpressionLanguage $parser,
-        EvaluatingPrinter $printer,
-        ParameterProvider $paramProvider,
-        string $format = self::DEFAULT_FORMAT,
-        string $baselineFormat = self::BASELINE_FORMAT
-    ) {
-        $this->format = $format;
-        $this->baselineFormat = $baselineFormat;
-        $this->parser = $parser;
-        $this->printer = $printer;
-        $this->paramProvider = $paramProvider;
+    public function __construct(private readonly ExpressionLanguage $parser, private readonly EvaluatingPrinter $printer, private readonly ParameterProvider $paramProvider, private readonly string $format = self::DEFAULT_FORMAT, private readonly string $baselineFormat = self::BASELINE_FORMAT)
+    {
     }
 
     public function formatVariant(Variant $variant): string

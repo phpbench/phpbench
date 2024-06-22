@@ -7,14 +7,8 @@ use RuntimeException;
 
 final class ParameterContainer
 {
-    /**
-     * @var string
-     */
-    private $value;
-
-    public function __construct(string $value)
+    public function __construct(private readonly string $value)
     {
-        $this->value = $value;
     }
 
     public function getValue(): string
@@ -22,10 +16,7 @@ final class ParameterContainer
         return $this->value;
     }
 
-    /**
-     * @param mixed $value
-     */
-    public static function fromValue($value): self
+    public static function fromValue(mixed $value): self
     {
         try {
             @$serialized = @serialize($value);

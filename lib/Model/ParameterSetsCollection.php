@@ -14,7 +14,7 @@ final class ParameterSetsCollection implements IteratorAggregate, Countable
     /**
      * @var ParameterSets[]
      */
-    private $parameterSets;
+    private readonly array $parameterSets;
 
     public function __construct(ParameterSets ...$parameterSets)
     {

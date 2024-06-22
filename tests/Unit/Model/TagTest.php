@@ -28,7 +28,10 @@ class TagTest extends TestCase
         new Tag($tag);
     }
 
-    public function provideValidTag()
+    /**
+     * @return \Generator<list{string}>
+     */
+    public static function provideValidTag(): \Generator
     {
         yield ['foobar'];
 
@@ -53,7 +56,10 @@ class TagTest extends TestCase
         new Tag($tag);
     }
 
-    public function provideInvalidTag()
+    /**
+     * @return \Generator<list{string}>
+     */
+    public static function provideInvalidTag(): \Generator
     {
         yield [''];
 

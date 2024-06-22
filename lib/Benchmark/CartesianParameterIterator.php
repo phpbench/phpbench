@@ -14,6 +14,7 @@ namespace PhpBench\Benchmark;
 
 use ArrayIterator;
 use Iterator;
+use PhpBench\Model\ParameterContainer;
 use PhpBench\Model\ParameterSet;
 use PhpBench\Model\ParameterSetsCollection;
 
@@ -25,32 +26,20 @@ class CartesianParameterIterator implements Iterator
     /**
      * @var array<int,ArrayIterator<string, ParameterSet>>
      */
-    private $sets = [];
+    private array $sets = [];
+
+    private int $index = 0;
+
+    private readonly int $max;
 
     /**
-     * @var int
+     * @var array<string, ParameterContainer>
      */
-    private $index = 0;
+    private array $current = [];
 
-    /**
-     * @var int
-     */
-    private $max;
+    private bool $break = false;
 
-    /**
-     * @var array<mixed>
-     */
-    private $current = [];
-
-    /**
-     * @var bool
-     */
-    private $break = false;
-
-    /**
-     * @var string
-     */
-    private $key;
+    private string $key;
 
     public function __construct(ParameterSetsCollection $parameterSetsCollection)
     {
@@ -118,8 +107,8 @@ class CartesianParameterIterator implements Iterator
         $key = [];
 
         foreach ($this->sets as $set) {
+            /** @var ParameterSet|null $current */
             $current = $set->current();
-            /** @phpstan-ignore-next-line */
             $this->current = array_merge($this->current, $current ? $current->toArray() : []);
             $key[] = $set->key();
         }

@@ -12,12 +12,18 @@
 
 namespace PhpBench\Model;
 
+use RuntimeException;
+use InvalidArgumentException;
+
 /**
  * Represents the result of a single iteration executed by an executor.
  */
 class ResultCollection
 {
-    private $results = [];
+    /**
+     * @var array<class-string<ResultInterface>, ResultInterface>
+     */
+    private array $results = [];
 
     /**
      * @param ResultInterface[] $results
@@ -37,13 +43,14 @@ class ResultCollection
      */
     public function setResult(ResultInterface $result): void
     {
-        $class = get_class($result);
+        $class = $result::class;
         $this->results[$class] = $result;
     }
 
     /**
      * Return true if there is a result for the given class name.
      *
+     * @param class-string<ResultInterface> $class
      */
     public function hasResult(string $class): bool
     {
@@ -54,13 +61,18 @@ class ResultCollection
      * Return the result of the given class, throw an exception
      * if it does not exist.
      *
+     * @template T of ResultInterface
      *
-     * @throws \RuntimeException
+     * @param class-string<T> $class
+     *
+     * @return T
+     *
+     * @throws RuntimeException
      */
     public function getResult(string $class): ResultInterface
     {
         if (!isset($this->results[$class])) {
-            throw new \RuntimeException(sprintf(
+            throw new RuntimeException(sprintf(
                 'Result of class "%s" has not been set',
                 $class
             ));
@@ -72,16 +84,18 @@ class ResultCollection
     /**
      * Return the named metric for the given result class.
      *
+     * @param class-string<ResultInterface> $class
      *
-     * @throws \InvalidArgumentException
+     * @return float|int
      *
+     * @throws InvalidArgumentException
      */
     public function getMetric(string $class, string $metric)
     {
         $metrics = $this->getResult($class)->getMetrics();
 
         if (!isset($metrics[$metric])) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'Unknown metric "%s" for result class "%s". Available metrics: "%s"',
                 $metric,
                 $class,
@@ -99,7 +113,12 @@ class ResultCollection
      * If the metric does not exist but the class *does* exist then there is
      * clearly a problem and we should allow an error to be thrown.
      *
+     * @template TDefault
      *
+     * @param class-string<ResultInterface> $class
+     * @param TDefault $default
+     *
+     * @return int|float|TDefault
      */
     public function getMetricOrDefault(string $class, string $metric, $default = null)
     {
@@ -113,9 +132,9 @@ class ResultCollection
     /**
      * Return all results.
      *
-     * @return ResultInterface[]
+     * @return array<class-string<ResultInterface>, ResultInterface>
      */
-    public function getResults(): ?array
+    public function getResults(): array
     {
         return $this->results;
     }

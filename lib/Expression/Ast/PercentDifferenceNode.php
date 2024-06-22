@@ -4,14 +4,8 @@ namespace PhpBench\Expression\Ast;
 
 class PercentDifferenceNode extends PhpValue
 {
-    /**
-     * @var float
-     */
-    private $percentage;
-
-    public function __construct(float $percentage)
+    public function __construct(private readonly float $percentage)
     {
-        $this->percentage = $percentage;
     }
 
     public function percentage(): float

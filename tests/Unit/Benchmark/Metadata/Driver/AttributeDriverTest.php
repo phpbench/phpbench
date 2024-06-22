@@ -33,11 +33,13 @@ class AttributeDriverTest extends TestCase
 {
     /**
      * @dataProvider provideLoadBenchmark
+     *
+     * @param mixed[] $attributes
      */
     public function testLoadBenchmark(array $attributes, callable $assertion): void
     {
         $reflection = new ReflectionClass();
-        $reflection->class = 'Test';
+        $reflection->class = \stdClass::class;
         $reflection->path = 'foo';
         $reflection->attributes = $attributes;
         $hierarchy = new ReflectionHierarchy();
@@ -51,14 +53,8 @@ class AttributeDriverTest extends TestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideLoadBenchmark(): Generator
+    public static function provideLoadBenchmark(): Generator
     {
-        if ($this->shouldSkip()) {
-            $this->markTestSkipped('PHP 8 only');
-
-            return;
-        }
-
         yield [
             [
                 new Executor('foobar'),
@@ -97,11 +93,13 @@ class AttributeDriverTest extends TestCase
     }
     /**
      * @dataProvider provideLoadSubject
+     *
+     * @param mixed[] $attributes
      */
     public function testLoadSubject(array $attributes, callable $assertion): void
     {
         $reflection = new ReflectionClass();
-        $reflection->class = 'Test';
+        $reflection->class = \stdClass::class;
         $reflection->path = 'foo';
         $hierarchy = new ReflectionHierarchy();
         $hierarchy->addReflectionClass($reflection);
@@ -126,14 +124,8 @@ class AttributeDriverTest extends TestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideLoadSubject(): Generator
+    public static function provideLoadSubject(): Generator
     {
-        if ($this->shouldSkip()) {
-            $this->markTestSkipped('PHP 8 only');
-
-            return;
-        }
-
         yield [
             [
                 new BeforeMethods(['foobar', 'barfoo']),
@@ -321,21 +313,10 @@ class AttributeDriverTest extends TestCase
         return new AttributeDriver();
     }
 
-    private function shouldSkip(): bool
-    {
-        return PHP_VERSION_ID < 80000;
-    }
-
     public function testInheritedMethodsWillNotAppearMultipleTimesInTheSubject(): void
     {
-        if ($this->shouldSkip()) {
-            $this->markTestSkipped('PHP 8 only');
-
-            return;
-        }
-
-        $baseClass = new ReflectionClass(__FILE__, 'BaseClassBench');
-        $childClass = new ReflectionClass(__FILE__, 'ChildClassBench');
+        $baseClass = new ReflectionClass(__FILE__, \stdClass::class);
+        $childClass = new ReflectionClass(__FILE__, \stdClass::class);
 
         $baseClassMethod = new ReflectionMethod();
         $childClassOverridingBenchMethod = new ReflectionMethod();
@@ -361,14 +342,8 @@ class AttributeDriverTest extends TestCase
 
     public function testInheritedMethodsWillNotLeadToRepeatedParameterProviderRegistration(): void
     {
-        if ($this->shouldSkip()) {
-            $this->markTestSkipped('PHP 8 only');
-
-            return;
-        }
-
-        $baseClass = new ReflectionClass(__FILE__, 'BaseClassBench');
-        $childClass = new ReflectionClass(__FILE__, 'ChildClassBench');
+        $baseClass = new ReflectionClass(__FILE__, \stdClass::class);
+        $childClass = new ReflectionClass(__FILE__, \stdClass::class);
 
         $baseClassProvider = new ReflectionMethod();
         $baseClassMethod = new ReflectionMethod();

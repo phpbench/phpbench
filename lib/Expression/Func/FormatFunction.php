@@ -20,7 +20,7 @@ final class FormatFunction
 
         if (!is_string($formatted)) {
             $error = error_get_last();
-            $message = isset($error['message']) ? $error['message'] : 'could not format string';
+            $message = $error['message'] ?? 'could not format string';
             $message = str_replace('sprintf', 'format', $message);
 
             throw new RuntimeException($message);

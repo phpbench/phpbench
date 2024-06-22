@@ -1,0 +1,21 @@
+<?php
+
+namespace Psr\Container;
+
+interface ContainerInterface
+{
+    /**
+     * @throws NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
+     * @template T
+     * @param class-string<T>|string $id
+     * @return ($id is class-string<T> ? T : mixed)
+     */
+    public function get(string $id);
+
+    public function has(string $id): bool;
+}
+
+interface NotFoundExceptionInterface extends \Throwable {}
+
+interface ContainerExceptionInterface extends \Throwable {}

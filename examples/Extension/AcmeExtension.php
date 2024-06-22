@@ -1,10 +1,13 @@
 <?php
 
+// section: all
 namespace PhpBench\Examples\Extension;
 
 use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
+// endsection: all
 use PhpBench\Examples\Extension\Command\CatsCommand;
+use PhpBench\Examples\Extension\Environment\HomeProvider;
 use PhpBench\Examples\Extension\Executor\AcmeExecutor;
 use PhpBench\Examples\Extension\ProgressLogger\CatLogger;
 use PhpBench\Examples\Extension\Report\AcmeGenerator;
@@ -12,9 +15,9 @@ use PhpBench\Extension\ConsoleExtension;
 use PhpBench\Extension\CoreExtension;
 use PhpBench\Extension\ReportExtension;
 use PhpBench\Extension\RunnerExtension;
+// section: all
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-// section: all
 class AcmeExtension implements ExtensionInterface
 {
     // endsection: all
@@ -46,7 +49,7 @@ class AcmeExtension implements ExtensionInterface
             ConsoleExtension::TAG_CONSOLE_COMMAND => []
         ]);
         // endsection: command_di
-        
+
         // section: progress_logger_di
         $container->register(CatLogger::class, function (Container $container) {
             return new CatLogger(
@@ -78,6 +81,16 @@ class AcmeExtension implements ExtensionInterface
             ]
         ]);
         // endsection: executor_di
+
+        // section: env_provider_di
+        $container->register(HomeProvider::class, function (Container $container) {
+            return new HomeProvider();
+        }, [
+            RunnerExtension::TAG_ENV_PROVIDER => [
+                'name' => 'home',
+            ]
+        ]);
+        // endsection: env_provider_di
         // section: all
     }
 }

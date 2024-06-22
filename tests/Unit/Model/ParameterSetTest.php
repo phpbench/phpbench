@@ -55,6 +55,8 @@ class ParameterSetTest extends TestCase
 
     /**
      * @dataProvider provideMatches
+     *
+     * @param string[] $patterns
      */
     public function testMatches(string $name, array $patterns, bool $shouldMatch): void
     {
@@ -65,7 +67,7 @@ class ParameterSetTest extends TestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideMatches(): Generator
+    public static function provideMatches(): Generator
     {
         yield 'empty string and empty patterns always matches' => ['', [], true];
 

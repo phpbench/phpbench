@@ -20,42 +20,19 @@ use PhpBench\Model\Subject;
  */
 class BenchmarkMetadata
 {
-    /**
-     * @var string
-     */
-    private $path;
+    /** @var array<string, SubjectMetadata> indexed by subject name */
+    private array $subjects = [];
 
-    /**
-     * @var string
-     */
-    private $class;
+    /** @var string[] */
+    private array $beforeClassMethods = [];
 
-    /**
-     * @var array<string, SubjectMetadata> indexed by subject name
-     */
-    private $subjects = [];
+    /** @var string[] */
+    private array $afterClassMethods = [];
 
-    /**
-     * @var string[]
-     */
-    private $beforeClassMethods = [];
+    private ?ExecutorMetadata $executorMetadata = null;
 
-    /**
-     * @var string[]
-     */
-    private $afterClassMethods = [];
-
-    /**
-     * @var ExecutorMetadata|null
-     */
-    private $executorMetadata;
-
-    /**
-     */
-    public function __construct(string $path, string $class)
+    public function __construct(private readonly string $path, private readonly string $class)
     {
-        $this->path = $path;
-        $this->class = $class;
     }
 
     /**
@@ -137,6 +114,8 @@ class BenchmarkMetadata
 
     /**
      * Return any methods that should be called before the benchmark class is executed.
+     *
+     * @return string[]
      */
     public function getBeforeClassMethods(): array
     {
@@ -146,6 +125,7 @@ class BenchmarkMetadata
     /**
      * Set any methods that should be called before the benchmark class is executed.
      *
+     * @param string[] $beforeClassMethods
      */
     public function setBeforeClassMethods(array $beforeClassMethods): void
     {
@@ -154,6 +134,8 @@ class BenchmarkMetadata
 
     /**
      * Return any methods that should be called after the benchmark class is executed.
+     *
+     * @return string[]
      */
     public function getAfterClassMethods(): array
     {
@@ -163,12 +145,16 @@ class BenchmarkMetadata
     /**
      * Set any methods that should be called after the benchmark class is executed.
      *
+     * @param string[] $afterClassMethods
      */
     public function setAfterClassMethods(array $afterClassMethods): void
     {
         $this->afterClassMethods = $afterClassMethods;
     }
 
+    /**
+     * @return array<string, SubjectMetadata>
+     */
     public function getIterator(): array
     {
         return $this->subjects;

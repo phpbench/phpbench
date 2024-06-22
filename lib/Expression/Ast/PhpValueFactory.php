@@ -8,10 +8,7 @@ use function is_float;
 
 final class PhpValueFactory
 {
-    /**
-     * @param mixed $value
-     */
-    public static function fromValue($value): PhpValue
+    public static function fromValue(mixed $value): PhpValue
     {
         if (is_float($value)) {
             return new FloatNode($value);

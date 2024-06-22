@@ -3,7 +3,7 @@
 namespace PhpBench\Tests\Util;
 
 use InvalidArgumentException;
-use PhpBench\Path\Path;
+use Symfony\Component\Filesystem\Path;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RuntimeException;
@@ -11,14 +11,8 @@ use SplFileInfo;
 
 class Workspace
 {
-    /**
-     * @var string
-     */
-    private $path;
-
-    public function __construct(string $path)
+    public function __construct(private readonly string $path)
     {
-        $this->path = $path;
     }
 
     public static function create(string $path): self

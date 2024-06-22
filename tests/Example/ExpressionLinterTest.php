@@ -28,7 +28,6 @@ class ExpressionLinterTest extends IntegrationTestCase
                 'column2' => 'value4',
             ],
         ]);
-        /** @phpstan-ignore-next-line */
         $expressions = explode("\n", trim(file_get_contents($filename)));
         $container = $this->container();
 
@@ -64,9 +63,8 @@ class ExpressionLinterTest extends IntegrationTestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideExpression(): Generator
+    public static function provideExpression(): Generator
     {
-        /** @phpstan-ignore-next-line */
         foreach (glob(__DIR__ . '/../../examples/Expression/*') as $file) {
             yield [
                 $file,

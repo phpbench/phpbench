@@ -8,24 +8,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ConsoleLogger extends AbstractLogger
 {
-    /**
-     * @var bool
-     */
-    private $enable;
-
-    /**
-     * @var OutputInterface
-     */
-    private $output;
-
-    public function __construct(OutputInterface $output, bool $enable)
+    public function __construct(private readonly OutputInterface $output, private readonly bool $enable)
     {
-        $this->enable = $enable;
-        $this->output = $output;
     }
 
     /**
-     * {@inheritDoc}
+     * @param mixed $level
+     * @param string $message
+     * @param mixed[] $context
      */
     public function log($level, $message, array $context = []): void
     {
@@ -35,12 +25,11 @@ class ConsoleLogger extends AbstractLogger
             case LogLevel::DEBUG:
             case LogLevel::INFO:
             case LogLevel::NOTICE:
+            case LogLevel::WARNING:
                 if (!$this->enable) {
                     return;
                 }
 
-                break;
-            case LogLevel::WARNING:
                 $decoration = 'fg=yellow';
 
                 break;
@@ -52,6 +41,6 @@ class ConsoleLogger extends AbstractLogger
 
                 break;
         }
-        $this->output->writeln(sprintf("[<%s>%s</>] %s\n", $decoration, strtoupper($level), $message));
+        $this->output->writeln(sprintf("[<%s>%s</>] %s\n", $decoration, strtoupper((string) $level), $message));
     }
 }

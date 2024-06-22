@@ -28,62 +28,29 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class RunCommand extends Command
 {
-    public const EXIT_CODE_ERROR = 1;
-    public const EXIT_CODE_FAILURE = 2;
+    final public const EXIT_CODE_ERROR = 1;
+    final public const EXIT_CODE_FAILURE = 2;
 
-    public const OPT_ITERATIONS = 'iterations';
-    public const OPT_WARMUP = 'warmup';
-    public const OPT_RETRY_THRESHOLD = 'retry-threshold';
-    public const OPT_SLEEP = 'sleep';
-    public const OPT_TAG = 'tag';
-    public const OPT_STORE = 'store';
-    public const OPT_TOLERATE_FAILURE = 'tolerate-failure';
-
-    /**
-     * @var RunnerHandler
-     */
-    private $runnerHandler;
+    final public const OPT_ITERATIONS = 'iterations';
+    final public const OPT_WARMUP = 'warmup';
+    final public const OPT_RETRY_THRESHOLD = 'retry-threshold';
+    final public const OPT_SLEEP = 'sleep';
+    final public const OPT_TAG = 'tag';
+    final public const OPT_STORE = 'store';
+    final public const OPT_TOLERATE_FAILURE = 'tolerate-failure';
 
     /**
-     * @var ReportHandler
+     * @param Registry<DriverInterface> $storage
      */
-    private $reportHandler;
-
-    /**
-     * @var TimeUnitHandler
-     */
-    private $timeUnitHandler;
-
-    /**
-     * @var DumpHandler
-     */
-    private $dumpHandler;
-
-    /**
-     * @var Registry
-     */
-    private $storage;
-
-    /**
-     * @var SuiteCollectionHandler
-     */
-    private $suiteCollectionHandler;
-
     public function __construct(
-        RunnerHandler $runnerHandler,
-        ReportHandler $reportHandler,
-        SuiteCollectionHandler $suiteCollectionHandler,
-        TimeUnitHandler $timeUnitHandler,
-        DumpHandler $dumpHandler,
-        Registry $storage
+        private readonly RunnerHandler $runnerHandler,
+        private readonly ReportHandler $reportHandler,
+        private readonly SuiteCollectionHandler $suiteCollectionHandler,
+        private readonly TimeUnitHandler $timeUnitHandler,
+        private readonly DumpHandler $dumpHandler,
+        private readonly Registry $storage
     ) {
         parent::__construct();
-        $this->runnerHandler = $runnerHandler;
-        $this->reportHandler = $reportHandler;
-        $this->suiteCollectionHandler = $suiteCollectionHandler;
-        $this->timeUnitHandler = $timeUnitHandler;
-        $this->dumpHandler = $dumpHandler;
-        $this->storage = $storage;
     }
 
     public function configure(): void
@@ -119,17 +86,37 @@ EOT
         $this->timeUnitHandler->timeUnitFromInput($input);
         $this->reportHandler->validateReportsFromInput($input);
 
+        /** @var string|null $retryThreshold */
         $retryThreshold = $input->getOption(self::OPT_RETRY_THRESHOLD);
+
+        /** @var string|null $sleep */
         $sleep = $input->getOption(self::OPT_SLEEP);
+
+        /** @var list<string> $iterations */
+        $iterations = $input->getOption(self::OPT_ITERATIONS);
+        $iterations = array_map('intval', $iterations);
+
+        /** @var list<string> $warmup */
+        $warmup = $input->getOption(self::OPT_WARMUP);
+        $warmup = array_map('intval', $warmup);
+
+        /** @var string|null $tag */
+        $tag = $input->getOption(self::OPT_TAG);
+
+        /** @var bool $store */
+        $store = $input->getOption(self::OPT_STORE);
+
+        /** @var bool $tolerateFailure */
+        $tolerateFailure = $input->getOption(self::OPT_TOLERATE_FAILURE);
 
         $baselines = $this->resolveBaselines($input);
 
         $config = RunnerConfig::create()
-            ->withTag((string)$input->getOption(self::OPT_TAG))
+            ->withTag((string)$tag)
             ->withRetryThreshold($retryThreshold !== null ? (float) $retryThreshold : null)
             ->withSleep($sleep !== null ? (int) $sleep : null)
-            ->withIterations($input->getOption(self::OPT_ITERATIONS))
-            ->withWarmup($input->getOption(self::OPT_WARMUP))
+            ->withIterations($iterations)
+            ->withWarmup($warmup)
             ->withBaselines($baselines);
 
         $suite = $this->runnerHandler->runFromInput($input, $output, $config);
@@ -137,10 +124,9 @@ EOT
         $collection = new SuiteCollection([$suite]);
         $this->dumpHandler->dumpFromInput($input, $output, $collection);
 
-        if (true === $input->getOption(self::OPT_STORE) || $input->getOption(self::OPT_TAG)) {
+        if (true === $store || $tag) {
             $output->write('Storing results ... ');
 
-            /** @var DriverInterface $driver */
             $driver = $this->storage->getService();
 
             $message = $driver->store($collection);
@@ -159,7 +145,7 @@ EOT
 
         $this->reportHandler->reportsFromInput($input, $collection->mergeCollection($this->resolveBaselines($input)));
 
-        if (false === $input->getOption(self::OPT_TOLERATE_FAILURE) && $suite->getFailures()) {
+        if (false === $tolerateFailure && $suite->getFailures()) {
             return self::EXIT_CODE_FAILURE;
         }
 

@@ -24,7 +24,7 @@ use Psr\Log\NullLogger;
 
 class ComponentGeneratorTest extends GeneratorTestCase
 {
-    protected function acceptanceSubPath(): string
+    protected static function acceptanceSubPath(): string
     {
         return 'component';
     }

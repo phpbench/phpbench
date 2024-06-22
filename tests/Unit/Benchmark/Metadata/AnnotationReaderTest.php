@@ -26,7 +26,7 @@ class AnnotationReaderTest extends TestCase
     public function testLoadClassMetadata(): void
     {
         $reflection = new ReflectionClass();
-        $reflection->class = 'Test';
+        $reflection->class = \stdClass::class;
         $reflection->comment = <<<'EOT'
 /**
  * @BeforeClassMethods({"beforeClass"})
@@ -44,7 +44,7 @@ EOT;
     public function testLoadMethodMetadata(): void
     {
         $reflection = new ReflectionClass();
-        $reflection->class = 'Test';
+        $reflection->class = \stdClass::class;
         $reflectionMethod = new ReflectionMethod();
         $reflectionMethod->reflectionClass = $reflection;
         $reflectionMethod->comment = <<<'EOT'
@@ -64,8 +64,8 @@ EOT;
     public function testImportedUse(): void
     {
         $reflection = new ReflectionClass();
-        $reflection->class = 'Test';
-        $reflection->path = __DIR__ . '/classes/Test.php';
+        $reflection->class = \stdClass::class;
+        $reflection->path = __DIR__ . '/classes/TestAnnotation.php';
         $reflectionMethod = new ReflectionMethod();
         $reflectionMethod->reflectionClass = $reflection;
         $reflectionMethod->comment = <<<'EOT'
@@ -79,7 +79,7 @@ EOT;
         $this->assertCount(2, $annotations);
     }
 
-    private function createReader($useImports = false)
+    private function createReader(bool $useImports = false): AnnotationReader
     {
         return new AnnotationReader($useImports);
     }

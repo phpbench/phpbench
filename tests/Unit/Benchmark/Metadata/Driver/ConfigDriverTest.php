@@ -11,21 +11,19 @@ use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Reflection\ReflectionHierarchy;
 use PhpBench\Tests\ProphecyTrait;
 use PHPUnit\Framework\TestCase;
+use Prophecy\Prophecy\ObjectProphecy;
 
 class ConfigDriverTest extends TestCase
 {
     use ProphecyTrait;
-    public const EXAMPLE_SUBJECT = 'testSubject';
+    final public const EXAMPLE_SUBJECT = 'testSubject';
 
     /**
      * @var ObjectProphecy<DriverInterface>
      */
-    private $innerDriver;
+    private ObjectProphecy $innerDriver;
 
-    /**
-     * @var ReflectionHierarchy
-     */
-    private $hierarchy;
+    private ReflectionHierarchy $hierarchy;
 
     protected function setUp(): void
     {
@@ -35,6 +33,8 @@ class ConfigDriverTest extends TestCase
 
     /**
      * @dataProvider provideDriver
+     *
+     * @param mixed[] $config
      */
     public function testDriver(array $config, callable $assertion): void
     {
@@ -51,7 +51,10 @@ class ConfigDriverTest extends TestCase
         $assertion($driver->getMetadataForHierarchy($this->hierarchy)->getOrCreateSubject(self::EXAMPLE_SUBJECT));
     }
 
-    public function provideDriver(): Generator
+    /**
+     * @return Generator<mixed>
+     */
+    public static function provideDriver(): Generator
     {
         yield [
             [

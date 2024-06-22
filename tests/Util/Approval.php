@@ -3,7 +3,7 @@
 namespace PhpBench\Tests\Util;
 
 use PHPUnit\Framework\Assert;
-use PHPUnit\Framework\SkippedTestError;
+use PHPUnit\Framework\SkippedWithMessageException;
 use RuntimeException;
 
 use function json_decode;
@@ -11,38 +11,10 @@ use function json_decode;
 class Approval
 {
     /**
-     * @var string[]
-     */
-    private $sections;
-
-    /**
-     * @var string
-     */
-    private $expected;
-
-    /**
-     * @var string
-     */
-    private $path;
-
-    /**
-     * @var string
-     */
-    private $delimiter;
-
-    /**
      * @param string[] $sections
      */
-    public function __construct(
-        string $path,
-        array $sections,
-        string $delimiter,
-        ?string $expected
-    ) {
-        $this->sections = $sections;
-        $this->expected = $expected;
-        $this->path = $path;
-        $this->delimiter = $delimiter;
+    public function __construct(private readonly string $path, private array $sections, private readonly ?string $expected)
+    {
     }
 
     public static function create(string $path, int $configCount, string $delimiter = '---'): self
@@ -75,7 +47,7 @@ class Approval
             unset($parts[$configCount - 1]);
         }
 
-        return new self($path, array_values($parts), $delimiter, $expected);
+        return new self($path, array_values($parts), $expected);
     }
 
     /**
@@ -121,7 +93,7 @@ class Approval
                 ]
             )));
 
-            throw new SkippedTestError(sprintf('Approval generated for "%s"', $this->path));
+            throw new SkippedWithMessageException(sprintf('Approval generated for "%s"', $this->path));
         }
 
         Assert::assertEquals(trim($this->expected), trim($actual));

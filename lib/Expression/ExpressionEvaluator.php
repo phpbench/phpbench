@@ -10,32 +10,11 @@ use PhpBench\Expression\Ast\PhpValue;
  */
 final class ExpressionEvaluator
 {
-    /**
-     * @var ExpressionLanguage
-     */
-    private $language;
+    private readonly MustacheRenderer $mustacheRenderer;
 
-    /**
-     * @var Evaluator
-     */
-    private $evaluator;
-
-    /**
-     * @var MustacheRenderer
-     */
-    private $mustacheRenderer;
-
-    /**
-     * @var Printer
-     */
-    private $printer;
-
-    public function __construct(ExpressionLanguage $language, Evaluator $evaluator, Printer $printer)
+    public function __construct(private readonly ExpressionLanguage $language, private readonly Evaluator $evaluator, private readonly Printer $printer)
     {
-        $this->language = $language;
-        $this->evaluator = $evaluator;
         $this->mustacheRenderer = new MustacheRenderer();
-        $this->printer = $printer;
     }
 
     /**

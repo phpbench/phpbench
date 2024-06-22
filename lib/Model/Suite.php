@@ -24,42 +24,28 @@ use RuntimeException;
  *
  * This is the base of the object graph created by the Runner.
  *
- * @implements IteratorAggregate<Benchmark>
+ * @implements IteratorAggregate<array-key, Benchmark>
  */
 class Suite implements IteratorAggregate
 {
-    private $tag;
-    private $date;
-    private $configPath;
-    private $envInformations = [];
-
-    /**
-     * @var Benchmark[]
-     */
-    private $benchmarks = [];
-    private $uuid;
+    private ?Tag $tag;
 
     /**
      * __construct.
      *
-     * @param string $tag
-     * @param string $configPath
      * @param Information[] $envInformations
+     * @param Benchmark[] $benchmarks
+     * @param string|null $uuid
      */
     public function __construct(
         ?string $tag,
-        DateTime $date,
-        ?string $configPath = null,
-        array $benchmarks = [],
-        array $envInformations = [],
-        $uuid = null
+        private DateTime $date,
+        private ?string $configPath = null,
+        private array $benchmarks = [],
+        private array $envInformations = [],
+        private $uuid = null
     ) {
         $this->tag = $tag ? new Tag($tag) : null;
-        $this->date = $date;
-        $this->configPath = $configPath;
-        $this->envInformations = $envInformations;
-        $this->benchmarks = $benchmarks;
-        $this->uuid = $uuid;
     }
 
     /**
@@ -114,7 +100,7 @@ class Suite implements IteratorAggregate
     }
 
     /**
-     * @return ArrayIterator<Benchmark>
+     * @return ArrayIterator<array-key, Benchmark>
      */
     public function getIterator(): ArrayIterator
     {
@@ -141,6 +127,9 @@ class Suite implements IteratorAggregate
         return new Summary($this);
     }
 
+    /**
+     * @return list<Iteration>
+     */
     public function getIterations(): array
     {
         $iterations = [];
@@ -186,6 +175,9 @@ class Suite implements IteratorAggregate
         return $variants;
     }
 
+    /**
+     * @return list<ErrorStack>
+     */
     public function getErrorStacks(): array
     {
         $errorStacks = [];
@@ -265,7 +257,7 @@ class Suite implements IteratorAggregate
     public function generateUuid(): void
     {
         $serialized = serialize($this->envInformations);
-        $this->uuid = dechex((int)$this->getDate()->format('Ymd')) . substr(sha1(implode([
+        $this->uuid = dechex((int)$this->getDate()->format('Ymd')) . substr(sha1(implode('', [
             microtime(),
             $serialized,
             $this->configPath,

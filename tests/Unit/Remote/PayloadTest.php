@@ -22,13 +22,13 @@ use Symfony\Component\Process\Process;
 class PayloadTest extends IntegrationTestCase
 {
     /**
-     * @var MockObject
+     * @var Process&MockObject
      */
-    private $process;
+    private MockObject $process;
     /**
-     * @var MockObject
+     * @var ProcessFactoryInterface&MockObject
      */
-    private $processFactory;
+    private MockObject $processFactory;
 
     protected function setUp(): void
     {
@@ -50,7 +50,7 @@ class PayloadTest extends IntegrationTestCase
             ]
         );
 
-        $result = $payload->launch($payload);
+        $result = $payload->launch();
 
         $this->assertEquals([
             'foo' => 'bar',
@@ -70,7 +70,7 @@ class PayloadTest extends IntegrationTestCase
             $this->workspace()->path('/foo/bar/baz')
         );
 
-        $result = $payload->launch($payload);
+        $result = $payload->launch();
 
         $this->assertEquals([
             'foo' => 'bar',
@@ -88,7 +88,7 @@ class PayloadTest extends IntegrationTestCase
             __DIR__ . '/template/invalid.template'
         );
 
-        $payload->launch($payload);
+        $payload->launch();
     }
 
     /**
@@ -165,7 +165,7 @@ class PayloadTest extends IntegrationTestCase
             $processFactory
         );
 
-        $payload->launch($payload);
+        $payload->launch();
     }
 
     private function validPayload(): Payload
@@ -173,7 +173,7 @@ class PayloadTest extends IntegrationTestCase
         return $this->validPayloadWithPhpConfig();
     }
 
-    private function validPayloadWithPhpConfig(array $phpConfig = []): Payload
+    private function validPayloadWithPhpConfig(): Payload
     {
         return new Payload(
             __DIR__ . '/template/foo.template',

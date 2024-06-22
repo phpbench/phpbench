@@ -43,6 +43,9 @@ class XDebugUtil
         $this->xdebugUseCompression = $xdebugUseCompression;
     }
 
+    /**
+     * @param string $extension
+     */
     public function filenameFromContext(ExecutionContext $context, $extension = ''): string
     {
         $name = sprintf(

@@ -86,6 +86,7 @@ class BarChartAggregateComponentGeneratorTest extends ComponentGeneratorTestCase
 
     public function testXAxesLabelUsesXValue(): void
     {
+        /** @var BarChart $barChart */
         $barChart = $this->generate(DataFrame::fromRowSeries([
             [ 'oneBench', 'md5' ],
             [ 'twoBench', 'sha256' ],

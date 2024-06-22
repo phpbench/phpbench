@@ -15,10 +15,9 @@ class DisplayAsPrinterTest extends NodePrinterTestCase
     {
         self::assertEquals('1.000GiB', $this->print(
             new DisplayAsNode(
-                new IntegerNode(pow(1024, 3)),
+                new IntegerNode(1024 ** 3),
                 new UnitNode(new StringNode('memory'))
             ),
-            [],
             [ExpressionExtension::PARAM_MEMORY_UNIT_PREFIX => 'binary']
         ));
     }

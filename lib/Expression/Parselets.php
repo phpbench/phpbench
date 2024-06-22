@@ -15,20 +15,13 @@ final class Parselets
     private $parselets;
 
     /**
-     * @var string
-     */
-    private $type;
-
-    /**
      * @param T[] $parselets
      */
-    private function __construct(array $parselets, string $type)
+    private function __construct(array $parselets, private readonly string $type)
     {
         foreach ($parselets as $parselet) {
             $this->parselets[$parselet->tokenType()] = $parselet;
         }
-
-        $this->type = $type;
     }
 
     /**

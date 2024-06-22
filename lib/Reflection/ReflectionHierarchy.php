@@ -12,6 +12,8 @@
 
 namespace PhpBench\Reflection;
 
+use ArrayObject;
+use InvalidArgumentException;
 use IteratorAggregate;
 
 /**
@@ -22,16 +24,10 @@ use IteratorAggregate;
 class ReflectionHierarchy implements IteratorAggregate
 {
     /**
-     * @var ReflectionClass[] ordered by leaf class ("top") first
+     * @param list<ReflectionClass> $reflectionClasses
      */
-    private $reflectionClasses;
-
-    /**
-     * @param ReflectionClass[] $reflectionClasses
-     */
-    public function __construct(array $reflectionClasses = [])
+    public function __construct(private array $reflectionClasses = [])
     {
-        $this->reflectionClasses = $reflectionClasses;
     }
 
     /**
@@ -43,20 +39,23 @@ class ReflectionHierarchy implements IteratorAggregate
         $this->reflectionClasses[] = $reflectionClass;
     }
 
-    public function getIterator(): \ArrayObject
+    /**
+     * @return ArrayObject<int,ReflectionClass>
+     */
+    public function getIterator(): ArrayObject
     {
-        return new \ArrayObject($this->reflectionClasses);
+        return new ArrayObject($this->reflectionClasses);
     }
 
     /**
      * Return the "top" class.
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function getTop(): ReflectionClass
     {
         if (!isset($this->reflectionClasses[0])) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Cannot get top reflection class, reflection hierarchy is empty.'
             );
         }

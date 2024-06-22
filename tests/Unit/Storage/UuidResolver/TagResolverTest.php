@@ -19,33 +19,22 @@ use PhpBench\Storage\HistoryEntry;
 use PhpBench\Storage\StorageRegistry;
 use PhpBench\Storage\UuidResolver\TagResolver;
 use PhpBench\Tests\TestCase;
+use Prophecy\Prophecy\ObjectProphecy;
 
 class TagResolverTest extends TestCase
 {
-    /**
-     * @var ObjectProphecy
-     */
-    private $storage;
+    /** @var ObjectProphecy<DriverInterface> */
+    private ObjectProphecy $storage;
 
-    /**
-     * @var ObjectProphecy
-     */
-    private $history;
+    private FakeHistoryIterator $history;
 
-    /**
-     * @var ObjectProphecy
-     */
-    private $historyEntry;
+    /** @var ObjectProphecy<HistoryEntry> */
+    private ObjectProphecy $historyEntry;
 
-    /**
-     * @var ObjectProphecy
-     */
-    private $historyEntry1;
+    /** @var ObjectProphecy<HistoryEntry> */
+    private ObjectProphecy $historyEntry1;
 
-    /**
-     * @var TagResolver
-     */
-    private $resolver;
+    private TagResolver $resolver;
 
     protected function setUp(): void
     {
@@ -80,7 +69,10 @@ class TagResolverTest extends TestCase
         $this->assertEquals(1234, $uuid);
     }
 
-    public function provideTags(): array
+    /**
+     * @return list<list{string}>
+     */
+    public static function provideTags(): array
     {
         return [
             [ 'foobar',],

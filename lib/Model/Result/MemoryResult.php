@@ -19,10 +19,6 @@ use PhpBench\Model\ResultInterface;
  */
 class MemoryResult implements ResultInterface
 {
-    private $real;
-    private $peak;
-    private $final;
-
     /**
      * {@inheritdoc}
      */
@@ -37,11 +33,8 @@ class MemoryResult implements ResultInterface
 
     /**
      */
-    public function __construct(int $peak, int $real, int $final)
+    public function __construct(private readonly int $peak, private readonly int $real, private readonly int $final)
     {
-        $this->peak = $peak;
-        $this->real = $real;
-        $this->final = $final;
     }
 
     /**

@@ -17,21 +17,17 @@ use IteratorAggregate;
 use RuntimeException;
 
 /**
- * @implements IteratorAggregate<Suite>
+ * @final
+ *
+ * @implements IteratorAggregate<array-key, Suite>
  */
-/** final */class SuiteCollection implements IteratorAggregate
+class SuiteCollection implements IteratorAggregate
 {
-    /**
-     * @var Suite[]
-     */
-    private $suites;
-
     /**
      * @param Suite[] $suites
      */
-    public function __construct(array $suites = [])
+    public function __construct(private array $suites = [])
     {
-        $this->suites = $suites;
     }
 
     /**
@@ -70,7 +66,7 @@ use RuntimeException;
      */
     public function getIterator(): ArrayIterator
     {
-        return new \ArrayIterator($this->suites);
+        return new ArrayIterator($this->suites);
     }
 
     public function findBaselineForVariant(Variant $variant): ?Variant

@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Model\Result;
 
+use InvalidArgumentException;
 use PhpBench\Model\Result\RejectionCountResult;
 use PhpBench\Tests\TestCase;
 
@@ -19,7 +20,7 @@ class RejectionCountResultTest extends TestCase
 {
     public function testMemoryGreaterEqualThan(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Rejection count must be greater or equal to 0');
         new RejectionCountResult(-1);
     }

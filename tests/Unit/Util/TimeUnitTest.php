@@ -25,14 +25,17 @@ class TimeUnitTest extends TestCase
      * @dataProvider provideAliases
      * @dataProvider provideConvert
      */
-    public function testConvert($time, $unit, $destUnit, $expectedTime): void
+    public function testConvert(float $time, string $unit, string $destUnit, float|int $expectedTime): void
     {
         $unit = new TimeUnit($unit, $destUnit);
         $result = $unit->toDestUnit($time);
         $this->assertEquals($expectedTime, $result);
     }
 
-    public function provideConvert()
+    /**
+     * @return list<list{int|float, string, string, int|float}>
+     */
+    public static function provideConvert(): array
     {
         return [
             [
@@ -51,7 +54,7 @@ class TimeUnitTest extends TestCase
                 1,
                 TimeUnit::SECONDS,
                 TimeUnit::MICROSECONDS,
-                1000000,
+                1_000_000,
             ],
             [
                 1,
@@ -89,7 +92,7 @@ class TimeUnitTest extends TestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideAliases(): Generator
+    public static function provideAliases(): Generator
     {
         yield [
             1,
@@ -109,14 +112,14 @@ class TimeUnitTest extends TestCase
             1,
             TimeUnit::SECOND,
             TimeUnit::MICROSECOND,
-            1000000
+            1_000_000
         ];
 
         yield [
             1,
             TimeUnit::MINUTE,
             TimeUnit::MICROSECOND,
-            60000000
+            60_000_000
         ];
 
         yield [
@@ -132,14 +135,17 @@ class TimeUnitTest extends TestCase
      *
      * @dataProvider provideConvertThroughput
      */
-    public function testConvertThroughput($time, $unit, $destUnit, $expectedThroughput): void
+    public function testConvertThroughput(float $time, string $unit, string $destUnit, float|int $expectedThroughput): void
     {
         $unit = new TimeUnit($unit, $destUnit);
         $result = $unit->toDestUnit($time, null, TimeUnit::MODE_THROUGHPUT);
         $this->assertEquals($expectedThroughput, $result);
     }
 
-    public function provideConvertThroughput()
+    /**
+     * @return list<list{int|float, string, string, int|float}>
+     */
+    public static function provideConvertThroughput()
     {
         return [
             [
@@ -327,7 +333,7 @@ class TimeUnitTest extends TestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideSuitableUnit(): Generator
+    public static function provideSuitableUnit(): Generator
     {
         yield [1, 'microseconds'];
 
@@ -339,8 +345,8 @@ class TimeUnitTest extends TestCase
 
         yield [100000, 'milliseconds'];
 
-        yield [1000000, 'seconds'];
+        yield [1_000_000, 'seconds'];
 
-        yield [60000000, 'minutes'];
+        yield [60_000_000, 'minutes'];
     }
 }

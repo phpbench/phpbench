@@ -22,8 +22,10 @@ use PhpBench\Model\Variant;
 
 class HistogramLogger extends AnsiLogger
 {
-    private $rows = 1;
-    private $blocks = ['▁',  '▂',  '▃',  '▄',  '▅',  '▆', '▇', '█'];
+    private int $rows = 1;
+
+    /** @var string[] */
+    private array $blocks = ['▁',  '▂',  '▃',  '▄',  '▅',  '▆', '▇', '█'];
 
     /**
      * {@inheritdoc}
@@ -105,7 +107,10 @@ class HistogramLogger extends AnsiLogger
         $this->output->write("\x1B[0G");
     }
 
-    private function drawBlocks($freqs): void
+    /**
+     * @param array<int|null> $freqs
+     */
+    private function drawBlocks(array $freqs): void
     {
         $steps = 7;
         $resolution = $this->rows * $steps;
@@ -115,7 +120,7 @@ class HistogramLogger extends AnsiLogger
         for ($row = 1; $row <= $this->rows; $row++) {
             $blocks[$row] = [];
 
-            foreach ($freqs as &$freq) {
+            foreach ($freqs as $freq) {
                 if (null === $freq || 0 === $freq) {
                     $blocks[$row][] = ' ';
 

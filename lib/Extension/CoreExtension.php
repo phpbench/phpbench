@@ -25,15 +25,15 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CoreExtension implements ExtensionInterface
 {
-    public const PARAM_EXTENSIONS = 'core.extensions';
-    public const PARAM_PROFILES = 'core.profiles';
+    final public const PARAM_EXTENSIONS = 'core.extensions';
+    final public const PARAM_PROFILES = 'core.profiles';
 
-    public const PARAM_CONFIG_PATH = 'core.config_path';
-    public const PARAM_DEBUG = 'core.debug';
-    public const PARAM_WORKING_DIR = 'core.working_dir';
+    final public const PARAM_CONFIG_PATH = 'core.config_path';
+    final public const PARAM_DEBUG = 'core.debug';
+    final public const PARAM_WORKING_DIR = 'core.working_dir';
 
-    public const PARAM_TIME_UNIT = 'core.time_unit';
-    public const PARAM_SCHEMA = '$schema';
+    final public const PARAM_TIME_UNIT = 'core.time_unit';
+    final public const PARAM_SCHEMA = '$schema';
 
     public function configure(OptionsResolver $resolver): void
     {

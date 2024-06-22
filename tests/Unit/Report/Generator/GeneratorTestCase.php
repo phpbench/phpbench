@@ -42,8 +42,6 @@ abstract class GeneratorTestCase extends IntegrationTestCase
     }
 
     /**
-     * @return parameters
-     *
      * @param parameters $config
      */
     protected function resolveConfig(GeneratorInterface $generator, array $config): Config
@@ -54,6 +52,9 @@ abstract class GeneratorTestCase extends IntegrationTestCase
         return new Config('test', $options->resolve($config));
     }
 
+    /**
+     * @param parameters $config
+     */
     protected function generate(SuiteCollection $collection, array $config): string
     {
         $container = $this->container();
@@ -66,7 +67,8 @@ abstract class GeneratorTestCase extends IntegrationTestCase
                 $config
             );
             $this->container([
-                ConsoleExtension::PARAM_OUTPUT_STREAM => $this->workspace()->path('out')
+                ConsoleExtension::PARAM_OUTPUT_STREAM => $this->workspace()->path('out'),
+                ConsoleExtension::PARAM_ANSI => false
             ])->get(ConsoleRenderer::class)->render($document, new Config('test', []));
 
             return $this->workspace()->getContents('out');
@@ -78,16 +80,16 @@ abstract class GeneratorTestCase extends IntegrationTestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideGenerate(): Generator
+    public static function provideGenerate(): Generator
     {
-        foreach (glob(sprintf('%s/%s/*', __DIR__, $this->acceptanceSubPath())) as $path) {
+        foreach (glob(sprintf('%s/%s/*', __DIR__, static::acceptanceSubPath())) as $path) {
             yield [
                 $path
             ];
         }
     }
 
-    abstract protected function acceptanceSubPath(): string;
+    abstract protected static function acceptanceSubPath(): string;
 
     abstract protected function createGenerator(Container $container): GeneratorInterface;
 }

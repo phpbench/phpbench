@@ -25,7 +25,7 @@ class Supplier
     /**
      * @var ProviderInterface[]
      */
-    private $providers = [];
+    private array $providers = [];
 
     /**
      * Add a provider.

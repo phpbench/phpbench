@@ -4,12 +4,12 @@ namespace PhpBench\Config\Processor;
 
 use PhpBench\Config\ConfigLoader;
 use PhpBench\Config\ConfigProcessor;
-use PhpBench\Path\Path;
+use Symfony\Component\Filesystem\Path;
 use Webmozart\Glob\Glob;
 
 class IncludeGlobProcessor implements ConfigProcessor
 {
-    public const DIRECTIVE = '$include-glob';
+    final public const DIRECTIVE = '$include-glob';
 
     public function process(ConfigLoader $loader, string $path, array $config): array
     {

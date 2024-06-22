@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Executor\Benchmark;
 
+use PhpBench\Tests\Unit\Executor\benchmarks\MicrotimeExecutorBench;
 use DTL\Invoke\Invoke;
 use PhpBench\Executor\BenchmarkExecutorInterface;
 use PhpBench\Executor\ExecutionContext;
@@ -162,13 +163,13 @@ abstract class AbstractExecutorTestCase extends PhpBenchTestCase
     protected function buildConfig(array $config): array
     {
         $config = array_merge([
-            'className' => 'PhpBench\Tests\Unit\Executor\benchmarks\MicrotimeExecutorBench',
+            'className' => MicrotimeExecutorBench::class,
             'classPath' => __DIR__ . '/../benchmarks/MicrotimeExecutorBench.php',
             'parameters' => [],
         ], $config);
 
         if (is_array($config['parameters'])) {
-            $config['parameters'] = ParameterSet::fromUnserializedValues('test', $config['parameters'] ?? []);
+            $config['parameters'] = ParameterSet::fromUnserializedValues('test', $config['parameters']);
         }
 
         return $config;

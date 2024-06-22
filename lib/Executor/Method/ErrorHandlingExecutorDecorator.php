@@ -9,30 +9,20 @@ use Throwable;
 
 class ErrorHandlingExecutorDecorator implements MethodExecutorInterface
 {
-    /**
-     * @var MethodExecutorInterface
-     */
-    private $executor;
-
-    public function __construct(MethodExecutorInterface $executor)
+    public function __construct(private readonly MethodExecutorInterface $executor)
     {
-        $this->executor = $executor;
     }
 
     public function executeMethods(MethodExecutorContext $context, array $methods): void
     {
         try {
             $this->executor->executeMethods($context, $methods);
-        } catch (Throwable $throwable) {
-            throw new ExecutionError(
-                sprintf(
-                    'Could not execute method(s) "%s" on "%s"',
-                    implode('", "', $methods),
-                    $context->getBenchmarkClass()
-                ),
-                0,
-                $throwable
-            );
+        } catch (Throwable) {
+            throw new ExecutionError(sprintf(
+                'Could not execute method(s) "%s" on "%s"',
+                implode('", "', $methods),
+                $context->getBenchmarkClass()
+            ), 0, $throwable);
         }
     }
 }

@@ -4,27 +4,17 @@ namespace PhpBench\Tests\Unit\Progress\Logger;
 
 use PhpBench\Model\Variant;
 use PhpBench\Progress\VariantFormatter;
-use PhpBench\Progress\VariantSummaryFormatter;
 use PhpBench\Tests\TestCase;
 use PhpBench\Util\TimeUnit;
 use Symfony\Component\Console\Output\BufferedOutput;
 
 class LoggerTestCase extends TestCase
 {
-    /**
-     * @var TimeUnit
-     */
-    protected $timeUnit;
+    protected TimeUnit $timeUnit;
 
-    /**
-     * @var VariantSummaryFormatter
-     */
-    protected $variantFormatter;
+    protected VariantFormatter $variantFormatter;
 
-    /**
-     * @var BufferedOutput
-     */
-    protected $output;
+    protected BufferedOutput $output;
 
     protected function setUp(): void
     {

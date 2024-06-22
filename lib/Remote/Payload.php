@@ -23,93 +23,65 @@ use function escapeshellarg;
  */
 class Payload
 {
-    public const FLAG_DISABLE_INI = '-n';
-
-    /**
-     * Path to script template.
-     */
-    private $template;
+    final public const FLAG_DISABLE_INI = '-n';
 
     /**
      * Wrapper for PHP binary, e.g. "blackfire".
      */
-    private $wrapper;
+    private ?string $wrapper = null;
 
     /**
      * Associative array of PHP INI settings.
+     *
+     * @var array<string, scalar|scalar[]>
      */
-    private $phpConfig = [];
+    private array $phpConfig = [];
 
     /**
      * Path to PHP binary.
      */
-    private $phpPath;
+    private string $phpPath;
 
-    /**
-     * Tokens to substitute in the script template.
-     */
-    private $tokens = [];
+    private bool $disableIni = false;
 
-    /**
-     * @var bool
-     */
-    private $disableIni = false;
+    private readonly IniStringBuilder $iniStringBuilder;
 
-    /**
-     * @var IniStringBuilder
-     */
-    private $iniStringBuilder;
-
-    /**
-     * @var ProcessFactoryInterface
-     */
-    private $processFactory;
-
-    /**
-     * @var float
-     */
-    private $timeout;
-
-    /**
-     * @var string
-     */
-    private $scriptPath;
-
-    /**
-     * @var bool
-     */
-    private $scriptRemove;
+    private readonly ProcessFactoryInterface $processFactory;
 
     /**
      * Create a new Payload object with the given script template.
      * The template must be the path to a script template.
      *
-     * @param array<string, mixed> $tokens
+     * @param array<string, string|null> $tokens
      */
     public function __construct(
-        string $template,
-        array $tokens = [],
+        /**
+         * Path to script template.
+         */
+        private readonly string $template,
+        private readonly array $tokens = [],
         ?string $phpPath = null,
-        ?float $timeout = null,
+        private readonly ?float $timeout = null,
         ProcessFactoryInterface $processFactory = null,
-        string $scriptPath = null,
-        bool $scriptRemove = false
+        private readonly ?string $scriptPath = null,
+        private readonly bool $scriptRemove = false
     ) {
-        $this->template = $template;
-        $this->tokens = $tokens;
         $this->processFactory = $processFactory ?: new ProcessFactory();
         $this->iniStringBuilder = new IniStringBuilder();
-        $this->timeout = $timeout;
         $this->phpPath = $phpPath ?: PHP_BINARY;
-        $this->scriptPath = $scriptPath;
-        $this->scriptRemove = $scriptRemove;
     }
 
+    /**
+     * @param string $wrapper
+     */
     public function setWrapper($wrapper): void
     {
         $this->wrapper = $wrapper;
     }
 
+    /**
+     * @param array<string, scalar|scalar[]> $phpConfig
+     */
     public function mergePhpConfig(array $phpConfig): void
     {
         $this->phpConfig = array_merge(
@@ -128,6 +100,9 @@ class Payload
         $this->phpPath = $phpPath;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function launch(): array
     {
         $script = $this->readFile();
@@ -178,13 +153,19 @@ class Payload
     private function readFile(): string
     {
         if (!file_exists($this->template)) {
-            throw new \RuntimeException(sprintf(
+            throw new RuntimeException(sprintf(
                 'Could not find script template "%s"',
                 $this->template
             ));
         }
 
-        return file_get_contents($this->template);
+        $content = file_get_contents($this->template);
+
+        if ($content === false) {
+            throw new \RuntimeException(sprintf('Could not read template "%s"', $this->template));
+        }
+
+        return $content;
     }
 
     private function writeTempFile(string $script): string
@@ -261,7 +242,7 @@ class Payload
             return $result;
         }
 
-        throw new \RuntimeException(sprintf(
+        throw new RuntimeException(sprintf(
             'Script "%s" did not return an array, got: %s',
             $this->template,
             $output

@@ -9,18 +9,12 @@ use PhpBench\Model\Variant;
 class IterationBuilder
 {
     /**
-     * @var VariantBuilder
-     */
-    private $variant;
-
-    /**
      * @var ResultInterface[]
      */
-    private $results = [];
+    private array $results = [];
 
-    public function __construct(VariantBuilder $variant)
+    public function __construct(private readonly VariantBuilder $variant)
     {
-        $this->variant = $variant;
     }
 
     public function setResult(ResultInterface $result): self

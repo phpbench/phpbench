@@ -12,6 +12,7 @@
 
 namespace PhpBench\Storage;
 
+use DateTime;
 use PhpBench\Model\Tag;
 
 /**
@@ -19,55 +20,44 @@ use PhpBench\Model\Tag;
  */
 class HistoryEntry
 {
-    private $runId;
-    private $date;
-    private $tag;
-    private $branch;
-
-    private $nbSubjects;
-    private $nbIterations;
-    private $nbRevolutions;
-
-    private $minTime;
-    private $maxTime;
-    private $meanTime;
-    private $meanRelStDev;
-    private $totalTime;
-
+    /**
+     * @param ?string $runId
+     * @param ?string $tag
+     * @param ?string $branch
+     * @param int $nbSubjects
+     * @param int $nbIterations
+     * @param int $nbRevolutions
+     * @param int|float $minTime
+     * @param int|float $maxTime
+     * @param int|float $meanTime
+     * @param int|float $meanRelStDev
+     * @param int|float $totalTime
+     */
     public function __construct(
-        $runId,
-        \DateTime $date,
-        $tag,
-        $branch,
-        $nbSubjects,
-        $nbIterations,
-        $nbRevolutions,
-        $minTime,
-        $maxTime,
-        $meanTime,
-        $meanRelStDev,
-        $totalTime
+        private                   $runId,
+        private readonly DateTime $date,
+        private                   $tag,
+        private                   $branch,
+        private                   $nbSubjects,
+        private                   $nbIterations,
+        private                   $nbRevolutions,
+        private                   $minTime,
+        private                   $maxTime,
+        private                   $meanTime,
+        private                   $meanRelStDev,
+        private                   $totalTime
     ) {
-        $this->runId = $runId;
-        $this->date = $date;
-        $this->tag = $tag;
-        $this->branch = $branch;
-        $this->nbSubjects = $nbSubjects;
-        $this->nbIterations = $nbIterations;
-        $this->nbRevolutions = $nbRevolutions;
-        $this->minTime = $minTime;
-        $this->maxTime = $maxTime;
-        $this->meanTime = $meanTime;
-        $this->meanRelStDev = $meanRelStDev;
-        $this->totalTime = $totalTime;
     }
 
+    /**
+     * @return string|null
+     */
     public function getRunId()
     {
         return $this->runId;
     }
 
-    public function getDate(): \DateTime
+    public function getDate(): DateTime
     {
         return $this->date;
     }
@@ -77,46 +67,73 @@ class HistoryEntry
         return $this->tag ? new Tag($this->tag) : null;
     }
 
+    /**
+     * @return int
+     */
     public function getNbSubjects()
     {
         return $this->nbSubjects;
     }
 
+    /**
+     * @return int
+     */
     public function getNbIterations()
     {
         return $this->nbIterations;
     }
 
+    /**
+     * @return int
+     */
     public function getNbRevolutions()
     {
         return $this->nbRevolutions;
     }
 
+    /**
+     * @return string|null
+     */
     public function getVcsBranch()
     {
         return $this->branch;
     }
 
+    /**
+     * @return float|int
+     */
     public function getMinTime()
     {
         return $this->minTime;
     }
 
+    /**
+     * @return float|int
+     */
     public function getMaxTime()
     {
         return $this->maxTime;
     }
 
+    /**
+     * @return float|int
+     */
     public function getMeanTime()
     {
         return $this->meanTime;
     }
 
+    /**
+     * @return float|int
+     */
     public function getMeanRelStDev()
     {
         return $this->meanRelStDev;
     }
 
+    /**
+     * @return float|int
+     */
     public function getTotalTime()
     {
         return $this->totalTime;

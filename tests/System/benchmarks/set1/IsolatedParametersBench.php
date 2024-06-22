@@ -14,14 +14,16 @@ class IsolatedParameterBench
 {
     /**
      * @Groups({"process"})
+     *
      * @Iterations(1)
+     *
      * @ParamProviders({"provideParams"})
      */
     public function benchIterationIsolation(): void
     {
     }
 
-    public function provideParams()
+    public static function provideParams()
     {
         return [
             [

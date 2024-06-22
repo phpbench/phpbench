@@ -12,7 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Environment\Provider;
 
-use PhpBench\Environment\Provider;
+use PhpBench\Environment\Provider\Git;
 use PhpBench\Tests\IntegrationTestCase;
 use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\Process;
@@ -21,8 +21,7 @@ use function sys_get_temp_dir;
 
 class GitTest extends IntegrationTestCase
 {
-    private $provider;
-    private $filesystem;
+    private Git $provider;
 
     protected function setUp(): void
     {
@@ -33,7 +32,7 @@ class GitTest extends IntegrationTestCase
         $this->exec('git config user.email "test@example.com"');
         $this->exec('git config user.name "My Name"');
 
-        $this->provider = new Provider\Git($this->workspace()->path());
+        $this->provider = new Git($this->workspace()->path());
     }
 
     /**
@@ -50,7 +49,7 @@ class GitTest extends IntegrationTestCase
      */
     public function testIsNotApplicable(): void
     {
-        $this->provider = new Provider\Git(sys_get_temp_dir());
+        $this->provider = new Git(sys_get_temp_dir());
         $result = $this->provider->isApplicable();
         $this->assertFalse($result);
     }
@@ -62,7 +61,7 @@ class GitTest extends IntegrationTestCase
     {
         $info = $this->provider->getInformation();
         $this->assertEquals('git', $info['system']);
-        $this->assertEquals('master', $info['branch']);
+        $this->assertTrue(in_array($info['branch'], ['main', 'master']));
         $this->assertNull($info['version']); // no commit has yet been made
     }
 
@@ -71,10 +70,10 @@ class GitTest extends IntegrationTestCase
      */
     public function testGetVcsCommitsh(): void
     {
-        $this->exec('git commit -m "test"');
+        $this->exec('git commit --no-gpg-sign -m "test"');
         $info = $this->provider->getInformation();
         $this->assertNotNull($info['version']); // no commit has yet been made
-        $this->assertEquals(40, strlen($info['version']));
+        $this->assertEquals(40, strlen((string) $info['version']));
     }
 
     /**
@@ -82,7 +81,7 @@ class GitTest extends IntegrationTestCase
      */
     public function testGetVcsBranch(): void
     {
-        $this->exec('git commit -m "test"');
+        $this->exec('git commit --no-gpg-sign -m "test"');
 
         $this->exec('git branch foobar');
         $this->exec('git checkout foobar');
@@ -98,7 +97,7 @@ class GitTest extends IntegrationTestCase
         $exeFinder = $this->prophesize(ExecutableFinder::class);
         $exeFinder->find('git', null)->willReturn(null);
 
-        $provider = new Provider\Git(__DIR__, $exeFinder->reveal());
+        $provider = new Git(__DIR__, $exeFinder->reveal());
 
         $this->assertFalse($provider->isApplicable());
     }

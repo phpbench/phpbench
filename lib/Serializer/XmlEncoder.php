@@ -33,18 +33,12 @@ use function base64_encode;
  */
 class XmlEncoder
 {
-    public const PARAM_TYPE_BINARY = 'binary';
-    public const PARAM_TYPE_COLLECTION = 'collection';
-    public const PARAM_TYPE_SERIALIZED = 'serialized';
+    final public const PARAM_TYPE_BINARY = 'binary';
+    final public const PARAM_TYPE_COLLECTION = 'collection';
+    final public const PARAM_TYPE_SERIALIZED = 'serialized';
 
-    /**
-     * @var bool
-     */
-    private $storeBinary;
-
-    public function __construct(bool $storeBinary = true)
+    public function __construct(private readonly bool $storeBinary = true)
     {
-        $this->storeBinary = $storeBinary;
     }
 
     /**
@@ -80,7 +74,7 @@ class XmlEncoder
                 $infoEl = $envEl->appendElement($information->getName());
 
                 foreach ($information as $key => $value) {
-                    $valueEl = $infoEl->appendTextNode('value', $value);
+                    $valueEl = $infoEl->appendTextNode('value', (string)$value);
                     $valueEl->setAttribute('name', $key);
                     $valueEl->setAttribute('type', gettype($value));
                 }
@@ -148,9 +142,9 @@ class XmlEncoder
             foreach ($variant->getErrorStack() as $error) {
                 $errorEl = $errorsEl->appendTextNode('error', $error->getMessage());
                 $errorEl->setAttribute('exception-class', $error->getClass());
-                $errorEl->setAttribute('code', $error->getCode());
+                $errorEl->setAttribute('code', (string)$error->getCode());
                 $errorEl->setAttribute('file', $error->getFile());
-                $errorEl->setAttribute('line', $error->getLine());
+                $errorEl->setAttribute('line', (string)$error->getLine());
             }
 
             return;
@@ -172,7 +166,7 @@ class XmlEncoder
             foreach ($iteration->getResults() as $result) {
                 // we need to store the class FQNs of the results for deserialization later.
                 if (!isset($resultClasses[$result->getKey()])) {
-                    $resultClasses[$result->getKey()] = get_class($result);
+                    $resultClasses[$result->getKey()] = $result::class;
                 }
 
                 $prefix = $result->getKey();
@@ -182,8 +176,8 @@ class XmlEncoder
                     $iterationEl->setAttribute(sprintf(
                         '%s-%s',
                         $prefix,
-                        str_replace('_', '-', $key)
-                    ), $value);
+                        str_replace('_', '-', (string) $key)
+                    ), (string)$value);
                 }
             }
         }
@@ -201,13 +195,13 @@ class XmlEncoder
                 continue;
             }
 
-            $resultEl = $subjectEl->queryOne('ancestor::suite')->appendElement('result');
-            $resultEl->setAttribute('key', $resultKey);
-            $resultEl->setAttribute('class', $classFqn);
+            $resultEl = $subjectEl->queryOne('ancestor::suite')?->appendElement('result');
+            $resultEl?->setAttribute('key', $resultKey);
+            $resultEl?->setAttribute('class', $classFqn);
         }
     }
 
-    private function createParameter($parentEl, $name, $value)
+    private function createParameter(Element $parentEl, string $name, mixed $value): void
     {
         $parameterEl = $parentEl->appendElement('parameter');
         assert($parameterEl instanceof DOMElement);
@@ -220,40 +214,43 @@ class XmlEncoder
                 $this->createParameter($parameterEl, $key, $element);
             }
 
-            return $parameterEl;
+            return;
         }
 
         if (is_null($value)) {
             $parameterEl->setAttribute('xsi:nil', 'true');
 
-            return $parameterEl;
+            return;
         }
 
         if (is_scalar($value) && !$this->isBinary($value)) {
-            $parameterEl->setAttribute('value', $value);
+            $parameterEl->setAttribute('value', (string)$value);
             $parameterEl->setAttribute('type', gettype($value));
 
-            return $parameterEl;
+            return;
         }
 
         if (!$this->storeBinary) {
             $parameterEl->setAttribute('xsi:nil', 'true');
 
-            return $parameterEl;
+            return;
         }
+
+        /** @var \DOMDocument $ownerDocument */
+        $ownerDocument = $parameterEl->ownerDocument;
 
         if (is_scalar($value) && $this->isBinary($value)) {
             $parameterEl->appendChild(
-                $parameterEl->ownerDocument->createCDATASection(base64_encode($value))
+                $ownerDocument->createCDATASection(base64_encode((string)$value))
             );
             $parameterEl->setAttribute('type', self::PARAM_TYPE_BINARY);
 
-            return $parameterEl;
+            return;
         }
 
         try {
             $serialized = @serialize($value);
-        } catch (Exception $e) {
+        } catch (Exception) {
             throw new RuntimeException(sprintf(
                 'Cannot serialize object of type "%s" for parameter "%s"',
                 gettype($value),
@@ -262,7 +259,7 @@ class XmlEncoder
         }
         $parameterEl->setAttribute('type', self::PARAM_TYPE_SERIALIZED);
         $parameterEl->appendChild(
-            $parameterEl->ownerDocument->createCDATASection(base64_encode($serialized))
+            $ownerDocument->createCDATASection(base64_encode($serialized))
         );
     }
 
@@ -292,12 +289,15 @@ class XmlEncoder
         ksort($stats);
 
         foreach ($stats as $statName => $statValue) {
-            $statsEl->setAttribute($statName, $statValue);
+            $statsEl->setAttribute($statName, (string)$statValue);
         }
     }
 
-    private function isBinary($value)
+    /**
+     * @param scalar $value
+     */
+    private function isBinary(mixed $value): bool
     {
-        return !preg_match('//u', $value);
+        return !preg_match('//u', (string)$value);
     }
 }

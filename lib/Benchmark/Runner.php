@@ -12,6 +12,8 @@
 
 namespace PhpBench\Benchmark;
 
+use DateTime;
+use Exception;
 use PhpBench\Assertion\AssertionProcessor;
 use PhpBench\Benchmark\Exception\RetryLimitReachedException;
 use PhpBench\Benchmark\Exception\StopOnErrorException;
@@ -43,42 +45,18 @@ final class Runner
 {
     public const DEFAULT_ASSERTER = 'comparator';
 
-    /**
-     * @var ConfigurableRegistry<BenchmarkExecutorInterface>
-     */
-    private $executorRegistry;
-
-    /**
-     * @var Supplier
-     */
-    private $envSupplier;
-
-    /**
-     * @var string
-     */
-    private $configPath;
-
-    /**
-     * @var AssertionProcessor
-     */
-    private $assertionProcessor;
-
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private LoggerInterface $logger;
 
     public function __construct(
-        ConfigurableRegistry $executorRegistry,
-        Supplier $envSupplier,
-        AssertionProcessor $assertion,
-        string $configPath = null
+        /**
+         * @var ConfigurableRegistry<covariant BenchmarkExecutorInterface>
+         */
+        private readonly ConfigurableRegistry $executorRegistry,
+        private readonly Supplier $envSupplier,
+        private readonly AssertionProcessor $assertionProcessor,
+        private readonly ?string $configPath = null
     ) {
         $this->logger = new NullLogger();
-        $this->executorRegistry = $executorRegistry;
-        $this->envSupplier = $envSupplier;
-        $this->configPath = $configPath;
-        $this->assertionProcessor = $assertion;
     }
 
     /**
@@ -101,7 +79,7 @@ final class Runner
     {
         $suite = new Suite(
             $config->getTag(),
-            new \DateTime(),
+            new DateTime(),
             $this->configPath
         );
         $suite->setEnvInformations($this->envSupplier->getInformations());
@@ -115,7 +93,7 @@ final class Runner
                 $benchmark = $suite->createBenchmark($benchmarkMetadata->getClass());
                 $this->runBenchmark($config, $benchmark, $benchmarkMetadata);
             }
-        } catch (StopOnErrorException $e) {
+        } catch (StopOnErrorException) {
         }
 
         $suite->generateUuid();
@@ -272,7 +250,8 @@ final class Runner
 
             try {
                 $this->runVariant($executor, $subject->getExecutor()->getConfig(), $config, $subjectMetadata, $variant);
-            } catch (StopOnErrorException $stopException) {
+            } catch (StopOnErrorException $exception) {
+                $stopException = $exception;
             }
         }
 
@@ -302,7 +281,7 @@ final class Runner
                 $rejectCount[spl_object_hash($iteration)] = 0;
                 $this->runIteration($executor, $executorConfig, $iteration, $subjectMetadata);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $variant->setException($e);
             $this->logger->variantEnd($variant);
 

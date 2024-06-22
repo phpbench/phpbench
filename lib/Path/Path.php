@@ -15,6 +15,7 @@ use Symfony\Component\Filesystem\Exception\InvalidArgumentException;
 use Symfony\Component\Filesystem\Exception\RuntimeException;
 
 /**
+ * @deprecated
  * NOTE: This class is copied as the class was "moved" from a dedicated package
  * to be part of the symfony/filesystem package which is not available in the
  * current version constraints.
@@ -48,10 +49,7 @@ final class Path
      */
     private static $buffer = [];
 
-    /**
-     * @var int
-     */
-    private static $bufferSize = 0;
+    private static int $bufferSize = 0;
 
     /**
      * Canonicalizes the given path.

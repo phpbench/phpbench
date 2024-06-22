@@ -12,6 +12,8 @@
 
 namespace PhpBench\Serializer;
 
+use DateTime;
+use RuntimeException;
 use DOMElement;
 use PhpBench\Assertion\AssertionResult;
 use PhpBench\Dom\Document;
@@ -43,6 +45,7 @@ class XmlDecoder
     {
         $suites = [];
 
+        /** @var Element $suiteEl */
         foreach ($document->query('//suite') as $suiteEl) {
             $suites[] = $this->processSuite($suiteEl);
         }
@@ -79,7 +82,7 @@ class XmlDecoder
     {
         $suite = new Suite(
             $suiteEl->getAttribute('tag'),
-            new \DateTime($suiteEl->getAttribute('date')),
+            new DateTime($suiteEl->getAttribute('date')),
             $suiteEl->getAttribute('config-path'),
             [],
             [],
@@ -116,7 +119,7 @@ class XmlDecoder
             $class = $resultEl->getAttribute('class');
 
             if (!class_exists($class)) {
-                throw new \RuntimeException(sprintf(
+                throw new RuntimeException(sprintf(
                     'XML file defines a non-existing result class "%s" - maybe you are missing an extension?',
                     $class
                 ));
@@ -141,6 +144,7 @@ class XmlDecoder
 
     private function processBenchmark(Benchmark $benchmark, Element $benchmarkEl, array $resultClasses): void
     {
+        /** @var Element $subjectEl */
         foreach ($benchmarkEl->query('./subject') as $subjectEl) {
             $subject = $benchmark->createSubject($subjectEl->getAttribute('name'));
             $this->processSubject($subject, $subjectEl, $resultClasses);
@@ -151,11 +155,13 @@ class XmlDecoder
     {
         $groups = [];
 
+        /** @var Element $groupEl */
         foreach ($subjectEl->query('./group') as $groupEl) {
             $groups[] = $groupEl->getAttribute('name');
         }
         $subject->setGroups($groups);
 
+        /** @var Element $executorEl */
         foreach ($subjectEl->query('./executor') as $executorEl) {
             $subject->setExecutor(ResolvedExecutor::fromNameAndConfig($executorEl->getAttribute('name'), new Config('asd', $this->getParameters($executorEl))));
 
@@ -164,6 +170,7 @@ class XmlDecoder
 
         // TODO: These attributes should be on the subject, see
         // https://github.com/phpbench/phpbench/issues/307
+        /** @var Element $variantEl */
         foreach ($subjectEl->query('./variant') as $variantEl) {
             $subject->setSleep((int)$variantEl->getAttribute('sleep'));
             $subject->setOutputTimeUnit($variantEl->getAttribute('output-time-unit'));
@@ -174,9 +181,11 @@ class XmlDecoder
             break;
         }
 
+        /** @var Element $variantEl */
         foreach ($subjectEl->query('./variant') as $index => $variantEl) {
             $parameterSet = ParameterSet::fromUnserializedValues('0', []);
 
+            /** @var Element $parameterSetEl */
             foreach ($variantEl->query('./parameter-set') as $parameterSetEl) {
                 $name = $parameterSetEl->getAttribute('name');
                 $parameters = $this->getParameters($parameterSetEl);
@@ -207,6 +216,7 @@ class XmlDecoder
     {
         $parameters = [];
 
+        /** @var Element $parameterEl */
         foreach ($element->query('./parameter') as $parameterEl) {
             $name = $parameterEl->getAttribute('name');
 
@@ -238,14 +248,11 @@ class XmlDecoder
                 $value = $element->getAttribute('value');
                 $type = $element->getAttribute('type');
 
-                switch ($type) {
-                    case 'integer':
-                        return intval($value);
-                    case 'double':
-                        return floatval($value);
-                }
-
-                return $value;
+                return match ($type) {
+                    'integer' => intval($value),
+                    'double' => floatval($value),
+                    default => $value,
+                };
             })($parameterEl);
         }
 
@@ -259,13 +266,14 @@ class XmlDecoder
         if ($errorEls->length) {
             $errors = [];
 
+            /** @var Element $errorEl */
             foreach ($errorEls as $errorEl) {
                 $error = new Error(
                     $errorEl->nodeValue,
                     $errorEl->getAttribute('exception-class'),
-                    $errorEl->getAttribute('code'),
+                    (int)$errorEl->getAttribute('code'),
                     $errorEl->getAttribute('file'),
-                    $errorEl->getAttribute('line'),
+                    (int)$errorEl->getAttribute('line'),
                     '' // we don't serialize the trace..
                 );
                 $errors[] = $error;
@@ -291,24 +299,24 @@ class XmlDecoder
             foreach ($iterationEl->attributes as $attributeEl) {
                 $name = $attributeEl->name;
 
-                if (false === strpos($name, '-')) {
-                    throw new \RuntimeException(sprintf(
+                if (!str_contains((string) $name, '-')) {
+                    throw new RuntimeException(sprintf(
                         'Expected attribute name to have a result key prefix, got "%s".',
                         $name
                     ));
                 }
 
-                $prefix = substr($name, 0, strpos($name, '-'));
+                $prefix = substr((string) $name, 0, strpos((string) $name, '-'));
 
                 if (!isset($resultClasses[$prefix])) {
-                    throw new \RuntimeException(sprintf(
+                    throw new RuntimeException(sprintf(
                         'No result class was provided with key "%s" for attribute "%s"',
                         $prefix,
                         $name
                     ));
                 }
 
-                $suffix = substr($name, strpos($name, '-') + 1);
+                $suffix = substr((string) $name, strpos((string) $name, '-') + 1);
                 $results[$prefix][str_replace('-', '_', $suffix)] = $attributeEl->value;
             }
 
@@ -328,10 +336,8 @@ class XmlDecoder
 
     /**
      * @return mixed
-     *
-     * @param mixed $value
      */
-    private function resolveEnvType(string $type, $value)
+    private function resolveEnvType(string $type, mixed $value)
     {
         if ($type === 'boolean') {
             return (bool)$value;

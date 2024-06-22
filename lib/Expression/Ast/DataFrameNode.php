@@ -6,14 +6,8 @@ use PhpBench\Data\DataFrame;
 
 class DataFrameNode extends PhpValue
 {
-    /**
-     * @var DataFrame
-     */
-    private $dataFrame;
-
-    public function __construct(DataFrame $dataFrame)
+    public function __construct(private readonly DataFrame $dataFrame)
     {
-        $this->dataFrame = $dataFrame;
     }
 
     public function dataFrame(): DataFrame

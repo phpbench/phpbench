@@ -10,7 +10,6 @@
   ],
   "finder": [
     {
-      "name": "{\\.[php]}",
       "exclude": [
         "tests",
         "test"

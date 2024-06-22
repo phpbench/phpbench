@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Benchmark\Metadata;
 
+use RuntimeException;
 use InvalidArgumentException;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\DriverInterface;
@@ -28,40 +29,40 @@ use Prophecy\Prophecy\ObjectProphecy;
 
 class MetadataFactoryTest extends TestCase
 {
-    public const FNAME = 'fname';
-    public const PATH = '/path/to';
+    final public const FNAME = 'fname';
+    final public const PATH = '/path/to';
 
-    private $factory;
+    private MetadataFactory $factory;
 
     /**
-     * @var MetadataFactoryTest
+     * @var ObjectProphecy<ReflectorInterface>
      */
-    private $reflector;
+    private ObjectProphecy $reflector;
 
     /**
      * @var ObjectProphecy<DriverInterface>
      */
-    private $driver;
+    private ObjectProphecy $driver;
 
     /**
      * @var ObjectProphecy<ReflectionHierarchy>
      */
-    private $hierarchy;
+    private ObjectProphecy $hierarchy;
 
     /**
      * @var ObjectProphecy<ReflectionClass>
      */
-    private $reflection;
+    private ObjectProphecy $reflection;
 
     /**
-     * @var ObjectProphecy<BenchmarkMetdata>
+     * @var ObjectProphecy<BenchmarkMetadata>
      */
-    private $metadata;
+    private ObjectProphecy $metadata;
 
     /**
      * @var ObjectProphecy<SubjectMetadata>
      */
-    private $subjectMetadata;
+    private ObjectProphecy $subjectMetadata;
 
     protected function setUp(): void
     {
@@ -73,14 +74,14 @@ class MetadataFactoryTest extends TestCase
         );
 
         $this->hierarchy = $this->prophesize(ReflectionHierarchy::class);
-        $this->hierarchy->reveal()->class = 'Class';
+        $this->hierarchy->reveal();
         $this->reflection = $this->prophesize(ReflectionClass::class);
         $this->metadata = $this->prophesize(BenchmarkMetadata::class);
         $this->subjectMetadata = $this->prophesize(SubjectMetadata::class);
 
         $this->reflector->reflect(self::FNAME)->willReturn($this->hierarchy->reveal());
         $this->driver->getMetadataForHierarchy($this->hierarchy->reveal())->willReturn($this->metadata->reveal());
-        $this->reflection->abstract = false;
+        $this->reflection->reveal()->abstract = false;
         $this->hierarchy->getTop()->willReturn($this->reflection->reveal());
     }
 
@@ -93,7 +94,7 @@ class MetadataFactoryTest extends TestCase
         $this->metadata->getSubjects()->willReturn([]);
         TestUtil::configureBenchmarkMetadata($this->metadata);
         $metadata = $this->factory->getMetadataForFile(self::FNAME);
-        $this->assertInstanceOf('PhpBench\Benchmark\Metadata\BenchmarkMetadata', $metadata);
+        $this->assertInstanceOf(BenchmarkMetadata::class, $metadata);
     }
 
     public function testWarnOnCouldNotLoadMetadata(): void
@@ -131,7 +132,7 @@ class MetadataFactoryTest extends TestCase
 
     public function testExceptionIfDriverDoesNotThrowCouldNotLoadMetadata(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('no');
         $this->hierarchy->isEmpty()->willReturn(false);
         $logger = new TestLogger();
@@ -141,7 +142,7 @@ class MetadataFactoryTest extends TestCase
             $logger,
             true
         );
-        $this->driver->getMetadataForHierarchy($this->hierarchy->reveal())->willThrow(new \RuntimeException('no'));
+        $this->driver->getMetadataForHierarchy($this->hierarchy->reveal())->willThrow(new RuntimeException('no'));
         $factory->getMetadataForFile(self::FNAME);
     }
 
@@ -160,7 +161,7 @@ class MetadataFactoryTest extends TestCase
         TestUtil::configureSubjectMetadata($this->subjectMetadata);
 
         $metadata = $this->factory->getMetadataForFile(self::FNAME);
-        $this->assertInstanceOf('PhpBench\Benchmark\Metadata\BenchmarkMetadata', $metadata);
+        $this->assertInstanceOf(BenchmarkMetadata::class, $metadata);
         $this->assertIsArray($metadata->getSubjects());
         $this->assertCount(1, $metadata->getSubjects());
     }
@@ -190,9 +191,9 @@ class MetadataFactoryTest extends TestCase
     public function testValidationBeforeClassMethodsBenchmarkNotStatic(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('must be static in benchmark class "TestClass"');
+        $this->expectExceptionMessage('must be static in benchmark class "stdClass"');
         $this->hierarchy->isEmpty()->willReturn(false);
-        $this->reflection->class = 'TestClass';
+        $this->reflection->reveal()->class = \stdClass::class;
         TestUtil::configureBenchmarkMetadata($this->metadata, [
             'beforeClassMethods' => ['beforeMe'],
         ]);
@@ -208,10 +209,10 @@ class MetadataFactoryTest extends TestCase
      */
     public function testValidationBeforeMethodsBenchmarkIsStatic(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('before method "beforeMe" must not be static in benchmark class "TestClass"');
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('before method "beforeMe" must not be static in benchmark class "stdClass"');
         $this->hierarchy->isEmpty()->willReturn(false);
-        $this->reflection->class = 'TestClass';
+        $this->reflection->reveal()->class = \stdClass::class;
         TestUtil::configureBenchmarkMetadata($this->metadata, []);
         $this->metadata->getSubjects()->willReturn([
             $this->subjectMetadata->reveal(),
@@ -232,9 +233,9 @@ class MetadataFactoryTest extends TestCase
     public function testValidationBeforeMethodsSubject(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Unknown before method "beforeMe" in benchmark class "TestClass"');
+        $this->expectExceptionMessage('Unknown before method "beforeMe" in benchmark class "stdClass"');
         $this->hierarchy->isEmpty()->willReturn(false);
-        $this->reflection->class = 'TestClass';
+        $this->reflection->reveal()->class = \stdClass::class;
         TestUtil::configureBenchmarkMetadata($this->metadata, []);
         $this->metadata->getSubjects()->willReturn([
             $this->subjectMetadata->reveal(),

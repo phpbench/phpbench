@@ -17,55 +17,18 @@ use function json_last_error_msg;
 
 class EvaluateCommand extends Command
 {
-    public const ARG_EXPR = 'expr';
-    public const ARG_PARAMS = 'params';
-
-
-    /**
-     * @var Lexer
-     */
-    private $lexer;
-
-    /**
-     * @var Evaluator
-     */
-    private $evaluator;
-
-    /**
-     * @var Parser
-     */
-    private $parser;
-
-    /**
-     * @var Printer
-     */
-    private $printer;
-
-    /**
-     * @var EvaluatingPrinter
-     */
-    private $evalPrinter;
-
-    /**
-     * @var OutputInterface
-     */
-    private $stdout;
+    final public const ARG_EXPR = 'expr';
+    final public const ARG_PARAMS = 'params';
 
     public function __construct(
-        Evaluator $evaluator,
-        Lexer $lexer,
-        Parser $parser,
-        Printer $printer,
-        EvaluatingPrinter $evalPrinter,
-        OutputInterface $stdout
+        private readonly Evaluator $evaluator,
+        private readonly Lexer $lexer,
+        private readonly Parser $parser,
+        private readonly Printer $printer,
+        private readonly EvaluatingPrinter $evalPrinter,
+        private readonly OutputInterface $stdout
     ) {
         parent::__construct();
-        $this->lexer = $lexer;
-        $this->parser = $parser;
-        $this->evaluator = $evaluator;
-        $this->printer = $printer;
-        $this->evalPrinter = $evalPrinter;
-        $this->stdout = $stdout;
     }
 
     public function configure(): void
@@ -76,7 +39,7 @@ class EvaluateCommand extends Command
         $this->addArgument(self::ARG_PARAMS, InputArgument::OPTIONAL, 'JSON encoded parameters');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $expr = $input->getArgument(self::ARG_EXPR);
         assert(is_string($expr));

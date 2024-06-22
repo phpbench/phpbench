@@ -17,18 +17,13 @@ namespace PhpBench\Model;
  */
 class Iteration extends ResultCollection
 {
-    private $variant;
-    private $index;
-
     /**
      */
     public function __construct(
-        int $index,
-        Variant $variant,
+        private readonly int $index,
+        private readonly Variant $variant,
         array $results = []
     ) {
-        $this->index = $index;
-        $this->variant = $variant;
         parent::__construct($results);
     }
 

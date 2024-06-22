@@ -12,6 +12,10 @@
 
 namespace PhpBench\Tests\System;
 
+use Exception;
+use DOMDocument;
+use RuntimeException;
+use DOMXPath;
 use PhpBench\Dom\Document;
 use PhpBench\Tests\IntegrationTestCase;
 use Symfony\Component\Filesystem\Filesystem;
@@ -19,10 +23,7 @@ use Symfony\Component\Process\Process;
 
 class SystemTestCase extends IntegrationTestCase
 {
-    /**
-     * @var string
-     */
-    protected $fname;
+    protected string $fname;
 
     protected function setUp(): void
     {
@@ -36,7 +37,7 @@ class SystemTestCase extends IntegrationTestCase
         $filesystem->mirror(__DIR__ . '/bootstrap', $this->workspace()->path('/bootstrap'));
     }
 
-    public function getBenchResult($benchmark = null, $extraCmd = '')
+    public function getBenchResult(string $benchmark = null, string $extraCmd = ''): Document
     {
         $benchmark = $benchmark ?: 'benchmarks/set4';
 
@@ -45,7 +46,7 @@ class SystemTestCase extends IntegrationTestCase
         );
 
         if ($process->getExitCode() !== 0) {
-            throw new \Exception('Could not generate test data:' . $process->getErrorOutput() . $process->getOutput());
+            throw new Exception('Could not generate test data:' . $process->getErrorOutput() . $process->getOutput());
         }
 
         $document = new Document();
@@ -58,14 +59,14 @@ class SystemTestCase extends IntegrationTestCase
     {
         $cwd = $this->workspace()->path($cwd);
 
-        $bin = __DIR__ . '/../../bin/phpbench --verbose';
+        $bin = __DIR__ . '/../../bin/phpbench --verbose --no-ansi';
         $process = Process::fromShellCommandline($bin . ' ' . $command, $cwd);
         $process->run();
 
         return $process;
     }
 
-    protected function assertExitCode($expected, Process $process): void
+    protected function assertExitCode(int $expected, Process $process): void
     {
         $exitCode = $process->getExitCode();
 
@@ -83,24 +84,24 @@ class SystemTestCase extends IntegrationTestCase
         $this->assertEquals($expected, $exitCode);
     }
 
-    protected function assertXPathCount($count, $xmlString, $query): void
+    protected function assertXPathCount(int $count, string $xmlString, string $query): void
     {
         $this->assertXPathExpression($count, $xmlString, sprintf('count(%s)', $query));
     }
 
-    protected function assertXPathExpression($expected, $xmlString, $expression): void
+    protected function assertXPathExpression(int $expected, string $xmlString, string $expression): void
     {
-        $dom = new \DOMDocument();
+        $dom = new DOMDocument();
         $result = @$dom->loadXML($xmlString);
 
         if (false === $result) {
-            throw new \RuntimeException(sprintf(
+            throw new RuntimeException(sprintf(
                 'Could not load XML "%s"',
                 $xmlString
             ));
         }
 
-        $xpath = new \DOMXPath($dom);
+        $xpath = new DOMXPath($dom);
         $dom->formatOutput = true;
         $result = $xpath->evaluate($expression);
         $this->assertEquals($expected, $result);

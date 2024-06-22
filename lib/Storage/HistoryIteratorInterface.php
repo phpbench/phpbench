@@ -12,11 +12,15 @@
 
 namespace PhpBench\Storage;
 
+use Iterator;
+
 /**
  * Iterator interface which must be implemented by storage drivers.
  *
  * Each element should be an instance of HistoryEntry.
+ *
+ * @extends Iterator<array-key, HistoryEntry>
  */
-interface HistoryIteratorInterface extends \Iterator
+interface HistoryIteratorInterface extends Iterator
 {
 }

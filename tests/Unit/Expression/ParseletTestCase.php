@@ -27,12 +27,9 @@ abstract class ParseletTestCase extends ParserTestCase
         )->evaluate($node, $params);
     }
 
-    /**
-     * @param parameters $params
-     */
-    public function print(Node $node, array $params = []): string
+    public function print(Node $node): string
     {
-        return $this->container()->get(Printer::class)->print($node, $params);
+        return $this->container()->get(Printer::class)->print($node);
     }
 
     /**
@@ -48,9 +45,9 @@ abstract class ParseletTestCase extends ParserTestCase
         );
     }
 
-    protected function providePrintFromEvaluate(): Generator
+    protected static function providePrintFromEvaluate(): Generator
     {
-        foreach ($this->provideEvaluate() as [$expr, $params]) {
+        foreach (static::provideEvaluate() as [$expr, $params]) {
             yield [$expr, $params];
         }
     }
@@ -62,22 +59,22 @@ abstract class ParseletTestCase extends ParserTestCase
      */
     public function testPrint(string $expr, array $params = [], string $expected = null): void
     {
-        $result = $this->print($this->parse($expr), $params);
+        $result = $this->print($this->parse($expr));
         self::assertEquals($expected ?: $expr, $result);
     }
 
     /**
      * @return Generator<mixed>
      */
-    abstract public function provideParse(): Generator;
+    abstract public static function provideParse(): Generator;
 
     /**
      * @return Generator<mixed>
      */
-    abstract public function provideEvaluate(): Generator;
+    abstract public static function provideEvaluate(): Generator;
 
     /**
      * @return Generator<mixed>
      */
-    abstract public function providePrint(): Generator;
+    abstract public static function providePrint(): Generator;
 }

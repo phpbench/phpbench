@@ -12,7 +12,6 @@
 
 namespace PhpBench\Tests\Unit\Report\Generator;
 
-use PhpBench\Dom\Document;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Registry\Config;
 use PhpBench\Report\Generator\CompositeGenerator;
@@ -20,11 +19,19 @@ use PhpBench\Report\Model\Reports;
 use PhpBench\Report\ReportManager;
 use PhpBench\Tests\TestCase;
 use Prophecy\Argument;
+use Prophecy\Prophecy\ObjectProphecy;
 
 class CompositeGeneratorTest extends TestCase
 {
-    private $generator;
-    private $manager;
+    private CompositeGenerator $generator;
+
+    /** @var ObjectProphecy<ReportManager> */
+    private ObjectProphecy $manager;
+
+    /**
+     * @var ObjectProphecy<SuiteCollection>
+     */
+    private ObjectProphecy $collection;
 
     protected function setUp(): void
     {

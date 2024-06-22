@@ -5,10 +5,8 @@ namespace PhpBench\Tests\Benchmark\Report\Generator;
 use Generator;
 use PhpBench\Model\Suite;
 use PhpBench\Model\SuiteCollection;
-use PhpBench\Model\Variant;
 use PhpBench\Registry\Config;
 use PhpBench\Report\Generator\ComponentGenerator;
-use PhpBench\Report\Generator\ExpressionGenerator;
 use PhpBench\Tests\Benchmark\IntegrationBenchCase;
 use PhpBench\Tests\Util\TestUtil;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -20,20 +18,12 @@ use function array_fill;
  */
 class ComponentGeneratorBench extends IntegrationBenchCase
 {
-    /**
-     * @var ExpressionGenerator
-     */
-    private $generator;
+    private readonly ComponentGenerator $generator;
 
-    /**
-     * @var Suite
-     */
-    private $suite;
+    private Suite $suite;
 
-    /**
-     * @var OptionsResolver
-     */
-    private $config;
+    /** @var mixed[] */
+    private array $config;
 
     public function __construct()
     {
@@ -65,7 +55,7 @@ class ComponentGeneratorBench extends IntegrationBenchCase
     /**
      * @return Generator<mixed>
      */
-    public function provideConfigs(): Generator
+    public static function provideConfigs(): Generator
     {
         yield 'text' => [
             'config' => [
@@ -114,7 +104,7 @@ class ComponentGeneratorBench extends IntegrationBenchCase
         ];
     }
 
-    public function provideNumberOfIterations(): Generator
+    public static function provideNumberOfIterations(): Generator
     {
         for ($i = 0; $i < 100; $i += 25) {
             yield $i => [
@@ -125,7 +115,9 @@ class ComponentGeneratorBench extends IntegrationBenchCase
 
     /**
      * @BeforeMethods({"prepare"})
+     *
      * @ParamProviders({"provideConfigs", "provideNumberOfIterations"})
+     *
      * @Revs(2)
      */
     public function benchGenerate(): void

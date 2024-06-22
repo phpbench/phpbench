@@ -88,7 +88,7 @@ class AnnotatedBench
      */
     public function benchMd5(array $params): void
     {
-        hash('md5', $params['string']);
+        hash('md5', (string) $params['string']);
     }
 
     public function provideMd5(): Generator
@@ -153,7 +153,7 @@ class AnnotatedBench
      */
     public function benchHash($params)
     {
-        hash($params['algorithm'], $params['string']);
+        hash((string) $params['algorithm'], (string) $params['string']);
     }
 
     public function provideStrings()
@@ -167,7 +167,7 @@ class AnnotatedBench
         yield 'md5' => [ 'algorithm' => 'md5' ];
         yield 'sha1' => [ 'algorithm' => 'sha1' ];
     }
- 
+
 // endsection: paramMultiple
 // section: all
 }

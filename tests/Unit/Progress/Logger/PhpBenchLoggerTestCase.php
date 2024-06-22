@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Progress\Logger;
 
+use ArrayIterator;
 use PhpBench\Assertion\AssertionResult;
 use PhpBench\Assertion\VariantAssertionResults;
 use PhpBench\Math\Distribution;
@@ -23,21 +24,32 @@ use PhpBench\Model\Subject;
 use PhpBench\Model\Suite;
 use PhpBench\Model\Summary;
 use PhpBench\Model\Variant;
+use PhpBench\Progress\Logger\PhpBenchLogger;
+use Prophecy\Prophecy\ObjectProphecy;
 
-abstract class PhpBenchLoggerTest extends LoggerTestCase
+abstract class PhpBenchLoggerTestCase extends LoggerTestCase
 {
-    protected $logger;
-    protected $output;
-    protected $document;
-    protected $benchmark;
-    protected $variant;
-    protected $subject;
+    protected PhpBenchLogger $logger;
 
-    /**
-     * @var ParameterSet
-     */
-    protected $parameterSet;
-    protected $stats;
+    /** @var ObjectProphecy<Benchmark> */
+    protected ObjectProphecy $benchmark;
+
+    /** @var ObjectProphecy<Variant> */
+    protected ObjectProphecy $variant;
+
+    /** @var ObjectProphecy<Subject> */
+    protected ObjectProphecy $subject;
+
+    protected ParameterSet $parameterSet;
+
+    /** @var ObjectProphecy<Distribution>  */
+    protected ObjectProphecy $stats;
+
+    /** @var ObjectProphecy<Suite> */
+    private ObjectProphecy $suite;
+
+    /** @var ObjectProphecy<Summary> */
+    private ObjectProphecy $summary;
 
     protected function setUp(): void
     {
@@ -64,7 +76,7 @@ abstract class PhpBenchLoggerTest extends LoggerTestCase
         $this->stats->getRstdev()->willReturn(20);
     }
 
-    abstract public function getLogger();
+    abstract public function getLogger(): PhpBenchLogger;
 
     /**
      * It should show the PHPBench version.
@@ -97,7 +109,7 @@ abstract class PhpBenchLoggerTest extends LoggerTestCase
         $error2->getTrace()->willReturn('-- trace --');
         $errorStack = $this->prophesize(ErrorStack::class);
         $errorStack->getVariant()->willReturn($this->variant->reveal());
-        $errorStack->getIterator()->willReturn(new \ArrayIterator([$error1->reveal(), $error2->reveal()]));
+        $errorStack->getIterator()->willReturn(new ArrayIterator([$error1->reveal(), $error2->reveal()]));
 
         $this->setUpSummary();
         $this->suite->getFailures()->willReturn([]);
@@ -153,7 +165,6 @@ abstract class PhpBenchLoggerTest extends LoggerTestCase
         $meanStDev = 321;
         $meanRelStDev = 231;
         $nbFailures = 0;
-        $nbAssertions = 0;
 
         $this->summary->getNbSubjects()->willReturn($nbSubjects);
         $this->summary->getNbAssertions()->willReturn(0);

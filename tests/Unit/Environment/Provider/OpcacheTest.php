@@ -12,25 +12,17 @@
 
 namespace PhpBench\Tests\Unit\Environment\Provider;
 
+use PhpBench\Environment\Provider\Opcache;
 use PhpBench\Environment\Provider;
 use PhpBench\Remote\Launcher;
-use PhpBench\Remote\Payload;
 use PhpBench\Tests\TestCase;
 
 class OpcacheTest extends TestCase
 {
-    private $launcher;
-    private $payload;
-
     protected function setUp(): void
     {
-        $this->launcher = $this->prophesize(Launcher::class);
-        $this->payload = $this->prophesize(Payload::class);
-
         if (false === extension_loaded('Zend OPcache')) {
             $this->markTestSkipped();
-
-            return;
         }
     }
 
@@ -57,7 +49,7 @@ class OpcacheTest extends TestCase
         $this->assertEquals(false, $info['enabled']);
     }
 
-    private function createProvider(bool $opcacheEnabled)
+    private function createProvider(bool $opcacheEnabled): Opcache
     {
         $phpConfig = [
             'opcache.enable_cli' => $opcacheEnabled,
@@ -65,6 +57,6 @@ class OpcacheTest extends TestCase
 
         $launcher = new Launcher(null, null, null, null, $phpConfig);
 
-        return new Provider\Opcache($launcher);
+        return new Opcache($launcher);
     }
 }

@@ -20,34 +20,23 @@ use Throwable;
  */
 class Error
 {
-    private $message;
-    private $code;
-    private $line;
-    private $file;
-    private $class;
-    private $trace;
-
-    public function __construct(
-        $message,
-        $class,
-        $code,
-        $file,
-        $line,
-        $trace
-    ) {
-        $this->message = $message;
-        $this->class = $class;
-        $this->line = $line;
-        $this->file = $file;
-        $this->code = $code;
-        $this->trace = $trace;
+    /**
+     * @param string $message
+     * @param string $class
+     * @param int $code
+     * @param string $file
+     * @param int $line
+     * @param string $trace
+     */
+    public function __construct(private $message, private $class, private $code, private $file, private $line, private $trace)
+    {
     }
 
     public static function fromException(Throwable $exception): Error
     {
         return new self(
             $exception->getMessage(),
-            get_class($exception),
+            $exception::class,
             $exception->getCode(),
             $exception->getFile(),
             $exception->getLine(),
@@ -55,31 +44,49 @@ class Error
         );
     }
 
+    /**
+     * @return int
+     */
     public function getCode()
     {
         return $this->code;
     }
 
+    /**
+     * @return int
+     */
     public function getLine()
     {
         return $this->line;
     }
 
+    /**
+     * @return string
+     */
     public function getFile()
     {
         return $this->file;
     }
 
+    /**
+     * @return string
+     */
     public function getMessage()
     {
         return $this->message;
     }
 
+    /**
+     * @return string
+     */
     public function getClass()
     {
         return $this->class;
     }
 
+    /**
+     * @return string
+     */
     public function getTrace()
     {
         return $this->trace;

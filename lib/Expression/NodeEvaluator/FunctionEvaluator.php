@@ -14,14 +14,8 @@ use Throwable;
 
 class FunctionEvaluator implements NodeEvaluator
 {
-    /**
-     * @var ExpressionFunctions
-     */
-    private $functions;
-
-    final public function __construct(ExpressionFunctions $functions)
+    final public function __construct(private readonly ExpressionFunctions $functions)
     {
-        $this->functions = $functions;
     }
 
     /**

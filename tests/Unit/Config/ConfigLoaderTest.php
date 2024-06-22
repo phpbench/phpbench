@@ -3,6 +3,7 @@
 namespace PhpBench\Tests\Unit\Config;
 
 use PhpBench\Config\ConfigLoader;
+use PhpBench\Config\ConfigProcessor;
 use PhpBench\Config\Exception\ConfigFileNotFound;
 use PhpBench\Config\Linter\SeldLinter;
 use PhpBench\Config\Processor\CallbackProcessor;
@@ -78,6 +79,9 @@ class ConfigLoaderTest extends IntegrationTestCase
         ], $result);
     }
 
+    /**
+     * @param ConfigProcessor[] $processors
+     */
     private function createLoader(array $processors = []): ConfigLoader
     {
         return new ConfigLoader(new SeldLinter(), $processors);

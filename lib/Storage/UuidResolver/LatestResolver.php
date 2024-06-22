@@ -12,24 +12,27 @@
 
 namespace PhpBench\Storage\UuidResolver;
 
+use InvalidArgumentException;
 use PhpBench\Registry\Registry;
+use PhpBench\Storage\DriverInterface;
+use PhpBench\Storage\HistoryEntry;
 use PhpBench\Storage\UuidResolverInterface;
 use RuntimeException;
 
 class LatestResolver implements UuidResolverInterface
 {
-    public const LATEST_KEYWORD = 'latest';
+    final public const LATEST_KEYWORD = 'latest';
 
-    private $driverRegistry;
-
-    public function __construct(Registry $driver)
+    /**
+     * @param Registry<DriverInterface> $driverRegistry
+     */
+    public function __construct(private readonly Registry $driverRegistry)
     {
-        $this->driverRegistry = $driver;
     }
 
     public function resolve(string $ref): ?string
     {
-        if (0 !== strpos($ref, self::LATEST_KEYWORD)) {
+        if (!str_starts_with($ref, self::LATEST_KEYWORD)) {
             return null;
         }
 
@@ -38,7 +41,7 @@ class LatestResolver implements UuidResolverInterface
         }
 
         if (preg_match('{' . self::LATEST_KEYWORD . '-([0-9]+)}', $ref, $matches)) {
-            return $this->getNthUuid($matches[1]);
+            return $this->getNthUuid((int)$matches[1]);
         }
 
         throw new RuntimeException(sprintf(
@@ -47,14 +50,15 @@ class LatestResolver implements UuidResolverInterface
         ));
     }
 
-    private function getLatestUuid()
+    private function getLatestUuid(): ?string
     {
         $history = $this->driverRegistry->getService()->history();
 
+        /** @var HistoryEntry|false $current */
         $current = $history->current();
 
-        if (!$current) {
-            throw new \InvalidArgumentException(
+        if ($current === false) {
+            throw new InvalidArgumentException(
                 'No history present, therefore cannot retrieve latest UUID'
             );
         }
@@ -62,7 +66,7 @@ class LatestResolver implements UuidResolverInterface
         return $current->getRunId();
     }
 
-    private function getNthUuid($nth)
+    private function getNthUuid(int $nth): ?string
     {
         $history = $this->driverRegistry->getService()->history();
         $entry = $history->current();

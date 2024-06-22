@@ -10,25 +10,24 @@ use PhpBench\Report\Model\TableRow;
 
 class TableBuilder
 {
-    /**
-     * @var string
-     */
-    private $title;
+    private ?string $title = null;
 
     /**
      * @var TableRow[]
      */
-    private $rows = [];
+    private array $rows = [];
 
     /**
-     * @var Node[]|string[]|null
+     * @deprecated
+     *
+     * @var Node[]
      */
-    private $headers;
+    private ?array $headers = null;
 
     /**
      * @var TableColumnGroup[]
      */
-    private $columnGroups = [];
+    private array $columnGroups = [];
 
 
     final private function __construct()
@@ -48,11 +47,13 @@ class TableBuilder
     }
 
     /**
-     * @param (string[]|Node[]) $headers
+     * @deprecated
+     *
+     * @param string[] $headers
      */
     public function withHeaders(array $headers): self
     {
-        $this->headers = array_map(function (string $header) {
+        $this->headers = array_map(static function (string $header) {
             return PhpValueFactory::fromValue($header);
         }, $headers);
 
@@ -78,6 +79,9 @@ class TableBuilder
         return $this;
     }
 
+    /**
+     * @param tableRowArray $row
+     */
     public function addRowArray(array $row): self
     {
         $row = array_map(function ($value) {

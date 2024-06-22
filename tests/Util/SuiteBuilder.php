@@ -8,23 +8,14 @@ use PhpBench\Model\Suite;
 final class SuiteBuilder
 {
     /**
-     * @var string
-     */
-    private $name;
-
-    /**
      * @var BenchmarkBuilder[]
      */
-    private $benchmarkBuilders = [];
+    private array $benchmarkBuilders = [];
 
-    /**
-     * @var DateTime
-     */
-    private $date = null;
+    private ?DateTime $date = null;
 
-    public function __construct(string $name)
+    public function __construct(private readonly string $name)
     {
-        $this->name = $name;
     }
 
     public static function create(string $name): self

@@ -12,6 +12,12 @@
 
 namespace PhpBench\Math;
 
+use InvalidArgumentException;
+use LogicException;
+use RuntimeException;
+use ArrayIterator;
+use ReturnTypeWillChange;
+use BadMethodCallException;
 use ArrayAccess;
 use IteratorAggregate;
 
@@ -20,45 +26,37 @@ use IteratorAggregate;
  *
  * Lazily Provides summary statistics, also traversable.
  *
- * @implements IteratorAggregate<string,mixed>, ArrayAccess<string,mixed>
+ * @implements IteratorAggregate<string, float|int>
+ * @implements ArrayAccess<string, float|int>
+ *
+ * @phpstan-type Stats array{min: float|int, max: float|int, sum: float|int, stdev: float|int, mean: float|int, mode: float|int, variance: float|int, rstdev: float|int }
+ * @phpstan-type Closures array{min: callable():(float|int), max: callable():(float|int), sum: callable():(float|int), stdev: callable():(float|int), mean: callable():(float|int), mode: callable():(float|int), variance: callable():(float|int), rstdev: callable():(float|int) }
  */
 class Distribution implements IteratorAggregate, ArrayAccess
 {
-    private $samples = [];
-    private $stats = [];
-    private $closures = [];
+    /** @var Closures */
+    private array $closures;
 
-    public function __construct(array $samples, array $stats = [])
+    /**
+     * @param array<float|int> $samples
+     * @param array{min?: float|int, max?: float|int, sum?: float|int, stdev?: float|int, mean?: float|int, mode?: float|int, variance?: float|int, rstdev?: float|int } $stats
+     */
+    public function __construct(private array $samples, private array $stats = [])
     {
         if (count($samples) < 1) {
-            throw new \LogicException(
+            throw new LogicException(
                 'Cannot create a distribution with zero samples.'
             );
         }
 
-        $this->samples = $samples;
         $this->closures = [
-            'min' => function () {
-                return min($this->samples);
-            },
-            'max' => function () {
-                return max($this->samples);
-            },
-            'sum' => function () {
-                return array_sum($this->samples);
-            },
-            'stdev' => function () {
-                return Statistics::stdev($this->samples);
-            },
-            'mean' => function () {
-                return Statistics::mean($this->samples);
-            },
-            'mode' => function () {
-                return Statistics::kdeMode($this->samples);
-            },
-            'variance' => function () {
-                return Statistics::variance($this->samples);
-            },
+            'min' => fn () => min($this->samples),
+            'max' => fn () => max($this->samples),
+            'sum' => fn () => array_sum($this->samples),
+            'stdev' => fn () => Statistics::stdev($this->samples),
+            'mean' => fn () => Statistics::mean($this->samples),
+            'mode' => fn () => Statistics::kdeMode($this->samples),
+            'variance' => fn () => Statistics::variance($this->samples),
             'rstdev' => function () {
                 $mean = $this->getMean();
 
@@ -66,110 +64,134 @@ class Distribution implements IteratorAggregate, ArrayAccess
             },
         ];
 
-        if ($diff = array_diff(array_keys($stats), array_keys($this->closures))) {
-            throw new \RuntimeException(sprintf(
+        if ($diff = array_diff(array_keys($this->stats), array_keys($this->closures))) {
+            throw new RuntimeException(sprintf(
                 'Unknown pre-computed stat(s) encountered: "%s"',
                 implode('", "', $diff)
             ));
         }
-
-        $this->stats = $stats;
     }
 
+    /**
+     * @return float|int
+     */
     public function getMin()
     {
         return $this->getStat('min');
     }
 
+    /**
+     * @return float|int
+     */
     public function getMax()
     {
         return $this->getStat('max');
     }
 
+    /**
+     * @return float|int
+     */
     public function getSum()
     {
         return $this->getStat('sum');
     }
 
+    /**
+     * @return float|int
+     */
     public function getStdev()
     {
         return $this->getStat('stdev');
     }
 
+    /**
+     * @return float|int
+     */
     public function getMean()
     {
         return $this->getStat('mean');
     }
 
+    /**
+     * @return float|int
+     */
     public function getMode()
     {
         return $this->getStat('mode');
     }
 
+    /**
+     * @return float|int
+     */
     public function getRstdev()
     {
         return $this->getStat('rstdev');
     }
 
+    /**
+     * @return float|int
+     */
     public function getVariance()
     {
         return $this->getStat('variance');
     }
 
-    public function getIterator(): \ArrayIterator
+    /**
+     * @return ArrayIterator<string, float|int>
+     */
+    public function getIterator(): ArrayIterator
     {
-        foreach ($this->closures as $name => $callback) {
-            if (!array_key_exists($name, $this->stats)) {
-                $this->stats[$name] = $callback();
-            }
-        }
-
-        return new \ArrayIterator($this->stats);
+        return new ArrayIterator($this->getStats());
     }
 
+    /**
+     * @return Stats
+     */
     public function getStats(): array
     {
-        $stats = [];
-
-        foreach (array_keys($this->closures) as $name) {
-            $stats[$name] = $this->getStat($name);
-        }
-
-        return $stats;
+        return [
+            'min' => $this->getMin(),
+            'max' => $this->getMax(),
+            'sum' => $this->getSum(),
+            'stdev' => $this->getStdev(),
+            'mean' => $this->getMean(),
+            'mode' => $this->getMode(),
+            'variance' => $this->getVariance(),
+            'rstdev' => $this->getRstdev(),
+        ];
     }
 
-    private function getStat($name)
+    /**
+     * @param key-of<Closures> $name
+     */
+    private function getStat(string $name): float|int
     {
-        if (isset($this->stats[$name])) {
-            return $this->stats[$name];
-        }
-
         if (!isset($this->closures[$name])) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'Unknown stat "%s", known stats: "%s"',
                 $name,
                 implode('", "', array_keys($this->closures))
             ));
         }
 
-        $this->stats[$name] = $this->closures[$name]($this->samples, $this);
-
-        return $this->stats[$name];
+        return $this->stats[$name] ??= $this->closures[$name]();
     }
 
     /**
      * {@inheritdoc}
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetExists($offset): bool
     {
-        return isset($this->stats[$offset]);
+        return isset($this->closures[$offset]);
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param key-of<Closures> $offset
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->getStat($offset);
@@ -178,18 +200,18 @@ class Distribution implements IteratorAggregate, ArrayAccess
     /**
      * {@inheritdoc}
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetSet($offset, $value): void
     {
-        throw new \BadMethodCallException('Distribution is read-only');
+        throw new BadMethodCallException('Distribution is read-only');
     }
 
     /**
      * {@inheritdoc}
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetUnset($offset): void
     {
-        throw new \BadMethodCallException('Distribution is read-only');
+        throw new BadMethodCallException('Distribution is read-only');
     }
 }

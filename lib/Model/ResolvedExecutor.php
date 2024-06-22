@@ -6,20 +6,8 @@ use PhpBench\Registry\Config;
 
 class ResolvedExecutor
 {
-    /**
-     * @var string
-     */
-    private $name;
-
-    /**
-     * @var Config
-     */
-    private $config;
-
-    public function __construct(string $name, Config $config)
+    public function __construct(private readonly string $name, private readonly Config $config)
     {
-        $this->name = $name;
-        $this->config = $config;
     }
 
     public function getName(): string

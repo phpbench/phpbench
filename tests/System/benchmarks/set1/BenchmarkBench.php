@@ -14,12 +14,14 @@ class BenchmarkBench
 {
     public function benchRandom(): void
     {
-        usleep(rand(0, 100));
+        usleep(random_int(0, 100));
     }
 
     /**
      * @Iterations(1)
+     *
      * @Revs(1000)
+     *
      * @Groups({"do_nothing"})
      */
     public function benchDoNothing(): void
@@ -28,14 +30,16 @@ class BenchmarkBench
 
     /**
      * @ParamProviders({"provideParamsOne", "provideParamsTwo"})
+     *
      * @Groups({"parameterized"})
+     *
      * @Iterations(1)
      */
     public function benchParameterized($params): void
     {
     }
 
-    public function provideParamsOne()
+    public static function provideParamsOne()
     {
         return [
             ['length' => '1'],
@@ -43,7 +47,7 @@ class BenchmarkBench
         ];
     }
 
-    public function provideParamsTwo()
+    public static function provideParamsTwo()
     {
         return [
             ['strategy' => 'left'],

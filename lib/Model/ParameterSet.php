@@ -15,27 +15,15 @@ namespace PhpBench\Model;
 final class ParameterSet
 {
     /**
-     * @var string
-     */
-    private $name;
-
-    /**
-     * @var array<string,ParameterContainer>
-     */
-    private $parameters;
-
-    /**
      * @param array<string,ParameterContainer> $parameters
      */
-    private function __construct(string $name, array $parameters)
+    private function __construct(private readonly string $name, private readonly array $parameters)
     {
-        $this->name = $name;
-        $this->parameters = $parameters;
     }
 
     public function getName(): string
     {
-        return (string) $this->name;
+        return $this->name;
     }
 
     /**
@@ -83,7 +71,7 @@ final class ParameterSet
     }
 
     /**
-     * @return array<string,mixed>
+     * @return array<array-key,mixed>
      */
     public function toUnserializedParameters(): array
     {

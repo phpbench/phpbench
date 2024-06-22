@@ -10,7 +10,7 @@
  *
  */
 
-namespace PhpBench\Tests\Tests\Unit\Unit\Math;
+namespace PhpBench\Tests\Unit\Math;
 
 use InvalidArgumentException;
 use OutOfBoundsException;
@@ -24,8 +24,12 @@ class KdeTest extends TestCase
      * It should evaluate a kernel distribution estimate over a given space.
      *
      * @dataProvider provideEvaluate
+     *
+     * @param float[] $dataSet
+     * @param float[] $space
+     * @param float[] $expected
      */
-    public function testEvaluate($dataSet, $space, $bwMethod, $expected): void
+    public function testEvaluate(array $dataSet, array $space, string $bwMethod, array $expected): void
     {
         $kde = new Kde($dataSet, $bwMethod);
         $result = $kde->evaluate($space);
@@ -38,7 +42,10 @@ class KdeTest extends TestCase
         $this->assertEquals($expected, $result);
     }
 
-    public function provideEvaluate()
+    /**
+     * @return list<list{float[], float[], string, float[]}>
+     */
+    public static function provideEvaluate(): array
     {
         return [
             [

@@ -19,13 +19,13 @@ use Prophecy\Prophecy\ObjectProphecy;
 
 class ChainResolverTest extends TestCase
 {
-    public const TEST_REFERENCE = '1234';
-    public const TEST_UUID = 'uuid';
+    final public const TEST_REFERENCE = '1234';
+    final public const TEST_UUID = 'uuid';
 
     /**
      * @var UuidResolverInterface|ObjectProphecy
      */
-    private $resolver;
+    private ObjectProphecy $resolver;
 
     protected function setUp(): void
     {

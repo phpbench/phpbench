@@ -20,7 +20,7 @@ class OutputTestBench
     {
     }
 
-    public function benchError()
+    public function benchError(): never
     {
         throw new RuntimeException("Example error");
     }

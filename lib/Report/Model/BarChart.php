@@ -10,39 +10,11 @@ use function array_replace;
 class BarChart implements ComponentInterface
 {
     /**
-     * @var BarChartDataSet[]
-     */
-    private $dataSets;
-
-    /**
-     * @var string|null
-     */
-    private $title;
-
-    /**
-     * @var string
-     */
-    private $yAxesLabel;
-
-    /**
-     * @var array<scalar>|null
-     */
-    private $xLabels;
-
-    /**
      * @param BarChartDataSet[] $dataSets
      * @param scalar[] $xLabels
      */
-    public function __construct(
-        array $dataSets,
-        ?string $title,
-        ?string $yAxesLabel = null,
-        ?array $xLabels = null
-    ) {
-        $this->dataSets = $dataSets;
-        $this->title = $title;
-        $this->yAxesLabel = $yAxesLabel;
-        $this->xLabels = $xLabels;
+    public function __construct(private array $dataSets, private readonly ?string $title, private readonly ?string $yAxesLabel = null, private readonly ?array $xLabels = null)
+    {
     }
 
     /**
@@ -125,9 +97,6 @@ class BarChart implements ComponentInterface
     {
         $max = max($this->yValues());
 
-        if (false === $max) {
-            return [];
-        }
         $step = $max / $steps;
 
         return range(0, $max, $step);

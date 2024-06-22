@@ -10,22 +10,10 @@ use PhpBench\Expression\Printer;
 class HighlightingNodePrinter implements NodePrinter
 {
     /**
-     * @var NodePrinter
-     */
-    private $nodePrinter;
-
-    /**
-     * @var ColorMap<Node>
-     */
-    private $colorMap;
-
-    /**
      * @param ColorMap<Node> $colorMap
      */
-    public function __construct(NodePrinter $nodePrinter, ColorMap $colorMap)
+    public function __construct(private readonly NodePrinter $nodePrinter, private readonly ColorMap $colorMap)
     {
-        $this->nodePrinter = $nodePrinter;
-        $this->colorMap = $colorMap;
     }
 
     /**

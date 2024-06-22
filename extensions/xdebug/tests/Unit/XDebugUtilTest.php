@@ -61,7 +61,7 @@ class XDebugUtilTest extends TestCase
         $this->assertEquals($expectedExtension, $cacheGrindExtension);
     }
 
-    public function provideGenerate()
+    public static function provideGenerate()
     {
         return [
             [
@@ -77,7 +77,7 @@ class XDebugUtilTest extends TestCase
         ];
     }
 
-    public function provideXdebugVersion(): array
+    public static function provideXdebugVersion(): array
     {
         return [
             ['2.8.1', false, '.cachegrind'],

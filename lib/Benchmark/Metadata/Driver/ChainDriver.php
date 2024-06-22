@@ -9,16 +9,10 @@ use PhpBench\Reflection\ReflectionHierarchy;
 class ChainDriver implements DriverInterface
 {
     /**
-     * @var DriverInterface[]
-     */
-    private $drivers;
-
-    /**
      * @param DriverInterface[] $drivers
      */
-    public function __construct(array $drivers)
+    public function __construct(private readonly array $drivers)
     {
-        $this->drivers = $drivers;
     }
 
     /**
@@ -27,7 +21,7 @@ class ChainDriver implements DriverInterface
     public function getMetadataForHierarchy(ReflectionHierarchy $classHierarchy): BenchmarkMetadata
     {
         $primaryReflection = $classHierarchy->getTop();
-        $benchmark = new BenchmarkMetadata($primaryReflection->path, $primaryReflection->class);
+        $benchmark = new BenchmarkMetadata($primaryReflection->path, $primaryReflection->getClass());
 
         foreach ($this->drivers as $driver) {
             $benchmark->merge($driver->getMetadataForHierarchy($classHierarchy));

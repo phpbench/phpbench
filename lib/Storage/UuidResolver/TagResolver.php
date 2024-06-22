@@ -20,22 +20,17 @@ use PhpBench\Storage\UuidResolverInterface;
 
 class TagResolver implements UuidResolverInterface
 {
-    /**
-     * @var StorageRegistry
-     */
-    private $storageRegistry;
-
-    public function __construct(StorageRegistry $storageRegistry)
+    public function __construct(private readonly StorageRegistry $storageRegistry)
     {
-        $this->storageRegistry = $storageRegistry;
     }
     public function resolve(string $reference): ?string
     {
         $history = $this->storageRegistry->getService()->history();
 
-        list($offset, $tag) = $this->tagAndOffset($reference);
+        [$offset, $tag] = $this->tagAndOffset($reference);
 
         $count = 0;
+
         /** @var HistoryEntry $entry */
         foreach ($history as $entry) {
             if ($tag->__toString() === strtolower($entry->getTag() ?? '')) {

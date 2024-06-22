@@ -13,27 +13,22 @@ use PhpBench\Expression\Ast\Node;
 final class TableRow implements IteratorAggregate, Countable
 {
     /**
-     * @var array<string,Node>
+     * @param array<string, Node> $cells
      */
-    private $cells;
-
-    /**
-     * @param array<string,Node> $cells
-     */
-    private function __construct(array $cells)
+    private function __construct(private readonly array $cells)
     {
-        $this->cells = $cells;
     }
 
+    /**
+     * @param array<string, Node> $row
+     */
     public static function fromArray(array $row): self
     {
-        return new self(array_map(function (Node $node) {
-            return $node;
-        }, $row));
+        return new self($row);
     }
 
     /**
-     * {@inheritDoc}
+     * @return ArrayIterator<string, Node>
      */
     public function getIterator(): ArrayIterator
     {
@@ -48,6 +43,9 @@ final class TableRow implements IteratorAggregate, Countable
         return array_keys($this->cells);
     }
 
+    /**
+     * @return array<string, Node>
+     */
     public function cells(): array
     {
         return $this->cells;

@@ -8,22 +8,22 @@ use RuntimeException;
 final class Series implements Countable
 {
     /**
-     * @var array
+     * @param array<int, scalar|null> $values
      */
-    private $values;
-
-    public function __construct(array $values)
+    public function __construct(private array $values)
     {
-        $this->values = $values;
     }
 
+    /**
+     * @return array<int, scalar|null>
+     */
     public function toValues(): array
     {
         return $this->values;
     }
 
     /**
-     * @return scalarOrNull
+     * @return scalar|null
      */
     public function value(int $index)
     {

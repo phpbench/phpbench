@@ -20,7 +20,7 @@ class MustacheRendererTest extends IntegrationTestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideTemplate(): Generator
+    public static function provideTemplate(): Generator
     {
         yield 'empty' => [
             '',

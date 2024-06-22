@@ -21,17 +21,11 @@ use Symfony\Component\Console\Input\InputOption;
 
 class ReportHandler
 {
-    public const OPT_REPORT = 'report';
-    public const OPT_OUTPUT = 'output';
+    final public const OPT_REPORT = 'report';
+    final public const OPT_OUTPUT = 'output';
 
-    /**
-     * @var ReportManager
-     */
-    private $reportManager;
-
-    public function __construct(ReportManager $reportManager)
+    public function __construct(private readonly ReportManager $reportManager)
     {
-        $this->reportManager = $reportManager;
     }
 
     public static function configure(Command $command): void

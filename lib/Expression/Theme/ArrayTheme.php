@@ -13,16 +13,10 @@ use PhpBench\Expression\ColorMap;
 class ArrayTheme implements ColorMap
 {
     /**
-     * @var array<class-string<T>, string|Closure(T):string>
-     */
-    private $map;
-
-    /**
      * @param array<class-string<T>, string|Closure(T):string> $map
      */
-    public function __construct(array $map)
+    public function __construct(private readonly array $map)
     {
-        $this->map = $map;
     }
 
     /**

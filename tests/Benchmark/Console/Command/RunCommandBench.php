@@ -12,7 +12,9 @@ use Symfony\Component\Console\Output\BufferedOutput;
 
 /**
  * @BeforeMethods("setUp")
+ *
  * @Revs(1)
+ *
  * @Iterations(10)
  */
 class RunCommandBench extends IntegrationBenchCase
@@ -61,6 +63,10 @@ EOT
         );
     }
 
+    /**
+     * @param mixed[] $args
+     * @param mixed[] $config
+     */
     private function runCommand(array $args, array $config = []): void
     {
         chdir($this->workspace()->path());

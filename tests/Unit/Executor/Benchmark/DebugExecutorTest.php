@@ -17,25 +17,27 @@ use PhpBench\Executor\Benchmark\DebugExecutor;
 use PhpBench\Executor\ExecutionContext;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Registry\Config;
-use PhpBench\Remote\Launcher;
 use PhpBench\Tests\TestCase;
 
 class DebugExecutorTest extends TestCase
 {
-    private $executor;
+    private DebugExecutor $executor;
 
     protected function setUp(): void
     {
-        $launcher = $this->prophesize(Launcher::class);
-        $this->executor = new DebugExecutor($launcher->reveal());
+        $this->executor = new DebugExecutor();
     }
 
     /**
      * It should return constant times.
      *
      * @dataProvider provideConstantTimes
+     *
+     * @param int[] $times
+     * @param int[] $spread
+     * @param int[] $expectedTimes
      */
-    public function testConstantTimes(array $times, array $spread, $nbCollections, $nbIterations, $expectedTimes): void
+    public function testConstantTimes(array $times, array $spread, int $nbCollections, int $nbIterations, array $expectedTimes): void
     {
         $actualTimes = [];
 
@@ -65,7 +67,10 @@ class DebugExecutorTest extends TestCase
         $this->assertEquals($expectedTimes, $actualTimes);
     }
 
-    public function provideConstantTimes()
+    /**
+     * @return list<list{int[], int[], int, int, int[]}>
+     */
+    public static function provideConstantTimes(): array
     {
         return [
             [

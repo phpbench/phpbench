@@ -10,21 +10,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ServiceOptionReferenceCommand extends Command
 {
-    /**
-     * @var OutputInterface
-     */
-    private $stderr;
-
-    /**
-     * @var OptionDumper
-     */
-    private $dumper;
-
-    public function __construct(OptionDumper $dumper, OutputInterface $stderr)
+    public function __construct(private readonly OptionDumper $dumper, private readonly OutputInterface $stderr)
     {
         parent::__construct();
-        $this->stderr = $stderr;
-        $this->dumper = $dumper;
     }
 
     protected function configure(): void

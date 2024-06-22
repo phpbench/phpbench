@@ -14,17 +14,17 @@ class BareValuePrinterTest extends TestCase
 {
     public function testPrintsBarePhpValue(): void
     {
-        self::assertEquals('hello', $this->create()->print(new StringNode('hello'), []));
+        self::assertEquals('hello', $this->create()->print(new StringNode('hello')));
     }
 
     public function testReturnsDefaultTextIfNotPrintable(): void
     {
-        self::assertEquals('??', $this->create()->print(new FunctionNode('hello'), []));
+        self::assertEquals('??', $this->create()->print(new FunctionNode('hello')));
     }
 
     public function testCastsToString(): void
     {
-        self::assertEquals('', $this->create()->print(new NullNode(), []));
+        self::assertEquals('', $this->create()->print(new NullNode()));
     }
 
     public function testPrintsList(): void
@@ -33,8 +33,7 @@ class BareValuePrinterTest extends TestCase
             new ListNode([
                 new IntegerNode(1),
                 new IntegerNode(2),
-            ]),
-            []
+            ])
         ));
     }
 

@@ -80,7 +80,7 @@ class AttributedBench
     #[Bench\ParamProviders(['provideMd5'])]
     public function benchMd5(array $params): void
     {
-        hash('md5', $params['string']);
+        hash('md5', (string) $params['string']);
     }
 
     public function provideMd5(): Generator
@@ -141,7 +141,7 @@ class AttributedBench
     #[Bench\ParamProviders(['provideStrings', 'provideNumbers'])]
     public function benchHash(array $params)
     {
-        hash($params['algorithm'], $params['string']);
+        hash((string) $params['algorithm'], (string) $params['string']);
     }
 
     public function provideStrings()
@@ -155,7 +155,7 @@ class AttributedBench
         yield 'md5' => [ 'algorithm' => 'md5' ];
         yield 'sha1' => [ 'algorithm' => 'sha1' ];
     }
- 
+
 // endsection: paramMultiple
 // section: all
 }

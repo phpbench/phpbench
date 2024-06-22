@@ -14,24 +14,12 @@ namespace PhpBench\Assertion;
 
 class AssertionResult
 {
-    public const TOLERATED = 'tolerated';
-    public const FAIL = 'fail';
-    public const OK = 'ok';
+    final public const TOLERATED = 'tolerated';
+    final public const FAIL = 'fail';
+    final public const OK = 'ok';
 
-    /**
-     * @var string
-     */
-    private $type;
-
-    /**
-     * @var string|null
-     */
-    private $message;
-
-    public function __construct(string $type, ?string $message = null)
+    public function __construct(private readonly string $type, private readonly ?string $message = null)
     {
-        $this->type = $type;
-        $this->message = $message;
     }
 
     public static function tolerated(string $message = ''): self

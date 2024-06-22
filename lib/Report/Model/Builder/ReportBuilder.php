@@ -8,33 +8,21 @@ use PhpBench\Report\Model\Report;
 final class ReportBuilder
 {
     /**
-     * @var string|null
-     */
-    private $title;
-
-    /**
      * @var ComponentInterface[]
      */
-    private $objects = [];
+    private array $objects = [];
 
-    /**
-     * @var string|null
-     */
-    private $description;
+    private ?string $description = null;
 
-    /**
-     * @var bool
-     */
-    private $tabbed = false;
+    private bool $tabbed = false;
 
     /**
      * @var string[] $tabLabels
      */
-    private $tabLabels = [];
+    private array $tabLabels = [];
 
-    private function __construct(string $title = null)
+    private function __construct(private readonly ?string $title = null)
     {
-        $this->title = $title;
     }
 
     public static function create(string $title = null): self

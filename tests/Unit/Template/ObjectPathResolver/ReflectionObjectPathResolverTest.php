@@ -42,6 +42,9 @@ class ReflectionObjectPathResolverTest extends IntegrationTestCase
         );
     }
 
+    /**
+     * @param array<string,string> $prefixMap
+     */
     public function createResolver(array $prefixMap): ReflectionObjectPathResolver
     {
         return new ReflectionObjectPathResolver($prefixMap);

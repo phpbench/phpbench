@@ -12,6 +12,7 @@
 
 namespace PhpBench\Console\Command\Handler;
 
+use InvalidArgumentException;
 use PhpBench\Model\SuiteCollection;
 use PhpBench\Serializer\XmlDecoder;
 use PhpBench\Storage\StorageRegistry;
@@ -22,29 +23,8 @@ use Symfony\Component\Console\Input\InputOption;
 
 class SuiteCollectionHandler
 {
-    /**
-     * @var XmlDecoder
-     */
-    private $xmlDecoder;
-
-    /**
-     * @var StorageRegistry
-     */
-    private $storage;
-
-    /**
-     * @var UuidResolver
-     */
-    private $refResolver;
-
-    public function __construct(
-        XmlDecoder $xmlDecoder,
-        StorageRegistry $storage,
-        UuidResolver $refResolver
-    ) {
-        $this->xmlDecoder = $xmlDecoder;
-        $this->storage = $storage;
-        $this->refResolver = $refResolver;
+    public function __construct(private readonly XmlDecoder $xmlDecoder, private readonly StorageRegistry $storage, private readonly UuidResolver $refResolver)
+    {
     }
 
     public static function configure(Command $command): void
@@ -64,7 +44,7 @@ class SuiteCollectionHandler
         $variantPatterns = $input->hasOption('variant') ? $input->getOption('variant') : [];
 
         if (!$files && !$refs) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'You must specify at least one of `--file` and/or `--ref`'
             );
         }

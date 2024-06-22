@@ -30,7 +30,7 @@ class CommandsTest extends IntegrationTestCase
 
         $approval = Approval::create($path, 3);
         $commands = array_map(function (string $command) {
-            if (0 !== strpos($command, 'phpbench')) {
+            if (!str_starts_with($command, 'phpbench')) {
                 throw new RuntimeException(sprintf(
                     'Command test command must start with `phpbench`, got "%s"',
                     $command
@@ -50,6 +50,7 @@ class CommandsTest extends IntegrationTestCase
             RunnerExtension::PARAM_ENABLED_PROVIDERS => [],
             ConsoleExtension::PARAM_OUTPUT_STREAM => $this->workspace()->path('output'),
             ConsoleExtension::PARAM_ERROR_STREAM => 'php://temp',
+            ConsoleExtension::PARAM_ANSI => false
         ], $decoded)));
 
         foreach ($commands as $command) {
@@ -73,9 +74,8 @@ class CommandsTest extends IntegrationTestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideCommand(): Generator
+    public static function provideCommand(): Generator
     {
-        /** @phpstan-ignore-next-line */
         foreach (glob(__DIR__ . '/../../examples/Command/*') as $file) {
             yield [
                 $file,

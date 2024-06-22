@@ -4,8 +4,6 @@ namespace PhpBench\Tests;
 
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Exception\Doubler\DoubleException;
-use Prophecy\Exception\Doubler\InterfaceNotFoundException;
 use Prophecy\Exception\Prediction\PredictionException;
 use Prophecy\Prophecy\MethodProphecy;
 use Prophecy\Prophecy\ObjectProphecy;
@@ -18,11 +16,9 @@ use Prophecy\Prophet;
 trait ProphecyTrait
 {
     /**
-     * @var Prophet|null
-     *
      * @internal
      */
-    private $prophet;
+    private ?Prophet $prophet = null;
 
     /**
      * @var bool
@@ -32,22 +28,15 @@ trait ProphecyTrait
     private $prophecyAssertionsCounted = false;
 
     /**
-     * @throws DoubleException
-     * @throws InterfaceNotFoundException
+     * @template T of object
      *
-     * @psalm-param class-string|null $type
+     * @param class-string<T> $classOrInterface
+     *
+     * @return ObjectProphecy<T>
      */
-    protected function prophesize($classOrInterface = null): ObjectProphecy
+    protected function prophesize(string $classOrInterface): ObjectProphecy
     {
-        if (!is_callable([$this, 'recordDoubledType'])) {
-            return parent::prophesize($classOrInterface);
-        }
-
-        if (\is_string($classOrInterface)) {
-            \assert($this instanceof TestCase);
-            $this->recordDoubledType($classOrInterface);
-        }
-
+        /** @var ObjectProphecy<T> */
         return $this->getProphet()->prophesize($classOrInterface);
     }
 

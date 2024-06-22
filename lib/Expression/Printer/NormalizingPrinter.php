@@ -8,14 +8,8 @@ use PhpBench\Expression\Printer;
 
 final class NormalizingPrinter implements Printer
 {
-    /**
-     * @var NodePrinter
-     */
-    private $printers;
-
-    public function __construct(NodePrinter $printers)
+    public function __construct(private readonly NodePrinter $printers)
     {
-        $this->printers = $printers;
     }
 
     public function print(Node $node): string

@@ -12,12 +12,15 @@
 
 namespace PhpBench\Math;
 
+use Closure;
+use OutOfBoundsException;
+use InvalidArgumentException;
+
 /**
  * This class was ported from the Python scipy package.
  *
  * https://github.com/scipy/scipy/blob/master/scipy/stats/kde.py
  */
-
 /**
  * Define classes for (uni/multi)-variate kernel density estimation.
  *
@@ -38,45 +41,25 @@ namespace PhpBench\Math;
  */
 class Kde
 {
-    /**
-     * @var \Closure
-     */
-    private $coVarianceFactor;
-
-    /**
-     * @var array<float>
-     */
-    private $dataset;
+    private ?Closure $coVarianceFactor = null;
 
     /**
      * @var float
      */
     private $factor;
 
-    /**
-     * @var float
-     */
-    private $_dataInvCov;
+    private ?float $_dataInvCov = null;
 
-    /**
-     * @var float
-     */
-    private $_dataCovariance;
+    private float|int|object|null $_dataCovariance = null;
 
-    /**
-     * @var float
-     */
-    private $invCov;
+    private int|float|null $invCov = null;
 
     /**
      * @var float
      */
     private $covariance;
 
-    /**
-     * @var float
-     */
-    private $normFactor;
+    private ?float $normFactor = null;
 
     /**
      * Representation of a kernel-density estimate using Gaussian kernels.
@@ -121,12 +104,10 @@ class Kde
      * @param array<float> $dataset Array of univariate data points.
      * @param string|'scott'|'silverman'|float|null $bwMethod
      */
-    public function __construct(array $dataset, $bwMethod = null)
+    public function __construct(private array $dataset, $bwMethod = null)
     {
-        $this->dataset = $dataset;
-
         if (count($this->dataset) <= 1) {
-            throw new \OutOfBoundsException('`dataset` input should have multiple elements.');
+            throw new OutOfBoundsException('`dataset` input should have multiple elements.');
         }
 
         $this->setBandwidth($bwMethod);
@@ -216,18 +197,18 @@ class Kde
     {
         if ($bwMethod == 'scott' || null === $bwMethod) {
             $this->coVarianceFactor = function () {
-                return pow(count($this->dataset), -1. / (5));
+                return count($this->dataset) ** (-1. / (5));
             };
         } elseif ($bwMethod == 'silverman') {
             $this->coVarianceFactor = function () {
-                return pow(count($this->dataset) * (3.0) / 4.0, -1. / (5));
+                return (count($this->dataset) * (3.0) / 4.0) ** (-1. / (5));
             };
         } elseif (is_numeric($bwMethod)) {
             $this->coVarianceFactor = function () use ($bwMethod) {
                 return $bwMethod;
             };
         } else {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'Unknown bandwidth method "%s"',
                 $bwMethod
             ));
@@ -248,14 +229,14 @@ class Kde
         // Cache covariance and inverse covariance of the data
         if (null === $this->_dataInvCov) {
             // original used the numpy.cov function.
-            $this->_dataCovariance = pow(Statistics::stdev($this->dataset, true), 2);
+            $this->_dataCovariance = Statistics::stdev($this->dataset, true) ** 2;
 
             //$this->_dataInvCov = 1/ linalg.inv($this->_dataCovariance)
             $this->_dataInvCov = 1 / $this->_dataCovariance;
         }
 
-        $this->covariance = $this->_dataCovariance * pow($this->factor, 2);
-        $this->invCov = $this->_dataInvCov / pow($this->factor, 2);
+        $this->covariance = $this->_dataCovariance * $this->factor ** 2;
+        $this->invCov = $this->_dataInvCov / $this->factor ** 2;
         $this->normFactor = sqrt(2 * M_PI * $this->covariance) * count($this->dataset);
     }
 }

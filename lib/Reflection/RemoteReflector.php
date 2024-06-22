@@ -23,16 +23,9 @@ use function array_filter;
 class RemoteReflector implements ReflectorInterface
 {
     /**
-     * @var Launcher
      */
-    private $launcher;
-
-    /**
-     */
-    public function __construct(
-        Launcher $launcher
-    ) {
-        $this->launcher = $launcher;
+    public function __construct(private readonly Launcher $launcher)
+    {
     }
 
     /**
@@ -51,6 +44,17 @@ class RemoteReflector implements ReflectorInterface
             return $hierarchy;
         }
 
+        /**
+         * @var list<array{
+         *     class: class-string,
+         *     namespace: string,
+         *     abstract: bool,
+         *     comment: string|false,
+         *     methods: array<string, array{class: class-string, name: string, comment: bool, static: bool, comment: string|false, attributes:list<array{name: class-string, args: mixed[]}>}>,
+         *     interfaces: list<string>,
+         *     attributes:list<array{name: class-string, args: mixed[]}>
+         * }> $classHierarchy
+         */
         $classHierarchy = $this->launcher->payload(__DIR__ . '/template/reflector.template', [
             'file' => $file,
             'class' => $classFqn,
@@ -90,6 +94,9 @@ class RemoteReflector implements ReflectorInterface
      */
     public function getParameterSets(string $file, array $paramProviders): ParameterSetsCollection
     {
+        /**
+         * @var list<list<array<string, string>>> $parameterSets
+         */
         $parameterSets = $this->launcher->payload(__DIR__ . '/template/parameter_set_extractor.template', [
             'file' => $file,
             'class' => $this->getClassNameFromFile($file),
@@ -103,10 +110,16 @@ class RemoteReflector implements ReflectorInterface
      * Return the class name from a file.
      *
      * Taken from http://stackoverflow.com/questions/7153000/get-class-name-from-file
+     *
+     * @return class-string|null
      */
     private function getClassNameFromFile(string $file): ?string
     {
         $fp = fopen($file, 'r');
+
+        if ($fp === false) {
+            throw new \RuntimeException(sprintf('Could not read file %s', $file));
+        }
 
         $class = $namespace = $buffer = '';
         $i = 0;
@@ -122,7 +135,7 @@ class RemoteReflector implements ReflectorInterface
             }
             $tokens = @\token_get_all($buffer);
 
-            if (strpos($buffer, '{') === false) {
+            if (!str_contains($buffer, '{')) {
                 continue;
             }
 
@@ -156,11 +169,12 @@ class RemoteReflector implements ReflectorInterface
             return null;
         }
 
+        /** @var class-string */
         return $namespace . '\\' . $class;
     }
 
     /**
-     * @param array<string, mixed> $attributes
+     * @param array<array{name: class-string, args: mixed[]}> $attributes
      *
      * @return object[]
      */

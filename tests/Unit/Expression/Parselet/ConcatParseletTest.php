@@ -13,7 +13,7 @@ class ConcatParseletTest extends ParseletTestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideParse(): Generator
+    public static function provideParse(): Generator
     {
         yield [
             '10 ~ 19',
@@ -35,7 +35,7 @@ class ConcatParseletTest extends ParseletTestCase
     /**
      * {@inheritDoc}
      */
-    public function provideEvaluate(): Generator
+    public static function provideEvaluate(): Generator
     {
         yield ['"foo" ~ "bar"', [], 'foobar'];
 
@@ -45,7 +45,7 @@ class ConcatParseletTest extends ParseletTestCase
     /**
      * {@inheritDoc}
      */
-    public function providePrint(): Generator
+    public static function providePrint(): Generator
     {
         yield 'does not show quotes' => ['10 ~ "bar"', [], '10bar'];
     }

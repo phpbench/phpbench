@@ -6,29 +6,30 @@ use RuntimeException;
 
 class MemoryUnit
 {
-    public const BYTES = 'bytes';
-    public const KILOBYTES = 'kilobytes';
-    public const MEGABYTES = 'megabytes';
-    public const GIGABYTES = 'gigabytes';
-    public const KIBIBYTES = 'kibibytes';
-    public const MEBIBYTES = 'mebibytes';
-    public const GIBIBYTES = 'gibibytes';
-    public const AUTO = 'memory';
+    final public const BYTES = 'bytes';
+    final public const KILOBYTES = 'kilobytes';
+    final public const MEGABYTES = 'megabytes';
+    final public const GIGABYTES = 'gigabytes';
+    final public const KIBIBYTES = 'kibibytes';
+    final public const MEBIBYTES = 'mebibytes';
+    final public const GIBIBYTES = 'gibibytes';
+    final public const AUTO = 'memory';
 
     /**
      * @var array<string, int>
      */
-    private static $multipliers = [
+    private static array $multipliers = [
         self::BYTES => 1,
         self::KILOBYTES => 1000,
-        self::MEGABYTES => 1000000,
-        self::GIGABYTES => 1000000000,
+        self::MEGABYTES => 1_000_000,
+        self::GIGABYTES => 1_000_000_000,
         self::KIBIBYTES => 1024,
-        self::MEBIBYTES => 1048576,
-        self::GIBIBYTES => 1073741824,
+        self::MEBIBYTES => 1_048_576,
+        self::GIBIBYTES => 1_073_741_824,
     ];
 
-    private static $aliases = [
+    /** @var array<string, string> */
+    private static array $aliases = [
         'b' => self::BYTES,
         'k' => self::KILOBYTES,
         'kb' => self::KILOBYTES,
@@ -39,7 +40,8 @@ class MemoryUnit
         'gib' => self::GIBIBYTES
     ];
 
-    private static $suffixes = [
+    /** @var array<string, string> */
+    private static array $suffixes = [
         self::BYTES => 'b',
         self::KILOBYTES => 'kb',
         self::MEGABYTES => 'mb',
@@ -67,7 +69,7 @@ class MemoryUnit
     {
         $unit = self::resolveUnit($unit);
 
-        return isset(self::$suffixes[$unit]) ? self::$suffixes[$unit] : $unit;
+        return self::$suffixes[$unit] ?? $unit;
     }
 
     public static function isMemoryUnit(string $unit): bool
@@ -85,9 +87,9 @@ class MemoryUnit
     }
 
     /**
-     * Resolve an binary unit
+     * Resolve a binary unit
      */
-    public static function resolveSuitableBinaryUnit(?string $unit, ?float $value): string
+    public static function resolveSuitableBinaryUnit(string $unit, ?float $value): string
     {
         if ($unit !== self::AUTO) {
             return $unit;
@@ -115,7 +117,7 @@ class MemoryUnit
     /**
      * Resolve an SI unit
      */
-    public static function resolveSuitableUnit(?string $unit, ?float $value): string
+    public static function resolveSuitableUnit(string $unit, ?float $value): string
     {
         if ($unit !== self::AUTO) {
             return $unit;

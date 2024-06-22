@@ -1,6 +1,51 @@
 CHANGELOG
 =========
 
+master
+------
+
+- Ignore `@template` and other generic annotations #1097 @dantleech
+- Hide noisy log messages for missing fields #1095 @dantleech
+- Defer character reader until command execution @jbboher #1092
+- Import Attribute symbol @gsteel #1075
+- Improved types etc @aivchen #1064 #1064 #1070 #1071 #1074 #1081...
+- Improved tests @aivchen
+- Improved code-style @aivchen #1057 #1076 #1070
+- Removed useless polyfills @aivchen
+
+1.2.15
+------
+
+- Bump minimum PHP version to 8.1
+- Allow Symfony 7.0 @keulinho
+- Add documentation for adding env providers @GromNaN
+
+1.2.{11,12,13,14} (09/07/2023)
+------------------------------
+
+Improvements:
+
+- Use latest version of Box
+- Fixing build
+
+1.2.10 (24/04/2023)
+-------------------
+
+Improvements:
+
+- Fix deprecation warning when using blinken logger @tavaresmatheus
+
+1.2.9
+-----
+
+Bug fixes:
+
+- Fix PHP 8.2 deprecation warning #1022
+
+Improvements:
+
+- Drop support for 7.3 and support for 8.1 and 8.2 in the pipeline.
+
 1.2.8
 -----
 

@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Math;
 
+use RuntimeException;
 use LogicException;
 use PhpBench\Math\Distribution;
 use PhpBench\Tests\TestCase;
@@ -116,7 +117,7 @@ class DistributionTest extends TestCase
      */
     public function testNonRecognizedPreComputed(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Unknown pre-computed stat(s) encountered: "bar_stat", "boo_stat"');
         new Distribution([10, 20], ['bar_stat' => 1, 'boo_stat' => 2]);
     }

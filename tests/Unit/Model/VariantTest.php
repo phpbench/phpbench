@@ -12,6 +12,9 @@
 
 namespace PhpBench\Tests\Unit\Model;
 
+use Prophecy\Prophecy\ObjectProphecy;
+use Exception;
+use PhpBench\Model\ErrorStack;
 use PhpBench\Model\Iteration;
 use PhpBench\Model\ParameterSet;
 use PhpBench\Model\Result\ComputedResult;
@@ -21,13 +24,13 @@ use PhpBench\Model\Subject;
 use PhpBench\Model\Variant;
 use PhpBench\Tests\TestCase;
 use PhpBench\Tests\Util\TestUtil;
-use Prophecy\Argument;
 use RuntimeException;
 
 class VariantTest extends TestCase
 {
-    private $subject;
-    private $parameterSet;
+    /** @var ObjectProphecy<Subject> */
+    private ObjectProphecy $subject;
+    private ParameterSet $parameterSet;
 
     protected function setUp(): void
     {
@@ -48,7 +51,7 @@ class VariantTest extends TestCase
         $this->assertCount(4, $variant);
 
         foreach ($variant as $iteration) {
-            $this->assertInstanceOf('PhpBench\Model\Iteration', $iteration);
+            $this->assertInstanceOf(Iteration::class, $iteration);
         }
     }
 
@@ -59,7 +62,7 @@ class VariantTest extends TestCase
     {
         $variant = new Variant($this->subject->reveal(), $this->parameterSet, 10, 20);
         $iteration = $variant->createIteration(TestUtil::createResults(10, 20));
-        $this->assertInstanceOf('PhpBench\Model\Iteration', $iteration);
+        $this->assertInstanceOf(Iteration::class, $iteration);
         $this->assertEquals(10, $iteration->getResult(TimeResult::class)->getNet());
         $this->assertEquals(20, $iteration->getResult(MemoryResult::class)->getPeak());
         $this->assertEquals(0, $iteration->getIndex());
@@ -129,35 +132,13 @@ class VariantTest extends TestCase
         $this->assertNotContainsEquals($variant[1], $variant->getRejects());
     }
 
-    private function createIteration($time, $expectedDeviation = null, $expectedZValue = null)
-    {
-        $iteration = $this->prophesize(Iteration::class);
-        $iteration->getRevolutions()->willReturn(1);
-        $iteration->getResult(TimeResult::class)->willReturn(new TimeResult($time));
-        $iteration->getResult(MemoryResult::class)->willReturn(new MemoryResult($time));
-
-        if (null !== $expectedDeviation) {
-            $iteration->setDeviation($expectedDeviation)->shouldBeCalled();
-
-            if (null === $expectedZValue) {
-                $iteration->setZValue(Argument::that(function ($args) use ($expectedZValue) {
-                    return round($args[0], 4) == round($expectedZValue, 4);
-                }))->shouldBeCalled();
-            } else {
-                $iteration->setZValue(Argument::any())->shouldBeCalled();
-            }
-        }
-
-        return $iteration->reveal();
-    }
-
     /**
      * It should be aware of exceptions.
      */
     public function testExceptionAwareness(): void
     {
         $variant = new Variant($this->subject->reveal(), $this->parameterSet, 10, 20);
-        $error = new \Exception('Test');
+        $error = new Exception('Test');
 
         $this->assertFalse($variant->hasErrorStack());
         $variant->setException($error);
@@ -172,7 +153,7 @@ class VariantTest extends TestCase
     {
         $variant = new Variant($this->subject->reveal(), $this->parameterSet, 10, 20);
         $errorStack = $variant->getErrorStack();
-        $this->assertInstanceOf('PhpBench\Model\ErrorStack', $errorStack);
+        $this->assertInstanceOf(ErrorStack::class, $errorStack);
     }
 
     /**
@@ -202,7 +183,7 @@ class VariantTest extends TestCase
         $variant->createIteration(TestUtil::createResults(4, 10));
         $variant->createIteration(TestUtil::createResults(4, 10));
         $variant->computeStats();
-        $variant->setException(new \Exception('Test'));
+        $variant->setException(new Exception('Test'));
         $variant->getStats();
     }
 

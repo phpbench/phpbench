@@ -10,32 +10,15 @@ use PhpBench\Expression\Exception\SyntaxError;
 class Parser
 {
     /**
-     * @var Parselets<PrefixParselet>
-     */
-    private $prefixParselets;
-
-    /**
-     * @var Parselets<InfixParselet>
-     */
-    private $infixParselets;
-
-    /**
-     * @var Parselets
-     */
-    private $suffixParselets;
-
-    /**
      * @param Parselets<PrefixParselet> $prefixParselets
      * @param Parselets<InfixParselet> $infixParselets
+     * @param Parselets<SuffixParselet> $suffixParselets
      */
     public function __construct(
-        Parselets $prefixParselets,
-        Parselets $infixParselets,
-        Parselets $suffixParselets
+        private readonly Parselets $prefixParselets,
+        private readonly Parselets $infixParselets,
+        private readonly Parselets $suffixParselets
     ) {
-        $this->prefixParselets = $prefixParselets;
-        $this->infixParselets = $infixParselets;
-        $this->suffixParselets = $suffixParselets;
     }
 
     public function parse(Tokens $tokens): Node
@@ -78,7 +61,7 @@ class Parser
 
         try {
             $left = $this->prefixParselets->forToken($token)->parse($this, $tokens);
-        } catch (ParseletNotFound $notFound) {
+        } catch (ParseletNotFound) {
             throw SyntaxError::forToken($tokens, $token, sprintf(
                 'Could not find parselet for "%s" token',
                 $token->type

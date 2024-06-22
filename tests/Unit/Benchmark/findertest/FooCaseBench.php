@@ -14,7 +14,7 @@ use PhpBench\BenchIteration;
 
 class FooCaseBench
 {
-    public function provideNodes()
+    public static function provideNodes()
     {
         return [
             [
@@ -32,7 +32,7 @@ class FooCaseBench
         ];
     }
 
-    public function provideColumns()
+    public static function provideColumns()
     {
         return [
             [
@@ -56,8 +56,10 @@ class FooCaseBench
 
     /**
      * @BeforeMethod({"setupSelectSql"})
+     *
      * @ParamProvider({"provideNodes"})
      * @ParamProvider({"provideColumns"})
+     *
      * @Iterations(3)
      */
     public function benchSelectSql(BenchIteration $iteration): void
@@ -66,8 +68,10 @@ class FooCaseBench
 
     /**
      * @BeforeMethod({"setupSelectSql)
+     *
      * @ParamProvider({"provideNodes)
      * @ParamProvider({"provideColumns"})
+     *
      * @Iterations(3)
      */
     public function benchTraverseSomething(BenchIteration $iteration): void

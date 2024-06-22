@@ -18,7 +18,7 @@ return (new Config())
     ->setRiskyAllowed(true)
     ->setRules([
         '@PSR12' => true,
-        'void_return' => true,
+        'void_return' => false,
         'binary_operator_spaces' => [
             'operators' => [
                 '=>' => null
@@ -51,13 +51,12 @@ return (new Config())
         'concat_space' => false,
         'no_unused_imports' => true,
         'php_unit_set_up_tear_down_visibility' => true,
-        'phpdoc_align' => [],
+        'phpdoc_align' => false,
         'phpdoc_indent' => false,
         'phpdoc_separation' => true,
         'no_superfluous_phpdoc_tags' => [
             'allow_mixed' => true
         ],
-        'fully_qualified_strict_types' => true,
+        'fully_qualified_strict_types' => false,
     ])
-    ->setFinder($finder)
-    ;
+    ->setFinder($finder);

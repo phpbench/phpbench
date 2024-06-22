@@ -17,6 +17,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Archivers handle archiving and retoring the contents of the configured
  * storage driver.
+ *
+ * @deprecated
  */
 interface ArchiverInterface
 {
@@ -28,6 +30,7 @@ interface ArchiverInterface
      *
      * Progress should be written to the given console output class.
      *
+     * @return void
      */
     public function archive(OutputInterface $output);
 
@@ -36,6 +39,8 @@ interface ArchiverInterface
      * the storage, it should be skipped.
      *
      * Progress should be written to the given console output class.
+     *
+     * @return void
      */
     public function restore(OutputInterface $output);
 }

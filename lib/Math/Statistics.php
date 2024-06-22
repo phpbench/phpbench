@@ -12,6 +12,8 @@
 
 namespace PhpBench\Math;
 
+use InvalidArgumentException;
+
 /**
  * Static class containing functions related to statistics.
  */
@@ -20,6 +22,7 @@ class Statistics
     /**
      * Return the standard deviation of a given population.
      *
+     * @param array<int|float> $values
      */
     public static function stdev(array $values, bool $sample = false): float
     {
@@ -31,8 +34,9 @@ class Statistics
     /**
      * Return the variance for a given population.
      *
+     * @param array<int|float> $values
      *
-     * @return float
+     * @return int|float
      */
     public static function variance(array $values, bool $sample = false)
     {
@@ -40,7 +44,7 @@ class Statistics
         $sum = 0;
 
         foreach ($values as $value) {
-            $diff = pow($value - $average, 2);
+            $diff = ($value - $average) ** 2;
             $sum += $diff;
         }
 
@@ -56,7 +60,9 @@ class Statistics
     /**
      * Return the mean (average) value of the given values.
      *
+     * @param array<int|float> $values
      *
+     * @return int|float
      */
     public static function mean(array $values)
     {
@@ -90,7 +96,7 @@ class Statistics
      * is potentially misleading, but When benchmarking this should be a very
      * rare occurance.
      *
-     * @param string $bandwidth
+     * @param array<int|float> $population
      */
     public static function kdeMode(array $population, int $space = 512, string $bandwidth = null): float
     {
@@ -107,7 +113,7 @@ class Statistics
         }
 
         $kde = new Kde($population, $bandwidth);
-        $space = self::linspace(min($population), max($population), $space, true);
+        $space = self::linspace(min($population), max($population), $space);
         $dist = $kde->evaluate($space);
 
         $maxKeys = array_keys($dist, max($dist));
@@ -133,7 +139,7 @@ class Statistics
         $range = $max - $min;
 
         if ($max == $min) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'Min and max cannot be the same number: %s',
                 $max
             ));
@@ -162,8 +168,9 @@ class Statistics
      * For a better implementation copy:
      *   http://docs.scipy.org/doc/numpy-1.10.1/reference/generated/numpy.histogram.html
      *
-     * @param float $lowerBound
-     * @param float $upperBound
+     * @param array<int|float> $values
+     *
+     * @return array<string|int, int>
      */
     public static function histogram(array $values, int $steps = 10, float $lowerBound = null, float $upperBound = null): array
     {
@@ -193,7 +200,6 @@ class Statistics
             }
 
             $floor += $step;
-            $ceil += $step;
         }
 
         return $histogram;

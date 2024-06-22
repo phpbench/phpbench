@@ -25,7 +25,7 @@ use PhpBench\Extension\RunnerExtension;
 use PhpBench\Extension\StorageExtension;
 use PhpBench\Extensions\XDebug\XDebugExtension;
 use PhpBench\Json\JsonDecoder;
-use PhpBench\Path\Path;
+use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -38,7 +38,7 @@ use function set_error_handler;
 class PhpBench
 {
     // PHPBench version: @git_tag@ will be replaced by box.
-    public const VERSION = '@git_tag@';
+    final public const VERSION = '@git_tag@';
 
     public static function run(?InputInterface $input = null, ?OutputInterface $output = null): void
     {

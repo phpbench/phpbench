@@ -12,6 +12,8 @@
 
 namespace PhpBench\Benchmark;
 
+use InvalidArgumentException;
+
 /**
  * The sampler manager is responsible for collecting and executing
  * sampler benchmarks.
@@ -26,9 +28,9 @@ namespace PhpBench\Benchmark;
 class SamplerManager
 {
     /**
-     * @var mixed[]
+     * @var array<string, callable(int):mixed>
      */
-    private $callables;
+    private array $callables = [];
 
     /**
      * Add a sampler callable. The callable can be any
@@ -37,23 +39,24 @@ class SamplerManager
      * Throws an invalid argument exception if the name has
      * already been registered.
      *
+     * @param callable(int):mixed $callable
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function addSamplerCallable(string $name, $callable): void
     {
         if (isset($this->callables[$name])) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'Baseline callable "%s" has already been registered.',
                 $name
             ));
         }
 
         if (!is_callable($callable)) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'Given sampler "%s" callable "%s" is not callable.',
                 $name,
-                is_string($callable) ? $callable : gettype($callable)
+                is_string($callable) ? $callable : gettype($callable) // @phpstan-ignore-line
             ));
         }
 
@@ -63,11 +66,14 @@ class SamplerManager
     /**
      * Return mean time taken to execute the named sampler
      * callable in microseconds.
+     *
+     * @param string $name
+     * @param int $revs
      */
     public function sample($name, $revs): float
     {
         if (!isset($this->callables[$name])) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'Unknown sampler callable "%s", known baseline callables: "%s"',
                 $name,
                 implode('", "', array_keys($this->callables))

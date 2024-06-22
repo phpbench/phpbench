@@ -14,13 +14,17 @@ namespace PhpBench\Benchmark\Metadata\Annotations;
 
 /**
  * @Attributes({
+ *
  *    @Attribute("extend", required = true, type="boolean"),
  * })
  */
 abstract class AbstractArrayAnnotation
 {
-    private $extend = false;
+    private bool $extend = false;
 
+    /**
+     * @param array{extend?: bool} $params
+     */
     public function __construct($params)
     {
         if (isset($params['extend'])) {
@@ -28,6 +32,9 @@ abstract class AbstractArrayAnnotation
         }
     }
 
+    /**
+     * @return bool
+     */
     public function getExtend()
     {
         return $this->extend;

@@ -2,6 +2,7 @@
 
 namespace PhpBench\Data;
 
+use ReturnTypeWillChange;
 use ArrayAccess;
 use ArrayIterator;
 use IteratorAggregate;
@@ -9,26 +10,20 @@ use PHPUnit\Framework\MockObject\BadMethodCallException;
 use RuntimeException;
 
 /**
- * @implements IteratorAggregate<string,mixed>
- * @implements ArrayAccess<string,mixed>
+ * @implements IteratorAggregate<string, scalar|null>
+ * @implements ArrayAccess<string, scalar|null>
  */
 final class Row implements IteratorAggregate, ArrayAccess
 {
     /**
-     * @var array<string,mixed>
+     * @param array<string, scalar|null> $map
      */
-    private $map;
-
-    /**
-     * @param array<string,mixed> $map
-     */
-    public function __construct(array $map)
+    public function __construct(private array $map)
     {
-        $this->map = $map;
     }
 
     /**
-     * @return scalarOrNull
+     * @return scalar|null
      */
     public function get(string $column)
     {
@@ -56,6 +51,9 @@ final class Row implements IteratorAggregate, ArrayAccess
         return new Series(array_values($this->map));
     }
 
+    /**
+     * @return array<string, scalar|null>
+     */
     public function toRecord(): array
     {
         return $this->map;
@@ -74,7 +72,7 @@ final class Row implements IteratorAggregate, ArrayAccess
     /**
      * {@inheritDoc}
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         return isset($this->map[$offset]);
@@ -83,7 +81,7 @@ final class Row implements IteratorAggregate, ArrayAccess
     /**
      * {@inheritDoc}
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->get($offset);
@@ -92,7 +90,7 @@ final class Row implements IteratorAggregate, ArrayAccess
     /**
      * {@inheritDoc}
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetSet($offset, $value): void
     {
         throw new BadMethodCallException('Not implemented');
@@ -101,7 +99,7 @@ final class Row implements IteratorAggregate, ArrayAccess
     /**
      * {@inheritDoc}
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetUnset($offset): void
     {
         throw new BadMethodCallException('Not implemented');

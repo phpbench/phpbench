@@ -18,6 +18,8 @@ class HighlightingNodePrinterTest extends TestCase
 
     /**
      * @dataProvider providePrint
+     *
+     * @param array<class-string<Node>, \Closure(Node):string|string> $map
      */
     public function testPrint(Node $node, array $map, string $expected): void
     {
@@ -34,9 +36,9 @@ class HighlightingNodePrinterTest extends TestCase
     }
 
     /**
-     * @return Generator<mixed>
+     * @return Generator<list{Node, array<class-string<Node>, \Closure(Node):string|string>, string}>
      */
-    public function providePrint(): Generator
+    public static function providePrint(): Generator
     {
         yield 'decorates' => [
             new TestNode(),

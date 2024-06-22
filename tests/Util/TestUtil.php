@@ -12,6 +12,9 @@
 
 namespace PhpBench\Tests\Util;
 
+use DateTime;
+use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
+use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Environment\Information;
 use PhpBench\Model\ParameterSet;
 use PhpBench\Model\Result\MemoryResult;
@@ -28,6 +31,10 @@ use RuntimeException;
  */
 class TestUtil
 {
+    /**
+     * @param ObjectProphecy<SubjectMetadata> $subject
+     * @param array<string, mixed> $options
+     */
     public static function configureSubjectMetadata(ObjectProphecy $subject, array $options = []): void
     {
         $options = array_merge([
@@ -68,14 +75,16 @@ class TestUtil
         $variant = reset($variants);
 
         if (!$variant) {
-            throw new RuntimeException(sprintf(
-                'Could not find a variant in test suite'
-            ));
+            throw new RuntimeException('Could not find a variant in test suite');
         }
 
         return $variant;
     }
 
+    /**
+     * @param ObjectProphecy<BenchmarkMetadata> $benchmark
+     * @param array<string, mixed> $options
+     */
     public static function configureBenchmarkMetadata(ObjectProphecy $benchmark, array $options = []): void
     {
         $options = array_merge([
@@ -95,7 +104,7 @@ class TestUtil
     /**
      * @param array<string,mixed> $options
      */
-    public static function createSuite(array $options = [], $suiteIndex = null): Suite
+    public static function createSuite(array $options = [], string $suiteIndex = null): Suite
     {
         $options = array_merge([
             'uuid' => $suiteIndex,
@@ -119,7 +128,7 @@ class TestUtil
             'iterations_increase_per_subject' => 0,
         ], $options);
 
-        $dateTime = new \DateTime($options['date']);
+        $dateTime = new DateTime($options['date']);
         $suite = new Suite(
             $options['name'],
             $dateTime,
@@ -144,7 +153,7 @@ class TestUtil
                 $variant = $subject->createVariant(ParameterSet::fromUnserializedValues('0', $options['parameters']), $options['revs'], $options['warmup']);
 
                 foreach ($options['iterations'] as $time) {
-                    $variant->createIteration(self::createResults($timeOffset + $time, 200, 0));
+                    $variant->createIteration(self::createResults($timeOffset + $time, 200));
                 }
 
                 $timeOffset += $options['iterations_increase_per_subject'];
@@ -171,7 +180,7 @@ class TestUtil
     }
 
     /**
-     * @var array<string,mixed>
+     * @param array<array<string,mixed>> $suiteConfigs
      */
     public static function createCollection(array $suiteConfigs = []): SuiteCollection
     {
@@ -184,7 +193,10 @@ class TestUtil
         return new SuiteCollection($suites);
     }
 
-    public static function createResults($time, $memory = 0)
+    /**
+     * @return list{TimeResult, MemoryResult, RejectionCountResult}
+     */
+    public static function createResults(int $time, int $memory = 0): array
     {
         return [
             new TimeResult($time),

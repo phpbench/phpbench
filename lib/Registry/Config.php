@@ -12,6 +12,8 @@
 
 namespace PhpBench\Registry;
 
+use InvalidArgumentException;
+use ReturnTypeWillChange;
 use ArrayObject;
 
 /**
@@ -25,14 +27,19 @@ class Config extends ArrayObject
     /**
      * All names must satisfy this regex.
      */
-    public const NAME_REGEX = '{^[0-9a-zA-Z_-]+$}';
+    final public const NAME_REGEX = '{^[0-9a-zA-Z_-]+$}';
 
+    /** @var string */
     private $name;
 
+    /**
+     * @param string $name
+     * @param array<string, mixed> $config
+     */
     public function __construct($name, array $config)
     {
-        if (!preg_match(self::NAME_REGEX, $name)) {
-            throw new \InvalidArgumentException(sprintf(
+        if (!preg_match(self::NAME_REGEX, (string) $name)) {
+            throw new InvalidArgumentException(sprintf(
                 'Configuration names may only contain alpha-numeric characters, _ and -. Got "%s"',
                 $name
             ));
@@ -41,11 +48,11 @@ class Config extends ArrayObject
         parent::__construct($config);
     }
 
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         if (!$this->offsetExists($offset)) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'Configuration offset "%s" does not exist. Known offsets: "%s"',
                 $offset,
                 implode('", "', array_keys($this->getArrayCopy()))
@@ -55,6 +62,9 @@ class Config extends ArrayObject
         return parent::offsetGet($offset);
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
         return $this->name;

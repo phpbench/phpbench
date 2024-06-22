@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Serializer;
 
+use RuntimeException;
 use PhpBench\Dom\Document;
 use PhpBench\Environment\Information;
 use PhpBench\Model\ParameterSet;
@@ -54,9 +55,9 @@ class XmlDecoderTest extends XmlTestCase
      */
     public function testDecodeUnknownResultClass(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('XML file defines a non-existing result class "FooVendor\FooResult" - maybe you are missing an extension?');
-        $dom = new Document(1.0);
+        $dom = new Document('1.0');
         $dom->loadXML(
             <<<EOT
 <phpbench>
@@ -76,9 +77,9 @@ EOT
      */
     public function testDecodeUnknownResultKey(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('No result class was provided with key "foobar" for attribute "foobar-foo"');
-        $dom = new Document(1.0);
+        $dom = new Document('1.0');
         $dom->loadXML(
             <<<EOT
 <phpbench>
@@ -104,9 +105,9 @@ EOT
      */
     public function testInvalidAttribute(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Expected attribute name to have a result key prefix, got "foo"');
-        $dom = new Document(1.0);
+        $dom = new Document('1.0');
         $dom->loadXML(
             <<<EOT
 <phpbench>
@@ -128,7 +129,7 @@ EOT
 
     public function testDecodeBoolValue(): void
     {
-        $dom = new Document(1.0);
+        $dom = new Document('1.0');
         $dom->loadXML(
             <<<EOT
 <phpbench>
@@ -156,7 +157,7 @@ EOT
 
     public function testDecodeLegacyEnv(): void
     {
-        $dom = new Document(1.0);
+        $dom = new Document('1.0');
         $dom->loadXML(
             <<<EOT
 <phpbench>
@@ -237,11 +238,8 @@ EOT
         );
     }
 
-    private function encode(SuiteCollection $collection)
+    private function encode(SuiteCollection $collection): Document
     {
-        $xmlEncoder = new XmlEncoder();
-        $dom = $xmlEncoder->encode($collection);
-
-        return $dom;
+        return (new XmlEncoder())->encode($collection);
     }
 }

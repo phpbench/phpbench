@@ -9,7 +9,7 @@ class ParamProviderBench
     {
     }
 
-    public function provideParams()
+    public static function provideParams()
     {
         yield 'cats' => [
             'cats' => 'two',

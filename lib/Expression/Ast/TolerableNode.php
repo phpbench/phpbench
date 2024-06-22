@@ -4,20 +4,8 @@ namespace PhpBench\Expression\Ast;
 
 final class TolerableNode extends Node
 {
-    /**
-     * @var Node
-     */
-    private $value;
-
-    /**
-     * @var Node
-     */
-    private $tolerance;
-
-    public function __construct(Node $value, Node $tolerance)
+    public function __construct(private readonly Node $value, private readonly Node $tolerance)
     {
-        $this->value = $value;
-        $this->tolerance = $tolerance;
     }
 
     public function tolerance(): Node

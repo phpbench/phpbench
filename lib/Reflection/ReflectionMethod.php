@@ -25,7 +25,7 @@ class ReflectionMethod
     public $name;
 
     /**
-     * @var string
+     * @var string|false
      */
     public $comment;
 
@@ -39,5 +39,6 @@ class ReflectionMethod
      */
     public $reflectionClass;
 
+    /** @var object[] */
     public $attributes = [];
 }

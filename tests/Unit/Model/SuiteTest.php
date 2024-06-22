@@ -12,6 +12,9 @@
 
 namespace PhpBench\Tests\Unit\Model;
 
+use Exception;
+use PhpBench\Model\Summary;
+use DateTime;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\Error;
 use PhpBench\Model\ErrorStack;
@@ -30,7 +33,7 @@ class SuiteTest extends TestCase
     {
         $suite = SuiteBuilder::create('foo')->build();
         $benchmark = $suite->createBenchmark('FooBench');
-        $this->assertInstanceOf('PhpBench\Model\Benchmark', $benchmark);
+        $this->assertInstanceOf(Benchmark::class, $benchmark);
     }
 
     /**
@@ -73,7 +76,7 @@ class SuiteTest extends TestCase
             ->benchmark('one')
                 ->subject('one')
                     ->variant('1')
-                        ->withError(Error::fromException(new \Exception('Hello')))
+                        ->withError(Error::fromException(new Exception('Hello')))
                     ->end()
                 ->end()
             ->end()
@@ -108,12 +111,12 @@ class SuiteTest extends TestCase
 
 
         $summary = $suite->getSummary();
-        $this->assertInstanceOf('PhpBench\Model\Summary', $summary);
+        $this->assertInstanceOf(Summary::class, $summary);
     }
 
     public function testFindVariant(): void
     {
-        $suite = $this->createSuite([]);
+        $suite = $this->createSuite();
         $variant = $suite->createBenchmark('Foobar')->createSubject('barfoo')->createVariant(
             ParameterSet::fromSerializedParameters('one', []),
             1,
@@ -189,14 +192,14 @@ class SuiteTest extends TestCase
         self::assertCount(2, $suite->getVariants(), 'Post filter');
     }
 
-    private function createSuite(array $benchmarks = [], array $informations = []): Suite
+    /**
+     */
+    private function createSuite(): Suite
     {
         return new Suite(
             'context',
-            new \DateTime('2016-01-25'),
-            'path/to/config',
-            $benchmarks,
-            $informations
+            new DateTime('2016-01-25'),
+            'path/to/config'
         );
     }
 }

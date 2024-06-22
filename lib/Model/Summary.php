@@ -16,17 +16,21 @@ use PhpBench\Math\Statistics;
 
 /**
  * Provides summary statistics for the entires suite.
+ *
+ * @phpstan-type Stats array{stdev: array<int|float>, mean: array<int|float>, mode: array<int|float>, rstdev: array<int|float>, variance: array<int|float>, min: array<int|float>, max: array<int|float>, sum: array<int|float>}
  */
 class Summary
 {
-    private $nbSubjects = 0;
-    private $nbIterations = 0;
-    private $nbRejects = 0;
-    private $nbRevolutions = 0;
-    private $nbFailures = 0;
-    private $nbAssertions = 0;
-    private $nbErrors = 0;
-    private $stats = [
+    private int $nbSubjects = 0;
+    private int $nbIterations = 0;
+    private int $nbRejects = 0;
+    private int $nbRevolutions = 0;
+    private int $nbFailures = 0;
+    private int $nbAssertions = 0;
+    private int $nbErrors = 0;
+
+    /** @var Stats */
+    private array $stats = [
         'stdev' => [],
         'mean' => [],
         'mode' => [],
@@ -37,15 +41,9 @@ class Summary
         'sum' => [],
     ];
 
-    /**
-     * @var bool
-     */
-    private $opCacheEnabled = false;
+    private bool $opCacheEnabled = false;
 
-    /**
-     * @var bool
-     */
-    private $xdebugEnabled = false;
+    private bool $xdebugEnabled = false;
 
     /**
      * @var string|null
@@ -72,7 +70,7 @@ class Summary
                         continue;
                     }
 
-                    foreach ($variant->getStats() as $name => $value) {
+                    foreach ($variant->getStats()->getStats() as $name => $value) {
                         $this->stats[$name][] = $value;
                     }
                 }
@@ -126,41 +124,65 @@ class Summary
         return $this->nbAssertions;
     }
 
+    /**
+     * @return Stats
+     */
     public function getStats(): array
     {
         return $this->stats;
     }
 
+    /**
+     * @return int|float
+     */
     public function getMinTime()
     {
         return $this->stats['min'] ? min($this->stats['min']) : 0;
     }
 
+    /**
+     * @return int|float
+     */
     public function getMaxTime()
     {
         return $this->stats['max'] ? min($this->stats['max']) : 0;
     }
 
+    /**
+     * @return int|float
+     */
     public function getMeanTime()
     {
         return Statistics::mean($this->stats['mean']);
     }
 
+    /**
+     * @return int|float
+     */
     public function getModeTime()
     {
         return Statistics::mean($this->stats['mode']);
     }
 
+    /**
+     * @return int|float
+     */
     public function getTotalTime()
     {
         return array_sum($this->stats['sum']);
     }
 
+    /**
+     * @return int|float
+     */
     public function getMeanStDev()
     {
         return Statistics::mean($this->stats['stdev']);
     }
 
+    /**
+     * @return int|float
+     */
     public function getMeanRelStDev()
     {
         return Statistics::mean($this->stats['rstdev']);

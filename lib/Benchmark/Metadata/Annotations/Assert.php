@@ -16,19 +16,18 @@ namespace PhpBench\Benchmark\Metadata\Annotations;
  * @Annotation
  *
  * @Taget({"METHOD", "CLASS"})
+ *
  * @Attributes({
+ *
  *    @Attribute("value", required = true, type="string")
  * })
  */
 class Assert
 {
-    /**
-     * @var string
-     */
-    private $expression;
+    private string $expression;
 
     /**
-     * @param array<string,mixed> $params
+     * @param array{value: string} $params
      */
     public function __construct(array $params)
     {

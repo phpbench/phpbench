@@ -4,15 +4,7 @@ namespace PhpBench\Expression;
 
 final class Lexer
 {
-    /**
-     * @var string
-     */
-    private $pattern;
-
-    /**
-     * @var array
-     */
-    private $unitNames;
+    private readonly string $pattern;
 
     private const PATTERN_NAME = '(?:[a-z_\/]{1}[a-z0-9_\/]*)';
     private const PATTERN_FUNCTION = '(?:[a-z_\/]+\()';
@@ -60,10 +52,10 @@ final class Lexer
     ];
 
     /**
+     * @param string[] $unitNames
      */
-    public function __construct(
-        array $unitNames = []
-    ) {
+    public function __construct(private readonly array $unitNames = [])
+    {
         $this->pattern = sprintf(
             '{(%s)|(%s)|\n|\r}iu',
             implode(')|(', array_map(function (string $value) {
@@ -71,17 +63,20 @@ final class Lexer
             }, array_keys(self::TOKEN_VALUE_MAP))),
             implode(')|(', self::PATTERNS)
         );
-        $this->unitNames = $unitNames;
     }
 
     public function lex(string $expression): Tokens
     {
-        $chunks = (array)preg_split(
+        $chunks = preg_split(
             $this->pattern,
             $expression,
             -1,
             PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE
         );
+
+        if ($chunks === false) {
+            $chunks = [];
+        }
         $tokens = [];
 
         $prevToken = new Token(Token::T_EOF, '', 0);
@@ -100,10 +95,7 @@ final class Lexer
         return new Tokens($tokens);
     }
 
-    /**
-     * @param mixed $value
-     */
-    protected function resolveType($value, Token $prevToken): string
+    private function resolveType(string $value, Token $prevToken): string
     {
         $type = Token::T_NONE;
 
@@ -113,7 +105,7 @@ final class Lexer
 
         switch (true) {
             case (is_numeric($value)):
-                if (strpos((string)$value, '.') !== false || stripos((string)$value, 'e') !== false) {
+                if (str_contains((string)$value, '.') || stripos((string)$value, 'e') !== false) {
                     return Token::T_FLOAT;
                 }
 

@@ -14,19 +14,13 @@ use function str_repeat;
 
 class ConfigDumper
 {
-    public const TITLE = 'Configuration';
-
-    /**
-     * @var class-string[]
-     */
-    private $extensions;
+    final public const TITLE = 'Configuration';
 
     /**
      * @param class-string[] $extensions
      */
-    public function __construct(array $extensions)
+    public function __construct(private readonly array $extensions)
     {
-        $this->extensions = $extensions;
     }
 
     public function dump(): string
@@ -76,7 +70,7 @@ class ConfigDumper
         ];
 
         foreach ($optionsResolver->getDefinedOptions() as $option) {
-            $section[] = sprintf('.. _configuration_%s:', str_replace('.', '_', $option));
+            $section[] = sprintf('.. _configuration_%s:', str_replace('.', '_', (string) $option));
             $section[] = '';
             $section[] = $option;
             $section[] = $this->underline($option, '~');
@@ -91,7 +85,7 @@ class ConfigDumper
             try {
                 $section[] = sprintf('Allowed values: ``%s``', $this->prettyPrint($inspector->getAllowedValues($option)));
                 $section[] = '';
-            } catch (NoConfigurationException $e) {
+            } catch (NoConfigurationException) {
             }
         }
 
@@ -103,7 +97,7 @@ class ConfigDumper
         return str_repeat($char, mb_strlen($string));
     }
 
-    private function prettyPrint($value): string
+    private function prettyPrint(mixed $value): string
     {
         if (is_bool($value)) {
             return $value ? 'true' : 'false';
@@ -117,6 +111,6 @@ class ConfigDumper
             return 'NULL';
         }
 
-        return json_encode($value);
+        return json_encode($value, JSON_THROW_ON_ERROR);
     }
 }

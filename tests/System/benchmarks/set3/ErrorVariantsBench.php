@@ -12,9 +12,11 @@
 
 namespace PhpBench\Tests\System\benchmarks\set3;
 
+use Exception;
+
 class ErrorVariantsBench
 {
-    public function provideFoos()
+    public static function provideFoos()
     {
         yield [ 'one' => 'two' ];
 
@@ -23,8 +25,8 @@ class ErrorVariantsBench
     /**
      * @ParamProviders({"provideFoos"})
      */
-    public function benchException(): void
+    public function benchException(): never
     {
-        throw new \Exception('Foobar');
+        throw new Exception('Foobar');
     }
 }

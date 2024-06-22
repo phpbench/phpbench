@@ -12,32 +12,28 @@
 
 namespace PhpBench\Tests\Unit\Progress\Logger;
 
+use Exception;
 use PhpBench\Model\Benchmark;
 use PhpBench\Model\ParameterSet;
 use PhpBench\Model\Subject;
 use PhpBench\Model\Variant;
 use PhpBench\Progress\Logger\BlinkenLogger;
 use PhpBench\Util\TimeUnit;
+use Prophecy\Prophecy\ObjectProphecy;
 
 class BlinkenLoggerTest extends LoggerTestCase
 {
-    public const ASSERTION_FAILURE_MESSAGE = 'Failure message';
-    /**
-     * @var BlinkenLogger
-     */
-    private $logger;
-    /**
-     * @var ObjectProphecy
-     */
-    private $benchmark;
-    /**
-     * @var ObjectProphecy
-     */
-    private $subject;
-    /**
-     * @var Variant
-     */
-    private $variant;
+    final public const ASSERTION_FAILURE_MESSAGE = 'Failure message';
+
+    private BlinkenLogger $logger;
+
+    /** @var ObjectProphecy<Benchmark> */
+    private ObjectProphecy $benchmark;
+
+    /** @var ObjectProphecy<Subject> */
+    private ObjectProphecy $subject;
+
+    private Variant $variant;
 
     protected function setUp(): void
     {
@@ -113,7 +109,7 @@ class BlinkenLoggerTest extends LoggerTestCase
      */
     public function testIterationException(): void
     {
-        $this->variant->setException(new \Exception('foo'));
+        $this->variant->setException(new Exception('foo'));
         $this->logger->variantEnd($this->variant);
         $this->assertStringContainsString('ERROR', $this->output->fetch());
     }

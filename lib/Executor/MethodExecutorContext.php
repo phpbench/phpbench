@@ -7,21 +7,10 @@ use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 final class MethodExecutorContext
 {
     /**
-     * @var string
+     * @param class-string $benchmarkClass
      */
-    private $benchmarkPath;
-
-    /**
-     * @var string
-     */
-    private $benchmarkClass;
-
-    public function __construct(
-        string $benchmarkPath,
-        string $benchmarkClass
-    ) {
-        $this->benchmarkPath = $benchmarkPath;
-        $this->benchmarkClass = $benchmarkClass;
+    public function __construct(private readonly string $benchmarkPath, private readonly string $benchmarkClass)
+    {
     }
 
     public static function fromBenchmarkMetadata(BenchmarkMetadata $benchmarkMetadata): self
@@ -29,6 +18,9 @@ final class MethodExecutorContext
         return new self($benchmarkMetadata->getPath(), $benchmarkMetadata->getClass());
     }
 
+    /**
+     * @return class-string
+     */
     public function getBenchmarkClass(): string
     {
         return $this->benchmarkClass;

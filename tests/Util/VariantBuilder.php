@@ -17,40 +17,22 @@ final class VariantBuilder
     /**
      * @var IterationBuilder[]
      */
-    private $iterations = [];
+    private array $iterations = [];
 
-    /**
-     * @var int
-     */
-    private $revs = 1;
-
-    /**
-     * @var SubjectBuilder|null
-     */
-    private $subjectBuilder;
-
-    /**
-     * @var string|null
-     */
-    private $name;
+    private int $revs = 1;
 
     /**
      * @var Error[]
      */
-    private $errors;
+    private array $errors = [];
 
-    /**
-     * @var ParameterSet
-     */
-    private $parameterSet = null;
+    private ?ParameterSet $parameterSet = null;
 
     /**
      * @param string $name @deprecated Variants are not named, and this was used as the parameter set name.
      */
-    public function __construct(?SubjectBuilder $subjectBuilder, ?string $name = null)
+    public function __construct(private readonly ?SubjectBuilder $subjectBuilder, private readonly ?string $name = null)
     {
-        $this->subjectBuilder = $subjectBuilder;
-        $this->name = $name;
     }
 
     public static function create(string $name = 'foo'): self

@@ -5,17 +5,17 @@ namespace PhpBench\Util;
 class Cast
 {
     /**
-     * @param mixed $value
+     * @param scalar|null $value
      */
-    public static function toInt($value): int
+    public static function toInt(mixed $value): int
     {
         return (int)$value;
     }
 
     /**
-     * @param mixed $value
+     * @param scalar|null $value
      */
-    public static function toIntOrNull($value): ?int
+    public static function toIntOrNull(mixed $value): ?int
     {
         if (null === $value) {
             return null;
@@ -25,9 +25,9 @@ class Cast
     }
 
     /**
-     * @param mixed $value
+     * @param scalar|null $value
      */
-    public static function toStringOrNull($value): ?string
+    public static function toStringOrNull(mixed $value): ?string
     {
         if (null === $value) {
             return null;

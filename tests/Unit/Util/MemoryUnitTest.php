@@ -21,7 +21,7 @@ class MemoryUnitTest extends TestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideSiUnits(): Generator
+    public static function provideSiUnits(): Generator
     {
         yield [
                 1,
@@ -38,43 +38,43 @@ class MemoryUnitTest extends TestCase
         yield [
                 1,
                 MemoryUnit::MEGABYTES,
-                1000000
+                1_000_000
             ];
 
         yield [
                 1,
                 MemoryUnit::GIGABYTES,
-                1000000000
+                1_000_000_000
             ];
 
         yield [
                 2,
                 MemoryUnit::GIGABYTES,
-                2000000000
+                2_000_000_000
             ];
     }
 
     /**
      * @return Generator<mixed>
      */
-    public function provideBinaryUnits(): Generator
+    public static function provideBinaryUnits(): Generator
     {
         yield [
                 1,
                 MemoryUnit::KIBIBYTES,
-                pow(2, 10)
+                2 ** 10
             ];
 
         yield [
                 1,
                 MemoryUnit::MEBIBYTES,
-                pow(2, 20)
+                2 ** 20
             ];
 
         yield [
                 1,
                 MemoryUnit::GIBIBYTES,
-                pow(2, 30)
+                2 ** 30
             ];
     }
 
@@ -97,7 +97,7 @@ class MemoryUnitTest extends TestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideSuffix(): Generator
+    public static function provideSuffix(): Generator
     {
         yield [
                 'megabytes',
@@ -115,18 +115,25 @@ class MemoryUnitTest extends TestCase
             ];
     }
 
+    public function testResolveSuitableUnitWithCustomUnit(): void
+    {
+        $unit = 'my-unit';
+
+        self::assertEquals($unit, MemoryUnit::resolveSuitableUnit($unit, 1.0));
+    }
+
     /**
      * @dataProvider provideSuitableUnit
      */
     public function testResolveSuitableUnit(float $value, string $expectedUnit): void
     {
-        self::assertEquals($expectedUnit, MemoryUnit::resolveSuitableUnit(MemoryUnit::AUTO, $value, true));
+        self::assertEquals($expectedUnit, MemoryUnit::resolveSuitableUnit(MemoryUnit::AUTO, $value));
     }
 
     /**
      * @return Generator<mixed>
      */
-    public function provideSuitableUnit(): Generator
+    public static function provideSuitableUnit(): Generator
     {
         yield [1, MemoryUnit::BYTES];
 
@@ -138,9 +145,16 @@ class MemoryUnitTest extends TestCase
 
         yield [100000, MemoryUnit::KILOBYTES];
 
-        yield [1000000, MemoryUnit::MEGABYTES];
+        yield [1_000_000, MemoryUnit::MEGABYTES];
 
-        yield [1000000000, MemoryUnit::GIGABYTES];
+        yield [1_000_000_000, MemoryUnit::GIGABYTES];
+    }
+
+    public function testResolveSuitableBinaryUnitWithCustomUnit(): void
+    {
+        $unit = 'my-unit';
+
+        self::assertEquals($unit, MemoryUnit::resolveSuitableBinaryUnit($unit, 1.0));
     }
 
     /**
@@ -154,7 +168,7 @@ class MemoryUnitTest extends TestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideSuitableBinaryUnit(): Generator
+    public static function provideSuitableBinaryUnit(): Generator
     {
         yield [1, MemoryUnit::BYTES];
 
@@ -166,8 +180,8 @@ class MemoryUnitTest extends TestCase
 
         yield [100000, MemoryUnit::KIBIBYTES];
 
-        yield [1000000, MemoryUnit::MEBIBYTES];
+        yield [1_000_000, MemoryUnit::MEBIBYTES];
 
-        yield [1000000000, MemoryUnit::GIBIBYTES];
+        yield [1_000_000_000, MemoryUnit::GIBIBYTES];
     }
 }

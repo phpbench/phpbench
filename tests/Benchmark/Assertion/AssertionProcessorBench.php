@@ -3,7 +3,6 @@
 namespace PhpBench\Tests\Benchmark\Assertion;
 
 use PhpBench\Assertion\AssertionProcessor;
-use PhpBench\Model\Result\MemoryResult;
 use PhpBench\Model\Result\TimeResult;
 use PhpBench\Model\Variant;
 use PhpBench\Tests\Benchmark\IntegrationBenchCase;
@@ -11,15 +10,9 @@ use PhpBench\Tests\Util\VariantBuilder;
 
 class AssertionProcessorBench extends IntegrationBenchCase
 {
-    /**
-     * @var AssertionProcessor
-     */
-    private $processor;
+    private readonly AssertionProcessor $processor;
 
-    /**
-     * @var Variant
-     */
-    private $variant;
+    private readonly Variant $variant;
 
     public function __construct()
     {
@@ -31,7 +24,6 @@ class AssertionProcessorBench extends IntegrationBenchCase
         for ($i = 0; $i < 100; $i++) {
             $variant->iteration()->setResult(
                 new TimeResult(100, 1),
-                new MemoryResult(100, 100, 100)
             );
         }
 
@@ -41,7 +33,6 @@ class AssertionProcessorBench extends IntegrationBenchCase
         for ($i = 0; $i < 100; $i++) {
             $baseline->iteration()->setResult(
                 new TimeResult(100, 1),
-                new MemoryResult(100, 100, 100)
             );
         }
 

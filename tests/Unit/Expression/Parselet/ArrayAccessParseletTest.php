@@ -18,7 +18,7 @@ class ArrayAccessParseletTest extends ParseletTestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideParse(): Generator
+    public static function provideParse(): Generator
     {
         yield [
             '([10])[0]',
@@ -49,7 +49,7 @@ class ArrayAccessParseletTest extends ParseletTestCase
     /**
      * {@inheritDoc}
      */
-    public function provideEvaluate(): Generator
+    public static function provideEvaluate(): Generator
     {
         yield ['([10])[0]', [], '10'];
 
@@ -71,7 +71,7 @@ class ArrayAccessParseletTest extends ParseletTestCase
     /**
      * {@inheritDoc}
      */
-    public function providePrint(): Generator
+    public static function providePrint(): Generator
     {
         yield ['first([[10, 20]])[0]'];
 

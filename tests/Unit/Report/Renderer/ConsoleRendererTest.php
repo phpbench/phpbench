@@ -23,7 +23,8 @@ class ConsoleRendererTest extends AbstractRendererCase
     protected function getRenderer(): RendererInterface
     {
         return $this->container([
-            ConsoleExtension::PARAM_OUTPUT_STREAM => $this->workspace()->path('out')
+            ConsoleExtension::PARAM_OUTPUT_STREAM => $this->workspace()->path('out'),
+            ConsoleExtension::PARAM_ANSI => false
         ])->get(ConsoleRenderer::class);
     }
 
@@ -39,7 +40,7 @@ class ConsoleRendererTest extends AbstractRendererCase
         $approval->approve($this->workspace()->getContents('out'));
     }
 
-    public function provideRender(): Generator
+    public static function provideRender(): Generator
     {
         foreach (glob(sprintf('%s/%s/*', __DIR__, 'console')) as $path) {
             yield [$path];

@@ -4,11 +4,11 @@ namespace PhpBench\Config\Processor;
 
 use PhpBench\Config\ConfigLoader;
 use PhpBench\Config\ConfigProcessor;
-use PhpBench\Path\Path;
+use Symfony\Component\Filesystem\Path;
 
 class IncludeProcessor implements ConfigProcessor
 {
-    public const DIRECTIVE = '$include';
+    final public const DIRECTIVE = '$include';
 
     public function process(ConfigLoader $loader, string $path, array $config): array
     {

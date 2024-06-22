@@ -14,10 +14,10 @@ class NumberFormat
     {
         $formated = number_format($number, $decimals);
 
-        if ($stripTailingZeros && false !== strpos($formated, '.')) {
+        if ($stripTailingZeros && str_contains($formated, '.')) {
             $formated = rtrim($formated, '0');
 
-            if (substr($formated, -1) === '.') {
+            if (str_ends_with($formated, '.')) {
                 return (string)number_format($number);
             }
         }

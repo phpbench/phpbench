@@ -12,6 +12,7 @@
 
 namespace PhpBench\Examples\Benchmark\Macro;
 
+use RuntimeException;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\Extension\ConsoleExtension;
 use PhpBench\Extension\CoreExtension;
@@ -38,7 +39,7 @@ class BaseBenchCase
 {
     private $container;
 
-    private $extensions = [
+    private array $extensions = [
         CoreExtension::class,
         RunnerExtension::class,
         ReportExtension::class,
@@ -47,7 +48,7 @@ class BaseBenchCase
         ConsoleExtension::class,
     ];
 
-    private $config = [];
+    private array $config = [];
 
     /**
      * The constructor can be used as a quick way to setup the
@@ -96,13 +97,11 @@ class BaseBenchCase
     {
         $input = new ArrayInput($args);
         $output = new BufferedOutput();
-        $command = $this->getContainer([
-            CoreExtension::PARAM_WORKING_DIR => $this->workspace()->path()
-        ])->get($serviceId);
+        $command = $this->getContainer()->get($serviceId);
         $exitCode = $command->run($input, $output);
 
         if ($exitCode !== 0) {
-            throw new \RuntimeException(sprintf(
+            throw new RuntimeException(sprintf(
                 'Got non-zero exit code when executing command "%s"',
                 $serviceId
             ));

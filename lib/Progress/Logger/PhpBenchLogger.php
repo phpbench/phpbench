@@ -35,19 +35,13 @@ abstract class PhpBenchLogger extends NullLogger
      */
     public $output;
 
-    /**
-     * @var VariantFormatter
-     */
-    private $formatter;
-
     public function __construct(
         OutputInterface $output,
-        VariantFormatter $formatter,
-        TimeUnit $timeUnit = null
+        private readonly VariantFormatter $formatter,
+        TimeUnit $timeUnit
     ) {
         $this->timeUnit = $timeUnit;
         $this->output = $output;
-        $this->formatter = $formatter;
     }
 
     public function startSuite(RunnerConfig $config, Suite $suite): void
@@ -129,7 +123,7 @@ abstract class PhpBenchLogger extends NullLogger
             foreach ($errorStack as $error) {
                 $this->output->writeln(sprintf(
                     "    %s\n",
-                    str_replace("\n", "\n    ", $error->getMessage())
+                    str_replace("\n", "\n    ", (string) $error->getMessage())
                 ));
             }
         }
@@ -156,7 +150,7 @@ abstract class PhpBenchLogger extends NullLogger
             $this->output->write(PHP_EOL);
 
             foreach ($variantFailure as $index => $failure) {
-                $this->output->writeln(sprintf('    %s) %s', $index + 1, str_replace("\n", "\n       ", $failure->getMessage())));
+                $this->output->writeln(sprintf('    %s) %s', $index + 1, str_replace("\n", "\n       ", (string) $failure->getMessage())));
             }
             $this->output->write(PHP_EOL);
         }

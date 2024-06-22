@@ -10,24 +10,12 @@ use RuntimeException;
 final class BenchmarkBuilder
 {
     /**
-     * @var string
-     */
-    private $name;
-
-    /**
      * @var SubjectBuilder[]
      */
-    private $subjectBuilders = [];
+    private array $subjectBuilders = [];
 
-    /**
-     * @var SuiteBuilder|null
-     */
-    private $suiteBuilder = null;
-
-    public function __construct(?SuiteBuilder $suiteBuilder, string $name)
+    public function __construct(private readonly ?SuiteBuilder $suiteBuilder, private readonly string $name)
     {
-        $this->name = $name;
-        $this->suiteBuilder = $suiteBuilder;
     }
 
     public static function create(string $name): self

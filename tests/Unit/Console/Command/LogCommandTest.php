@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Console\Command;
 
+use DateTime;
 use PhpBench\Console\CharacterReader;
 use PhpBench\Console\Command\Handler\TimeUnitHandler;
 use PhpBench\Console\Command\LogCommand;
@@ -22,6 +23,7 @@ use PhpBench\Storage\HistoryIteratorInterface;
 use PhpBench\Tests\TestCase;
 use PhpBench\Util\TimeUnit;
 use Prophecy\Argument;
+use Prophecy\Prophecy\ObjectProphecy;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -29,11 +31,33 @@ use Symfony\Component\Console\Output\BufferedOutput;
 
 class LogCommandTest extends TestCase
 {
-    private $storage;
-    private $command;
-    private $driver;
-    private $output;
-    private $history;
+    /** @var ObjectProphecy<Registry<DriverInterface>> */
+    private ObjectProphecy $storage;
+
+    private LogCommand $command;
+
+    /** @var ObjectProphecy<DriverInterface> */
+    private ObjectProphecy $driver;
+
+    private BufferedOutput $output;
+
+    /** @var ObjectProphecy<HistoryIteratorInterface> */
+    private ObjectProphecy $history;
+
+    /**
+     * @var ObjectProphecy<TimeUnit>
+     */
+    private ObjectProphecy $timeUnit;
+
+    /**
+     * @var ObjectProphecy<TimeUnitHandler>
+     */
+    private ObjectProphecy $timeUnitHandler;
+
+    /**
+     * @var ObjectProphecy<CharacterReader>
+     */
+    private ObjectProphecy $characterReader;
 
     protected function setUp(): void
     {
@@ -41,7 +65,9 @@ class LogCommandTest extends TestCase
             $this->markTestSkipped('Not testing if QuestionHelper class does not exist (< Symfony 2.7)');
         }
 
-        $this->storage = $this->prophesize(Registry::class);
+        /** @var ObjectProphecy<Registry<DriverInterface>> $registry */
+        $registry = $this->prophesize(Registry::class);
+        $this->storage = $registry;
         $this->timeUnit = $this->prophesize(TimeUnit::class);
         $this->timeUnitHandler = $this->prophesize(TimeUnitHandler::class);
         $this->characterReader = $this->prophesize(CharacterReader::class);
@@ -51,12 +77,11 @@ class LogCommandTest extends TestCase
             $this->storage->reveal(),
             $this->timeUnit->reveal(),
             $this->timeUnitHandler->reveal(),
+            $this->output,
             $this->characterReader->reveal(),
-            $this->output
         );
 
-        $this->application = new Application();
-        $this->command->setApplication($this->application);
+        $this->command->setApplication(new Application());
 
         $this->driver = $this->prophesize(DriverInterface::class);
         $this->storage->getService()->willReturn($this->driver->reveal());
@@ -105,9 +130,9 @@ class LogCommandTest extends TestCase
         $this->history->key()->willReturn(0, 1, 2);
         $this->history->next()->shouldBeCalled();
         $this->history->current()->willReturn(
-            $this->createHistoryEntry(1),
-            $this->createHistoryEntry(2),
-            $this->createHistoryEntry(3)
+            $this->createHistoryEntry('1'),
+            $this->createHistoryEntry('2'),
+            $this->createHistoryEntry('3')
         );
 
         $this->command->execute($input, $this->output);
@@ -163,9 +188,9 @@ EOT;
         $this->history->key()->willReturn(0, 1, 2);
         $this->history->next()->shouldBeCalled();
         $this->history->current()->willReturn(
-            $this->createHistoryEntry(1),
-            $this->createHistoryEntry(2),
-            $this->createHistoryEntry(3)
+            $this->createHistoryEntry('1'),
+            $this->createHistoryEntry('2'),
+            $this->createHistoryEntry('3')
         );
 
         $this->command->execute($input, $this->output);
@@ -219,9 +244,9 @@ EOT;
         $this->history->key()->willReturn(0, 1);
         $this->history->next()->shouldBeCalled();
         $this->history->current()->willReturn(
-            $this->createHistoryEntry(1),
-            $this->createHistoryEntry(2),
-            $this->createHistoryEntry(3)
+            $this->createHistoryEntry('1'),
+            $this->createHistoryEntry('2'),
+            $this->createHistoryEntry('3')
         );
 
         $this->command->execute($input, $this->output);
@@ -248,16 +273,16 @@ EOT;
         $this->assertEquals($this->replaceDate($expected), $this->replaceDate($output));
     }
 
-    private function replaceDate($string)
+    private function replaceDate(string $string): string
     {
         return preg_replace('{\+[0-9]{2}:[0-9]{2}}', '00:00', $string);
     }
 
-    private function createHistoryEntry($index)
+    private function createHistoryEntry(string $index): HistoryEntry
     {
         return new HistoryEntry(
             $index,
-            new \DateTime('2016-01-01'),
+            new DateTime('2016-01-01'),
             'foo',
             'branch' . $index,
             10,

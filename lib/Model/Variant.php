@@ -12,6 +12,8 @@
 
 namespace PhpBench\Model;
 
+use ReturnTypeWillChange;
+use InvalidArgumentException;
 use ArrayAccess;
 use ArrayIterator;
 use Countable;
@@ -29,83 +31,37 @@ use RuntimeException;
  * Stores Iterations and calculates the deviations and rejection
  * status for each based on the given rejection threshold.
  *
- * @implements IteratorAggregate<Iteration>
- * @implements ArrayAccess<string, Iteration>
+ * @implements IteratorAggregate<int, Iteration>
+ * @implements ArrayAccess<int, Iteration>
  */
 class Variant implements IteratorAggregate, ArrayAccess, Countable
 {
-    /**
-     * @var Subject
-     */
-    private $subject;
+    /** @var list<Iteration> */
+    private array $iterations = [];
+
+    /** @var list<Iteration> */
+    private array $rejects = [];
+
+    private ?ErrorStack $errorStack = null;
+
+    private ?Distribution $stats = null;
+
+    private bool $computed = false;
+
+    private ?\PhpBench\Model\Variant $baseline = null;
+
+    private VariantAssertionResults $assertionResults;
 
     /**
-     * @var ParameterSet
+     * @param array<string, int|float> $computedStats
      */
-    private $parameterSet;
-
-    /**
-     * @var Iteration[]
-     */
-    private $iterations = [];
-
-    /**
-     * @var Iteration[]
-     */
-    private $rejects = [];
-
-    /**
-     * @var ErrorStack
-     */
-    private $errorStack;
-
-    /**
-     * @var Distribution
-     */
-    private $stats;
-
-    /**
-     * @var array
-     */
-    private $computedStats;
-
-    /**
-     * @var bool
-     */
-    private $computed = false;
-
-    /**
-     * @var int
-     */
-    private $revolutions;
-
-    /**
-     * @var int
-     */
-    private $warmup;
-
-    /**
-     * @var Variant|null
-     */
-    private $baseline;
-
-    /**
-     * @var VariantAssertionResults
-     */
-    private $assertionResults;
-
     public function __construct(
-        Subject $subject,
-        ParameterSet $parameterSet,
-        int $revolutions,
-        int $warmup,
-        array $computedStats = []
+        private readonly Subject $subject,
+        private readonly ParameterSet $parameterSet,
+        private readonly int $revolutions,
+        private readonly int $warmup,
+        private readonly array $computedStats = []
     ) {
-        $this->subject = $subject;
-        $this->parameterSet = $parameterSet;
-        $this->revolutions = $revolutions;
-        $this->warmup = $warmup;
-        $this->computedStats = $computedStats;
         $this->assertionResults = new VariantAssertionResults($this, []);
     }
 
@@ -137,7 +93,7 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
     /**
      * Return the iteration at the given index.
      *
-     * @return Iteration
+     * @param int $index
      */
     public function getIteration($index): ?Iteration
     {
@@ -170,7 +126,7 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
      * $variant->getMetricValues(ComputedResult::class, 'z_value');
      * ```
      *
-     * @return mixed[]
+     * @return array<int|float>
      */
     public function getMetricValues(string $resultClass, string $metricName): array
     {
@@ -224,6 +180,7 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
         foreach ($this->iterations as $iteration) {
             $timeResult = $iteration->getResult(TimeResult::class);
             assert($timeResult instanceof TimeResult);
+
             // deviation is the percentage different of the value from the mean of the set.
             if ($this->stats->getMean() > 0) {
                 $deviation = 100 / $this->stats->getMean() * (
@@ -409,16 +366,16 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
         return count($this->iterations);
     }
 
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetGet($offset): ?Iteration
     {
         return $this->getIteration($offset);
     }
 
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetSet($offset, $value): void
     {
-        throw new \InvalidArgumentException(
+        throw new InvalidArgumentException(
             'Iteration collections are immutable'
         );
     }
@@ -426,15 +383,15 @@ class Variant implements IteratorAggregate, ArrayAccess, Countable
     /**
      * {@inheritdoc}
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetUnset($offset): void
     {
-        throw new \InvalidArgumentException(
+        throw new InvalidArgumentException(
             'Iteration collections are immutable'
         );
     }
 
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetExists($offset): bool
     {
         return array_key_exists($offset, $this->iterations);

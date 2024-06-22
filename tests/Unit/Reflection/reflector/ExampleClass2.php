@@ -14,9 +14,13 @@ namespace ZendBench\Hydrator;
 
 /**
  * @AfterMethods({"foo"})
+ *
  * @BeforeMethods({"classSetUp"})
+ *
  * @Revs(1000)
+ *
  * @Iterations(20)
+ *
  * @Warmup(2)
  */
 class ExampleClass2

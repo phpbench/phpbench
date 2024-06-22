@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Serializer;
 
+use ArrayIterator;
 use DateTime;
 use PhpBench\Assertion\AssertionResult;
 use PhpBench\Assertion\VariantAssertionResults;
@@ -33,9 +34,39 @@ use PhpBench\Model\Tag;
 use PhpBench\Model\Variant;
 use PhpBench\Registry\Config;
 use PhpBench\Tests\TestCase;
+use Prophecy\Prophecy\ObjectProphecy;
 
 abstract class XmlTestCase extends TestCase
 {
+    /**
+     * @var ObjectProphecy<SuiteCollection>
+     */
+    private ObjectProphecy $suiteCollection;
+    /**
+     * @var ObjectProphecy<Suite>
+     */
+    private ObjectProphecy $suite;
+    /**
+     * @var ObjectProphecy<Information>
+     */
+    private ObjectProphecy $env1;
+    /**
+     * @var ObjectProphecy<Benchmark>
+     */
+    private ObjectProphecy $bench1;
+    /**
+     * @var ObjectProphecy<Subject>
+     */
+    private ObjectProphecy $subject1;
+    /**
+     * @var ObjectProphecy<Variant>
+     */
+    private ObjectProphecy $variant1;
+    /**
+     * @var ObjectProphecy<Iteration>
+     */
+    private ObjectProphecy $iteration1;
+
     protected function setUp(): void
     {
         $this->suiteCollection = $this->prophesize(SuiteCollection::class);
@@ -47,7 +78,10 @@ abstract class XmlTestCase extends TestCase
         $this->iteration1 = $this->prophesize(Iteration::class);
     }
 
-    public function getSuiteCollection($params)
+    /**
+     * @param array<string, mixed> $params
+     */
+    public function getSuiteCollection(array $params): SuiteCollection
     {
         $params = array_merge([
             'error' => false,
@@ -58,14 +92,14 @@ abstract class XmlTestCase extends TestCase
 
         $this->suiteCollection->getSuites()->willReturn([$this->suite->reveal()]);
         $this->suite->getUuid()->willReturn(1234);
-        $this->suite->getDate()->willReturn(new \DateTime('2015-01-01T00:00:00+00:00'));
+        $this->suite->getDate()->willReturn(new DateTime('2015-01-01T00:00:00+00:00'));
         $this->suite->getTag()->willReturn(new Tag('test'));
         $this->suite->getConfigPath()->willReturn('/path/to/config.json');
         $this->suite->getEnvInformations()->willReturn([
             $this->env1,
         ]);
         $this->env1->getName()->willReturn('info1');
-        $this->env1->getIterator()->willReturn(new \ArrayIterator([
+        $this->env1->getIterator()->willReturn(new ArrayIterator([
             'foo' => 'fooo & bar',
         ]));
         $this->suite->getBenchmarks()->willReturn([
@@ -109,7 +143,7 @@ abstract class XmlTestCase extends TestCase
                             'This is an error',
                             'ErrorClass',
                             0,
-                            1,
+                            '1',
                             2,
                             '-- trace --'
                         ),
@@ -127,19 +161,22 @@ abstract class XmlTestCase extends TestCase
         $this->variant1->getAssertionResults()->willReturn(new VariantAssertionResults($this->variant1->reveal(), $results));
 
         $this->variant1->getStats()->willReturn(new Distribution([0.1]));
-        $this->variant1->getIterator()->willReturn(new \ArrayIterator([
+        $this->variant1->getIterator()->willReturn(new ArrayIterator([
             $this->iteration1->reveal(),
         ]));
         $this->iteration1->getResults()->willReturn([
             new TimeResult(10, 1),
             new MemoryResult(100, 110, 109),
-            new ComputedResult(0, 0, 5),
+            new ComputedResult(0, 0),
         ]);
 
         return $this->suiteCollection->reveal();
     }
 
-    public function provideEncode()
+    /**
+     * @return \Generator<list{string}>
+     */
+    public static function provideEncode(): \Generator
     {
         foreach (glob(__DIR__ . '/examples/*.test') as $path) {
             yield [
@@ -169,5 +206,6 @@ abstract class XmlTestCase extends TestCase
     }
 
     abstract public function doTestBinary(SuiteCollection $collection): void;
+
     abstract public function doTestDate(SuiteCollection $collection): void;
 }

@@ -28,38 +28,17 @@ use function iterator_to_array;
 
 class ExpressionGenerator implements GeneratorInterface
 {
-    public const PARAM_TITLE = 'title';
-    public const PARAM_DESCRIPTION = 'description';
-    public const PARAM_COLS = 'cols';
-    public const PARAM_EXPRESSIONS = 'expressions';
-    public const PARAM_BASELINE_EXPRESSIONS = 'baseline_expressions';
-    public const PARAM_AGGREGATE = 'aggregate';
-    public const PARAM_BREAK = 'break';
-    public const PARAM_INCLUDE_BASELINE = 'include_baseline';
+    final public const PARAM_TITLE = 'title';
+    final public const PARAM_DESCRIPTION = 'description';
+    final public const PARAM_COLS = 'cols';
+    final public const PARAM_EXPRESSIONS = 'expressions';
+    final public const PARAM_BASELINE_EXPRESSIONS = 'baseline_expressions';
+    final public const PARAM_AGGREGATE = 'aggregate';
+    final public const PARAM_BREAK = 'break';
+    final public const PARAM_INCLUDE_BASELINE = 'include_baseline';
 
-    /**
-     * @var ExpressionEvaluator
-     */
-    private $evaluator;
-
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
-     * @var SuiteCollectionTransformer
-     */
-    private $transformer;
-
-    public function __construct(
-        ExpressionEvaluator $evaluator,
-        SuiteCollectionTransformer $transformer,
-        LoggerInterface $logger
-    ) {
-        $this->evaluator = $evaluator;
-        $this->logger = $logger;
-        $this->transformer = $transformer;
+    public function __construct(private readonly ExpressionEvaluator $evaluator, private readonly SuiteCollectionTransformer $transformer, private readonly LoggerInterface $logger)
+    {
     }
 
     /**
@@ -131,7 +110,10 @@ EOT
                 return $cols;
             }
 
-            return array_keys($options[self::PARAM_EXPRESSIONS]);
+            /** @var array<string, string> $expressions */
+            $expressions = $options[self::PARAM_EXPRESSIONS];
+
+            return array_keys($expressions);
         });
         SymfonyOptionsResolverCompat::setInfos($options, [
             self::PARAM_TITLE => 'Title to use for report',
@@ -153,13 +135,19 @@ EOT
         $expressionMap = $this->resolveExpressionMap($config);
         $baselineExpressionMap = $this->resolveBaselineExpressionMap($config, array_keys($expressionMap));
 
+        /** @var bool $includeBaseline */
+        $includeBaseline = $config[self::PARAM_INCLUDE_BASELINE];
+
         // transform the suite into a data frame
-        $frame = $this->transformer->suiteToFrame($collection->firstOnly(), $config[self::PARAM_INCLUDE_BASELINE]);
+        $frame = $this->transformer->suiteToFrame($collection->firstOnly(), $includeBaseline);
         // parition the data frame into data frames grouped by aggregates
         $frames = $frame->partition(function (Row $row) use ($config) {
+            /** @var list<string> $aggregate */
+            $aggregate = $config[self::PARAM_AGGREGATE];
+
             return implode('-', array_map(function (string $column) use ($row) {
                 return $row[$column];
-            }, $config[self::PARAM_AGGREGATE]));
+            }, $aggregate));
         });
 
         // evaluate the aggregated values with the expression language - at
@@ -167,21 +155,24 @@ EOT
         // instances rather than scalar values
         $table = iterator_to_array($this->evaluate($frame, $frames, $expressionMap, $baselineExpressionMap));
 
+        /** @var list<string> $breakCols */
+        $breakCols = $config[self::PARAM_BREAK];
+
         // split the evaluated tables by "break" for display
-        $tables = $this->partition($table, $config[self::PARAM_BREAK]);
+        $tables = $this->partition($table, $breakCols);
 
         // convert the array into Table instances for rendering
         return $this->generateReports($tables, $config);
     }
 
     /**
+     * @param array<string, string> $exprMap
+     * @param array<string, string> $baselineExprMap
      *
-     * @return Generator<array<string,mixed>>
+     * @return Generator<int,array<string,Node>>
      */
     private function evaluate(DataFrame $allFrame, DataFrames $frames, array $exprMap, array $baselineExprMap): Generator
     {
-        $hash = 0;
-
         foreach ($frames as $frame) {
             assert($frame instanceof DataFrame);
             $evaledRow = [];
@@ -206,11 +197,10 @@ EOT
                     );
                 } catch (EvaluationError $e) {
                     $evaledRow[$name] = new StringNode('ERR');
-                    $this->logger->error(sprintf(
-                        'Expression error (column "%s"): %s %s',
+                    $this->logger->warning(sprintf(
+                        'Expression error (column "%s"): %s',
                         $name,
                         $e->getMessage(),
-                        $e->getTraceAsString()
                     ));
                 }
             }
@@ -224,17 +214,23 @@ EOT
      */
     private function generateReports(array $tables, Config $config): Reports
     {
+        /** @var string|null $title */
+        $title = $config[self::PARAM_TITLE] ?? null;
+
+        /** @var string|null $description */
+        $description = $config[self::PARAM_DESCRIPTION] ?? null;
+
         return Reports::fromReport(Report::fromTables(
             array_map(function (array $table, string $title) {
                 return Table::fromRowArray($table, $title);
             }, $tables, array_keys($tables)),
-            isset($config[self::PARAM_TITLE]) ? $config[self::PARAM_TITLE] : null,
-            isset($config[self::PARAM_DESCRIPTION]) ? $config[self::PARAM_DESCRIPTION] : null
+            $title,
+            $description
         ));
     }
 
     /**
-     * @param array<string,array<string,Node>> $table
+     * @param array<array<string,Node>> $table
      * @param string[] $breakCols
      *
      * @return array<string,array<int,array<string,Node>>>
@@ -259,7 +255,7 @@ EOT
                     throw new RuntimeException(sprintf(
                         'Partition value for "%s" must be a string, got "%s"',
                         $key,
-                        get_class($value)
+                        $value::class
                     ));
                 }
 
@@ -285,12 +281,15 @@ EOT
      */
     private function resolveExpressionMap(Config $config): array
     {
+        /** @var array<string, string> $expressions */
         $expressions = $config[self::PARAM_EXPRESSIONS];
         $map = [];
+        /** @var array<array-key, string|null> $cols */
+        $cols = $config[self::PARAM_COLS];
 
-        foreach ($config[self::PARAM_COLS] as $key => $expr) {
+        foreach ($cols as $key => $expr) {
             if (is_int($key) || null === $expr) {
-                $expr = null === $expr ? $key : $expr;
+                $expr ??= $key;
 
                 if (!isset($expressions[$expr])) {
                     throw new RuntimeException(sprintf(
@@ -299,11 +298,11 @@ EOT
                         implode('", "', array_keys($expressions))
                     ));
                 }
-                $map[(string)$expr] = (string)$expressions[$expr];
+                $map[(string)$expr] = $expressions[$expr];
 
                 continue;
             }
-            $map[(string)$key] = (string)$expr;
+            $map[$key] = $expr;
         }
 
         return $map;
@@ -318,11 +317,14 @@ EOT
     {
         $map = [];
 
-        foreach ($config[self::PARAM_BASELINE_EXPRESSIONS] as $name => $baselineExpression) {
+        /** @var array<string, string> $baselineExpressions */
+        $baselineExpressions = $config[self::PARAM_BASELINE_EXPRESSIONS];
+
+        foreach ($baselineExpressions as $name => $baselineExpression) {
             if (!in_array($name, $visibleCols)) {
                 continue;
             }
-            $map[(string)$name] = (string)$baselineExpression;
+            $map[$name] = $baselineExpression;
         }
 
         return $map;

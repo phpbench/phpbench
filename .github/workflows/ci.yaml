@@ -20,7 +20,7 @@ jobs:
         strategy:
             matrix:
                 php-version:
-                    - '7.3'
+                    - '8.1'
 
         steps:
             -
@@ -34,23 +34,22 @@ jobs:
                     coverage: "none"
                     php-version: "${{ matrix.php-version }}"
                     tools: composer:v2
-
             -
                 name: "Validate composer.json"
                 run: "composer validate --strict --no-check-lock"
 
-    php-cs-fixer:
+    composer-normalize:
         needs:
             - "composer-validate"
 
-        name: "PHP-CS-Fixer (${{ matrix.php-version }})"
+        name: "Composer Normalize (${{ matrix.php-version }})"
 
         runs-on: "ubuntu-latest"
 
         strategy:
             matrix:
                 php-version:
-                    - '7.3'
+                    - '8.1'
 
         steps:
             -
@@ -68,7 +67,44 @@ jobs:
 
             -
                 name: "Composer install"
-                uses: "ramsey/composer-install@v2"
+                uses: "ramsey/composer-install@v3"
+                with:
+                    composer-options: "--no-scripts"
+
+            -
+                name: "Run composer normalize"
+                run: "composer normalize --dry-run --indent-size=4 --indent-style=space"
+
+    php-cs-fixer:
+        needs:
+            - "composer-validate"
+
+        name: "PHP-CS-Fixer (${{ matrix.php-version }})"
+
+        runs-on: "ubuntu-latest"
+
+        strategy:
+            matrix:
+                php-version:
+                    - '8.1'
+
+        steps:
+            -
+                name: "Checkout code"
+                uses: "actions/checkout@v3"
+
+            -
+                name: "Install PHP"
+                uses: "shivammathur/setup-php@v2"
+                with:
+                    coverage: "none"
+                    extensions: "${{ env.REQUIRED_PHP_EXTENSIONS }}"
+                    php-version: "${{ matrix.php-version }}"
+                    tools: composer:v2
+
+            -
+                name: "Composer install"
+                uses: "ramsey/composer-install@v3"
                 with:
                     composer-options: "--no-scripts"
 
@@ -87,7 +123,7 @@ jobs:
         strategy:
             matrix:
                 php-version:
-                    - '7.3'
+                    - '8.1'
 
         steps:
             -
@@ -105,7 +141,7 @@ jobs:
 
             -
                 name: "Composer install"
-                uses: "ramsey/composer-install@v2"
+                uses: "ramsey/composer-install@v3"
                 with:
                     composer-options: "--no-scripts"
 
@@ -126,26 +162,35 @@ jobs:
         strategy:
             matrix:
                 php-version:
-                    - '7.3'
-                    - '7.4'
-                    - '8.0'
+                    - '8.1'
+                    - '8.2'
                 dependency:
                     - 'lowest'
                     - 'highest'
                 with-examples: ['yes']
                 allow-failures: [false]
+                composer-options: ['']
                 include:
-                    - php-version: '7.3'
+                    - php-version: '8.1'
                       dependency: 'lowest'
                       with-examples: 'no'
                       allow-failures: false
                       coverage: xdebug
-                    - php-version: '8.1'
+                      composer-options: ''
+                    - php-version: '8.3'
+                      dependency: 'lowest'
+                      with-examples: 'no'
+                      allow-failures: true
+                      flags: php-*'
+                      coverage: xdebug
+                      composer-options: '--ignore-platform-req=php*'
+                    - php-version: '8.3'
                       dependency: 'highest'
                       with-examples: 'no'
                       allow-failures: true
+                      flags: php-*'
                       coverage: xdebug
-                      skip_xdebug_tests: "true"
+                      composer-options: '--ignore-platform-req=php*'
 
         steps:
             - name: "Checkout code"
@@ -165,15 +210,16 @@ jobs:
               run: composer remove --dev friendsofphp/php-cs-fixer --no-update
 
             - name: "Composer install"
-              uses: "ramsey/composer-install@v2"
+              uses: "ramsey/composer-install@v3"
               with:
                   dependency-versions: "${{ matrix.dependency }}"
+                  composer-options: "${{ matrix.composer-options }}"
 
             - name: PHP Info
               run: php --version
 
             - name: "Run tests with PHPUnit"
-              run: vendor/bin/phpunit --verbose
+              run: vendor/bin/phpunit
               env:
                   SKIP_XDEBUG_TESTS: "${{ matrix.skip_xdebug_tests }}"
 

@@ -18,10 +18,8 @@ class PhpValueFactoryTest extends TestCase
 {
     /**
      * @dataProvider provideFrom
-     *
-     * @param mixed $value
      */
-    public function testFrom($value, Node $expected): void
+    public function testFrom(mixed $value, Node $expected): void
     {
         self::assertEquals($expected, PhpValueFactory::fromValue($value));
     }
@@ -29,7 +27,7 @@ class PhpValueFactoryTest extends TestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideFrom(): Generator
+    public static function provideFrom(): Generator
     {
         yield [1, new IntegerNode(1)];
 

@@ -12,6 +12,7 @@
 
 namespace PhpBench\Registry;
 
+use InvalidArgumentException;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\Json\JsonDecoder;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -36,17 +37,12 @@ class ConfigurableRegistry extends Registry
     /**
      * @var array<string,array<string,mixed>>
      */
-    private $configs = [];
-
-    /**
-     * @var JsonDecoder
-     */
-    private $jsonDecoder;
+    private array $configs = [];
 
     /**
      * @var array<string,mixed>
      */
-    private $resolvedConfigs;
+    private ?array $resolvedConfigs = null;
 
     /**
      * @param array<string,string> $nameToServiceIdMap
@@ -54,11 +50,10 @@ class ConfigurableRegistry extends Registry
     public function __construct(
         string $serviceType,
         Container $container,
-        JsonDecoder $jsonDecoder,
+        private readonly JsonDecoder $jsonDecoder,
         array $nameToServiceIdMap = []
     ) {
         parent::__construct($serviceType, $container);
-        $this->jsonDecoder = $jsonDecoder;
 
         foreach ($nameToServiceIdMap as $name => $serviceId) {
             $this->registerService($name, $serviceId);
@@ -68,7 +63,7 @@ class ConfigurableRegistry extends Registry
     /**
      * Return the named configuration.
      *
-     * @param string|array $name
+     * @param string|mixed[] $name
      */
     public function getConfig($name): Config
     {
@@ -88,7 +83,7 @@ class ConfigurableRegistry extends Registry
         }
 
         if (!isset($this->configs[$name])) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'No %s configuration or service named "%s" exists. Known configurations: "%s", known services: "%s"',
                 $this->serviceType,
                 $name,
@@ -118,11 +113,13 @@ class ConfigurableRegistry extends Registry
      * Note that all configurations must be associated with a named service
      * via a configuration key equal to the configuration service type of this registry.
      *
+     * @param array<string, mixed> $config
+     *
      */
     public function setConfig(string $name, array $config): void
     {
         if (isset($this->configs[$name])) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 '%s config "%s" already exists.',
                 $this->serviceType,
                 $name
@@ -145,7 +142,7 @@ class ConfigurableRegistry extends Registry
             $extended = $this->getConfig($config['extends']);
 
             if (isset($config[$this->serviceType]) && ($extended[$this->serviceType] != $config[$this->serviceType])) {
-                throw new \InvalidArgumentException(sprintf(
+                throw new InvalidArgumentException(sprintf(
                     '%s configuration for service "%s" cannot extend configuration for different service "%s"',
                     $this->serviceType,
                     $config[$this->serviceType],
@@ -161,7 +158,7 @@ class ConfigurableRegistry extends Registry
         }
 
         if (!isset($config[$this->serviceType])) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 '%s configuration must EITHER indicate its target %s service with the "%s" key or extend an existing configuration with the "extends" key, it has keys "%s"',
                 $this->serviceType,
                 $this->serviceType,

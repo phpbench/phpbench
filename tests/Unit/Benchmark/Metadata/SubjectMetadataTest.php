@@ -17,20 +17,19 @@ use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\ExecutorMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
 use PhpBench\Tests\TestCase;
+use Prophecy\Prophecy\ObjectProphecy;
 
 class SubjectMetadataTest extends TestCase
 {
-    private $subject;
+    private SubjectMetadata $subject;
 
-    /**
-     * @var BenchmarkMetadata
-     */
-    private $benchmark;
+    /** @var ObjectProphecy<BenchmarkMetadata>  */
+    private ObjectProphecy $benchmark;
 
     protected function setUp(): void
     {
         $this->benchmark = $this->prophesize(BenchmarkMetadata::class);
-        $this->subject = new SubjectMetadata($this->benchmark->reveal(), 'subjectOne', 0);
+        $this->subject = new SubjectMetadata($this->benchmark->reveal(), 'subjectOne');
     }
 
     /**
@@ -71,7 +70,7 @@ class SubjectMetadataTest extends TestCase
     /**
      * @return Generator<mixed>
      */
-    public function provideMerge(): Generator
+    public static function provideMerge(): Generator
     {
         yield [
             function (SubjectMetadata $subject1, SubjectMetadata $subject2): void {
@@ -210,11 +209,11 @@ class SubjectMetadataTest extends TestCase
 
         yield [
             function (SubjectMetadata $subject1, SubjectMetadata $subject2): void {
-                $subject1->setExecutor(new ExecutorMetadata('foobar', ['1']));
-                $subject2->setExecutor(new ExecutorMetadata('barfoo', ['2']));
+                $subject1->setExecutor(new ExecutorMetadata('foobar', ['a' => 1]));
+                $subject2->setExecutor(new ExecutorMetadata('barfoo', ['b' => 2]));
             },
             function (SubjectMetadata $merged): void {
-                self::assertEquals(new ExecutorMetadata('barfoo', ['2']), $merged->getExecutor());
+                self::assertEquals(new ExecutorMetadata('barfoo', ['b' => 2]), $merged->getExecutor());
             }
         ];
 

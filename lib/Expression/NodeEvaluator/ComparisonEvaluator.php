@@ -68,20 +68,15 @@ class ComparisonEvaluator implements NodeEvaluator
             ));
         }
 
-        switch ($node->operator()) {
-            case '<':
-                return $leftValue < $rightValue;
-            case '<=':
-                return $leftValue <= $rightValue;
-            case '>':
-                return $leftValue > $rightValue;
-            case '>=':
-                return $leftValue >= $rightValue;
-        }
-
-        throw new EvaluationError($node, sprintf(
-            'Unknown comparison operator "%s"',
-            $node->operator()
-        ));
+        return match ($node->operator()) {
+            '<' => $leftValue < $rightValue,
+            '<=' => $leftValue <= $rightValue,
+            '>' => $leftValue > $rightValue,
+            '>=' => $leftValue >= $rightValue,
+            default => throw new EvaluationError($node, sprintf(
+                'Unknown comparison operator "%s"',
+                $node->operator()
+            )),
+        };
     }
 }

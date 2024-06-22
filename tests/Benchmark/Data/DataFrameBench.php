@@ -8,20 +8,14 @@ use function array_fill;
 
 class DataFrameBench
 {
-    /**
-     * @var array
-     */
-    private $series;
+    /** @var list<list<int>> */
+    private array $series;
 
-    /**
-     * @var array
-     */
-    private $columns;
+    /** @var list<int> */
+    private array $columns;
 
-    /**
-     * @var array
-     */
-    private $records;
+    /** @var list<list<int>> */
+    private ?array $records = null;
 
     public function setUpRowArrays(): void
     {

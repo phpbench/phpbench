@@ -12,6 +12,8 @@
 
 namespace PhpBench\Tests\Unit\Storage\Driver\Xml;
 
+use Prophecy\Prophecy\ObjectProphecy;
+use InvalidArgumentException;
 use PhpBench\Dom\Document;
 use PhpBench\Model\Suite;
 use PhpBench\Model\SuiteCollection;
@@ -25,15 +27,25 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class XmlDriverTest extends TestCase
 {
-    private $xmlEncoder;
-    private $xmlDecoder;
-    private $filesystem;
-    private $collection;
-    private $suite;
+    /** @var ObjectProphecy<XmlDecoder> */
+    private ObjectProphecy $xmlDecoder;
 
-    /**
-     */
-    private $document;
+    /** @var ObjectProphecy<XmlEncoder> */
+    private ObjectProphecy $xmlEncoder;
+
+    /** @var ObjectProphecy<Filesystem> */
+    private ObjectProphecy $filesystem;
+
+    /** @var ObjectProphecy<SuiteCollection> */
+    private ObjectProphecy $collection;
+
+    /** @var ObjectProphecy<Suite> */
+    private ObjectProphecy $suite;
+
+    /** @var ObjectProphecy<Document> */
+    private ObjectProphecy $document;
+
+    private XmlDriver $driver;
 
     protected function setUp(): void
     {
@@ -94,7 +106,7 @@ class XmlDriverTest extends TestCase
      */
     public function testFetch(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Cannot find run with reference');
         $uuid = '1339f38b191b77e1185f9729eb25a2aa4e262b01';
         $this->filesystem->exists('/path/to/7e0/3/c/' . $uuid . '.xml')->willReturn(false);

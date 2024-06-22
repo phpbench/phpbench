@@ -14,52 +14,21 @@ use PhpBench\Report\Model\Builder\TableBuilder;
 final class Table implements IteratorAggregate, ComponentInterface
 {
     /**
-     * @var TableRow[]
-     */
-    private $rows;
-
-    /**
-     * @var string|null
-     */
-    private $title;
-
-    /**
-     * @var string[]
-     */
-    private $headers;
-
-    /**
-     * @var array<string,TableColumnGroup>
-     */
-    private $columnGroups;
-
-    /**
-     * @param Node[]|string[]|null $headers
+     * @param Node[]|null $headers
      * @param TableRow[] $rows
      * @param TableColumnGroup[] $columnGroups
-     * @param string[] $headers
      */
-    public function __construct(array $rows, ?array $headers, ?string $title, array $columnGroups = [])
+    public function __construct(private readonly array $rows, private readonly ?array $headers, private readonly ?string $title, private readonly array $columnGroups = [])
     {
-        $this->rows = $rows;
-        $this->title = $title;
-        $this->headers = $headers;
-        $this->columnGroups = $columnGroups;
     }
 
     /**
      * @deprecated to be removed in 2.0. Use TableBuilder.
      *
-     * @param array<int|string,array<int|string,mixed>> $rows
+     * @param tableRowArray[] $rows
      */
     public static function fromRowArray(array $rows, ?string $title = null): self
     {
-        $headers = [];
-
-        foreach ($rows as $row) {
-            $headers = array_keys($row);
-        }
-
         return TableBuilder::create()
             ->addRowsFromArray($rows)
             ->withTitle($title)
@@ -72,7 +41,7 @@ final class Table implements IteratorAggregate, ComponentInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @return ArrayIterator<array-key, TableRow>
      */
     public function getIterator(): ArrayIterator
     {
@@ -100,7 +69,9 @@ final class Table implements IteratorAggregate, ComponentInterface
     }
 
     /**
-     * @return string[]
+     * @deprecated
+     *
+     * @return Node[]|null
      */
     public function headers(): ?array
     {
@@ -108,7 +79,7 @@ final class Table implements IteratorAggregate, ComponentInterface
     }
 
     /**
-     * @retrun TableColumnGroup[]
+     * @return TableColumnGroup[]
      */
     public function columnGroups(): array
     {
