@@ -49,10 +49,6 @@
         "symfony/error-handler": "^6.1 || ^7.0",
         "symfony/var-dumper": "^6.1 || ^7.0"
     },
-    "replace": {
-        "symfony/polyfill-php80": "*",
-        "symfony/polyfill-php81": "*"
-    },
     "suggest": {
         "ext-xdebug": "For Xdebug profiling extension."
     },
