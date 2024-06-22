@@ -4,6 +4,7 @@ CHANGELOG
 master
 ------
 
+- Ignore `@template` and other generic annotations #1097 @dantleech
 - Hide noisy log messages for missing fields #1095 @dantleech
 - Defer character reader until command execution @jbboher #1092
 - Import Attribute symbol @gsteel #1075
