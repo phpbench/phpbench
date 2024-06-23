@@ -1,5 +1,5 @@
 {
-    "$schema": "./phpbench.schema.json",
+    "$schema": "phpbench.schema.json",
     "$include-glob": "examples/Benchmark/*/*.json",
     "runner.file_pattern": "*Bench.php",
     "core.extensions": [

@@ -35,7 +35,8 @@ class ConfigurableRegistryTest extends RegistryTest
         $configurableRegistry = new ConfigurableRegistry(
             'test',
             $this->container->reveal(),
-            new JsonDecoder()
+            new JsonDecoder(),
+            'test.option',
         );
         $this->registry = $configurableRegistry;
     }

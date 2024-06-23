@@ -165,7 +165,8 @@ class ReportExtension implements ExtensionInterface
                 $registry = new ConfigurableRegistry(
                     $registryType,
                     $container,
-                    $container->get(JsonDecoder::class)
+                    $container->get(JsonDecoder::class),
+                    $optionName,
                 );
 
                 foreach ($container->getServiceIdsForTag('report.' . $registryType) as $serviceId => $attributes) {
@@ -182,7 +183,11 @@ class ReportExtension implements ExtensionInterface
                 }
 
                 return $registry;
-            });
+            }, [
+                CoreExtension::TAG_REGISTRY => [
+                    'name' => $registryType,
+                ]
+            ]);
         }
     }
 

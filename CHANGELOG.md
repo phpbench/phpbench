@@ -4,6 +4,8 @@ CHANGELOG
 master
 ------
 
+- Add command to initialize the configuration file (`config:init`) @dantleech
+- Add command to add a new service config based on a prototype (`config:extend`) @dantleech
 - Ignore `@template` and other generic annotations #1097 @dantleech
 - Hide noisy log messages for missing fields #1095 @dantleech
 - Defer character reader until command execution @jbboher #1092
