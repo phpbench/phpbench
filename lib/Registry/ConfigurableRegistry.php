@@ -51,6 +51,7 @@ class ConfigurableRegistry extends Registry
         string $serviceType,
         Container $container,
         private readonly JsonDecoder $jsonDecoder,
+        private string $optionName,
         array $nameToServiceIdMap = []
     ) {
         parent::__construct($serviceType, $container);
@@ -58,6 +59,11 @@ class ConfigurableRegistry extends Registry
         foreach ($nameToServiceIdMap as $name => $serviceId) {
             $this->registerService($name, $serviceId);
         }
+    }
+
+    public function getOptionName(): string
+    {
+        return $this->optionName;
     }
 
     /**

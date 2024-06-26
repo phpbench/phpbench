@@ -13,14 +13,20 @@
 namespace PhpBench\Extension;
 
 use PhpBench\Compat\SymfonyOptionsResolverCompat;
+use PhpBench\Config\ConfigManipulator;
 use PhpBench\Console\Application;
+use PhpBench\Console\Command\ConfigExtendCommand;
+use PhpBench\Console\Command\ConfigInitCommand;
 use PhpBench\Console\Command\Handler\TimeUnitHandler;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\Json\JsonDecoder;
 use PhpBench\Logger\ConsoleLogger;
+use PhpBench\Registry\Registries;
 use PhpBench\Util\TimeUnit;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
+use Symfony\Component\Filesystem\Path;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CoreExtension implements ExtensionInterface
@@ -34,6 +40,7 @@ class CoreExtension implements ExtensionInterface
 
     final public const PARAM_TIME_UNIT = 'core.time_unit';
     final public const PARAM_SCHEMA = '$schema';
+    public const TAG_REGISTRY = 'core.registry';
 
     public function configure(OptionsResolver $resolver): void
     {
@@ -104,7 +111,9 @@ EOT
         });
 
         $this->registerJson($container);
+        $this->registerConfig($container);
         $this->registerCommands($container);
+        $this->registerRegistries($container);
     }
 
     private function registerJson(Container $container): void
@@ -120,6 +129,51 @@ EOT
             return new TimeUnitHandler(
                 $container->get(TimeUnit::class)
             );
+        });
+        $container->register(ConfigInitCommand::class, function (Container $container) {
+            return new ConfigInitCommand($container->get(ConfigManipulator::class));
+        }, [ConsoleExtension::TAG_CONSOLE_COMMAND => [
+            'name' => 'config:initialise',
+        ]]);
+        $container->register(ConfigExtendCommand::class, function (Container $container) {
+            return new ConfigExtendCommand(
+                $container->get(ConfigManipulator::class),
+                $container->get(Registries::class),
+            );
+        }, [ConsoleExtension::TAG_CONSOLE_COMMAND => [
+            'name' => 'config:extend',
+        ]]);
+    }
+
+    private function registerConfig(Container $container): void
+    {
+        $container->register(ConfigManipulator::class, function (Container $container) {
+            $cwd = $container->getParameter(self::PARAM_WORKING_DIR);
+
+            return new ConfigManipulator(
+                Path::makeRelative(__DIR__ . '/../../phpbench.schema.json', $cwd),
+                Path::join($cwd, 'phpbench.json'),
+            );
+        });
+    }
+
+    private function registerRegistries(Container $container): void
+    {
+        $container->register(Registries::class, function (Container $container) {
+            $registries = [];
+
+            foreach ($container->getServiceIdsForTag(self::TAG_REGISTRY) as $serviceId => $attrs) {
+                if (!isset($attrs['name'])) {
+                    throw new RuntimeException(sprintf(
+                        'Service "%s" with tag "%s" must provide a `name` attribute',
+                        $serviceId,
+                        self::TAG_REGISTRY
+                    ));
+                }
+                $registries[$attrs['name']] = $container->get($serviceId);
+            }
+
+            return new Registries($registries);
         });
     }
 }

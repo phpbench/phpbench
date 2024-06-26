@@ -84,6 +84,12 @@ Create a ``phpbench.json`` file in the projects root directory:
         "runner.bootstrap": "vendor/autoload.php"
     }
 
+.. note::
+
+    You can also run `phpbench config:init` to automatically create an
+    **empty** config file, but you will need to manually set the
+    `runner.bootstrap` option.
+
 Above we also added the optional ``$schema`` which should enable auto-completion and
 validation in your IDE.
 

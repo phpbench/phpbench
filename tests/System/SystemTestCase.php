@@ -55,23 +55,32 @@ class SystemTestCase extends IntegrationTestCase
         return $document;
     }
 
-    public function phpbench(string $command, ?string $cwd = null): Process
+    /**
+     * @param list<string>|string $command
+     */
+    public function phpbench(array|string $command, ?string $cwd = null): Process
     {
         $cwd = $this->workspace()->path($cwd);
 
-        $bin = __DIR__ . '/../../bin/phpbench --verbose --no-ansi';
-        $process = Process::fromShellCommandline($bin . ' ' . $command, $cwd);
+        $bin = __DIR__ . '/../../bin/phpbench';
+
+        if (is_array($command)) {
+            $process = new Process([$bin, ...$command], $cwd);
+        } else {
+            $bin .= ' --verbose --no-ansi';
+            $process = Process::fromShellCommandline($bin . ' ' . $command, $cwd);
+        }
         $process->run();
 
         return $process;
     }
 
-    protected function assertExitCode(int $expected, Process $process): void
+    protected static function assertExitCode(int $expected, Process $process): void
     {
         $exitCode = $process->getExitCode();
 
         if ($exitCode !== $expected) {
-            $this->fail(sprintf(
+            self::fail(sprintf(
                 'Expected exit code "%s" from "%s" but got "%s": STDOUT: %s ERR: %s',
                 $expected,
                 $process->getCommandLine(),
@@ -81,7 +90,7 @@ class SystemTestCase extends IntegrationTestCase
             ));
         }
 
-        $this->assertEquals($expected, $exitCode);
+        self::assertEquals($expected, $exitCode);
     }
 
     protected function assertXPathCount(int $count, string $xmlString, string $query): void

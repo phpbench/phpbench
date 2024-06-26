@@ -536,7 +536,8 @@ class RunnerExtension implements ExtensionInterface
             $registry = new ConfigurableRegistry(
                 'executor',
                 $container,
-                $container->get(JsonDecoder::class)
+                $container->get(JsonDecoder::class),
+                self::PARAM_EXECUTORS,
             );
 
             foreach ($container->getServiceIdsForTag(self::TAG_EXECUTOR) as $serviceId => $attributes) {
