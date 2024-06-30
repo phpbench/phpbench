@@ -7,7 +7,7 @@ use stdClass;
 
 final class ConfigManipulator
 {
-    public function __construct(private string $schemaPath, private string $configPath)
+    public function __construct(private ?string $schemaPath, private string $configPath)
     {
     }
 
@@ -19,7 +19,10 @@ final class ConfigManipulator
     public function initialize(): void
     {
         $json = $this->openConfig();
-        $json->{'$schema'} = $this->schemaPath;
+
+        if (null !== $this->schemaPath) {
+            $json->{'$schema'} = $this->schemaPath;
+        }
         $this->writeConfig($json);
     }
 

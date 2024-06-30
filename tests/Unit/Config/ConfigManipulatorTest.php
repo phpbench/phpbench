@@ -30,6 +30,19 @@ class ConfigManipulatorTest extends TestCase
         self::assertEquals($schemaPath, $config['$schema']);
     }
 
+    public function testCreateNewConfigWithNullSchema(): void
+    {
+        self::assertFileDoesNotExist($this->workspace->path('phpbench.json'));
+
+        $this->createManipulator(null)->initialize();
+
+        self::assertFileExists($this->workspace->path('phpbench.json'));
+        $contents = $this->workspace->getContents('phpbench.json');
+        self::assertJson($contents);
+        $config = json_decode($contents, true, JSON_THROW_ON_ERROR);
+        self::assertEquals(['$schema' => null], $config);
+    }
+
     public function testManipulateConfig(): void
     {
         $manipulator = $this->createManipulator();
@@ -72,7 +85,7 @@ class ConfigManipulatorTest extends TestCase
         ], $config['foo']);
     }
 
-    private function createManipulator(string $schemaPath = 'path/to/json.schema'): ConfigManipulator
+    private function createManipulator(?string $schemaPath = 'path/to/json.schema'): ConfigManipulator
     {
         return (new ConfigManipulator(
             $schemaPath,
