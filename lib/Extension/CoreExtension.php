@@ -149,9 +149,14 @@ EOT
     {
         $container->register(ConfigManipulator::class, function (Container $container) {
             $cwd = $container->getParameter(self::PARAM_WORKING_DIR);
+            $schemaPath = null;
+
+            if (class_exists(Phar::class) && Phar::running() !== '') {
+                $schemaPath = Path::makeRelative(__DIR__ . '/../../phpbench.schema.json', $cwd);
+            }
 
             return new ConfigManipulator(
-                Path::makeRelative(__DIR__ . '/../../phpbench.schema.json', $cwd),
+                $schemaPath,
                 Path::join($cwd, 'phpbench.json'),
             );
         });

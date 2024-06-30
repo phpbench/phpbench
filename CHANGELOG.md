@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+1.3.1
+-----
+
+- Fix schema concat issue in PHAR
+
 1.3.0
 -----
 
