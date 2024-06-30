@@ -4,6 +4,8 @@ CHANGELOG
 master
 ------
 
+- Use single quotes for expressions in the default reports @dantleech
+- Add default `table_summary` report component @dantleech
 - Add command to initialize the configuration file (`config:init`) @dantleech
 - Add command to add a new service config based on a prototype (`config:extend`) @dantleech
 - Ignore `@template` and other generic annotations #1097 @dantleech
