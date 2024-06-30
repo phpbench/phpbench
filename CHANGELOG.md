@@ -1,20 +1,28 @@
 CHANGELOG
 =========
 
-master
-------
+1.3.0
+-----
 
-- Use single quotes for expressions in the default reports @dantleech
+Features:
+
 - Add default `table_summary` report component @dantleech
 - Add command to initialize the configuration file (`config:init`) @dantleech
 - Add command to add a new service config based on a prototype (`config:extend`) @dantleech
-- Ignore `@template` and other generic annotations #1097 @dantleech
+
+Improvements:
+
+- Use single quotes for expressions in the default reports @dantleech
 - Hide noisy log messages for missing fields #1095 @dantleech
-- Defer character reader until command execution @jbboher #1092
-- Import Attribute symbol @gsteel #1075
 - Improved types etc @aivchen #1064 #1064 #1070 #1071 #1074 #1081...
 - Improved tests @aivchen
 - Improved code-style @aivchen #1057 #1076 #1070
+- Import Attribute symbol @gsteel #1075
+
+Bug fixes:
+
+- Ignore `@template` and other generic annotations #1097 @dantleech
+- Defer character reader until command execution @jbboher #1092
 
 1.2.15
 ------
