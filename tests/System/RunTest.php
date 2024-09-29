@@ -701,4 +701,11 @@ class RunTest extends SystemTestCase
         $this->assertExitCode(255, $process);
         self::assertStringContainsString('Unknown theme', $process->getErrorOutput());
     }
+
+    public function testOpcache(): void
+    {
+        $process = $this->phpbench('run benchmarks/set4/NothingBench.php --opcache');
+        $this->assertExitCode(0, $process);
+        self::assertStringContainsString('Spawning', $process->getErrorOutput());
+    }
 }
