@@ -706,6 +706,6 @@ class RunTest extends SystemTestCase
     {
         $process = $this->phpbench('run benchmarks/set4/NothingBench.php --opcache');
         $this->assertExitCode(0, $process);
-        self::assertStringContainsString('Spawning', $process->getErrorOutput());
+        self::assertStringContainsString('opcache', $process->getErrorOutput());
     }
 }
