@@ -177,6 +177,7 @@ class RunnerExtension implements ExtensionInterface
         $resolver->setAllowedTypes(self::PARAM_PHP_BINARY, ['string', 'null']);
         $resolver->setAllowedTypes(self::PARAM_PHP_CONFIG, ['array']);
         $resolver->setAllowedTypes(self::PARAM_PHP_OPCACHE, ['bool']);
+        $resolver->setAllowedTypes(self::PARAM_PHP_OPCACHE_DIR, ['string']);
         $resolver->setAllowedTypes(self::PARAM_PHP_DISABLE_INI, ['bool']);
         $resolver->setAllowedTypes(self::PARAM_PHP_WRAPPER, ['string', 'null']);
         $resolver->setAllowedTypes(self::PARAM_PHP_ENV, ['array', 'null']);

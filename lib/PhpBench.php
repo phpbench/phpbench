@@ -16,7 +16,6 @@ use Composer\InstalledVersions;
 use PhpBench\Config\ConfigLoader;
 use PhpBench\Console\Application;
 use PhpBench\Console\Command\Handler\RunnerHandler;
-use PhpBench\Console\Command\RunCommand;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\Exception\ConfigurationPreProcessingError;
 use PhpBench\Extension\ConsoleExtension;

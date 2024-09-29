@@ -14,8 +14,6 @@ namespace PhpBench\Remote;
 
 use InvalidArgumentException;
 use PhpBench\Benchmark\Feature\OpcacheFeature;
-use RuntimeException;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\PhpExecutableFinder;
 
@@ -29,6 +27,8 @@ class Launcher
 
     private readonly ExecutableFinder $finder;
 
+    private readonly OpcacheFeature $opcacheFeature;
+
     /**
      * @param array<string, scalar|scalar[]> $phpConfig
      */
@@ -40,10 +40,11 @@ class Launcher
         private readonly array $phpConfig = [],
         private readonly ?string $phpWrapper = null,
         private readonly bool $phpDisableIni = false,
-        private readonly ?OpcacheFeature $opcacheFeature = null,
+        ?OpcacheFeature $opcacheFeature = null,
     ) {
         $this->payloadFactory = $payloadFactory ?: new PayloadFactory();
         $this->finder = $finder ?: new ExecutableFinder();
+        $this->opcacheFeature = $opcacheFeature ?: OpcacheFeature::disabled();
     }
 
     /**

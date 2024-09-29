@@ -37,4 +37,9 @@ final class OpcacheFeature
 
         return $this->opcacheDir;
     }
+
+    public static function disabled(): self
+    {
+        return new self(new Filesystem(), false, '');
+    }
 }
