@@ -34,7 +34,6 @@ class CharacterReader
     /**
      * Wait for a single character input and return it.
      *
-     * @return ?string
      */
     public function read(): ?string
     {

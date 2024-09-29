@@ -34,18 +34,18 @@ class HistoryEntry
      * @param int|float $totalTime
      */
     public function __construct(
-        private                   $runId,
+        private $runId,
         private readonly DateTime $date,
-        private                   $tag,
-        private                   $branch,
-        private                   $nbSubjects,
-        private                   $nbIterations,
-        private                   $nbRevolutions,
-        private                   $minTime,
-        private                   $maxTime,
-        private                   $meanTime,
-        private                   $meanRelStDev,
-        private                   $totalTime
+        private $tag,
+        private $branch,
+        private $nbSubjects,
+        private $nbIterations,
+        private $nbRevolutions,
+        private $minTime,
+        private $maxTime,
+        private $meanTime,
+        private $meanRelStDev,
+        private $totalTime
     ) {
     }
 
