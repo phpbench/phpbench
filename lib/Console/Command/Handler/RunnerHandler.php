@@ -42,7 +42,7 @@ class RunnerHandler
     final public const OPT_PHP_DISABLE_INI = 'php-disable-ini';
     final public const OPT_FORMAT = 'format';
     final public const OPT_VARIANT_FILTER = 'variant';
-    final public const OPT_OPCACHE = 'opcache';
+    final public const OPT_OPCACHE = 'php-opcache';
 
     public function __construct(
         private readonly Runner $runner,
