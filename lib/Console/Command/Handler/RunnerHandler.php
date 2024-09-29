@@ -94,6 +94,7 @@ class RunnerHandler
             ->withStopOnError($input->getOption(self::OPT_STOP_ON_ERROR))
             ->withAssertions($input->getOption(self::OPT_ASSERT))
             ->withVariantFilters($input->getOption(self::OPT_VARIANT_FILTER))
+            ->withOpcache($input->getOption(self::OPT_OPCACHE))
             ->withFormat($input->getOption(self::OPT_FORMAT));
 
         $parameters = $this->getParameters($input->getOption(self::OPT_PARAMETERS));
