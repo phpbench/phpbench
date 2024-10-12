@@ -6,6 +6,7 @@ CHANGELOG
 
 - Add support for 8.4 (explicit nullables)
 - Bring the `phpbench/dom` library into this repository.
+- Introduce `.gitattributes` to not publish tests files etc.
 
 1.3.1
 -----
