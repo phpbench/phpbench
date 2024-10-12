@@ -12,6 +12,7 @@ return RectorConfig::configure()
     ->withImportNames()
     ->withPaths([
         __DIR__ . '/lib',
+        __DIR__ . '/extensions',
         __DIR__ . '/tests',
         __DIR__ . '/examples',
     ])
