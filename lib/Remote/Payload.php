@@ -62,7 +62,7 @@ class Payload
         private readonly array $tokens = [],
         ?string $phpPath = null,
         private readonly ?float $timeout = null,
-        ProcessFactoryInterface $processFactory = null,
+        ?ProcessFactoryInterface $processFactory = null,
         private readonly ?string $scriptPath = null,
         private readonly bool $scriptRemove = false
     ) {
@@ -162,7 +162,7 @@ class Payload
         $content = file_get_contents($this->template);
 
         if ($content === false) {
-            throw new \RuntimeException(sprintf('Could not read template "%s"', $this->template));
+            throw new RuntimeException(sprintf('Could not read template "%s"', $this->template));
         }
 
         return $content;

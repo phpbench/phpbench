@@ -12,6 +12,7 @@
 
 namespace PhpBench\Serializer;
 
+use DOMDocument;
 use DOMElement;
 use Exception;
 use PhpBench\Dom\Document;
@@ -236,7 +237,7 @@ class XmlEncoder
             return;
         }
 
-        /** @var \DOMDocument $ownerDocument */
+        /** @var DOMDocument $ownerDocument */
         $ownerDocument = $parameterEl->ownerDocument;
 
         if (is_scalar($value) && $this->isBinary($value)) {
@@ -263,7 +264,7 @@ class XmlEncoder
         );
     }
 
-    private function appendExecutor(Element $subjectEl, ResolvedExecutor $executor = null): void
+    private function appendExecutor(Element $subjectEl, ?ResolvedExecutor $executor = null): void
     {
         if (null === $executor) {
             return;

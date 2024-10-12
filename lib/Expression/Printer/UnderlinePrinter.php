@@ -17,9 +17,9 @@ final class UnderlinePrinter implements Printer
         $printed = $this->printers->print($this, $node);
 
         if ($node !== $this->targetNode) {
-            return preg_replace('{[^-]}', ' ', $printed);
+            return preg_replace('{[^-]}', ' ', (string) $printed);
         }
 
-        return str_repeat('-', mb_strlen($printed));
+        return str_repeat('-', mb_strlen((string) $printed));
     }
 }

@@ -65,8 +65,8 @@ class CommandsTest extends IntegrationTestCase
         $output = $this->workspace()->getContents('output');
         // hack to ignore the suite dates
         $output = preg_replace('{[0-9]{4}-[0-9]{2}-[0-9]{2}}', 'xxxx-xx-xx', $output);
-        $output = preg_replace('{[0-9]{2}:[0-9]{2}:[0-9]{2}}', 'xx-xx-xx', $output);
-        $output = preg_replace('{#[a-z0-9]{40}}', 'E3X6AeMdP7L9E7E0X0A7McP1L8E1EdXbAbMbP7La', $output);
+        $output = preg_replace('{[0-9]{2}:[0-9]{2}:[0-9]{2}}', 'xx-xx-xx', (string) $output);
+        $output = preg_replace('{#[a-z0-9]{40}}', 'E3X6AeMdP7L9E7E0X0A7McP1L8E1EdXbAbMbP7La', (string) $output);
         $output = str_replace(getcwd(), '/path/to', $output);
         $approval->approve($output);
     }

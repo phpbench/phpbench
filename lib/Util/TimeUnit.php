@@ -100,7 +100,7 @@ class TimeUnit
      *
      * @return float
      */
-    public function toDestUnit(float $time, string $destUnit = null, string $mode = null)
+    public function toDestUnit(float $time, ?string $destUnit = null, ?string $mode = null)
     {
         return self::convert($time, $this->sourceUnit, $this->getDestUnit($destUnit), $this->getMode($mode));
     }
@@ -146,7 +146,7 @@ class TimeUnit
      * Return the destination unit.
      *
      */
-    public function getDestUnit(string $unit = null): string
+    public function getDestUnit(?string $unit = null): string
     {
         // if a unit is given, use that
         if ($unit) {
@@ -165,7 +165,7 @@ class TimeUnit
      *
      * @return string
      */
-    public function resolveDestUnit($unit, float $value = null)
+    public function resolveDestUnit($unit, ?float $value = null)
     {
         if ($unit === self::AUTO) {
             $unit = self::resolveSuitableUnit($value);
@@ -217,7 +217,7 @@ class TimeUnit
     /**
      * Return the destination mode.
      */
-    public function getMode(string $mode = null): string
+    public function getMode(?string $mode = null): string
     {
         // if a mode is given, use that
         if ($mode) {
@@ -231,7 +231,7 @@ class TimeUnit
     /**
      * Return the destination unit suffix.
      */
-    public function getDestSuffix(string $unit = null, string $mode = null): string
+    public function getDestSuffix(?string $unit = null, ?string $mode = null): string
     {
         return self::getSuffix($this->getDestUnit($unit), $this->getMode($mode));
     }
@@ -239,7 +239,7 @@ class TimeUnit
     /**
      * Return a human readable representation of the unit including the suffix.
      */
-    public function format(float $time, string $unit = null, string $mode = null, int $precision = null, bool $suffix = true): string
+    public function format(float $time, ?string $unit = null, ?string $mode = null, ?int $precision = null, bool $suffix = true): string
     {
         $value = number_format(
             $this->toDestUnit($time, $unit, $mode),
@@ -318,7 +318,7 @@ class TimeUnit
      *
      * @return string
      */
-    public static function getSuffix(string $unit, string $mode = null)
+    public static function getSuffix(string $unit, ?string $mode = null)
     {
         $unit = self::normalizeUnit($unit);
 

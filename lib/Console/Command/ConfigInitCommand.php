@@ -10,7 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class ConfigInitCommand extends Command
 {
-    public function __construct(private ConfigManipulator $initializer)
+    public function __construct(private readonly ConfigManipulator $initializer)
     {
         parent::__construct();
     }

@@ -12,6 +12,8 @@
 
 namespace PhpBench\Reflection;
 
+use UnexpectedValueException;
+
 /**
  * @todo make $class not nullable
  */
@@ -56,7 +58,7 @@ class ReflectionClass
     public function getClass(): string
     {
         if ($this->class === null) {
-            throw new \UnexpectedValueException('class property is empty');
+            throw new UnexpectedValueException('class property is empty');
         }
 
         return $this->class;

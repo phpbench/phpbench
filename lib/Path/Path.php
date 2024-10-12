@@ -259,7 +259,7 @@ final class Path
      * @param string|null $extension if specified, only that extension is cut
      *                               off (may contain leading dot)
      */
-    public static function getFilenameWithoutExtension(string $path, string $extension = null)
+    public static function getFilenameWithoutExtension(string $path, ?string $extension = null)
     {
         if ('' === $path) {
             return '';

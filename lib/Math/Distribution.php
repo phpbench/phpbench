@@ -41,7 +41,7 @@ class Distribution implements IteratorAggregate, ArrayAccess
      * @param array<float|int> $samples
      * @param array{min?: float|int, max?: float|int, sum?: float|int, stdev?: float|int, mean?: float|int, mode?: float|int, variance?: float|int, rstdev?: float|int } $stats
      */
-    public function __construct(private array $samples, private array $stats = [])
+    public function __construct(private readonly array $samples, private array $stats = [])
     {
         if (count($samples) < 1) {
             throw new LogicException(
@@ -192,7 +192,7 @@ class Distribution implements IteratorAggregate, ArrayAccess
      * @param key-of<Closures> $offset
      */
     #[ReturnTypeWillChange]
-    public function offsetGet($offset)
+    public function offsetGet(mixed $offset)
     {
         return $this->getStat($offset);
     }

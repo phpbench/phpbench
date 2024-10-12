@@ -4,7 +4,7 @@ namespace PhpBench\Expression\Ast;
 
 class ConcatNode extends Node
 {
-    public function __construct(private readonly Node $left, private Node $right)
+    public function __construct(private readonly Node $left, private readonly Node $right)
     {
     }
 

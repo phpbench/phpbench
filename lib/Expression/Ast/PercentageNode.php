@@ -6,7 +6,7 @@ use PhpBench\Expression\Exception\EvaluationError;
 
 class PercentageNode extends NumberNode
 {
-    public function __construct(private Node $value)
+    public function __construct(private readonly Node $value)
     {
     }
 

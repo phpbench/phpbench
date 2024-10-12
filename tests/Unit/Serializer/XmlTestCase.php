@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Serializer;
 
+use Generator;
 use ArrayIterator;
 use DateTime;
 use PhpBench\Assertion\AssertionResult;
@@ -174,9 +175,9 @@ abstract class XmlTestCase extends TestCase
     }
 
     /**
-     * @return \Generator<list{string}>
+     * @return Generator<list{string}>
      */
-    public static function provideEncode(): \Generator
+    public static function provideEncode(): Generator
     {
         foreach (glob(__DIR__ . '/examples/*.test') as $path) {
             yield [

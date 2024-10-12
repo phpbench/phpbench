@@ -25,7 +25,7 @@ namespace PhpBench\Benchmark\Metadata\Annotations;
  */
 class OutputTimeUnit
 {
-    private string $timeUnit;
+    private readonly string $timeUnit;
     private ?int $precision = null;
 
     /**

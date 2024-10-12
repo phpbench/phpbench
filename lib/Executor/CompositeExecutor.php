@@ -10,7 +10,7 @@ class CompositeExecutor implements BenchmarkExecutorInterface, HealthCheckInterf
 {
     private readonly HealthCheckInterface $healthCheck;
 
-    public function __construct(private readonly BenchmarkExecutorInterface $benchmarkExecutor, private readonly MethodExecutorInterface $methodExecutor, HealthCheckInterface $healthCheck = null)
+    public function __construct(private readonly BenchmarkExecutorInterface $benchmarkExecutor, private readonly MethodExecutorInterface $methodExecutor, ?HealthCheckInterface $healthCheck = null)
     {
         $this->healthCheck = $healthCheck ?: new AlwaysFineHealthCheck();
     }

@@ -1,0 +1,5 @@
+services:
+  php:
+    image: php:8.4.0RC2-zts-alpine3.20
+    volumes:
+      - .:/app

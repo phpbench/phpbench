@@ -12,6 +12,7 @@
 
 namespace PhpBench\Extensions\XDebug\Command;
 
+use InvalidArgumentException;
 use PhpBench\Benchmark\RunnerConfig;
 use PhpBench\Console\Command\Handler\RunnerHandler;
 use PhpBench\Extensions\XDebug\Command\Handler\OutputDirHandler;
@@ -74,7 +75,7 @@ EOT
             $guiBin = $finder->find($input->getOption('gui-bin'));
 
             if (null === $guiBin) {
-                throw new \InvalidArgumentException(sprintf(
+                throw new InvalidArgumentException(sprintf(
                     'Could not locate GUI bin "%s"',
                     $input->getOption('gui-bin')
                 ));
@@ -90,9 +91,7 @@ EOT
                     $generatedFiles[] = $generatedFile = $outputDir . DIRECTORY_SEPARATOR . $this->xdebugUtil->filenameFromContext($iteration, $this->xdebugUtil->getCachegrindExtensionOfGeneratedFile());
 
                     if ($guiBin) {
-                        $process = Process::fromShellCommandline(sprintf(
-                            $guiBin . ' ' . $generatedFile
-                        ));
+                        $process = Process::fromShellCommandline($guiBin . ' ' . $generatedFile);
                         $process->run();
                     }
                 },
@@ -109,7 +108,7 @@ EOT
 
         foreach ($generatedFiles as $generatedFile) {
             if (!file_exists($generatedFile)) {
-                throw new \InvalidArgumentException(sprintf(
+                throw new InvalidArgumentException(sprintf(
                     'Profile "%s" was not generated. Perhaps you do not have Xdebug installed or the extension is not enabled for your benchmark?',
                     $generatedFile
                 ));

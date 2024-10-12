@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Model;
 
+use Generator;
 use PhpBench\Model\Tag;
 use PhpBench\Storage\Exception\InvalidTagException;
 use PhpBench\Tests\TestCase;
@@ -29,9 +30,9 @@ class TagTest extends TestCase
     }
 
     /**
-     * @return \Generator<list{string}>
+     * @return Generator<list{string}>
      */
-    public static function provideValidTag(): \Generator
+    public static function provideValidTag(): Generator
     {
         yield ['foobar'];
 
@@ -57,9 +58,9 @@ class TagTest extends TestCase
     }
 
     /**
-     * @return \Generator<list{string}>
+     * @return Generator<list{string}>
      */
-    public static function provideInvalidTag(): \Generator
+    public static function provideInvalidTag(): Generator
     {
         yield [''];
 

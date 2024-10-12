@@ -7,7 +7,7 @@ use stdClass;
 
 final class ConfigManipulator
 {
-    public function __construct(private ?string $schemaPath, private string $configPath)
+    public function __construct(private readonly ?string $schemaPath, private readonly string $configPath)
     {
     }
 
@@ -26,10 +26,7 @@ final class ConfigManipulator
         $this->writeConfig($json);
     }
 
-    /**
-     * @param mixed $value
-     */
-    public function set(string $key, $value): void
+    public function set(string $key, mixed $value): void
     {
         $json = $this->openConfig();
         $json->{$key} = $value;
@@ -82,10 +79,7 @@ final class ConfigManipulator
         return $json;
     }
 
-    /**
-     * @param mixed $value
-     */
-    private function writeConfig($value): void
+    private function writeConfig(mixed $value): void
     {
         file_put_contents($this->configPath, json_encode($value, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
     }

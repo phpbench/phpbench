@@ -25,7 +25,6 @@
         "ext-tokenizer": "*",
         "doctrine/annotations": "^2.0",
         "phpbench/container": "^2.2",
-        "phpbench/dom": "~0.3.3",
         "psr/log": "^1.1 || ^2.0 || ^3.0",
         "seld/jsonlint": "^1.1",
         "symfony/console": "^6.1 || ^7.0",
@@ -45,7 +44,7 @@
         "phpstan/phpstan": "^1.0",
         "phpstan/phpstan-phpunit": "^1.0",
         "phpunit/phpunit": "^10.4 || ^11.0",
-        "rector/rector": "^0.18.11 || ^1.0.0",
+        "rector/rector": "^1.2",
         "symfony/error-handler": "^6.1 || ^7.0",
         "symfony/var-dumper": "^6.1 || ^7.0"
     },

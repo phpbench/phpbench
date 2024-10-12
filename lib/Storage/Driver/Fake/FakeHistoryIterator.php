@@ -2,17 +2,18 @@
 
 namespace PhpBench\Storage\Driver\Fake;
 
+use ArrayIterator;
 use PhpBench\Storage\HistoryEntry;
 use PhpBench\Storage\HistoryIteratorInterface;
 
 class FakeHistoryIterator implements HistoryIteratorInterface
 {
-    /** @var \ArrayIterator<array-key, HistoryEntry> */
-    private \ArrayIterator $entries;
+    /** @var ArrayIterator<array-key, HistoryEntry> */
+    private readonly ArrayIterator $entries;
 
     public function __construct(HistoryEntry ...$entries)
     {
-        $this->entries = new \ArrayIterator($entries);
+        $this->entries = new ArrayIterator($entries);
     }
 
     /**

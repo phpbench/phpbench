@@ -43,7 +43,7 @@ class BenchmarkFinderTest extends TestCase
         $this->logger = $this->prophesize(LoggerInterface::class);
     }
 
-    private function createFinder(string $benchPattern = null): BenchmarkFinder
+    private function createFinder(?string $benchPattern = null): BenchmarkFinder
     {
         return new BenchmarkFinder($this->factory->reveal(), __DIR__ . '/', $this->logger->reveal(), $benchPattern);
     }

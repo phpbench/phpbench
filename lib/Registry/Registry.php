@@ -92,7 +92,7 @@ class Registry
      *
      * @return T
      */
-    public function getService(string $name = null): object
+    public function getService(?string $name = null): object
     {
         $name = $name ?: $this->defaultService;
 

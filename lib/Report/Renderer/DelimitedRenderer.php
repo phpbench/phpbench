@@ -81,7 +81,9 @@ class DelimitedRenderer implements RendererInterface
             fputcsv(
                 $pointer,
                 $row,
-                $config[self::OPT_DELIMITER]
+                $config[self::OPT_DELIMITER],
+                '"',
+                "\\"
             );
         }
 

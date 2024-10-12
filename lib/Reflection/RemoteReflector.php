@@ -12,6 +12,7 @@
 
 namespace PhpBench\Reflection;
 
+use RuntimeException;
 use PhpBench\Model\ParameterSetsCollection;
 use PhpBench\Remote\Launcher;
 
@@ -118,7 +119,7 @@ class RemoteReflector implements ReflectorInterface
         $fp = fopen($file, 'r');
 
         if ($fp === false) {
-            throw new \RuntimeException(sprintf('Could not read file %s', $file));
+            throw new RuntimeException(sprintf('Could not read file %s', $file));
         }
 
         $class = $namespace = $buffer = '';

@@ -40,8 +40,8 @@ class SamplerManagerTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Baseline callable "foo" has already been registered.');
-        $this->manager->addSamplerCallable('foo', fn () => null);
-        $this->manager->addSamplerCallable('foo', fn () => null);
+        $this->manager->addSamplerCallable('foo', static fn () => null);
+        $this->manager->addSamplerCallable('foo', static fn () => null);
     }
 
     /**

@@ -24,7 +24,7 @@ namespace PhpBench\Benchmark\Metadata\Annotations;
  */
 class Assert
 {
-    private string $expression;
+    private readonly string $expression;
 
     /**
      * @param array{value: string} $params

@@ -98,7 +98,7 @@ class Statistics
      *
      * @param array<int|float> $population
      */
-    public static function kdeMode(array $population, int $space = 512, string $bandwidth = null): float
+    public static function kdeMode(array $population, int $space = 512, ?string $bandwidth = null): float
     {
         if (count($population) === 1) {
             return current($population);
@@ -172,7 +172,7 @@ class Statistics
      *
      * @return array<string|int, int>
      */
-    public static function histogram(array $values, int $steps = 10, float $lowerBound = null, float $upperBound = null): array
+    public static function histogram(array $values, int $steps = 10, ?float $lowerBound = null, ?float $upperBound = null): array
     {
         $min = $lowerBound ?: min($values);
         $max = $upperBound ?: max($values);

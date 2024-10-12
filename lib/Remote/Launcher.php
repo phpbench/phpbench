@@ -30,9 +30,9 @@ class Launcher
      * @param array<string, scalar|scalar[]> $phpConfig
      */
     public function __construct(
-        PayloadFactory $payloadFactory = null,
-        ExecutableFinder $finder = null,
-        private ?string $bootstrap = null,
+        ?PayloadFactory $payloadFactory = null,
+        ?ExecutableFinder $finder = null,
+        private readonly ?string $bootstrap = null,
         private readonly ?string $phpBinary = null,
         private readonly array $phpConfig = [],
         private readonly ?string $phpWrapper = null,
