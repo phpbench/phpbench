@@ -25,7 +25,6 @@
         "ext-tokenizer": "*",
         "doctrine/annotations": "^2.0",
         "phpbench/container": "^2.2",
-        "phpbench/dom": "~0.3.3",
         "psr/log": "^1.1 || ^2.0 || ^3.0",
         "seld/jsonlint": "^1.1",
         "symfony/console": "^6.1 || ^7.0",
