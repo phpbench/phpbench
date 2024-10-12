@@ -62,7 +62,7 @@ class Payload
         private readonly array $tokens = [],
         ?string $phpPath = null,
         private readonly ?float $timeout = null,
-        ProcessFactoryInterface $processFactory = null,
+        ?ProcessFactoryInterface $processFactory = null,
         private readonly ?string $scriptPath = null,
         private readonly bool $scriptRemove = false
     ) {

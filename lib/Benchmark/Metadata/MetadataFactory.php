@@ -28,7 +28,7 @@ class MetadataFactory
 {
     private readonly LoggerInterface $logger;
 
-    public function __construct(private readonly ReflectorInterface $reflector, private readonly DriverInterface $driver, LoggerInterface $logger = null, private readonly bool $warnOnMetadataError = false)
+    public function __construct(private readonly ReflectorInterface $reflector, private readonly DriverInterface $driver, ?LoggerInterface $logger = null, private readonly bool $warnOnMetadataError = false)
     {
         $this->logger = $logger ?: new NullLogger();
     }

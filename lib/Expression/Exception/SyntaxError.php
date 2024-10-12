@@ -10,7 +10,7 @@ use function str_repeat;
 
 class SyntaxError extends ExpressionError
 {
-    public static function forToken(Tokens $tokens, Token $target, string $message, int $length = null): self
+    public static function forToken(Tokens $tokens, Token $target, string $message, ?int $length = null): self
     {
         $lines = [''];
         $expression = [];

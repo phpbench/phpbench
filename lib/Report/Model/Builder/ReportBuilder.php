@@ -25,7 +25,7 @@ final class ReportBuilder
     {
     }
 
-    public static function create(string $title = null): self
+    public static function create(?string $title = null): self
     {
         return new self($title);
     }

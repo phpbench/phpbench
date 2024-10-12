@@ -264,7 +264,7 @@ class XmlEncoder
         );
     }
 
-    private function appendExecutor(Element $subjectEl, ResolvedExecutor $executor = null): void
+    private function appendExecutor(Element $subjectEl, ?ResolvedExecutor $executor = null): void
     {
         if (null === $executor) {
             return;

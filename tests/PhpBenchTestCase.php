@@ -4,7 +4,7 @@ namespace PhpBench\Tests;
 
 class PhpBenchTestCase extends IntegrationTestCase
 {
-    protected function workspacePath(string $path = null): string
+    protected function workspacePath(?string $path = null): string
     {
         return $this->workspace()->path($path);
     }

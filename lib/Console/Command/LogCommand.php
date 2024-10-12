@@ -36,7 +36,7 @@ class LogCommand extends Command
         private readonly TimeUnit $timeUnit,
         private readonly TimeUnitHandler $timeUnitHandler,
         private readonly OutputInterface $stdout,
-        CharacterReader $characterReader = null
+        ?CharacterReader $characterReader = null
     ) {
         parent::__construct();
         $this->characterReader = $characterReader ?: new CharacterReader();

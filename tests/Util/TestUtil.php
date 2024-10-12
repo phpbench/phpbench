@@ -104,7 +104,7 @@ class TestUtil
     /**
      * @param array<string,mixed> $options
      */
-    public static function createSuite(array $options = [], string $suiteIndex = null): Suite
+    public static function createSuite(array $options = [], ?string $suiteIndex = null): Suite
     {
         $options = array_merge([
             'uuid' => $suiteIndex,

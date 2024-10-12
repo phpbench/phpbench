@@ -163,7 +163,7 @@ class RunnerConfig
      *
      * A value of NULL will disable retry.
      */
-    public function getRetryThreshold(float $default = null): ?float
+    public function getRetryThreshold(?float $default = null): ?float
     {
         return $this->retryThreshold ?: $default;
     }
@@ -172,7 +172,7 @@ class RunnerConfig
      * @deprecated as not used
      * Return the output time unit.
      */
-    public function getOutputTimeUnit(string $default = null): ?string
+    public function getOutputTimeUnit(?string $default = null): ?string
     {
         return $this->outputTimeUnit ?: $default;
     }
@@ -184,7 +184,7 @@ class RunnerConfig
      *
      * @return int|string|null
      */
-    public function getOutputTimePrecision(string $default = null)
+    public function getOutputTimePrecision(?string $default = null)
     {
         return $this->outputTimePrecision ?: $default;
     }
@@ -232,7 +232,7 @@ class RunnerConfig
         return $new;
     }
 
-    public function withTag(string $tag = null): self
+    public function withTag(?string $tag = null): self
     {
         $new = clone $this;
         $new->tag = $tag;
@@ -303,7 +303,7 @@ class RunnerConfig
         return $new;
     }
 
-    public function withRetryThreshold(float $retryThreshold = null): self
+    public function withRetryThreshold(?float $retryThreshold = null): self
     {
         $this->assertGreaterThanZero('retry threshold', $retryThreshold);
 
@@ -313,7 +313,7 @@ class RunnerConfig
         return $new;
     }
 
-    public function withSleep(int $sleep = null): self
+    public function withSleep(?int $sleep = null): self
     {
         $this->assertGreaterThanZero('sleep', $sleep);
 
@@ -339,7 +339,7 @@ class RunnerConfig
     /**
      * @deprecated as not used
      */
-    public function withOutputTimePrecision(int $outputTimePrecision = null): self
+    public function withOutputTimePrecision(?int $outputTimePrecision = null): self
     {
         $new = clone $this;
         $new->outputTimePrecision = $outputTimePrecision;
@@ -350,7 +350,7 @@ class RunnerConfig
     /**
      * @deprecated as not used
      */
-    public function withOutputTimeUnit(string $outputTimeUnit = null): self
+    public function withOutputTimeUnit(?string $outputTimeUnit = null): self
     {
         $new = clone $this;
         $new->outputTimeUnit = $outputTimeUnit;
@@ -358,7 +358,7 @@ class RunnerConfig
         return $new;
     }
 
-    public function withStopOnError(bool $stopOnError = null): self
+    public function withStopOnError(?bool $stopOnError = null): self
     {
         $stopOnError ??= $this->stopOnError;
         $new = clone $this;
@@ -443,7 +443,7 @@ class RunnerConfig
         ));
     }
 
-    private function assertGreaterThanZero(string $field, float $value = null): void
+    private function assertGreaterThanZero(string $field, ?float $value = null): void
     {
         if (null === $value) {
             return;

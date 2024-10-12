@@ -48,7 +48,7 @@ class AnnotationDriver implements DriverInterface
     /**
      * @param string $subjectPattern
      */
-    public function __construct(private $subjectPattern = '^bench', AnnotationReader $reader = null)
+    public function __construct(private $subjectPattern = '^bench', ?AnnotationReader $reader = null)
     {
         $this->reader = $reader ?: new AnnotationReader();
     }

@@ -37,7 +37,7 @@ class XmlDriver implements DriverInterface
     /**
      * @param string $path
      */
-    public function __construct(private $path, private readonly XmlEncoder $xmlEncoder, private readonly XmlDecoder $xmlDecoder, Filesystem $filesystem = null)
+    public function __construct(private $path, private readonly XmlEncoder $xmlEncoder, private readonly XmlDecoder $xmlDecoder, ?Filesystem $filesystem = null)
     {
         $this->filesystem = $filesystem ?: new Filesystem();
     }

@@ -30,7 +30,7 @@ class Git implements ProviderInterface
     /**
      * @param string $exeName
      */
-    public function __construct(private readonly string $cwd, ExecutableFinder $exeFinder = null, private $exeName = 'git')
+    public function __construct(private readonly string $cwd, ?ExecutableFinder $exeFinder = null, private $exeName = 'git')
     {
         $this->exeFinder = $exeFinder ?: new ExecutableFinder();
     }
