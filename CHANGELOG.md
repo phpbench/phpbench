@@ -1,8 +1,8 @@
 CHANGELOG
 =========
 
-1.3.2
------
+master
+------
 
 - Add support for 8.4 (explicit nullables)
 - Bring the `phpbench/dom` library into this repository.
