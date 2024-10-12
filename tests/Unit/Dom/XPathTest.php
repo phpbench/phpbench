@@ -35,7 +35,7 @@ class XPathTest extends TestCase
         $this->assertFalse($result);
     }
 
-    private function getDocument()
+    private function getDocument(): Document
     {
         $xml = <<<EOT
 <?xml version="1.0"?>

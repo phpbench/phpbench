@@ -11,12 +11,20 @@
 
 namespace PhpBench\Dom\Tests\Unit;
 
+use PhpBench\Dom\Element;
 use PhpBench\Dom\Document;
 use PHPUnit\Framework\TestCase;
 
 class ElementTest extends TestCase
 {
+    /**
+     * @var Element
+     */
     private $element;
+
+    /**
+     * @var Document
+     */
     private $document;
 
     protected function setUp(): void
@@ -107,22 +115,5 @@ class ElementTest extends TestCase
 
 EOT
             , $dump);
-    }
-
-    private function getXml()
-    {
-        $xml = <<<EOT
-<?xml version="1.0"?>
-<document>
-    <record id="1">
-        <title>Hello</title>
-    </record>
-    <record id="2">
-        <title>World</title>
-    </record>
-</document>
-EOT;
-
-        return $xml;
     }
 }

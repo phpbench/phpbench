@@ -24,7 +24,6 @@ interface XPathAware
      * should be used as the context if no context is given.
      *
      * @param string   $query
-     * @param DOMNode $context
      *
      * @return DOMNodeList<DOMNode>
      */
@@ -34,7 +33,6 @@ interface XPathAware
      * As with XPathAware::query but return a single node or NULL if no node was found.
      *
      * @param string   $query
-     * @param DOMNode $context
      *
      * @return Element|null
      */
@@ -48,7 +46,6 @@ interface XPathAware
      * should be used as the context if no context is given.
      *
      * @param string   $expression
-     * @param DOMNode $context
      *
      * @return mixed
      */

@@ -23,7 +23,7 @@ class DocumentTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->document = new Document(1.0);
+        $this->document = new Document('1.0');
     }
 
     /**
@@ -81,6 +81,9 @@ class DocumentTest extends TestCase
     }
 
 
+    /**
+     * @return string
+     */
     private function getXml()
     {
         $xml = <<<EOT
