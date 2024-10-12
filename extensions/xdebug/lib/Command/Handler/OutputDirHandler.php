@@ -36,7 +36,7 @@ class OutputDirHandler
      */
     private $cwd;
 
-    public function __construct(string $outputDir, string $cwd, Filesystem $filesystem = null)
+    public function __construct(string $outputDir, string $cwd, ?Filesystem $filesystem = null)
     {
         $this->outputDir = $outputDir;
         $this->filesystem = $filesystem ?: new Filesystem();
