@@ -11,6 +11,7 @@
 
 namespace PhpBench\Dom;
 
+use DOMDocument;
 use DOMNode;
 use DOMNodeList;
 use RuntimeException;
@@ -18,7 +19,7 @@ use RuntimeException;
 /**
  * Wrapper for the \DOMDocument class.
  */
-class Document extends \DOMDocument implements XPathAware
+class Document extends DOMDocument implements XPathAware
 {
     /**
      * @var XPath|null
@@ -71,7 +72,7 @@ class Document extends \DOMDocument implements XPathAware
     /**
      * @return DOMNodeList<DOMNode>
      */
-    public function query($query, DOMNode $context = null): DOMNodeList
+    public function query($query, ?DOMNode $context = null): DOMNodeList
     {
         return $this->xpath()->query($query, $context);
     }
@@ -79,7 +80,7 @@ class Document extends \DOMDocument implements XPathAware
     /**
      * {@inheritdoc}
      */
-    public function queryOne($query, DOMNode $context = null): ?Element
+    public function queryOne($query, ?DOMNode $context = null): ?Element
     {
         return $this->xpath()->queryOne($query, $context);
     }
@@ -87,7 +88,7 @@ class Document extends \DOMDocument implements XPathAware
     /**
      * @return mixed
      */
-    public function evaluate($expression, DOMNode $context = null)
+    public function evaluate($expression, ?DOMNode $context = null)
     {
         return $this->xpath()->evaluate($expression, $context);
     }

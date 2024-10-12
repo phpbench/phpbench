@@ -11,13 +11,14 @@
 
 namespace PhpBench\Dom;
 
+use DOMElement;
 use DOMNode;
 use DOMNodeList;
 
 /**
  * Wrapper for the \DOMElement class.
  */
-class Element extends \DOMElement implements XPathAware
+class Element extends DOMElement implements XPathAware
 {
     /**
      * Create and append a text-node with the given name and value.
@@ -51,12 +52,12 @@ class Element extends \DOMElement implements XPathAware
     /**
      * @return DOMNodeList<DOMNode>
      */
-    public function query($xpath, DOMNode $context = null): DOMNodeList
+    public function query($xpath, ?DOMNode $context = null): DOMNodeList
     {
         return $this->owner()->xpath()->query($xpath, $context ?: $this);
     }
 
-    public function queryOne($xpath, DOMNode $context = null): ?Element
+    public function queryOne($xpath, ?DOMNode $context = null): ?Element
     {
         return $this->owner()->xpath()->queryOne($xpath, $context ?: $this);
     }
@@ -64,7 +65,7 @@ class Element extends \DOMElement implements XPathAware
     /**
      * @return mixed
      */
-    public function evaluate($expression, DOMNode $context = null)
+    public function evaluate($expression, ?DOMNode $context = null)
     {
         return $this->owner()->xpath()->evaluate($expression, $context ?: $this);
     }

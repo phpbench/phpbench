@@ -11,6 +11,9 @@
 
 namespace PhpBench\Dom;
 
+use DOMXPath;
+use ReturnTypeWillChange;
+use PhpBench\Dom\Exception\InvalidQueryException;
 use DOMNode;
 use DOMNodeList;
 use RuntimeException;
@@ -18,7 +21,7 @@ use RuntimeException;
 /**
  * Wrapper for the \DOMXPath class.
  */
-class XPath extends \DOMXPath
+class XPath extends DOMXPath
 {
     /**
      * {@inheritdoc}
@@ -26,7 +29,7 @@ class XPath extends \DOMXPath
      * @param mixed $contextnode
      * @param bool $registerNodeNS
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function evaluate($expression, $contextnode = null, $registerNodeNS = true)
     {
         $result = $this->execute('evaluate', 'expression', $expression, $contextnode, $registerNodeNS);
@@ -40,7 +43,7 @@ class XPath extends \DOMXPath
      *
      * @return DOMNodeList<DOMNode>
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function query($expression, $contextnode = null, $registerNodeNS = true): DOMNodeList
     {
         $list = $this->execute('query', 'query', $expression, $contextnode, $registerNodeNS);
@@ -52,7 +55,7 @@ class XPath extends \DOMXPath
         return $list;
     }
 
-    public function queryOne(string $expr, DOMNode $contextEl = null, bool $registerNodeNs = false): ?Element
+    public function queryOne(string $expr, ?DOMNode $contextEl = null, bool $registerNodeNs = false): ?Element
     {
         $nodeList = $this->query($expr, $contextEl, $registerNodeNs);
 
@@ -80,7 +83,7 @@ class XPath extends \DOMXPath
      *
      * @return mixed
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     private function execute(string $method, string $context, string $query, $contextEl = null, bool $registerNodeNs = false)
     {
         libxml_use_internal_errors(true);
@@ -97,7 +100,7 @@ class XPath extends \DOMXPath
             }
             libxml_clear_errors();
 
-            throw new Exception\InvalidQueryException(sprintf(
+            throw new InvalidQueryException(sprintf(
                 'Errors encountered when evaluating XPath %s "%s": %s%s',
                 $context,
                 $query,

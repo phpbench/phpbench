@@ -11,6 +11,8 @@
 
 namespace PhpBench\Dom\Exception;
 
-class InvalidQueryException extends \InvalidArgumentException
+use InvalidArgumentException;
+
+class InvalidQueryException extends InvalidArgumentException
 {
 }
