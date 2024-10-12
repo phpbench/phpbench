@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Benchmark\Metadata;
 
+use stdClass;
 use PhpBench\Benchmark\Metadata\AnnotationReader;
 use PhpBench\Benchmark\Metadata\Annotations;
 use PhpBench\Reflection\ReflectionClass;
@@ -26,7 +27,7 @@ class AnnotationReaderTest extends TestCase
     public function testLoadClassMetadata(): void
     {
         $reflection = new ReflectionClass();
-        $reflection->class = \stdClass::class;
+        $reflection->class = stdClass::class;
         $reflection->comment = <<<'EOT'
 /**
  * @BeforeClassMethods({"beforeClass"})
@@ -44,7 +45,7 @@ EOT;
     public function testLoadMethodMetadata(): void
     {
         $reflection = new ReflectionClass();
-        $reflection->class = \stdClass::class;
+        $reflection->class = stdClass::class;
         $reflectionMethod = new ReflectionMethod();
         $reflectionMethod->reflectionClass = $reflection;
         $reflectionMethod->comment = <<<'EOT'
@@ -64,7 +65,7 @@ EOT;
     public function testImportedUse(): void
     {
         $reflection = new ReflectionClass();
-        $reflection->class = \stdClass::class;
+        $reflection->class = stdClass::class;
         $reflection->path = __DIR__ . '/classes/TestAnnotation.php';
         $reflectionMethod = new ReflectionMethod();
         $reflectionMethod->reflectionClass = $reflection;

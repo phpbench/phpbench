@@ -9,7 +9,7 @@ namespace PhpBench\Benchmark\Metadata\Annotations;
  */
 class Format
 {
-    private string $format;
+    private readonly string $format;
 
     /**
      * @param array{value: string} $params

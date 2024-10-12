@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Benchmark;
 
+use Generator;
 use PhpBench\Benchmark\CartesianParameterIterator;
 use PhpBench\Model\ParameterSet;
 use PhpBench\Model\ParameterSetsCollection;
@@ -40,7 +41,7 @@ class CartesianParameterIteratorTest extends TestCase
     }
 
     /**
-     * @return \Generator<mixed>
+     * @return Generator<mixed>
      */
     public static function provideIterate()
     {

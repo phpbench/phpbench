@@ -51,7 +51,7 @@ class ConfigurableRegistry extends Registry
         string $serviceType,
         Container $container,
         private readonly JsonDecoder $jsonDecoder,
-        private string $optionName,
+        private readonly string $optionName,
         array $nameToServiceIdMap = []
     ) {
         parent::__construct($serviceType, $container);

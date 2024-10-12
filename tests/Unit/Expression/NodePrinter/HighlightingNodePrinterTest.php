@@ -2,6 +2,7 @@
 
 namespace PhpBench\Tests\Unit\Expression\NodePrinter;
 
+use Closure;
 use Generator;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\NodePrinter;
@@ -19,7 +20,7 @@ class HighlightingNodePrinterTest extends TestCase
     /**
      * @dataProvider providePrint
      *
-     * @param array<class-string<Node>, \Closure(Node):string|string> $map
+     * @param array<class-string<Node>, (Closure(Node):string | string)> $map
      */
     public function testPrint(Node $node, array $map, string $expected): void
     {
@@ -36,7 +37,7 @@ class HighlightingNodePrinterTest extends TestCase
     }
 
     /**
-     * @return Generator<list{Node, array<class-string<Node>, \Closure(Node):string|string>, string}>
+     * @return Generator<list{Node, array<class-string<Node>, (Closure(Node):string | string)>, string}>
      */
     public static function providePrint(): Generator
     {

@@ -24,7 +24,7 @@ namespace PhpBench\Benchmark\Metadata\Annotations;
  */
 class OutputMode
 {
-    private string $mode;
+    private readonly string $mode;
 
     /**
      * @param array{value: string} $params

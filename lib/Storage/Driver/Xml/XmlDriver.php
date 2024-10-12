@@ -47,8 +47,8 @@ class XmlDriver implements DriverInterface
         foreach ($collection->getSuites() as $suite) {
             $path = $this->getPath($suite->getUuid());
 
-            if (false === $this->filesystem->exists(dirname($path))) {
-                $this->filesystem->mkdir(dirname($path));
+            if (false === $this->filesystem->exists(dirname((string) $path))) {
+                $this->filesystem->mkdir(dirname((string) $path));
             }
 
             $collection = new SuiteCollection([$suite]);

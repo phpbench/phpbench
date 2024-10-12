@@ -12,6 +12,7 @@
 
 namespace PhpBench\Environment\Provider;
 
+use RuntimeException;
 use PhpBench\Environment\Information;
 use PhpBench\Environment\ProviderInterface;
 
@@ -30,7 +31,7 @@ class UnixSysload implements ProviderInterface
         $load = sys_getloadavg();
 
         if ($load === false) {
-            throw new \RuntimeException('Failed to get system load average');
+            throw new RuntimeException('Failed to get system load average');
         }
         $load = array_combine([
             'l1', 'l5', 'l15',

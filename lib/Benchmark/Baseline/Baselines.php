@@ -12,6 +12,8 @@
 
 namespace PhpBench\Benchmark\Baseline;
 
+use RuntimeException;
+
 /**
  * Class providing some static methods which are used
  * to provide base line measurements.
@@ -54,12 +56,12 @@ class Baselines
         $tempName = tempnam(sys_get_temp_dir(), 'phpbench_baseline');
 
         if ($tempName === false) {
-            throw new \RuntimeException('Failed to create a temp file');
+            throw new RuntimeException('Failed to create a temp file');
         }
         $handle = fopen($tempName, 'w');
 
         if ($handle === false) {
-            throw new \RuntimeException("Temp file $tempName is not writeable");
+            throw new RuntimeException(sprintf('Temp file %s is not writeable', $tempName));
         }
 
         for ($i = 0; $i < $revs; $i++) {
@@ -71,7 +73,7 @@ class Baselines
         $handle = fopen($tempName, 'r');
 
         if ($handle === false) {
-            throw new \RuntimeException("Temp file $tempName is not readable");
+            throw new RuntimeException(sprintf('Temp file %s is not readable', $tempName));
         }
 
         $line = true;

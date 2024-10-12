@@ -19,8 +19,8 @@ final class ConfigExtendCommand extends Command
 
 
     public function __construct(
-        private ConfigManipulator $manipulator,
-        private Registries $registries,
+        private readonly ConfigManipulator $manipulator,
+        private readonly Registries $registries,
     ) {
         parent::__construct();
     }

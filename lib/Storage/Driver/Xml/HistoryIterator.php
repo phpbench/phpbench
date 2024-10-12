@@ -12,6 +12,7 @@
 
 namespace PhpBench\Storage\Driver\Xml;
 
+use RuntimeException;
 use ArrayIterator;
 use ReturnTypeWillChange;
 use DirectoryIterator;
@@ -213,7 +214,7 @@ class HistoryIterator implements HistoryIteratorInterface
         $suite = reset($suites);
 
         if ($suite === false) {
-            throw new \RuntimeException('Suits collection is empty');
+            throw new RuntimeException('Suits collection is empty');
         }
 
         $envInformations = $suite->getEnvInformations();

@@ -9,9 +9,9 @@ namespace PhpBench\Benchmark\Metadata\Annotations;
  */
 class Executor
 {
-    private string $name;
+    private readonly string $name;
     /** @var array<string, mixed> */
-    private array $config;
+    private readonly array $config;
 
     /**
      * @param array{value: string} $params

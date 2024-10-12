@@ -12,6 +12,7 @@
 
 namespace PhpBench\Tests\Unit\Benchmark\Metadata;
 
+use stdClass;
 use RuntimeException;
 use InvalidArgumentException;
 use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
@@ -193,7 +194,7 @@ class MetadataFactoryTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('must be static in benchmark class "stdClass"');
         $this->hierarchy->isEmpty()->willReturn(false);
-        $this->reflection->reveal()->class = \stdClass::class;
+        $this->reflection->reveal()->class = stdClass::class;
         TestUtil::configureBenchmarkMetadata($this->metadata, [
             'beforeClassMethods' => ['beforeMe'],
         ]);
@@ -212,7 +213,7 @@ class MetadataFactoryTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('before method "beforeMe" must not be static in benchmark class "stdClass"');
         $this->hierarchy->isEmpty()->willReturn(false);
-        $this->reflection->reveal()->class = \stdClass::class;
+        $this->reflection->reveal()->class = stdClass::class;
         TestUtil::configureBenchmarkMetadata($this->metadata, []);
         $this->metadata->getSubjects()->willReturn([
             $this->subjectMetadata->reveal(),
@@ -235,7 +236,7 @@ class MetadataFactoryTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Unknown before method "beforeMe" in benchmark class "stdClass"');
         $this->hierarchy->isEmpty()->willReturn(false);
-        $this->reflection->reveal()->class = \stdClass::class;
+        $this->reflection->reveal()->class = stdClass::class;
         TestUtil::configureBenchmarkMetadata($this->metadata, []);
         $this->metadata->getSubjects()->willReturn([
             $this->subjectMetadata->reveal(),

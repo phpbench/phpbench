@@ -32,7 +32,7 @@ class Launcher
     public function __construct(
         PayloadFactory $payloadFactory = null,
         ExecutableFinder $finder = null,
-        private ?string $bootstrap = null,
+        private readonly ?string $bootstrap = null,
         private readonly ?string $phpBinary = null,
         private readonly array $phpConfig = [],
         private readonly ?string $phpWrapper = null,

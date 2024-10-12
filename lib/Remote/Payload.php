@@ -162,7 +162,7 @@ class Payload
         $content = file_get_contents($this->template);
 
         if ($content === false) {
-            throw new \RuntimeException(sprintf('Could not read template "%s"', $this->template));
+            throw new RuntimeException(sprintf('Could not read template "%s"', $this->template));
         }
 
         return $content;

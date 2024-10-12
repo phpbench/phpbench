@@ -12,6 +12,7 @@
 
 namespace PhpBench\Serializer;
 
+use DOMDocument;
 use DOMElement;
 use Exception;
 use PhpBench\Dom\Document;
@@ -236,7 +237,7 @@ class XmlEncoder
             return;
         }
 
-        /** @var \DOMDocument $ownerDocument */
+        /** @var DOMDocument $ownerDocument */
         $ownerDocument = $parameterEl->ownerDocument;
 
         if (is_scalar($value) && $this->isBinary($value)) {
