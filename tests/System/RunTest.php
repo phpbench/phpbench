@@ -455,7 +455,14 @@ class RunTest extends SystemTestCase
         );
 
         $this->assertExitCode(0, $process);
-        $this->assertEmpty($process->getErrorOutput());
+
+        // weird issue on github whereby the PHP env tries to load the
+        // pdo_sqlsrv extension even though it's not enabled
+        if (str_contains($process->getErrorOutput(), 'sqlsrv') && PHP_VERSION < 80200) {
+            return;
+        }
+
+        $this->assertEquals('', trim($process->getErrorOutput()));
     }
 
     /**

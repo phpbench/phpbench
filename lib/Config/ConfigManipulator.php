@@ -106,5 +106,4 @@ final class ConfigManipulator
         $config->{$key} = array_merge($array, $value);
         $this->writeConfig($config);
     }
-
 }
