@@ -31,7 +31,8 @@ class PartitionTest extends TestCase
     {
         yield [
             [],
-            function (): void {},
+            function (): void {
+            },
             []
         ];
 
@@ -47,7 +48,8 @@ class PartitionTest extends TestCase
             [
                 ['a' => 'two', 'b' => 1],
             ],
-            function (Row $data): void {},
+            function (Row $data): void {
+            },
             [
                 '' => [
                     ['a' => 'two', 'b' => 1],

@@ -16,10 +16,10 @@ jobs:
             -   name: "Checkout code"
                 uses: actions/checkout@v3
 
-            -   name: "Set up Python 3.7"
+            -   name: "Set up Python 3.9"
                 uses: actions/setup-python@v3
                 with:
-                    python-version: '3.7' # Semantic version range syntax or exact version of a Python version
+                    python-version: '3.9' # Semantic version range syntax or exact version of a Python version
 
             -   name: "Display Python version"
                 run: python -c "import sys; print(sys.version)"
