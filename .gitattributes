@@ -19,6 +19,6 @@
 /docker/                export-ignore
 /flake.*                export-ignore
 /extensions/*tests/     export-ignore
-/phpbench.*             export-ignore
+/phpbench.json          export-ignore
 /phpunit.xml.dist       export-ignore
 /tests/                 export-ignore
