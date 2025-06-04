@@ -28,7 +28,7 @@ final class ConfigExtendCommand extends Command
     protected function configure(): void
     {
         $this->setName('config:extend');
-        $this->setDescription('Generate a new service configuration baesd on a named prototype');
+        $this->setDescription('Generate a new service configuration based on a named prototype');
         $this->addArgument(self::ARG_REGISTRY, InputArgument::REQUIRED, 'Registry name, e.g. "generator"');
         $this->addArgument(self::ARG_PROTOTYPE, InputArgument::REQUIRED, 'Prototype service, e.g. "default"');
         $this->addArgument(self::ARG_NAME, InputArgument::REQUIRED, 'New service name, e.g. "acme"');
