@@ -76,7 +76,7 @@ You can activate and use your extension as follows ``phpbench.json``:
 
     {
         "$schema":"./vendor/phpbench/phpbench/phpbench.schema.json",
-        "extensions": [
+        "core.extensions": [
             "PhpBench\Examples\Extension\AcmeExtension"
         ],
         "acme.number_of_cats": 8
