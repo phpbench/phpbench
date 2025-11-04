@@ -170,6 +170,12 @@ jobs:
                 with-examples: ['yes']
                 allow-failures: [false]
                 composer-options: ['']
+                include:
+                    - php-version: '8.4'
+                      dependency: 'highest'
+                      with-examples: 'yes'
+                      allow-failures: false
+                      composer-minimum-stability: 'beta'
 
         steps:
             - name: "Checkout code"
@@ -187,6 +193,10 @@ jobs:
 
             - name: "Remove friendsofphp/php-cs-fixer"
               run: composer remove --dev friendsofphp/php-cs-fixer --no-update
+
+            - name: Configure Composer minimum-stability
+              if: matrix.composer-minimum-stability
+              run: composer config minimum-stability ${{ matrix.composer-minimum-stability }}
 
             - name: "Composer install"
               uses: "ramsey/composer-install@v3"
