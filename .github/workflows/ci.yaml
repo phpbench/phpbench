@@ -204,18 +204,6 @@ jobs:
 
             - name: "Run benchmarks with PHPBench"
               run: "bin/phpbench run --report=env --progress=plain --dump-file=phpbench-${{ matrix.php-version }}-${{ matrix.dependency }}.xml"
-            -
-              name: "Upload to Historian"
-              run: |
-                curl https://${{ secrets.HISTORIAN_HOST }}/api/upload -XPOST \
-                  -H"X-Api-Key: ${{ secrets.HISTORIAN_API_KEY }}" \
-                  -H"X-Build: ${{ github.run_number }}" \
-                  -H"X-Commit-Sh: ${{ github.sha }}" \
-                  -H"X-Commit-Message: ${{ github.event.head_commit.message }}" \
-                  -H"X-Author-Name: ${{ github.event.head_commit.author.name }}" \
-                  -H"X-Author-Email: ${{ github.event.head_commit.author.email }}" \
-                  -H"X-Host: ${{ runner.name }}" \
-                  -Fphpbench=@phpbench-${{ matrix.php-version }}-${{ matrix.dependency }}.xml
 
             - if: matrix.with-examples == 'yes'
               run: bin/phpbench run --profile=examples --report=env --progress=plain --iterations=1 --revs=1
