@@ -37,8 +37,8 @@
     "require-dev": {
         "dantleech/invoke": "^2.0",
         "ergebnis/composer-normalize": "^2.39",
-        "friendsofphp/php-cs-fixer": "^3.0",
         "jangregor/phpstan-prophecy": "^1.0",
+        "php-cs-fixer/shim": "^3.9",
         "phpspec/prophecy": "^1.22",
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan": "^1.0",

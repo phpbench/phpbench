@@ -93,7 +93,7 @@ EOT
 
             foreach (array_keys($container->getServiceIdsForTag(ConsoleExtension::TAG_CONSOLE_COMMAND)) as $serviceId) {
                 $command = $container->get($serviceId);
-                $application->add($command);
+                method_exists($application, 'addCommand') ? $application->addCommand($command) : $application->add($command);
             }
 
             return $application;
