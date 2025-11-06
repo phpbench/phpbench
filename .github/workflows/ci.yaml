@@ -171,22 +171,33 @@ jobs:
                 allow-failures: [false]
                 composer-options: ['']
                 include:
+                    - php-version: '8.1'
+                      dependency: 'highest'
+                      with-examples: 'yes'
+                      allow-failures: false
+                      symfony-version: '6.1.*'
+                    - php-version: '8.2'
+                      dependency: 'highest'
+                      with-examples: 'yes'
+                      allow-failures: false
+                      symfony-version: '7.0.*'
                     - php-version: '8.4'
                       dependency: 'highest'
                       with-examples: 'yes'
                       allow-failures: false
                       composer-minimum-stability: 'beta'
+                      symfony-version: '^8.0.0-BETA1'
 
         steps:
             - name: "Checkout code"
               uses: actions/checkout@v3
 
             - name: "Install PHP with extensions"
-              uses: shivammathur/setup-php@2.7.0
+              uses: shivammathur/setup-php@2.35.5
               with:
                   extensions: "${{ env.REQUIRED_PHP_EXTENSIONS }}"
                   php-version: ${{ matrix.php-version }}
-                  tools: composer:v2
+                  tools: composer:v2, flex
 
             - name: "Add PHPUnit matcher"
               run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
@@ -200,6 +211,8 @@ jobs:
               with:
                   dependency-versions: "${{ matrix.dependency }}"
                   composer-options: "${{ matrix.composer-options }}"
+              env:
+                  SYMFONY_REQUIRE: ${{ matrix.symfony-version }}
 
             - name: PHP Info
               run: php --version
