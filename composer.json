@@ -56,6 +56,7 @@
     "autoload": {
         "psr-4": {
             "PhpBench\\": "lib/",
+            "PhpBench\\Extensions\\Rector\\": "extensions/rector/lib/",
             "PhpBench\\Extensions\\XDebug\\": "extensions/xdebug/lib/"
         },
         "files": [

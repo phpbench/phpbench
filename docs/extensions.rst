@@ -10,6 +10,7 @@ Built-in Extensions
 .. toctree::
    :maxdepth: 1
 
+   extensions/rector
    extensions/xdebug
 
 Community Extensions
