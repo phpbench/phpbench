@@ -202,7 +202,7 @@ class RunnerConfig
     /**
      * Return true if the runner should exit on the first exception encountered.
      *
-     * @retrun bool
+     * @return bool
      */
     public function getStopOnError(): bool
     {
