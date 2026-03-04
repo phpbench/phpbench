@@ -19,6 +19,8 @@ use PhpBench\Expression\ColorMap;
 use PhpBench\Expression\Theme\Util\Color;
 use PhpBench\Expression\Theme\Util\Gradient;
 
+use function is_finite;
+
 /**
  * Colors based on https://github.com/altercation/solarized
  *
@@ -51,8 +53,13 @@ class SolarizedTheme implements ColorMap
             ParenthesisNode::class => 'fg=' . self::RED,
             PercentDifferenceNode::class => function (Node $node) {
                 assert($node instanceof PercentDifferenceNode);
+                $pct = $node->percentage();
 
-                return 'fg=#' . $this->gradient()->colorAtPercentile(((int)$node->percentage() + 100) / 2)->toHex();
+                if (!is_finite($pct)) {
+                    return 'fg=#' . $this->gradient()->colorAtPercentile(100)->toHex();
+                }
+
+                return 'fg=#' . $this->gradient()->colorAtPercentile(((int)$pct + 100) / 2)->toHex();
             },
             RelativeDeviationNode::class => function (Node $node) {
                 assert($node instanceof RelativeDeviationNode);
