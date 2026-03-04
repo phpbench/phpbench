@@ -54,6 +54,7 @@ class SolarizedTheme implements ColorMap
             PercentDifferenceNode::class => function (Node $node) {
                 assert($node instanceof PercentDifferenceNode);
                 $pct = $node->percentage();
+
                 if (!is_finite($pct)) {
                     return 'fg=#' . $this->gradient()->colorAtPercentile(100)->toHex();
                 }
