@@ -43,8 +43,9 @@
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan": "^1.0",
         "phpstan/phpstan-phpunit": "^1.0",
-        "phpunit/phpunit": "^11.0",
+        "phpunit/phpunit": "^11.5",
         "rector/rector": "^1.2",
+        "sebastian/exporter": "^6.3.2",
         "symfony/error-handler": "^6.1 || ^7.0 || ^8.0",
         "symfony/var-dumper": "^6.1 || ^7.0 || ^8.0"
     },
@@ -77,10 +78,10 @@
             "ergebnis/composer-normalize": true,
             "phpstan/extension-installer": true
         },
-        "sort-packages": true,
         "audit": {
             "block-insecure": false
-        }
+        },
+        "sort-packages": true
     },
     "extra": {
         "branch-alias": {
