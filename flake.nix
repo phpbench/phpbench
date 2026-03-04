@@ -1,6 +1,6 @@
 # this is a WIP flake for development and experimentation only
 {
-  description = "php-tui/php-tui";
+  description = "phpbench/phpbench";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
@@ -25,7 +25,7 @@
         system,
         ...
       }: let 
-        phpForPhpTui = (pkgs.php81.buildEnv {
+        php = (pkgs.php85.buildEnv {
           extensions = ({ enabled, all }: enabled ++ (with all; [
           ]));
           extraConfig = ''
@@ -41,10 +41,9 @@
 
           buildInputs = [
             pkgs.bash
-            pkgs.php81.packages.composer
+            pkgs.php85.packages.composer
             pkgs.sphinx
-            phpForPhpTui
-            pkgs.python311Packages.sphinx-tabs
+            php
           ];
           shellHook = ''
           if [ ! -d ".venv" ]; then
