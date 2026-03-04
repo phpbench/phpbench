@@ -16,7 +16,7 @@
         }
     ],
     "require": {
-        "php": "^8.1",
+        "php": "^8.2",
         "ext-dom": "*",
         "ext-json": "*",
         "ext-pcre": "*",
@@ -43,8 +43,9 @@
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan": "^1.0",
         "phpstan/phpstan-phpunit": "^1.0",
-        "phpunit/phpunit": "^10.4 || ^11.0",
+        "phpunit/phpunit": "^11.5",
         "rector/rector": "^1.2",
+        "sebastian/exporter": "^6.3.2",
         "symfony/error-handler": "^6.1 || ^7.0 || ^8.0",
         "symfony/var-dumper": "^6.1 || ^7.0 || ^8.0"
     },
@@ -76,6 +77,9 @@
         "allow-plugins": {
             "ergebnis/composer-normalize": true,
             "phpstan/extension-installer": true
+        },
+        "audit": {
+            "block-insecure": false
         },
         "sort-packages": true
     },
