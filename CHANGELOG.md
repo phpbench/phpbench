@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+1.5.0
+-----
+
+- Add support for PHP 8.5 
+- Handle infinity percentage #1134 @ajezz
+- Symfony 8 Support #1125 @kocal
+
 1.4.0
 -----
 
