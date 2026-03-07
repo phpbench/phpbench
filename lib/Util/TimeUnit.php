@@ -19,7 +19,6 @@ use InvalidArgumentException;
  */
 class TimeUnit
 {
-    final public const NANOSECOND = 'nanosecond';
     final public const MILLISECOND = 'millisecond';
     final public const MICROSECOND = 'microsecond';
     final public const SECOND = 'second';
@@ -27,7 +26,6 @@ class TimeUnit
     final public const HOUR = 'hour';
     final public const DAY = 'day';
 
-    final public const NANOSECONDS = 'nanoseconds';
     final public const MICROSECONDS = 'microseconds';
     final public const MILLISECONDS = 'milliseconds';
     final public const SECONDS = 'seconds';
@@ -41,18 +39,16 @@ class TimeUnit
 
     /** @var array<string, positive-int> */
     private static array $map = [
-        self::NANOSECONDS => 1,
-        self::MICROSECONDS => 1000,
-        self::MILLISECONDS => 1000_000,
-        self::SECONDS => 1_000_000_000,
-        self::MINUTES => 60_000_000_000,
-        self::HOURS => 3_600_000_000_000,
-        self::DAYS => 86_400_000_000_000,
+        self::MICROSECONDS => 1,
+        self::MILLISECONDS => 1000,
+        self::SECONDS => 1_000_000,
+        self::MINUTES => 60_000_000,
+        self::HOURS => 3_600_000_000,
+        self::DAYS => 86_400_000_000,
     ];
 
     /** @var array<string, string> */
     private static array $aliases = [
-        self::NANOSECOND => self::NANOSECONDS,
         self::MICROSECOND => self::MICROSECONDS,
         self::MILLISECOND => self::MILLISECONDS,
         self::SECOND => self::SECONDS,
@@ -60,7 +56,6 @@ class TimeUnit
         self::HOUR => self::HOURS,
         self::DAY => self::DAYS,
         'us' => self::MICROSECONDS,
-        'ns' => self::NANOSECONDS,
         'ms' => self::MILLISECONDS,
         's' => self::SECONDS,
         'm' => self::MINUTES,
@@ -68,7 +63,6 @@ class TimeUnit
 
     /** @var array<string, string> */
     private static array $suffixes = [
-        self::NANOSECONDS => 'ns',
         self::MICROSECONDS => 'μs',
         self::MILLISECONDS => 'ms',
         self::SECONDS => 's',
@@ -83,7 +77,7 @@ class TimeUnit
 
     private bool $overriddenPrecision = false;
 
-    public function __construct(private readonly string $sourceUnit = self::NANOSECONDS, private string $destUnit = self::NANOSECONDS, private string $mode = self::MODE_TIME, private int $precision = 3)
+    public function __construct(private readonly string $sourceUnit = self::MICROSECONDS, private string $destUnit = self::MICROSECONDS, private string $mode = self::MODE_TIME, private int $precision = 3)
     {
     }
 
