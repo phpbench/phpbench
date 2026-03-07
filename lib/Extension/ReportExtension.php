@@ -39,7 +39,6 @@ use PhpBench\Report\Generator\OutputTestGenerator;
 use PhpBench\Report\Renderer\ConsoleRenderer;
 use PhpBench\Report\Renderer\DelimitedRenderer;
 use PhpBench\Report\Renderer\HtmlRenderer;
-use PhpBench\Report\Renderer\JsonRenderer;
 use PhpBench\Report\ReportManager;
 use PhpBench\Report\Transform\SuiteCollectionTransformer;
 use PhpBench\Storage\UuidResolver;
@@ -247,13 +246,6 @@ class ReportExtension implements ExtensionInterface
                 $container->get(ExpressionExtension::SERVICE_BARE_PRINTER)
             );
         }, [self::TAG_REPORT_RENDERER => ['name' => 'delimited']]);
-
-        $container->register(JsonRenderer::class, function (Container $container) {
-            return new JsonRenderer(
-                $container->get(ConsoleExtension::SERVICE_OUTPUT_STD),
-                $container->get(ExpressionExtension::SERVICE_BARE_PRINTER)
-            );
-        }, [self::TAG_REPORT_RENDERER => ['name' => 'json']]);
 
         $container->register(HtmlRenderer::class, function (Container $container) {
             return new HtmlRenderer(
