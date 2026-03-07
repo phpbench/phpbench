@@ -17,7 +17,7 @@ final class Partition
         $frames = [];
 
         foreach ($frame->rows() as $row) {
-            $hash = $hasher($row);
+            $hash = (string)$hasher($row);
 
             if (!isset($frames[$hash])) {
                 $frames[$hash] = [];

@@ -31,6 +31,12 @@ Options:
 
 .. include:: ./report-renderers/options/_delimited.rst
 
+
+``json``
+--------
+
+Outputs reports (or rather the _tables_ in reports) as JSON records.
+
 ``html``
 -----------
 
