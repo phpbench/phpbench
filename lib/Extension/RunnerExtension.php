@@ -47,6 +47,7 @@ use Symfony\Component\Filesystem\Path;
 use PhpBench\Progress\Logger\BlinkenLogger;
 use PhpBench\Progress\Logger\DotsLogger;
 use PhpBench\Progress\Logger\HistogramLogger;
+use PhpBench\Progress\Logger\JsonLogger;
 use PhpBench\Progress\Logger\NullLogger;
 use PhpBench\Progress\Logger\PlainLogger;
 use PhpBench\Progress\Logger\VerboseLogger;
@@ -513,6 +514,12 @@ class RunnerExtension implements ExtensionInterface
                 $container->get(TimeUnit::class)
             );
         }, [self::TAG_PROGRESS_LOGGER => ['name' => 'histogram']]);
+
+        $container->register(JsonLogger::class, function (Container $container) {
+            return new JsonLogger(
+                $container->get(ConsoleExtension::SERVICE_OUTPUT_STD),
+            );
+        }, [self::TAG_PROGRESS_LOGGER => ['name' => 'json']]);
     }
 
 

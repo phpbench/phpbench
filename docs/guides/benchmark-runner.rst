@@ -213,6 +213,7 @@ The built-in progress loggers are:
 - ``blinken``: Highly visual progress logger.
 - ``histogram``: Shows a histogram with 8 vertical levels and 16 bins for each
   iteration set.
+- ``json``: Stream JSON results.
 
 All of the progress reports contain the following footer:
 
