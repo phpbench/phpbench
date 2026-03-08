@@ -96,6 +96,20 @@ class TimeUnitTest extends TestCase
     {
         yield [
             1,
+            TimeUnit::NANOSECONDS,
+            TimeUnit::NANOSECONDS,
+            1
+        ];
+
+        yield [
+            1,
+            TimeUnit::MICROSECONDS,
+            TimeUnit::NANOSECONDS,
+            1000
+        ];
+
+        yield [
+            1,
             TimeUnit::MICROSECOND,
             TimeUnit::MICROSECOND,
             1
@@ -335,18 +349,18 @@ class TimeUnitTest extends TestCase
      */
     public static function provideSuitableUnit(): Generator
     {
-        yield [1, 'microseconds'];
+        yield [1, 'nanoseconds'];
 
-        yield [100, 'microseconds'];
+        yield [100_000, 'microseconds'];
 
-        yield [1000, 'milliseconds'];
+        yield [1_000_000, 'milliseconds'];
 
-        yield [10000, 'milliseconds'];
+        yield [10_000_000, 'milliseconds'];
 
-        yield [100000, 'milliseconds'];
+        yield [100_000_000, 'milliseconds'];
 
-        yield [1_000_000, 'seconds'];
+        yield [1_000_000_000, 'seconds'];
 
-        yield [60_000_000, 'minutes'];
+        yield [60_000_000_000, 'minutes'];
     }
 }

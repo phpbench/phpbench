@@ -46,23 +46,23 @@ if ($warmup) {
 
 // only pass parameters if they are supplied:passing parameters costs time
 if ($parameters) {
-    $startTime = microtime(true);
+    $startTime = hrtime(true);
 
     for ($i = 0; $i < {{ revolutions }}; $i++) {
         $benchmark->{{ subject }}($parameters);
     }
-    $endTime = microtime(true);
+    $endTime = hrtime(true);
 } else {
-    $startTime = microtime(true);
+    $startTime = hrtime(true);
 
     for ($i = 0; $i < {{ revolutions }}; $i++) {
         $benchmark->{{ subject }}();
     }
-    $endTime = microtime(true);
+    $endTime = hrtime(true);
 }
 
 
-$time = ($endTime - $startTime) * 1000000;
+$time = ($endTime - $startTime);
 
 // run after methods
 foreach ($afterMethods as $afterMethod) {
