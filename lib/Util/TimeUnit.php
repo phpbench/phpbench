@@ -379,21 +379,25 @@ class TimeUnit
     public static function resolveSuitableUnit(?float $value): string
     {
         if (null === $value) {
-            return self::MICROSECONDS;
+            return self::NANOSECONDS;
         }
 
-        if (($value / 60E6) >= 1) {
+        if (($value / 60E9) >= 1) {
             return self::MINUTES;
         }
 
-        if (($value / 1E6) >= 1) {
+        if (($value / 1E9) >= 1) {
             return self::SECONDS;
         }
 
-        if (($value / 1E3) >= 1) {
+        if (($value / 1E6) >= 1) {
             return self::MILLISECONDS;
         }
 
-        return self::MICROSECONDS;
+        if (($value / 1E3) >= 1) {
+            return self::MICROSECONDS;
+        }
+
+        return self::NANOSECONDS;
     }
 }
