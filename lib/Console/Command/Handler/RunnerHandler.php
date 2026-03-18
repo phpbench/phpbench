@@ -57,7 +57,7 @@ class RunnerHandler
 
     public static function configureFilters(Command $command): void
     {
-        $command->addOption(self::OPT_FILTER, [], InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Include benchmark subjects matching this filter. Matched against <fg=cyan>Fullly\Qualified\BenchmarkName::benchSubjectName</>. Can be a regex. Multiple filters combined with OR');
+        $command->addOption(self::OPT_FILTER, [], InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Include benchmark subjects matching this filter. Matched against <fg=cyan>Fully\Qualified\BenchmarkName::benchSubjectName</>. Can be a regex. Multiple filters combined with OR');
         $command->addOption(self::OPT_VARIANT_FILTER, [], InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Include variants matching this filter. Matched against parameter set names. Can be a regex). Multiple values combined with OR');
     }
 
