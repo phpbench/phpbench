@@ -41,11 +41,11 @@ cleanGarbageCollectionAndDisable();
 // run benchmark
 $time = 0.00;
 for ($i = 0; $i < {{ revolutions }}; $i++) {
-    $startTime = microtime(true);
+    $startTime = hrtime(true);
 
     $benchmark->{{ subject }}($parameters);
 
-    $endTime = microtime(true);
+    $endTime = hrtime(true);
 
     $time += ($endTime - $startTime) * 1000000;
 

@@ -54,13 +54,13 @@ class LocalExecutor implements BenchmarkExecutorInterface
             $benchmark->$methodName($parameters);
         }
 
-        $start = microtime(true);
+        $start = hrtime(true);
 
         for ($i = 0; $i < $context->getRevolutions(); $i++) {
             $benchmark->$methodName($parameters);
         }
 
-        $end = microtime(true);
+        $end = hrtime(true);
 
         foreach ($context->getAfterMethods() as $afterMethod) {
             $benchmark->$afterMethod($parameters);
