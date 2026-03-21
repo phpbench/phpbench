@@ -3,6 +3,7 @@
 namespace PhpBench\Expression\Func;
 
 use PhpBench\Expression\Ast\BooleanNode;
+use PhpBench\Expression\Ast\PhpValue;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Util\TimeUnit;
 
@@ -12,15 +13,17 @@ final class TimeUnitFunction
     {
     }
 
-    public function __invoke(StringNode $unit, ?BooleanNode $abbreviate = null): StringNode
+    public function __invoke(PhpValue $unit, ?BooleanNode $abbreviate = null): StringNode
     {
-        if ($unit->value() === '') {
+        $unit = (string)$unit->value();
+
+        if ($unit === '') {
             // resolve our base unit
-            $unit = new StringNode($this->timeUnit->resolveSuitableUnit(null));
+            $unit = $this->timeUnit->resolveSuitableUnit(null);
         }
 
-        $abbreviated = $this->timeUnit->getDestSuffix($unit->value());
-        $full = $this->timeUnit->normalizeUnit($unit->value());
+        $abbreviated = $this->timeUnit->getDestSuffix($unit);
+        $full = $this->timeUnit->normalizeUnit($unit);
         $abbreviate = $abbreviate ? $abbreviate->value() : false;
 
         if ($abbreviate) {

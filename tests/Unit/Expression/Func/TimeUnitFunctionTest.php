@@ -14,6 +14,7 @@ class TimeUnitFunctionTest extends FunctionTestCase
     #[TestWith(['"ms", true', "ms"])]
     #[TestWith(['"ms", false', "milliseconds"])]
     #[TestWith(['"", true', "μs"])]
+    #[TestWith(['null, true', "μs"])]
     public function testTimeUnit(string $paramExpr, string $expected): void
     {
         self::assertEquals($expected, $this->eval(
