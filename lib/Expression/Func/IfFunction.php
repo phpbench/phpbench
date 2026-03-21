@@ -2,7 +2,6 @@
 
 namespace PhpBench\Expression\Func;
 
-use PhpBench\Expression\Ast\BooleanNode;
 use PhpBench\Expression\Ast\PhpValue;
 
 final class IfFunction

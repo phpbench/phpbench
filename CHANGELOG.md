@@ -1,8 +1,8 @@
 CHANGELOG
 =========
 
-master
-------
+1.6.0
+-----
 
 - reports: JSON progress logging #1018
 - reports: JSON report renderering #1135
