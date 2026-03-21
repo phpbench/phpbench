@@ -12,6 +12,7 @@ use PhpBench\Console\Command\ReportCommand;
 use PhpBench\Console\Command\ShowCommand;
 use PhpBench\DependencyInjection\Container;
 use PhpBench\DependencyInjection\ExtensionInterface;
+use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\ExpressionEvaluator;
 use PhpBench\Expression\NodePrinters;
 use PhpBench\Expression\Printer;
@@ -251,7 +252,7 @@ class ReportExtension implements ExtensionInterface
         $container->register(JsonRenderer::class, function (Container $container) {
             return new JsonRenderer(
                 $container->get(ConsoleExtension::SERVICE_OUTPUT_STD),
-                $container->get(ExpressionExtension::SERVICE_BARE_PRINTER)
+                $container->get(Evaluator::class)
             );
         }, [self::TAG_REPORT_RENDERER => ['name' => 'json']]);
 
