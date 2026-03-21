@@ -322,6 +322,14 @@ class TimeUnit
     {
         $unit = self::normalizeUnit($unit);
 
+        if (!array_key_exists($unit, self::$suffixes)) {
+            throw new \RuntimeException(sprintf(
+                'Invalid unit "%s", known units: %s',
+                $unit,
+                implode('", "', array_keys(self::$suffixes))
+            ));
+        }
+
         $suffix = self::$suffixes[$unit];
 
         if ($mode === self::MODE_THROUGHPUT) {

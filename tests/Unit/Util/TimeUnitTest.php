@@ -330,6 +330,14 @@ class TimeUnitTest extends TestCase
         self::assertEquals($expectedUnit, TimeUnit::resolveSuitableUnit($value));
     }
 
+    public function testExceptionOnGetUnknownSuffix(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Invalid unit "time", known units: microseconds", "milliseconds", "seconds", "minutes", "hours", "days');
+        TimeUnit::getSuffix(TimeUnit::AUTO);
+    }
+
+
     /**
      * @return Generator<mixed>
      */
