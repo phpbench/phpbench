@@ -1,0 +1,4 @@
+time_unit("milliseconds") = "milliseconds"
+time_unit("ms") = "milliseconds"
+time_unit("ms", true) = "ms"
+time_unit("ms", false) = "milliseconds"

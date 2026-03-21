@@ -8,6 +8,7 @@ CHANGELOG
 - reports: JSON report renderering #1135
 - expression-language: Introduced `if(cond,val1,val2)` expression function
 - expression-language: Introduced `!=` unequals operator
+- expression-language: Introduce method to normalize a timeunit
 
 1.5.0
 -----

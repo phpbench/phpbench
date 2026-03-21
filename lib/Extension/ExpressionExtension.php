@@ -39,6 +39,7 @@ use PhpBench\Expression\Func\PercentDifferenceFunction;
 use PhpBench\Expression\Func\RStDevFunction;
 use PhpBench\Expression\Func\StDevFunction;
 use PhpBench\Expression\Func\SumFunction;
+use PhpBench\Expression\Func\TimeUnitFunction;
 use PhpBench\Expression\Func\VarianceFunction;
 use PhpBench\Expression\Lexer;
 use PhpBench\Expression\NodeEvaluator;
@@ -342,7 +343,7 @@ class ExpressionExtension implements ExtensionInterface
             );
         });
 
-        $container->register(ExpressionFunctions::class, function () {
+        $container->register(ExpressionFunctions::class, function (Container $container) {
             return new ExpressionFunctions([
                 'mode' => new ModeFunction(),
                 'mean' => new MeanFunction(),
@@ -358,6 +359,7 @@ class ExpressionExtension implements ExtensionInterface
                 'coalesce' => new CoalesceFunction(),
                 'if' => new IfFunction(),
                 'display_as_time' => new DisplayAsTimeFunction(),
+                'time_unit' => new TimeUnitFunction($container->get(TimeUnit::class)),
                 'label' => new LabelFunction(),
                 'count' => new CountFunction(),
                 'sum' => new SumFunction(),
