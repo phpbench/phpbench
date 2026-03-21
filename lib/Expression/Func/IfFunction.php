@@ -7,9 +7,9 @@ use PhpBench\Expression\Ast\PhpValue;
 
 final class IfFunction
 {
-    public function __invoke(BooleanNode $condition, PhpValue $trueVal, PhpValue $falseVal): PhpValue
+    public function __invoke(PhpValue $condition, PhpValue $trueVal, PhpValue $falseVal): PhpValue
     {
-        if ($condition->value() === true) {
+        if ((bool)$condition->value() === true) {
             return $trueVal;
         }
 
