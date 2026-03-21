@@ -1,0 +1,4 @@
+time_convert(1000, 'milliseconds', 'seconds') = 1
+time_convert(1, 'seconds', 'milliseconds') = 1000
+time_convert(1, 'us', 'milliseconds') = 0.001
+time_convert(1000, 'us', 'milliseconds') = 1
