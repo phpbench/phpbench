@@ -39,6 +39,7 @@ use PhpBench\Expression\Func\PercentDifferenceFunction;
 use PhpBench\Expression\Func\RStDevFunction;
 use PhpBench\Expression\Func\StDevFunction;
 use PhpBench\Expression\Func\SumFunction;
+use PhpBench\Expression\Func\TimeConvertFunction;
 use PhpBench\Expression\Func\TimeUnitFunction;
 use PhpBench\Expression\Func\VarianceFunction;
 use PhpBench\Expression\Lexer;
@@ -360,6 +361,7 @@ class ExpressionExtension implements ExtensionInterface
                 'if' => new IfFunction(),
                 'display_as_time' => new DisplayAsTimeFunction(),
                 'time_unit' => new TimeUnitFunction($container->get(TimeUnit::class)),
+                'time_convert' => new TimeConvertFunction($container->get(TimeUnit::class)),
                 'label' => new LabelFunction(),
                 'count' => new CountFunction(),
                 'sum' => new SumFunction(),

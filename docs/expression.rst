@@ -307,6 +307,13 @@ Normalize a time unit to either it's full name - `milliseconds` or its abbreviat
 
 .. literalinclude:: ../examples/Expression/time_unit_func_1
 
+time_convert
+~~~~~~~~~~~~
+
+Convert scale time value from one time unit to another.
+
+.. literalinclude:: ../examples/Expression/time_convert_1
+
 sum
 ~~~
 

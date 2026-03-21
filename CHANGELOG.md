@@ -6,9 +6,10 @@ CHANGELOG
 
 - reports: JSON progress logging #1018
 - reports: JSON report renderering #1135
-- expression-language: Introduced `if(cond,val1,val2)` expression function
-- expression-language: Introduced `!=` unequals operator
-- expression-language: Introduce method to normalize a timeunit
+- expression-language: `if(cond,val1,val2)` as a conditional expression
+- expression-language: `!=` unequals operator
+- expression-language: `time_unit` function to normalize a timeunit
+- expression-language: `time_convert` function to convert time
 
 1.5.0
 -----
