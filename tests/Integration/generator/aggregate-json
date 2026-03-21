@@ -1,1 +1,1 @@
-[{"benchmark":"TestBench","subject":"benchOne","set":"0","revs":"5","its":"2","mem_peak":"200","mode":"5","rstdev":"100"}]
+[{"benchmark":"TestBench","subject":"benchOne","set":"0","revs":5,"its":2,"mem_peak":200,"mode":5,"rstdev":100}]

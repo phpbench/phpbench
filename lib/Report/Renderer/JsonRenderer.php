@@ -12,7 +12,8 @@
 
 namespace PhpBench\Report\Renderer;
 
-use PhpBench\Expression\Printer;
+use PhpBench\Expression\Ast\PhpValue;
+use PhpBench\Expression\Evaluator;
 use PhpBench\Registry\Config;
 use PhpBench\Report\Model\Reports;
 use PhpBench\Report\Model\Table;
@@ -25,7 +26,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class JsonRenderer implements RendererInterface
 {
-    public function __construct(private readonly OutputInterface $output, private readonly Printer $printer)
+    public function __construct(private readonly OutputInterface $output, private readonly Evaluator $evaluator)
     {
     }
 
@@ -51,7 +52,12 @@ class JsonRenderer implements RendererInterface
             $row = [];
 
             foreach ($tableRow as $name => $node) {
-                $row[$name] = $this->printer->print($node);
+                $evaluation = $this->evaluator->evaluate($node, []);
+
+                if (!$evaluation instanceof PhpValue) {
+                    continue;
+                }
+                $row[$name] = $evaluation->value();
             }
 
             $rows[] = $row;
