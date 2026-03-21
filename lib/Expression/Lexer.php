@@ -30,6 +30,7 @@ final class Lexer
         '<=' => Token::T_LTE,
         '>' => Token::T_GT,
         '=' => Token::T_EQUALS,
+        '!=' => Token::T_UNEQUALS,
         '<' => Token::T_LT,
         '~' => Token::T_TILDE,
         '?' => Token::T_QUESTION,

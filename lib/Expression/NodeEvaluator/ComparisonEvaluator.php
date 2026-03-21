@@ -59,6 +59,10 @@ class ComparisonEvaluator implements NodeEvaluator
             return $leftValue == $rightValue;
         }
 
+        if ($node->operator() == '!=') {
+            return $leftValue != $rightValue;
+        }
+
         if (!is_numeric($leftValue) || !is_numeric($rightValue)) {
             throw new EvaluationError($node, sprintf(
                 'Unsupported operator "%s" when comparing "%s" and "%s"',

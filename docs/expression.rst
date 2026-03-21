@@ -20,6 +20,7 @@ Comparators
     "<", "Less than"
     "<=", "Less than or equal"
     "=", "Equal"
+    "!=", "Not Equal"
     ">", "Greater than"
     ">=", "Greater than or equal"
 
@@ -326,6 +327,13 @@ contains
 Return true if value exists in given list
 
 .. literalinclude:: ../examples/Expression/contains_1
+
+if
+~~
+
+Provide one value if the given expression is true, else return the other value.
+
+.. literalinclude:: ../examples/Expression/if_1
 
 .. _KDE mode: https://en.wikipedia.org/wiki/Kernel_density_estimation
 .. _standard deviation: https://en.wikipedia.org/wiki/Standard_deviation
