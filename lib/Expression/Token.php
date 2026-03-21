@@ -32,6 +32,7 @@ final class Token
     public const T_LT = 'lt';
     public const T_LTE = 'lte';
     public const T_EQUALS = 'equals';
+    public const T_UNEQUALS = 'unequals';
     public const T_GTE = 'gte';
     public const T_GT = 'gt';
     public const T_EOF = 'eof';

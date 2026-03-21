@@ -28,6 +28,7 @@ use PhpBench\Expression\Func\DisplayAsTimeFunction;
 use PhpBench\Expression\Func\FirstFunction;
 use PhpBench\Expression\Func\FormatFunction;
 use PhpBench\Expression\Func\FrameFunction;
+use PhpBench\Expression\Func\IfFunction;
 use PhpBench\Expression\Func\JoinFunction;
 use PhpBench\Expression\Func\LabelFunction;
 use PhpBench\Expression\Func\MaxFunction;
@@ -183,6 +184,7 @@ class ExpressionExtension implements ExtensionInterface
                     new ComparisonParselet(Token::T_EQUALS, Precedence::COMPARISON_EQUALITY),
                     new ComparisonParselet(Token::T_GT, Precedence::COMPARISON),
                     new ComparisonParselet(Token::T_GTE, Precedence::COMPARISON),
+                    new ComparisonParselet(Token::T_UNEQUALS, Precedence::COMPARISON),
                     new TolerableParselet(),
                     new DisplayAsParselet(),
                     new ConcatParselet(),
@@ -354,6 +356,7 @@ class ExpressionExtension implements ExtensionInterface
                 'join' => new JoinFunction(),
                 'first' => new FirstFunction(),
                 'coalesce' => new CoalesceFunction(),
+                'if' => new IfFunction(),
                 'display_as_time' => new DisplayAsTimeFunction(),
                 'label' => new LabelFunction(),
                 'count' => new CountFunction(),

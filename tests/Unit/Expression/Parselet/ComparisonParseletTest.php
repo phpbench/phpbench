@@ -69,6 +69,10 @@ class ComparisonParseletTest extends ParseletTestCase
                 'baz' => '10',
             ],
         ], 'true'];
+
+        yield ['3 != 2', [], 'true'];
+
+        yield ['3 != 3', [], 'false'];
     }
 
     public function testErrorOnUnsupportedOperator(): void

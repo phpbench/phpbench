@@ -4,8 +4,10 @@ CHANGELOG
 master
 ------
 
-- JSON progress logging #1018
-- JSON report renderering #1135
+- reports: JSON progress logging #1018
+- reports: JSON report renderering #1135
+- expression-language: Introduced `if(cond,val1,val2)` expression function
+- expression-language: Introduced `!=` unequals operator
 
 1.5.0
 -----
