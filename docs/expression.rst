@@ -300,6 +300,13 @@ Similar to :ref:`expr_display_as` but also allows specification of the "mode"
 
 .. literalinclude:: ../examples/Expression/display_as_time_1
 
+time_unit
+~~~~~~~~~
+
+Normalize a time unit to either it's full name - `milliseconds` or its abbreviation `ms`
+
+.. literalinclude:: ../examples/Expression/time_unit_func_1
+
 sum
 ~~~
 
