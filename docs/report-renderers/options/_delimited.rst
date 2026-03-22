@@ -1,9 +1,9 @@
 
 **delimiter**:
-  Type(s): ``string``, Default: ``	``
+    Type(s): ``string``, Default: ``	``
 
 **file**:
-  Type(s): ``[null, string]``, Default: ``NULL``
+    Type(s): ``[null, string]``, Default: ``NULL``
 
 **header**:
-  Type(s): ``bool``, Default: ``true``
+    Type(s): ``bool``, Default: ``true``

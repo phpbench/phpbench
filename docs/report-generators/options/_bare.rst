@@ -1,3 +1,3 @@
 
 **vertical**:
-  Type(s): ``bool``, Default: ``false``
+    Type(s): ``bool``, Default: ``false``

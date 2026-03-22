@@ -1,3 +1,3 @@
 
 **reports**:
-  Type(s): ``array``, Default: ``n/a``
+    Type(s): ``array``, Default: ``n/a``

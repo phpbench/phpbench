@@ -101,7 +101,7 @@ class OptionDumper
 
             $section[] = '';
             $section[] = sprintf('**%s**:', $name);
-            $section[] = sprintf('  Type(s): ``%s``, Default: ``%s``', $types, $default);
+            $section[] = sprintf('    Type(s): ``%s``, Default: ``%s``', $types, $default);
 
             if ($description) {
                 $section[] = '';

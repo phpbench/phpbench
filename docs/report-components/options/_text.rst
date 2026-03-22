@@ -1,3 +1,3 @@
 
 **text**:
-  Type(s): ``string``, Default: ``n/a``
+    Type(s): ``string``, Default: ``n/a``
