@@ -1,6 +1,4 @@
 
-.. _renderer_console_option_table_style:
-
 **table_style**:
   Type(s): ``[null, scalar]``, Default: ``NULL``
 
