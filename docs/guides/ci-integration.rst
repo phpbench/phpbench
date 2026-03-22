@@ -38,7 +38,8 @@ Now introduce the github workflow:
 
 In the above example we publish the results to the `benchmarks`. The PHPBench report can be seen here: https://phpbench.github.io/phpbench/benchmarks/
 
+.. note::
+
+   The above workflow only runs on the **main branch** and does not provide any feedback on pull requests. The github actin can also automatically comment on pull requests when regressions are detected. See the action's README file for more information.
+
 .. _github-action-benchmark: https://github.com/benchmark-action/github-action-benchmark
-
-
-
