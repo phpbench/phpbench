@@ -41,15 +41,17 @@
 
           buildInputs = [
             pkgs.bash
+            pkgs.python3
             pkgs.php85.packages.composer
-            pkgs.sphinx
             php
           ];
           shellHook = ''
           if [ ! -d ".venv" ]; then
             python3 -m venv .venv;
           fi
-          source .venv/bin/activate;'';
+          source .venv/bin/activate;
+          (cd docs && pip install -r requirements.txt);
+          '';
         };
       };
     };
