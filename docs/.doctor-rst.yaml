@@ -6,7 +6,6 @@ rules:
     composer_dev_option_at_the_end: ~
     correct_code_block_directive_based_on_the_content: ~
     deprecated_directive_should_have_version: ~
-    indention: ~
     lowercase_as_in_use_statements: ~
     max_blank_lines:
         max: 2
