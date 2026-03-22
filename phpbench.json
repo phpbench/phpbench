@@ -21,6 +21,7 @@
             "generator": "composite",
             "reports": [
                 "hashing",
+                "github-action-benchmark",
                 "config_linters"
             ]
         }
