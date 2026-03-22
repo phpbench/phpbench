@@ -29,7 +29,6 @@ rules:
     valid_inline_highlighted_namespaces: ~
     valid_use_statements: ~
     versionadded_directive_should_have_version: ~
-    yaml_instead_of_yml_suffix: ~
 
     versionadded_directive_major_version:
         major_version: 1
