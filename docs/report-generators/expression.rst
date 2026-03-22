@@ -61,6 +61,18 @@ Which yields:
   :language: bash
   :section: 2
 
+For example you add a **diff** column:
+
+.. approved:: ../../examples/Command/report-generators-column-diff
+  :language: javascript
+  :section: 0
+
+Which yields:
+
+.. approved:: ../../examples/Command/report-generators-column-diff
+  :language: bash
+  :section: 2
+
 .. _generator_expression_aggregate:
 
 Aggregate

@@ -1,0 +1,34 @@
+{
+    "runner.executor": "debug-example",
+    "runner.iterations": 5,
+    "runner.executors": {
+        "debug-example": {
+            "executor": "debug",
+            "times":[10, 20, 30, 40, 50]
+        }
+    },
+    "report.generators": {
+         "my-report": {
+             "generator": "expression",
+             "aggregate": ["iteration_index"],
+             "cols": {
+                 "subject": null,
+                 "mode": null,
+                 "diff": "format('%.2fx', mean(result_time_avg) / min(suite['result_time_avg']))"
+             }
+         }
+    }
+}
+---
+phpbench run --report=my-report --executor=debug NothingBench.php --progress=none
+---
++--------------+----------+-------+
+| subject      | mode     | diff  |
++--------------+----------+-------+
+| benchNothing | 10.000μs | 1.00x |
+| benchNothing | 20.000μs | 2.00x |
+| benchNothing | 30.000μs | 3.00x |
+| benchNothing | 40.000μs | 4.00x |
+| benchNothing | 50.000μs | 5.00x |
++--------------+----------+-------+
+
