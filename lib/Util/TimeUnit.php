@@ -19,6 +19,7 @@ use InvalidArgumentException;
  */
 class TimeUnit
 {
+    final public const BASE_UNIT = self::MICROSECONDS;
     final public const MILLISECOND = 'millisecond';
     final public const MICROSECOND = 'microsecond';
     final public const SECOND = 'second';

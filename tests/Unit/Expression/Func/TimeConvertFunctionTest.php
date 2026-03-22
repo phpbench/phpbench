@@ -12,6 +12,8 @@ class TimeConvertFunctionTest extends FunctionTestCase
     #[TestWith(['1000, "milliseconds", "seconds"', 1])]
     #[TestWith(['1, "seconds", "ms"', 1000])]
     #[TestWith(['1, "s", "ms"', 1000])]
+    #[TestWith(['1, null, "ms"', 0.001])]
+    #[TestWith(['1, "ms", null', 1000])]
     public function testTimeUnit(string $paramExpr, int|float $expected): void
     {
         self::assertEquals($expected, $this->eval(

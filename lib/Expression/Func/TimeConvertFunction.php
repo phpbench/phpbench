@@ -18,6 +18,14 @@ final class TimeConvertFunction
         $from = $from->value();
         $to = $to->value();
 
+        if ($from === null) {
+            $from = TimeUnit::BASE_UNIT;
+        }
+
+        if ($to === null) {
+            $to = TimeUnit::BASE_UNIT;
+        }
+
         $result = $this->timeUnit->convertTo($value->value(), (string)$from, (string)$to);
 
         return new FloatNode($result);
