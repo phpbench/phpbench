@@ -36,7 +36,7 @@ Now introduce the github workflow:
 .. literalinclude:: ../../.github/workflows/benchmark.yml
   :language: yaml
 
-In the above example we publish the results to the `benchmarks`. The PHPBench report can be seen here: https://phpbench.github.io/phpbench/benchmarks/
+In the above example we publish the results to the `benchmarks` sub-folder. The PHPBench report can be seen here: https://phpbench.github.io/phpbench/benchmarks/
 
 .. note::
 

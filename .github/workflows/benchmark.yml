@@ -28,7 +28,7 @@ jobs:
         with:
           composer-options: "--no-scripts"
 
-      # optionially ensure that the gh-pages branch exists. feel free to create
+      # optionally ensure that the gh-pages branch exists. feel free to create
       # this yourself and ommit this step.
       - name: Ensure gh-pages branch exists
         run: |
