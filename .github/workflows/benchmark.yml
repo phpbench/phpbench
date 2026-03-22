@@ -1,0 +1,55 @@
+name: Benchmark
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  benchmark:
+    name: Benchmark
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          coverage: none
+          php-version: "8.2"
+          tools: composer:v2
+
+      - name: Composer install
+        uses: ramsey/composer-install@v2
+        with:
+          composer-options: "--no-scripts"
+
+      # optionially ensure that the gh-pages branch exists. feel free to create
+      # this yourself and ommit this step.
+      - name: Ensure gh-pages branch exists
+        run: |
+          if ! git ls-remote --exit-code --heads origin gh-pages > /dev/null 2>&1; then
+            git config user.name "github-actions[bot]"
+            git config user.email "12345678+github-actions[bot]@users.noreply.github.com"
+            empty_tree="$(git hash-object -t tree /dev/null)"
+            commit="$(git commit-tree "$empty_tree" -m 'Initial gh-pages branch')"
+            git push origin "$commit:refs/heads/gh-pages"
+          fi
+
+      - name: Run PHPBench
+        run: bin/phpbench run --progress=plain --report=github-action-benchmark --output=json > output.json
+
+      - name: Store benchmark result
+        uses: benchmark-action/github-action-benchmark@v1
+        with:
+          name: PHPBench Performance
+          tool: customSmallerIsBetter
+          output-file-path: output.json
+          gh-pages-branch: gh-pages
+          benchmark-data-dir-path: benchmarks
+          auto-push: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
