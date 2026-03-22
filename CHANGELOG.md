@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+1.6.1
+-----
+
+- Handle undefined offset error for unsupproted time formats
+- Allow NULL to be passed as a time unit (will use the base unit)
+
 1.6.0
 -----
 
