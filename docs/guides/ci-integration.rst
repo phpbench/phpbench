@@ -18,7 +18,7 @@ Github Actions Benchmarks
 The `github-action-benchmark`_ is a github action that uses github pages to
 store historical benchmarking results and builds a static page containing all the results.
 
-In order to use it you need to configure a report in PHPBench, introduce the
+You'll need to generate a JSON document and you can do this via. a PHPBench report. Introduce the
 followng :ref:`report confguration`<configuration_report_generators>` in
 ``phpbench.json``:
 
@@ -31,15 +31,18 @@ You can now generate the JSON document required by the github action:
 
     $ phpbench run --report=github-action-benchmark --output=json > output.json
 
-Now introduce the github workflow:
+Now introduce the following `github workflow`_:
 
 .. literalinclude:: ../../.github/workflows/benchmark.yml
   :language: yaml
 
-In the above example we publish the results to the `benchmarks` sub-folder. The PHPBench report can be seen here: https://phpbench.github.io/phpbench/benchmarks/
+In the above example we publish the results to the `benchmarks` sub-folder of
+the github pages site. The PHPBench report can be seen here:
+https://phpbench.github.io/phpbench/benchmarks/
 
 .. note::
 
    The above workflow only runs on the **main branch** and does not provide any feedback on pull requests. The github actin can also automatically comment on pull requests when regressions are detected. See the action's README file for more information.
 
 .. _github-action-benchmark: https://github.com/benchmark-action/github-action-benchmark
+.. _github workflow: https://docs.github.com/en/actions/concepts/workflows-and-actions/workflows

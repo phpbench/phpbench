@@ -41,6 +41,7 @@ jobs:
           fi
 
       - name: Run PHPBench
+        # you probably need to change this to vendor/bin/phpbench
         run: bin/phpbench run --progress=plain --report=github-action-benchmark --output=json > output.json
 
       - name: Store benchmark result
