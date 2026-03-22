@@ -1,0 +1,30 @@
+{
+    "report.generators": {
+        "github-action-benchmark": {
+            "title": "github-action-benchmark",
+            "description": "https://github.com/benchmark-action/github-action-benchmark",
+            "cols": [
+                "name",
+                "unit",
+                "value",
+                "range",
+                "extra"
+            ],
+            "expressions": {
+                "name": "format('%s::%s%s', first(benchmark_name),first(subject_name),if(first(variant_name) != false, format(' (%s)', first(variant_name)), ''))",
+                "unit": "time_unit(first(subject_time_unit), true)",
+                "value": "time_convert(mode(result_time_avg), 'us', time_unit(first(subject_time_unit)))",
+                "range": "format('± %.2f%%', rstdev(result_time_avg))",
+                "extra": "format('%d iterations, %d revs', first(variant_iterations), first(variant_revs))"
+            },
+            "aggregate": [
+                "suite_tag",
+                "benchmark_class",
+                "subject_name",
+                "variant_index"
+            ],
+            "generator": "expression"
+        }
+    }
+}
+
