@@ -29,7 +29,7 @@ You can now generate the JSON document required by the github action:
 
 .. code-block:: bash
 
-    $ phpbench run examples/HashBench.php --report=github-action-benchmark --output=json > output.json
+    $ phpbench run --report=github-action-benchmark --output=json > output.json
 
 Now introduce the github workflow:
 
