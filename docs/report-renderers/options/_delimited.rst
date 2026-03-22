@@ -1,15 +1,9 @@
 
-.. _renderer_delimited_option_delimiter:
-
 **delimiter**:
-  Type(s): ``string``, Default: ``	``
-
-.. _renderer_delimited_option_file:
+    Type(s): ``string``, Default: ``	``
 
 **file**:
-  Type(s): ``[null, string]``, Default: ``NULL``
-
-.. _renderer_delimited_option_header:
+    Type(s): ``[null, string]``, Default: ``NULL``
 
 **header**:
-  Type(s): ``bool``, Default: ``true``
+    Type(s): ``bool``, Default: ``true``

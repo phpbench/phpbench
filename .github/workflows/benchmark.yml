@@ -3,6 +3,7 @@ name: Benchmark
 on:
   push:
     branches:
+      # change this to your main branch
       - master
 
 jobs:

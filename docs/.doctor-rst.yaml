@@ -6,7 +6,6 @@ rules:
     composer_dev_option_at_the_end: ~
     correct_code_block_directive_based_on_the_content: ~
     deprecated_directive_should_have_version: ~
-    indention: ~
     lowercase_as_in_use_statements: ~
     max_blank_lines:
         max: 2
@@ -29,7 +28,6 @@ rules:
     valid_inline_highlighted_namespaces: ~
     valid_use_statements: ~
     versionadded_directive_should_have_version: ~
-    yaml_instead_of_yml_suffix: ~
 
     versionadded_directive_major_version:
         major_version: 1

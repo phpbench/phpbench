@@ -1,10 +1,6 @@
 
-.. _generator_env_option_title:
-
 **title**:
-  Type(s): ``[null, scalar]``, Default: ``NULL``
-
-.. _generator_env_option_description:
+    Type(s): ``[null, scalar]``, Default: ``NULL``
 
 **description**:
-  Type(s): ``[null, scalar]``, Default: ``NULL``
+    Type(s): ``[null, scalar]``, Default: ``NULL``

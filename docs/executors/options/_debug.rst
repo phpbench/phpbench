@@ -1,15 +1,9 @@
 
-.. _executor_debug_option_times:
-
 **times**:
-  Type(s): ``array``, Default: ``10``
-
-.. _executor_debug_option_spread:
+    Type(s): ``array``, Default: ``10``
 
 **spread**:
-  Type(s): ``array``, Default: ``0``
-
-.. _executor_debug_option_memories:
+    Type(s): ``array``, Default: ``0``
 
 **memories**:
-  Type(s): ``[null, array]``, Default: ``NULL``
+    Type(s): ``[null, array]``, Default: ``NULL``
