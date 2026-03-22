@@ -44,7 +44,7 @@ jobs:
 
             -   name: "Build documentation"
                 working-directory: "docs"
-                run: make -C . SPHINXOPTS="-nqW -j auto" html
+                run: make -C . SPHINXOPTS="-nq -j auto" html
 
     doctor-rst:
         name: "DOCtor-RST"
