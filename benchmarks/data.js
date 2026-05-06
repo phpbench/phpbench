@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1775314483969,
+  "lastUpdate": 1778095231128,
   "repoUrl": "https://github.com/phpbench/phpbench",
   "entries": {
     "PHPBench Performance": [
@@ -1110,6 +1110,191 @@ window.BENCHMARK_DATA = {
             "range": "± 0.66%",
             "unit": "μs",
             "extra": "10 iterations, 1 revs"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "sasezaki+github@gmail.com",
+            "name": "sasezaki",
+            "username": "sasezaki"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "2f2742b3bfd1416ca95d4e0338af0b6897cf4e64",
+          "message": "Add export-ignore rules to .gitattributes (#1146)\n\n* Add missing export-ignore entries to .gitattributes\n\n* Remove /templates/ from export-ignore (used at runtime)",
+          "timestamp": "2026-05-06T21:19:39+02:00",
+          "tree_id": "90e9703a359be4f7f3a3eed18625b9d2f74141a7",
+          "url": "https://github.com/phpbench/phpbench/commit/2f2742b3bfd1416ca95d4e0338af0b6897cf4e64"
+        },
+        "date": 1778095229677,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "RunCommandBench::benchDefault",
+            "value": 123466.39726027445,
+            "range": "± 2.11%",
+            "unit": "μs",
+            "extra": "10 iterations, 1 revs"
+          },
+          {
+            "name": "RunCommandBench::benchInBand",
+            "value": 129975.26223092062,
+            "range": "± 0.89%",
+            "unit": "μs",
+            "extra": "10 iterations, 1 revs"
+          },
+          {
+            "name": "RunCommandBench::benchNoEnv",
+            "value": 23456.637964774956,
+            "range": "± 0.54%",
+            "unit": "μs",
+            "extra": "10 iterations, 1 revs"
+          },
+          {
+            "name": "ParserBench::benchEvaluate (comp. w/tol)",
+            "value": 76.20528375733652,
+            "range": "± 1.49%",
+            "unit": "μs",
+            "extra": "10 iterations, 10 revs"
+          },
+          {
+            "name": "ParserBench::benchEvaluate (comp.)",
+            "value": 67.16986301369793,
+            "range": "± 2.01%",
+            "unit": "μs",
+            "extra": "10 iterations, 10 revs"
+          },
+          {
+            "name": "VariantSummaryFormatterBench::benchFormat",
+            "value": 1425.938943248517,
+            "range": "± 0.94%",
+            "unit": "μs",
+            "extra": "10 iterations, 10 revs"
+          },
+          {
+            "name": "DataFrameBench::benchCreateFromRowArrays",
+            "value": 255.6381604696698,
+            "range": "± 2.03%",
+            "unit": "μs",
+            "extra": "10 iterations, 10 revs"
+          },
+          {
+            "name": "DataFrameBench::benchCreateFromRecords",
+            "value": 1116.0493150684913,
+            "range": "± 0.73%",
+            "unit": "μs",
+            "extra": "10 iterations, 10 revs"
+          },
+          {
+            "name": "AssertionProcessorBench::benchAssert",
+            "value": 948.267123287678,
+            "range": "± 1.09%",
+            "unit": "μs",
+            "extra": "10 iterations, 10 revs"
+          },
+          {
+            "name": "ComponentGeneratorBench::benchGenerate (text,0)",
+            "value": 328.1203522504871,
+            "range": "± 2.06%",
+            "unit": "μs",
+            "extra": "10 iterations, 2 revs"
+          },
+          {
+            "name": "ComponentGeneratorBench::benchGenerate (bar_chart_aggregate,0)",
+            "value": 338.3718199608729,
+            "range": "± 1.89%",
+            "unit": "μs",
+            "extra": "10 iterations, 2 revs"
+          },
+          {
+            "name": "ComponentGeneratorBench::benchGenerate (table_aggregate,0)",
+            "value": 321.2866927592946,
+            "range": "± 2.31%",
+            "unit": "μs",
+            "extra": "10 iterations, 2 revs"
+          },
+          {
+            "name": "ComponentGeneratorBench::benchGenerate (text,25)",
+            "value": 2099.145792563613,
+            "range": "± 1.56%",
+            "unit": "μs",
+            "extra": "10 iterations, 2 revs"
+          },
+          {
+            "name": "ComponentGeneratorBench::benchGenerate (bar_chart_aggregate,25)",
+            "value": 3248.0802348336438,
+            "range": "± 1.74%",
+            "unit": "μs",
+            "extra": "10 iterations, 2 revs"
+          },
+          {
+            "name": "ComponentGeneratorBench::benchGenerate (table_aggregate,25)",
+            "value": 5742.154598825837,
+            "range": "± 1.26%",
+            "unit": "μs",
+            "extra": "10 iterations, 2 revs"
+          },
+          {
+            "name": "ComponentGeneratorBench::benchGenerate (text,50)",
+            "value": 3635.9706457925577,
+            "range": "± 1.15%",
+            "unit": "μs",
+            "extra": "10 iterations, 2 revs"
+          },
+          {
+            "name": "ComponentGeneratorBench::benchGenerate (bar_chart_aggregate,50)",
+            "value": 5377.595890410945,
+            "range": "± 1.05%",
+            "unit": "μs",
+            "extra": "10 iterations, 2 revs"
+          },
+          {
+            "name": "ComponentGeneratorBench::benchGenerate (table_aggregate,50)",
+            "value": 8978.643835616502,
+            "range": "± 1.15%",
+            "unit": "μs",
+            "extra": "10 iterations, 2 revs"
+          },
+          {
+            "name": "ComponentGeneratorBench::benchGenerate (text,75)",
+            "value": 5221.660469667289,
+            "range": "± 1.57%",
+            "unit": "μs",
+            "extra": "10 iterations, 2 revs"
+          },
+          {
+            "name": "ComponentGeneratorBench::benchGenerate (bar_chart_aggregate,75)",
+            "value": 7835.084148728145,
+            "range": "± 1.94%",
+            "unit": "μs",
+            "extra": "10 iterations, 2 revs"
+          },
+          {
+            "name": "ComponentGeneratorBench::benchGenerate (table_aggregate,75)",
+            "value": 12972.475538160425,
+            "range": "± 1.54%",
+            "unit": "μs",
+            "extra": "10 iterations, 2 revs"
+          },
+          {
+            "name": "ExpressionGeneratorBench::benchGenerate",
+            "value": 7609.2434442269805,
+            "range": "± 2.48%",
+            "unit": "μs",
+            "extra": "10 iterations, 10 revs"
+          },
+          {
+            "name": "HtmlRendererBench::benchRender",
+            "value": 2433.768493150627,
+            "range": "± 0.62%",
+            "unit": "μs",
+            "extra": "10 iterations, 10 revs"
           }
         ]
       }
