@@ -1,0 +1,22 @@
+{
+    "report.generators": {
+         "my-report": {
+             "generator": "expression",
+             "cols": [ "benchmark", "subject", "mode", "super mode" ],
+             "derivations": {
+                 "super mode": "row['mode'] ~ ' of ' ~ sum(table['mode'])"
+             }
+         }
+    }
+}
+---
+phpbench run --report=my-report --executor=debug MultipleSubjects.php --progress=none
+---
++----------------------+---------------+----------+------------+
+| benchmark            | subject       | mode     | super mode |
++----------------------+---------------+----------+------------+
+| MultipleSubjectBench | benchSubject1 | 10.000μs | 10 of 30   |
+| MultipleSubjectBench | benchSubject2 | 10.000μs | 10 of 30   |
+| MultipleSubjectBench | benchSubject3 | 10.000μs | 10 of 30   |
++----------------------+---------------+----------+------------+
+

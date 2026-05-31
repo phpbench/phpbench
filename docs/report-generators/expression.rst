@@ -129,6 +129,36 @@ Which yields:
   :language: bash
   :section: 2
 
+
+.. _generator_expression_derivations:
+
+Derivations
+-----------
+
+:ref:`Expressions<generator_expression_expressions>` effectively enable you to
+populate a *table* based on the benchmarking :ref:`data <generator_expression_data>`.
+**Derivations** allow you to derive new columns from that table in one or more
+passes.
+
+Derivations have access to two variables and each expression is mapped on a row:
+
+- ``table``: a data frame containing the entire table. ``table['mean']`` for example will yield a **list** containing all of the values in the `mean` column.
+- ``row``: the current row to which the derivation will be mapped. ``row['mean']`` for example will yield the value of `mean` in the current row.
+
+In the following example we derive a new column ``super mean``:
+
+.. approved:: ../../examples/Command/report-generators-derivations
+  :language: javascript
+  :section: 0
+
+Which yields:
+
+.. approved:: ../../examples/Command/report-generators-derivations
+  :language: bash
+  :section: 2
+
+.. _generator_expression_data:
+
 Data
 ----
 

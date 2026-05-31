@@ -1,0 +1,13 @@
+Aggregate by Subject
+====================
+
+Aggregate results by subject and group by benchmark class.
+This is a preview report and may change in minor version updates.
+
+TestBench
++--------------+------+-----+----------+-------------+----------+-------+
+| name         | revs | its | mem_peak | mode        | rstdev   | diff  |
++--------------+------+-----+----------+-------------+----------+-------+
+| benchOne (0) | 5    | 2   | 200b     | 5.0000000μs | ±100.00% | 1.00x |
++--------------+------+-----+----------+-------------+----------+-------+
+

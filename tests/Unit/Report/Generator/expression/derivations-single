@@ -1,0 +1,32 @@
+{
+    "subjects": [
+        "one",
+        "two"
+    ],
+    "basetime": 0,
+    "iterations": [
+        10
+    ]
+}
+---
+{
+    "cols": {
+        "subject": "\"hello\"",
+        "benchmark": "\"hello\"",
+        "mode": "mode(result_time_avg)",
+        "subbench": null
+    },
+    "derivations": [
+        {
+            "subbench": "row['subject'] ~ ' ' ~ row['mode']"
+        }
+    ]
+}
+---
++---------+-----------+------+----------+
+| subject | benchmark | mode | subbench |
++---------+-----------+------+----------+
+| hello   | hello     | 10   | hello 10 |
+| hello   | hello     | 10   | hello 10 |
++---------+-----------+------+----------+
+

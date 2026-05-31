@@ -3,9 +3,9 @@
          "my-report": {
              "generator": "expression",
              "expressions": {
-                "mode": "\"This is the mode: \" ~ mode(result_time_avg)"
+                "new_mode": "\"This is the mode: \" ~ mode(result_time_avg)"
              },
-             "cols": [ "benchmark", "subject", "mode" ]
+             "cols": [ "benchmark", "subject", "new_mode" ]
          }
     }
 }
@@ -13,7 +13,7 @@
 phpbench run --report=my-report --executor=debug NothingBench.php --progress=none
 ---
 +--------------+--------------+----------------------+
-| benchmark    | subject      | mode                 |
+| benchmark    | subject      | new_mode             |
 +--------------+--------------+----------------------+
 | NothingBench | benchNothing | This is the mode: 10 |
 +--------------+--------------+----------------------+
