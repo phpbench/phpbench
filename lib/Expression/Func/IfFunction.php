@@ -3,15 +3,19 @@
 namespace PhpBench\Expression\Func;
 
 use PhpBench\Expression\Ast\PhpValue;
+use PhpBench\Expression\LazyExpr;
+use PhpBench\Expression\LazyFunction;
 
-final class IfFunction
+final class IfFunction implements LazyFunction
 {
-    public function __invoke(PhpValue $condition, PhpValue $trueVal, PhpValue $falseVal): PhpValue
+    public function __invoke(LazyExpr $condition, LazyExpr $trueVal, LazyExpr $falseVal): PhpValue
     {
+        $condition = $condition->expect(PhpValue::class);
+
         if ((bool)$condition->value() === true) {
-            return $trueVal;
+            return $trueVal->expect(PhpValue::class);
         }
 
-        return $falseVal;
+        return $falseVal->expect(PhpValue::class);
     }
 }
