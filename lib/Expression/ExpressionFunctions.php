@@ -35,20 +35,25 @@ final class ExpressionFunctions
         $this->functionMap[$name] = $callable;
     }
 
-    /**
-     * @param mixed[] $args
-     */
-    public function execute(string $functionName, array $args): Node
+    public function get(string $name): callable
     {
-        if (!isset($this->functionMap[$functionName])) {
+        if (!isset($this->functionMap[$name])) {
             throw new RuntimeException(sprintf(
                 'Unknown function "%s", known functions "%s"',
-                $functionName,
+                $name,
                 implode('", "', array_keys($this->functionMap))
             ));
         }
 
-        $function = $this->functionMap[$functionName];
+        return $this->functionMap[$name];
+    }
+
+    /**
+     * @param Node[] $args
+     */
+    public function execute(Evaluator $evaluator, string $functionName, array $args): Node
+    {
+        $function = $this->get($functionName);
         $evaluated = $function(...$args);
 
         if (!$evaluated instanceof Node) {

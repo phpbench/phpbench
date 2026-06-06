@@ -15,6 +15,7 @@ class IfFunctionTest extends FunctionTestCase
     #[TestWith(['"", true, false', false])]
     #[TestWith(['0, true, false', false])]
     #[TestWith(['1, true, false', true])]
+    #[TestWith(['false, foo["not_existing"], false', false])] // lazy evaluation so invalid expr not executed
     public function testFormat(string $paramExpr, mixed $expected): void
     {
         self::assertEquals($expected, $this->eval(

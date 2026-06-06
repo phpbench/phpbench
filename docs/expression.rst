@@ -346,6 +346,7 @@ if
 ~~
 
 Provide one value if the given expression is true, else return the other value.
+Arguments are evaluated lazily.
 
 .. literalinclude:: ../examples/Expression/if_1
 
