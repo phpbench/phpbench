@@ -11,10 +11,13 @@
          "my-report": {
              "generator": "expression",
              "aggregate": ["iteration_index"],
-             "cols": {
-                 "subject": null,
-                 "mode": null,
-                 "diff": "format('%.2fx', mean(result_time_avg) / min(suite['result_time_avg']))"
+             "cols": [
+                 "subject",
+                 "mode",
+                 "diff"
+             ],
+             "derivations": {
+                "diff": "if(min(table['mode']) > 0, format('%.2fx', row['mode'] / min(table['mode'])), 'N/A')"
              }
          }
     }

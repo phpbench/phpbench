@@ -4,7 +4,7 @@
         <h2><?php echo $object->title() ?></h2>
     <?php endif ?>
     <?php if ($object->description()): ?>
-        <p><?php echo $object->description() ?></p>
+        <p><?php echo nl2br($object->description()) ?></p>
     <?php endif ?>
     <?php if(false === $object->tabbed()): ?>
         <?php foreach ($object->objects() as $object): ?>

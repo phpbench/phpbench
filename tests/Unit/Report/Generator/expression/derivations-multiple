@@ -1,0 +1,36 @@
+{
+    "subjects": [
+        "one",
+        "two"
+    ],
+    "basetime": 0,
+    "iterations": [
+        10
+    ]
+}
+---
+{
+    "cols": [
+        "subject",
+        "benchmark",
+        "mode",
+        "sum",
+        "sumsum"
+    ],
+    "derivations": [
+        {
+            "sum": "sum(table['mode'])"
+        },
+        {
+            "sumsum": "row['sum'] + row['sum']"
+        }
+    ]
+}
+---
++---------+-----------+----------+-----+--------+
+| subject | benchmark | mode     | sum | sumsum |
++---------+-----------+----------+-----+--------+
+| one     | TestBench | 10.000μs | 20  | 40     |
+| two     | TestBench | 10.000μs | 20  | 40     |
++---------+-----------+----------+-----+--------+
+

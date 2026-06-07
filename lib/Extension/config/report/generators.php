@@ -1,5 +1,23 @@
 <?php
 
+$formatTime = function (string $expr) {
+    return sprintf(
+        <<<'EOT'
+        display_as_time(
+            %s, 
+            coalesce(
+                row["time_unit"],
+                "time"
+            ), 
+            row["time_precision"], 
+            row["time_mode"]
+        )
+        EOT
+        ,
+        $expr
+    );
+};
+
 return [
     'bare' => [
         'generator' => 'bare',
@@ -19,6 +37,54 @@ return [
             'mem_peak',
             'mode',
             'rstdev',
+        ]
+    ],
+    'aggregate-preview' => [
+        'title' => 'Aggregate by Subject',
+        'description' => "Aggregate results by subject and group by benchmark class.\nThis is a preview report and may change in minor version updates.",
+        'extends' => 'aggregate',
+        'break' => [
+            'benchmark',
+        ],
+        'expressions' => [
+            'name' => sprintf(
+                'if(first(variant_name) != "", %s, %s)',
+                'first(subject_name) ~ " (" ~ first(variant_name) ~ ")"',
+                'first(subject_name)'
+            ),
+            '_mode' => 'mode(result_time_avg)',
+        ],
+        'cols' => [
+            'name',
+            'revs',
+            'its',
+            'mem_peak',
+            'mode',
+            'rstdev',
+            'diff',
+        ],
+        'baseline_expressions' => [],
+        'derivations' => [
+            'diff' => sprintf(
+                'if(min(table["_mode"]) > 0, %s, %s)',
+                'format("%.2fx", row["_mode"] / min(table["_mode"]))',
+                '"N/A"'
+            ),
+            'mode' => sprintf(
+                'if(row["baseline_exists"], %s, %s)',
+                $formatTime('row["_mode"]') . ' ~ " " ~ percent_diff(row["baseline_mode"], row["_mode"])',
+                $formatTime('row["_mode"]'),
+            ),
+            'mem_peak' => sprintf(
+                'if(row["baseline_exists"], %s, %s)',
+                '(row["mem_peak"] as memory) ~ " " ~ percent_diff(row["baseline_mem_peak"], row["mem_peak"])',
+                'row["mem_peak"] as memory',
+            ),
+            'rstdev' => sprintf(
+                'if(row["baseline_exists"], %s, %s)',
+                '(row["rstdev"] as "rstdev") ~ " " ~ percent_diff(row["baseline_rstdev"], row["rstdev"])',
+                'row["rstdev"] as "rstdev"',
+            ),
         ]
     ],
     'bar_chart_time' => [
