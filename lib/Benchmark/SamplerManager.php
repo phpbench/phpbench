@@ -52,6 +52,7 @@ class SamplerManager
             ));
         }
 
+        /** @phpstan-ignore function.alreadyNarrowedType */
         if (!is_callable($callable)) {
             throw new InvalidArgumentException(sprintf(
                 'Given sampler "%s" callable "%s" is not callable.',

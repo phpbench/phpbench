@@ -2,7 +2,6 @@
 
 namespace PhpBench\Data;
 
-use ReturnTypeWillChange;
 use ArrayAccess;
 use ArrayIterator;
 use Closure;
@@ -218,17 +217,12 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
     /**
      * {@inheritDoc}
      */
-    #[ReturnTypeWillChange]
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
-        return in_array($offset, $this->columns);
+        return in_array($offset, $this->columns, true);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    #[ReturnTypeWillChange]
-    public function offsetGet($offset)
+    public function offsetGet($offset): array
     {
         return $this->column($offset)->toValues();
     }
@@ -236,7 +230,6 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
     /**
      * {@inheritDoc}
      */
-    #[ReturnTypeWillChange]
     public function offsetSet($offset, $value): void
     {
         throw new BadMethodCallException('Not implemented');
@@ -245,7 +238,6 @@ final class DataFrame implements IteratorAggregate, ArrayAccess
     /**
      * {@inheritDoc}
      */
-    #[ReturnTypeWillChange]
     public function offsetUnset($offset): void
     {
         throw new BadMethodCallException('Not implemented');

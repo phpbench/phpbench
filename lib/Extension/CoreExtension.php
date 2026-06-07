@@ -93,11 +93,7 @@ EOT
 
             foreach (array_keys($container->getServiceIdsForTag(ConsoleExtension::TAG_CONSOLE_COMMAND)) as $serviceId) {
                 $command = $container->get($serviceId);
-                match (true) {
-                    method_exists($application, 'addCommand') => $application->addCommand($command),
-                    method_exists($application, 'add') => $application->add($command),
-                    default => throw new \RuntimeException('Cannot determine how to add a commmand to this version of Symfony Console'),
-                };
+                $application->addCommand($command);
             }
 
             return $application;

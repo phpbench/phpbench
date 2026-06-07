@@ -47,7 +47,6 @@ class ConfigDriverTest extends TestCase
 
         $this->innerDriver->getMetadataForHierarchy($this->hierarchy)->willReturn($metadata);
 
-        assert($driver instanceof DriverInterface);
         $assertion($driver->getMetadataForHierarchy($this->hierarchy)->getOrCreateSubject(self::EXAMPLE_SUBJECT));
     }
 

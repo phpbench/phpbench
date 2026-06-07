@@ -82,8 +82,6 @@ trait ProphecyTrait
         foreach ($this->prophet->getProphecies() as $objectProphecy) {
             foreach ($objectProphecy->getMethodProphecies() as $methodProphecies) {
                 foreach ($methodProphecies as $methodProphecy) {
-                    \assert($methodProphecy instanceof MethodProphecy);
-
                     $this->addToAssertionCount(\count($methodProphecy->getCheckedPredictions()));
                 }
             }

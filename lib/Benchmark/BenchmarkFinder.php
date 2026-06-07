@@ -111,8 +111,6 @@ class BenchmarkFinder
         }
 
         foreach ($finder as $file) {
-            assert($file instanceof SplFileInfo);
-
             if ($this->benchPattern === null && !str_ends_with($file->getFilename(), 'Bench.php')) {
                 $this->logger->warning(sprintf(
                     'File "%s" has been identified as a benchmark file but it does not end with ' .

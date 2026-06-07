@@ -23,7 +23,7 @@ class ChainResolverTest extends TestCase
     final public const TEST_UUID = 'uuid';
 
     /**
-     * @var UuidResolverInterface|ObjectProphecy
+     * @var ObjectProphecy<UuidResolverInterface>
      */
     private ObjectProphecy $resolver;
 

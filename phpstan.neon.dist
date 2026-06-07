@@ -6,7 +6,7 @@ parameters:
         - extensions/xdebug/lib
         - tests
     excludePaths:
-        - tests/Workspace
+        - tests/Workspace?
         - tests/Unit/Reflection/reflector
         - tests/Unit/Benchmark/findertest
         - tests/System/benchmarks
@@ -18,5 +18,6 @@ parameters:
         tableColumnDefinition: 'array<string,mixed>'
     stubFiles:
         - phpstan/Container.stub
+
 includes:
     - phpstan-baseline.neon
