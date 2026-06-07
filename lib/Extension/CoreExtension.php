@@ -93,7 +93,15 @@ EOT
 
             foreach (array_keys($container->getServiceIdsForTag(ConsoleExtension::TAG_CONSOLE_COMMAND)) as $serviceId) {
                 $command = $container->get($serviceId);
-                $application->addCommand($command);
+
+                // addCommand was added in Symfony Console 7.x
+                match (true) {
+                    /** @phpstan-ignore function.alreadyNarrowedType */
+                    method_exists($application, 'addCommand') => $application->addCommand($command),
+                    /** @phpstan-ignore function.impossibleType */
+                    method_exists($application, 'add') => $application->add($command),
+                    default => throw new \RuntimeException('Cannot determine how to add a commmand to this version of Symfony Console'),
+                };
             }
 
             return $application;
