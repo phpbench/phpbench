@@ -77,7 +77,7 @@ class CommandsTest extends IntegrationTestCase
     public static function provideCommand(): Generator
     {
         foreach (glob(__DIR__ . '/../../examples/Command/*') as $file) {
-            yield [
+            yield basename($file) => [
                 $file,
             ];
         }

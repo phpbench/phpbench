@@ -17,6 +17,7 @@
 }
 ---
 {
+    "cols": ["tag", "benchmark", "subject", "set", "revs", "its", "mem_peak", "best", "mode", "mean", "worst", "stdev", "rstdev"],
     "baseline_expressions": {
         "mode": "\"baseline: \" ~ mode(baseline_time_avg)"
     }

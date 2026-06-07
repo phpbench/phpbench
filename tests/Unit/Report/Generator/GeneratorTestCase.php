@@ -83,7 +83,7 @@ abstract class GeneratorTestCase extends IntegrationTestCase
     public static function provideGenerate(): Generator
     {
         foreach (glob(sprintf('%s/%s/*', __DIR__, static::acceptanceSubPath())) as $path) {
-            yield [
+            yield basename($path) => [
                 $path
             ];
         }

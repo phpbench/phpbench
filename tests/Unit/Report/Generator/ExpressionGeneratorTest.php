@@ -50,7 +50,23 @@ class ExpressionGeneratorTest extends GeneratorTestCase
             ['name' => 'two'],
             ['name' => 'three'],
             ['name' => 'four'],
-        ]), []);
+        ]), [
+            "cols" =>  [
+                "tag",
+                "benchmark",
+                "subject",
+                "set",
+                "revs",
+                "its",
+                "mem_peak",
+                "best",
+                "mode",
+                "mean",
+                "worst",
+                "stdev",
+                "rstdev"
+            ]
+        ]);
         $approval = Approval::create(__DIR__ .'/expression-special/multiple_suites', 0);
         $approval->approve($result);
     }

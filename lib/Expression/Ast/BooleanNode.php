@@ -2,7 +2,7 @@
 
 namespace PhpBench\Expression\Ast;
 
-class BooleanNode extends PhpValue
+class BooleanNode extends ScalarValue
 {
     public function __construct(private readonly bool $value)
     {

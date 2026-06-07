@@ -8,8 +8,10 @@ use RuntimeException;
 
 use function json_decode;
 
-class Approval
+final class Approval
 {
+    private const EMPTY_FILE_MARKER = '<empty file>';
+
     /**
      * @param string[] $sections
      */
@@ -25,6 +27,7 @@ class Approval
             }
             touch($path);
         }
+
         $parts = array_values(
             (array)array_filter(
                 explode(
@@ -83,6 +86,10 @@ class Approval
 
     public function approve(string $actual, bool $force = false): void
     {
+        if ($actual === '') {
+            $actual = self::EMPTY_FILE_MARKER . PHP_EOL;
+        }
+
         if (null === $this->expected || $force || getenv('PHPBENCH_APPROVE')) {
             file_put_contents($this->path, implode("\n---\n", array_merge(
                 array_map(function (string $section) {
