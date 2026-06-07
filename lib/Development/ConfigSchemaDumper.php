@@ -8,7 +8,6 @@ use Symfony\Component\OptionsResolver\Exception\NoConfigurationException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use function json_encode;
-use function method_exists;
 
 class ConfigSchemaDumper
 {
@@ -21,10 +20,6 @@ class ConfigSchemaDumper
 
     public function dump(): string
     {
-        if (!method_exists(OptionsResolver::class, 'getInfo')) {
-            return 'Config reference generation requires Symfony Options Resolver ^5.0';
-        }
-
         $schema = [
           '$schema' => 'https =>//json-schema.org/draft/2020-12/schema',
           'title' => 'PHPBench configuration',

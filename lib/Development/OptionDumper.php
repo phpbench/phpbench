@@ -12,7 +12,6 @@ use Symfony\Component\OptionsResolver\Exception\NoConfigurationException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use function json_encode;
-use function method_exists;
 
 class OptionDumper
 {
@@ -28,10 +27,6 @@ class OptionDumper
      */
     public function dump(string $type): Generator
     {
-        if (!method_exists(OptionsResolver::class, 'getInfo')) {
-            return 'Config reference generation requires Symfony Options Resolver ^5.0';
-        }
-
         if (!isset($this->typeToRegistryMap[$type])) {
             throw new RuntimeException(sprintf(
                 'Do not know about registry of type "%s", known registries: "%s"',

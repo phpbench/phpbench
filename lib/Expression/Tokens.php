@@ -40,7 +40,7 @@ final class Tokens implements IteratorAggregate, Countable
     /**
      * Return the current token and move the position ahead.
      */
-    public function chomp(?string $type = null): ?Token
+    public function chomp(?string $type = null): Token
     {
         $previous = $this->previous();
         $token = $this->atPosition($this->position++);
@@ -65,6 +65,7 @@ final class Tokens implements IteratorAggregate, Countable
     {
         $last = $this->tokens[count($this->tokens) - 1];
 
+        /** @phpstan-ignore instanceof.alwaysTrue */
         if (!$last instanceof Token) {
             return '';
         }

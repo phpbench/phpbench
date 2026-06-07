@@ -27,9 +27,7 @@ use PhpBench\Benchmark\Metadata\BenchmarkMetadata;
 use PhpBench\Benchmark\Metadata\DriverInterface;
 use PhpBench\Benchmark\Metadata\ExecutorMetadata;
 use PhpBench\Benchmark\Metadata\SubjectMetadata;
-use PhpBench\Reflection\ReflectionClass;
 use PhpBench\Reflection\ReflectionHierarchy;
-use PhpBench\Reflection\ReflectionMethod;
 
 use function array_key_exists;
 
@@ -55,7 +53,6 @@ class AttributeDriver implements DriverInterface
         $reflectionHierarchy = iterator_to_array($hierarchy);
 
         foreach ($reflectionHierarchy as $reflection) {
-            assert($reflection instanceof ReflectionClass);
             $benchAttributes = $reflection->attributes;
 
             $attributes = array_merge($attributes, $benchAttributes);
@@ -67,7 +64,6 @@ class AttributeDriver implements DriverInterface
 
         foreach ($reflectionHierarchy as $reflection) {
             foreach ($reflection->methods as $reflectionMethod) {
-                assert($reflectionMethod instanceof ReflectionMethod);
                 $hasPrefix = (bool) preg_match('{' . $this->subjectPattern . '}', $reflectionMethod->name);
                 $hasAttribute = false;
                 $subjectAttributes = null;

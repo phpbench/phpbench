@@ -9,7 +9,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use function json_encode;
 use function mb_strlen;
-use function method_exists;
 use function str_repeat;
 
 class ConfigDumper
@@ -25,10 +24,6 @@ class ConfigDumper
 
     public function dump(): string
     {
-        if (!method_exists(OptionsResolver::class, 'getInfo')) {
-            return 'Config reference generation requires Symfony Options Resolver ^5.0';
-        }
-
         $sections = [
             self::TITLE,
             $this->underline(self::TITLE, '='),

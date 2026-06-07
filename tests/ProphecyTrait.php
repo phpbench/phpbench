@@ -5,7 +5,6 @@ namespace PhpBench\Tests;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Exception\Prediction\PredictionException;
-use Prophecy\Prophecy\MethodProphecy;
 use Prophecy\Prophecy\ObjectProphecy;
 use Prophecy\Prophet;
 
@@ -82,8 +81,6 @@ trait ProphecyTrait
         foreach ($this->prophet->getProphecies() as $objectProphecy) {
             foreach ($objectProphecy->getMethodProphecies() as $methodProphecies) {
                 foreach ($methodProphecies as $methodProphecy) {
-                    \assert($methodProphecy instanceof MethodProphecy);
-
                     $this->addToAssertionCount(\count($methodProphecy->getCheckedPredictions()));
                 }
             }

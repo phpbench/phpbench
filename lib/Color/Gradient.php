@@ -85,7 +85,7 @@ use function array_fill;
     {
         $percentile = $percentile < 0 ? 0 : min(100, abs($percentile));
 
-        $offset = round((count($this->colors) - 1) / 100 * $percentile);
+        $offset = (int)(round((count($this->colors) - 1) / 100 * $percentile));
 
         return $this->colors[$offset];
     }

@@ -37,14 +37,14 @@
     "require-dev": {
         "dantleech/invoke": "^2.0",
         "ergebnis/composer-normalize": "^2.39",
-        "jangregor/phpstan-prophecy": "^1.0",
+        "jangregor/phpstan-prophecy": "^2.0",
         "php-cs-fixer/shim": "^3.9",
         "phpspec/prophecy": "^1.22",
         "phpstan/extension-installer": "^1.1",
-        "phpstan/phpstan": "^1.0",
-        "phpstan/phpstan-phpunit": "^1.0",
+        "phpstan/phpstan": "^2.0",
+        "phpstan/phpstan-phpunit": "^2.0",
         "phpunit/phpunit": "^11.5",
-        "rector/rector": "^1.2",
+        "rector/rector": "^2.2",
         "sebastian/exporter": "^6.3.2",
         "symfony/error-handler": "^6.1 || ^7.0 || ^8.0",
         "symfony/var-dumper": "^6.1 || ^7.0 || ^8.0"
