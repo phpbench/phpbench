@@ -3,6 +3,7 @@
 namespace PhpBench\Tests\Unit\Expression\NodePrinter;
 
 use PhpBench\Expression\Ast\DisplayAsNode;
+use PhpBench\Expression\Ast\FloatNode;
 use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Ast\UnitNode;
@@ -17,6 +18,17 @@ class DisplayAsPrinterTest extends NodePrinterTestCase
             new DisplayAsNode(
                 new IntegerNode(1024 ** 3),
                 new UnitNode(new StringNode('memory'))
+            ),
+            [ExpressionExtension::PARAM_MEMORY_UNIT_PREFIX => 'binary']
+        ));
+    }
+
+    public function testDisplayAsRstdev(): void
+    {
+        self::assertEquals('±10.20%', $this->print(
+            new DisplayAsNode(
+                new FloatNode(10.2),
+                new UnitNode(new StringNode('rstdev'))
             ),
             [ExpressionExtension::PARAM_MEMORY_UNIT_PREFIX => 'binary']
         ));

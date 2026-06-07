@@ -67,6 +67,22 @@ class NullSafeParseletTest extends ParseletTestCase
             ],
             'null'
         ];
+
+        yield 'null if variable does not exist' => [
+            'barfoo?',
+            [
+                'foobar' => 'asd',
+            ],
+            'null'
+        ];
+
+        yield 'return value if variable does exist' => [
+            'barfoo?',
+            [
+                'barfoo' => 'asd',
+            ],
+            'asd'
+        ];
     }
 
     /**

@@ -2,7 +2,6 @@
 
 namespace PhpBench\Expression;
 
-use PhpBench\Expression\Ast\Node;
 use RuntimeException;
 
 final class ExpressionFunctions
@@ -46,24 +45,5 @@ final class ExpressionFunctions
         }
 
         return $this->functionMap[$name];
-    }
-
-    /**
-     * @param Node[] $args
-     */
-    public function execute(Evaluator $evaluator, string $functionName, array $args): Node
-    {
-        $function = $this->get($functionName);
-        $evaluated = $function(...$args);
-
-        if (!$evaluated instanceof Node) {
-            throw new RuntimeException(sprintf(
-                'Function "%s" must return a Node, got "%s"',
-                $functionName,
-                gettype($evaluated)
-            ));
-        }
-
-        return $evaluated;
     }
 }

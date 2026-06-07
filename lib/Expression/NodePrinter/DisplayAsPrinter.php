@@ -8,6 +8,7 @@ use PhpBench\Expression\Ast\IntegerNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\NullNode;
 use PhpBench\Expression\Ast\PhpValue;
+use PhpBench\Expression\Ast\RelativeDeviationNode;
 use PhpBench\Expression\Ast\StringNode;
 use PhpBench\Expression\Ast\UnitNode;
 use PhpBench\Expression\Exception\PrinterError;
@@ -80,6 +81,10 @@ class DisplayAsPrinter implements NodePrinter
                     new StringNode(MemoryUnit::suffixFor($unit))
                 ))
             );
+        }
+
+        if ($unit === 'rstdev') {
+            return $printer->print(new RelativeDeviationNode($node->node()));
         }
 
         throw new PrinterError(sprintf(

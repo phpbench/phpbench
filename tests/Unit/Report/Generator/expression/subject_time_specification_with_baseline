@@ -20,7 +20,9 @@
     ]
 }
 ---
-[]
+{
+    "cols": ["tag", "benchmark", "subject", "set", "revs", "its", "mem_peak", "best", "mode", "mean", "worst", "stdev", "rstdev"]
+}
 ---
 +------+-----------+---------+-----+------+-----+------------+-------------------+-------------------------+-------------------+-------------------+--------------------+---------------+
 | tag  | benchmark | subject | set | revs | its | mem_peak   | best              | mode                    | mean              | worst             | stdev              | rstdev        |

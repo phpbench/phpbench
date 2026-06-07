@@ -12,6 +12,7 @@
 }
 ---
 {
+    "cols": ["tag", "benchmark", "subject", "set", "revs", "its", "mem_peak", "best", "mode", "mean", "worst", "stdev", "rstdev"],
     "aggregate": [
         "iteration_index"
     ]
