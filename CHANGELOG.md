@@ -1,6 +1,19 @@
 CHANGELOG
 =========
 
+1.7.0
+-----
+
+- reports: new `derivations` feature to allow computing values from existing values. @dantleech
+- reports: deprecate `baseline_expressions` as the same can now be
+  accomplished with `derivations`. @dantleech
+- reports: `aggregate-preview` report (includes r diff column): will become the new `aggregate` in PHPBench 2.0 @dantleech
+- expr: lazy function evaluation on select functions (just the `if()` function
+  for now). @dantleech
+- expr: allow the nullsafe operator on bare variables
+- meta: Exclude docs and other non-code assets in `.gitattributes` @sasezaki
+- meta: Bump phpstan to 2.x @dantleech
+
 1.6.1
 -----
 
