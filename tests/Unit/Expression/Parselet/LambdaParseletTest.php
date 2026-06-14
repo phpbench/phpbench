@@ -31,7 +31,7 @@ class LambdaParseletTest extends ParseletTestCase
     public static function provideEvaluate(): Generator
     {
         yield [
-            '((first, sec) => first + sec)()',
+            '((first, sec) => first + sec)(1, 2)',
             [],
             '3'
         ];

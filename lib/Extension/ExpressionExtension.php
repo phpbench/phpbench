@@ -47,10 +47,12 @@ use PhpBench\Expression\NodeEvaluator;
 use PhpBench\Expression\NodeEvaluator\AccessEvaluator;
 use PhpBench\Expression\NodeEvaluator\ArgumentListEvaluator;
 use PhpBench\Expression\NodeEvaluator\ArithmeticOperatorEvaluator;
+use PhpBench\Expression\NodeEvaluator\CallableEvaluator;
 use PhpBench\Expression\NodeEvaluator\ComparisonEvaluator;
 use PhpBench\Expression\NodeEvaluator\ConcatEvaluator;
 use PhpBench\Expression\NodeEvaluator\DisplayAsEvaluator;
 use PhpBench\Expression\NodeEvaluator\FunctionEvaluator;
+use PhpBench\Expression\NodeEvaluator\LambdaEvaluator;
 use PhpBench\Expression\NodeEvaluator\ListEvaluator;
 use PhpBench\Expression\NodeEvaluator\LogicalOperatorEvaluator;
 use PhpBench\Expression\NodeEvaluator\NullSafeEvaluator;
@@ -65,6 +67,7 @@ use PhpBench\Expression\NodePrinter\ArgumentListPrinter;
 use PhpBench\Expression\NodePrinter\ArrayAccessPrinter;
 use PhpBench\Expression\NodePrinter\BinaryOperatorPrinter;
 use PhpBench\Expression\NodePrinter\BooleanPrinter;
+use PhpBench\Expression\NodePrinter\CallablePrinter;
 use PhpBench\Expression\NodePrinter\ComparisonPrinter;
 use PhpBench\Expression\NodePrinter\ConcatenatedNodePrinter;
 use PhpBench\Expression\NodePrinter\ConcatPrinter;
@@ -73,6 +76,7 @@ use PhpBench\Expression\NodePrinter\DisplayAsPrinter;
 use PhpBench\Expression\NodePrinter\FunctionPrinter;
 use PhpBench\Expression\NodePrinter\HighlightingNodePrinter;
 use PhpBench\Expression\NodePrinter\LabelPrinter;
+use PhpBench\Expression\NodePrinter\LambdaPrinter;
 use PhpBench\Expression\NodePrinter\ListPrinter;
 use PhpBench\Expression\NodePrinter\NullPrinter;
 use PhpBench\Expression\NodePrinter\NullSafePrinter;
@@ -222,6 +226,8 @@ class ExpressionExtension implements ExtensionInterface
                 new PhpValueEvaluator(),
                 new AccessEvaluator(),
                 new NullSafeEvaluator(),
+                new CallableEvaluator(),
+                new LambdaEvaluator(),
             ]);
 
             return $evaluators;
@@ -319,6 +325,8 @@ class ExpressionExtension implements ExtensionInterface
                 new ArrayAccessPrinter(),
                 new NullSafePrinter(),
                 new DataFramePrinter(),
+                new CallablePrinter(),
+                new LambdaPrinter(),
             ]);
         });
 

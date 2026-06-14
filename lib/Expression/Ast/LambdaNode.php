@@ -8,4 +8,14 @@ final class LambdaNode extends Node
     {
     }
 
+    public function params(): ArgumentListNode
+    {
+        return $this->node;
+    }
+
+    public function expression(): Node
+    {
+        return $this->expression;
+    }
+
 }
