@@ -109,12 +109,30 @@ EOT
                 ), E_USER_DEPRECATED);
             }
 
+            $baselineExpr = function (string $primaryExpr, string $baselineExpr) {
+                return sprintf(
+                    '%s ~ if(%s," " ~ %s," !!!")',
+                    $primaryExpr,
+                    'first(has_baseline) = true',
+                    $baselineExpr
+                );
+            };
+
             return array_merge([
                 'best' => $formatTime('min(result_time_avg)'),
                 'worst' => $formatTime('max(result_time_avg)'),
-                'mode' => $formatTime('mode(result_time_avg)') . ' ~" "~ percent_diff(mode(baseline_time_avg), mode(result_time_avg), rstdev(result_time_avg))',
-                'mem_peak' => '(first(baseline_mem_peak) as memory) ~ " " ~ percent_diff(first(baseline_mem_peak), first(result_mem_peak))',
-                'rstdev' => 'rstdev(result_time_avg) ~ " " ~ percent_diff(rstdev(baseline_time_avg), rstdev(result_time_avg))',
+                'mode' => $baselineExpr(
+                    $formatTime('mode(result_time_avg)'),
+                    'percent_diff(mode(baseline_time_avg), mode(result_time_avg), rstdev(result_time_avg))',
+                ),
+                'mem_peak' => $baselineExpr(
+                    'first(result_mem_peak) as memory',
+                    'percent_diff(first(baseline_mem_peak), first(result_mem_peak))'
+                ),
+                'rstdev' => $baselineExpr(
+                    'rstdev(result_time_avg)',
+                    'percent_diff(rstdev(baseline_time_avg), rstdev(result_time_avg))',
+                ),
             ], $expressions);
         });
         $options->setNormalizer(self::PARAM_COLS, function (Options $options, ?array $cols) {
