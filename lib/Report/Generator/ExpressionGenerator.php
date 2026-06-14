@@ -39,7 +39,11 @@ class ExpressionGenerator implements GeneratorInterface
     final public const PARAM_INCLUDE_BASELINE = 'include_baseline';
     final public const PARAM_DERIVATIONS = 'derivations';
 
-    public function __construct(private readonly ExpressionEvaluator $evaluator, private readonly SuiteCollectionTransformer $transformer, private readonly LoggerInterface $logger)
+    public function __construct(
+        private readonly ExpressionEvaluator $evaluator,
+        private readonly SuiteCollectionTransformer $transformer,
+        private readonly LoggerInterface $logger
+    )
     {
     }
 
@@ -82,6 +86,7 @@ EOT
         $options->setAllowedTypes(self::PARAM_AGGREGATE, 'array');
         $options->setAllowedTypes(self::PARAM_BREAK, 'array');
         $options->setAllowedTypes(self::PARAM_INCLUDE_BASELINE, 'bool');
+
         $options->setNormalizer(self::PARAM_EXPRESSIONS, function (Options $options, array $expressions) use ($formatTime) {
             return array_merge([
                 'tag' => 'first(suite_tag)',
@@ -145,6 +150,7 @@ EOT
 
             return array_keys($expressions);
         });
+
         SymfonyOptionsResolverCompat::setInfos($options, [
             self::PARAM_TITLE => 'Title to use for report',
             self::PARAM_DESCRIPTION => 'Description to use for report',
