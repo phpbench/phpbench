@@ -36,10 +36,7 @@ class LambdaParselet implements InfixParselet
         $argList = $argList->expression();
 
         if (!$argList instanceof ArgumentListNode) {
-            throw SyntaxError::forToken($tokens, $lambda, sprintf(
-                'Left operand to lambda must be a parenthesized list of arguments, got: %s',
-                $left::class
-            ));
+            $argList = new ArgumentListNode([$argList]);
         }
 
         $expression = $parser->parseExpression($tokens);

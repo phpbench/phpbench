@@ -9,6 +9,7 @@ use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\Expression\Ast\ArithmeticOperatorNode;
 use PhpBench\Expression\Ast\DisplayAsNode;
 use PhpBench\Expression\Ast\FunctionNode;
+use PhpBench\Expression\Ast\LambdaNode;
 use PhpBench\Expression\Ast\ParameterNode;
 use PhpBench\Expression\Ast\ParenthesisNode;
 use PhpBench\Expression\Ast\TolerableNode;
@@ -41,6 +42,7 @@ use PhpBench\Expression\Func\StDevFunction;
 use PhpBench\Expression\Func\SumFunction;
 use PhpBench\Expression\Func\TimeConvertFunction;
 use PhpBench\Expression\Func\TimeUnitFunction;
+use PhpBench\Expression\Func\UserFunction;
 use PhpBench\Expression\Func\VarianceFunction;
 use PhpBench\Expression\Lexer;
 use PhpBench\Expression\NodeEvaluator;
@@ -140,9 +142,11 @@ class ExpressionExtension implements ExtensionInterface
     final public const PARAM_THEME = 'expression.theme';
     final public const PARAM_MEMORY_UNIT_PREFIX = 'expression.memory_unit_prefix';
     final public const PARAM_STRIP_TAILING_ZEROS = 'expression.strip_tailing_zeros';
+    final public const PARAM_USER_FUNCTIONS = 'expression.user_functions';
 
     final public const SERVICE_PLAIN_PRINTER = 'expression.printer.plain';
     final public const SERVICE_BARE_PRINTER = 'expression.printer.bare';
+
 
     final public const TAG_THEME = 'expression.theme';
 
@@ -357,7 +361,7 @@ class ExpressionExtension implements ExtensionInterface
         });
 
         $container->register(ExpressionFunctions::class, function (Container $container) {
-            return new ExpressionFunctions([
+            $map = [
                 'mode' => new ModeFunction(),
                 'mean' => new MeanFunction(),
                 'min' => new MinFunction(),
@@ -379,7 +383,23 @@ class ExpressionExtension implements ExtensionInterface
                 'sum' => new SumFunction(),
                 'frame' => new FrameFunction(),
                 'contains' => new ContainsFunction(),
-            ]);
+            ];
+
+            foreach ($container->getParameter(self::PARAM_USER_FUNCTIONS) as $name => $lamdba) {
+                $lexer = $container->get(Lexer::class);
+                $parser = $container->get(Parser::class);
+                $lambda = $parser->parse($lexer->lex($lamdba));
+                if (!$lambda instanceof LambdaNode) {
+                    throw new \RuntimeException(sprintf(
+                        'Expression for user function "%s" must be a lambda of form `(param1, param2) => param1 + param2`',
+                        $name
+                    ));
+                }
+                $map[$name] = new UserFunction($lambda);
+            }
+
+
+            return new ExpressionFunctions($map);
         });
 
         $container->register(Lexer::class, function (Container $container) {
@@ -412,6 +432,7 @@ class ExpressionExtension implements ExtensionInterface
             self::PARAM_THEME => self::THEME_SOLARIZED,
             self::PARAM_MEMORY_UNIT_PREFIX => self::PREFIX_DECIMAL,
             self::PARAM_STRIP_TAILING_ZEROS => false,
+            self::PARAM_USER_FUNCTIONS => [],
         ]);
         $resolver->setAllowedTypes(self::PARAM_SYNTAX_HIGHLIGHTING, 'bool');
         $resolver->setAllowedTypes(self::PARAM_THEME, 'string');
