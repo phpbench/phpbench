@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+master
+------
+
+- Conditionally show the baseline "difference" in the default expression
+  report. #1154 @dantleech
+
 1.7.0
 -----
 
