@@ -75,7 +75,7 @@ class Parser
         $suffixParser = $this->suffixParselets->forTokenOrNull($tokens->current());
 
         if ($suffixParser instanceof SuffixParselet) {
-            $left = $suffixParser->parse($left, $tokens);
+            $left = $suffixParser->parse($this, $left, $tokens);
         }
 
         while ($precedence < $this->infixPrecedence($tokens->current())) {

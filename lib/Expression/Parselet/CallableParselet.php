@@ -3,6 +3,7 @@
 namespace PhpBench\Expression\Parselet;
 
 use PhpBench\Expression\Ast\Node;
+use PhpBench\Expression\Parser;
 use PhpBench\Expression\SuffixParselet;
 use PhpBench\Expression\Token;
 use PhpBench\Expression\Tokens;
@@ -14,7 +15,7 @@ class CallableParselet implements SuffixParselet
         return Token::T_OPEN_PAREN;
     }
 
-    public function parse(Node $left, Tokens $tokens): Node
+    public function parse(Parser $parser, Node $left, Tokens $tokens): Node
     {
         throw new \RuntimeException('Need a parser!');
     }
