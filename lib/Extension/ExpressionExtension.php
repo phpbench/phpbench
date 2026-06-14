@@ -98,6 +98,7 @@ use PhpBench\Expression\Parselet\DisplayAsParselet;
 use PhpBench\Expression\Parselet\FloatParselet;
 use PhpBench\Expression\Parselet\FunctionParselet;
 use PhpBench\Expression\Parselet\IntegerParselet;
+use PhpBench\Expression\Parselet\LambdaParselet;
 use PhpBench\Expression\Parselet\ListParselet;
 use PhpBench\Expression\Parselet\LogicalOperatorParselet;
 use PhpBench\Expression\Parselet\NullParselet;
@@ -193,6 +194,7 @@ class ExpressionExtension implements ExtensionInterface
                     new ArrayAccessParselet(),
                     new PropertyAccessParselet(),
                     new NullSafeParselet(),
+                    new LambdaParselet(),
                 ]),
                 Parselets::fromSuffixParselets([
                     new ValueWithUnitParselet(),
