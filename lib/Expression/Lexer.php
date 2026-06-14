@@ -25,6 +25,7 @@ final class Lexer
         '-' => Token::T_MINUS,
         '*' => Token::T_MULTIPLY,
         '%' => Token::T_PERCENTAGE,
+        '=>' => Token::T_LAMBDA,
         '/' => Token::T_DIVIDE,
         '>=' => Token::T_GTE,
         '<=' => Token::T_LTE,

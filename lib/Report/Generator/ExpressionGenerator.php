@@ -39,7 +39,11 @@ class ExpressionGenerator implements GeneratorInterface
     final public const PARAM_INCLUDE_BASELINE = 'include_baseline';
     final public const PARAM_DERIVATIONS = 'derivations';
 
-    public function __construct(private readonly ExpressionEvaluator $evaluator, private readonly SuiteCollectionTransformer $transformer, private readonly LoggerInterface $logger)
+    public function __construct(
+        private readonly ExpressionEvaluator $evaluator,
+        private readonly SuiteCollectionTransformer $transformer,
+        private readonly LoggerInterface $logger
+    )
     {
     }
 
@@ -82,6 +86,7 @@ EOT
         $options->setAllowedTypes(self::PARAM_AGGREGATE, 'array');
         $options->setAllowedTypes(self::PARAM_BREAK, 'array');
         $options->setAllowedTypes(self::PARAM_INCLUDE_BASELINE, 'bool');
+
         $options->setNormalizer(self::PARAM_EXPRESSIONS, function (Options $options, array $expressions) use ($formatTime) {
             return array_merge([
                 'tag' => 'first(suite_tag)',
@@ -109,12 +114,30 @@ EOT
                 ), E_USER_DEPRECATED);
             }
 
+            $baselineExpr = function (string $primaryExpr, string $baselineExpr) {
+                return sprintf(
+                    '%s ~ if(%s," " ~ %s," !!!")',
+                    $primaryExpr,
+                    'first(has_baseline) = true',
+                    $baselineExpr
+                );
+            };
+
             return array_merge([
                 'best' => $formatTime('min(result_time_avg)'),
                 'worst' => $formatTime('max(result_time_avg)'),
-                'mode' => $formatTime('mode(result_time_avg)') . ' ~" "~ percent_diff(mode(baseline_time_avg), mode(result_time_avg), rstdev(result_time_avg))',
-                'mem_peak' => '(first(baseline_mem_peak) as memory) ~ " " ~ percent_diff(first(baseline_mem_peak), first(result_mem_peak))',
-                'rstdev' => 'rstdev(result_time_avg) ~ " " ~ percent_diff(rstdev(baseline_time_avg), rstdev(result_time_avg))',
+                'mode' => $baselineExpr(
+                    $formatTime('mode(result_time_avg)'),
+                    'percent_diff(mode(baseline_time_avg), mode(result_time_avg), rstdev(result_time_avg))',
+                ),
+                'mem_peak' => $baselineExpr(
+                    'first(result_mem_peak) as memory',
+                    'percent_diff(first(baseline_mem_peak), first(result_mem_peak))'
+                ),
+                'rstdev' => $baselineExpr(
+                    'rstdev(result_time_avg)',
+                    'percent_diff(rstdev(baseline_time_avg), rstdev(result_time_avg))',
+                ),
             ], $expressions);
         });
         $options->setNormalizer(self::PARAM_COLS, function (Options $options, ?array $cols) {
@@ -127,6 +150,7 @@ EOT
 
             return array_keys($expressions);
         });
+
         SymfonyOptionsResolverCompat::setInfos($options, [
             self::PARAM_TITLE => 'Title to use for report',
             self::PARAM_DESCRIPTION => 'Description to use for report',

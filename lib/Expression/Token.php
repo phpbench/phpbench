@@ -42,6 +42,7 @@ final class Token
     public const T_STRING = 'string';
     public const T_PARAMETER = 'parameter';
     public const T_QUESTION = 'question';
+    public const T_LAMBDA = 'lambda';
 
     public function __construct(public string $type, public string $value, public int $offset)
     {

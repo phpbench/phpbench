@@ -4,6 +4,7 @@ namespace PhpBench\Expression;
 
 final class Precedence
 {
+    public const LAMBDA = 200;
     public const ACCESS = 120;
     public const AS = 110;
     public const PRODUCT = 100;

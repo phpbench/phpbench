@@ -3,12 +3,14 @@
 namespace PhpBench\Expression\NodeEvaluator;
 
 use PhpBench\Expression\Ast\ArgumentListNode;
+use PhpBench\Expression\Ast\CallableNode;
 use PhpBench\Expression\Ast\FunctionNode;
 use PhpBench\Expression\Ast\Node;
 use PhpBench\Expression\Ast\PhpValue;
 use PhpBench\Expression\Evaluator;
 use PhpBench\Expression\Exception\EvaluationError;
 use PhpBench\Expression\ExpressionFunctions;
+use PhpBench\Expression\Func\UserFunction;
 use PhpBench\Expression\LazyExpr;
 use PhpBench\Expression\LazyFunction;
 use PhpBench\Expression\NodeEvaluator;
@@ -50,6 +52,10 @@ class FunctionEvaluator implements NodeEvaluator
     {
         try {
             $function = $this->functions->get($node->name());
+
+            if ($function instanceof UserFunction) {
+                return $evaluator->evaluate(new CallableNode($function->lambda(), $node->args()), []);
+            }
 
             if ($function instanceof LazyFunction) {
                 $args = array_map(function (Node $node) use ($evaluator, $params) {

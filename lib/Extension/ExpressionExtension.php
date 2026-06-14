@@ -9,6 +9,7 @@ use PhpBench\DependencyInjection\ExtensionInterface;
 use PhpBench\Expression\Ast\ArithmeticOperatorNode;
 use PhpBench\Expression\Ast\DisplayAsNode;
 use PhpBench\Expression\Ast\FunctionNode;
+use PhpBench\Expression\Ast\LambdaNode;
 use PhpBench\Expression\Ast\ParameterNode;
 use PhpBench\Expression\Ast\ParenthesisNode;
 use PhpBench\Expression\Ast\TolerableNode;
@@ -41,16 +42,19 @@ use PhpBench\Expression\Func\StDevFunction;
 use PhpBench\Expression\Func\SumFunction;
 use PhpBench\Expression\Func\TimeConvertFunction;
 use PhpBench\Expression\Func\TimeUnitFunction;
+use PhpBench\Expression\Func\UserFunction;
 use PhpBench\Expression\Func\VarianceFunction;
 use PhpBench\Expression\Lexer;
 use PhpBench\Expression\NodeEvaluator;
 use PhpBench\Expression\NodeEvaluator\AccessEvaluator;
 use PhpBench\Expression\NodeEvaluator\ArgumentListEvaluator;
 use PhpBench\Expression\NodeEvaluator\ArithmeticOperatorEvaluator;
+use PhpBench\Expression\NodeEvaluator\CallableEvaluator;
 use PhpBench\Expression\NodeEvaluator\ComparisonEvaluator;
 use PhpBench\Expression\NodeEvaluator\ConcatEvaluator;
 use PhpBench\Expression\NodeEvaluator\DisplayAsEvaluator;
 use PhpBench\Expression\NodeEvaluator\FunctionEvaluator;
+use PhpBench\Expression\NodeEvaluator\LambdaEvaluator;
 use PhpBench\Expression\NodeEvaluator\ListEvaluator;
 use PhpBench\Expression\NodeEvaluator\LogicalOperatorEvaluator;
 use PhpBench\Expression\NodeEvaluator\NullSafeEvaluator;
@@ -65,6 +69,7 @@ use PhpBench\Expression\NodePrinter\ArgumentListPrinter;
 use PhpBench\Expression\NodePrinter\ArrayAccessPrinter;
 use PhpBench\Expression\NodePrinter\BinaryOperatorPrinter;
 use PhpBench\Expression\NodePrinter\BooleanPrinter;
+use PhpBench\Expression\NodePrinter\CallablePrinter;
 use PhpBench\Expression\NodePrinter\ComparisonPrinter;
 use PhpBench\Expression\NodePrinter\ConcatenatedNodePrinter;
 use PhpBench\Expression\NodePrinter\ConcatPrinter;
@@ -73,6 +78,7 @@ use PhpBench\Expression\NodePrinter\DisplayAsPrinter;
 use PhpBench\Expression\NodePrinter\FunctionPrinter;
 use PhpBench\Expression\NodePrinter\HighlightingNodePrinter;
 use PhpBench\Expression\NodePrinter\LabelPrinter;
+use PhpBench\Expression\NodePrinter\LambdaPrinter;
 use PhpBench\Expression\NodePrinter\ListPrinter;
 use PhpBench\Expression\NodePrinter\NullPrinter;
 use PhpBench\Expression\NodePrinter\NullSafePrinter;
@@ -92,12 +98,14 @@ use PhpBench\Expression\NodePrinters;
 use PhpBench\Expression\Parselet\ArithmeticOperatorParselet;
 use PhpBench\Expression\Parselet\ArrayAccessParselet;
 use PhpBench\Expression\Parselet\BooleanParselet;
+use PhpBench\Expression\Parselet\CallableParselet;
 use PhpBench\Expression\Parselet\ComparisonParselet;
 use PhpBench\Expression\Parselet\ConcatParselet;
 use PhpBench\Expression\Parselet\DisplayAsParselet;
 use PhpBench\Expression\Parselet\FloatParselet;
 use PhpBench\Expression\Parselet\FunctionParselet;
 use PhpBench\Expression\Parselet\IntegerParselet;
+use PhpBench\Expression\Parselet\LambdaParselet;
 use PhpBench\Expression\Parselet\ListParselet;
 use PhpBench\Expression\Parselet\LogicalOperatorParselet;
 use PhpBench\Expression\Parselet\NullParselet;
@@ -134,9 +142,11 @@ class ExpressionExtension implements ExtensionInterface
     final public const PARAM_THEME = 'expression.theme';
     final public const PARAM_MEMORY_UNIT_PREFIX = 'expression.memory_unit_prefix';
     final public const PARAM_STRIP_TAILING_ZEROS = 'expression.strip_tailing_zeros';
+    final public const PARAM_USER_FUNCTIONS = 'expression.user_functions';
 
     final public const SERVICE_PLAIN_PRINTER = 'expression.printer.plain';
     final public const SERVICE_BARE_PRINTER = 'expression.printer.bare';
+
 
     final public const TAG_THEME = 'expression.theme';
 
@@ -193,9 +203,11 @@ class ExpressionExtension implements ExtensionInterface
                     new ArrayAccessParselet(),
                     new PropertyAccessParselet(),
                     new NullSafeParselet(),
+                    new LambdaParselet(),
                 ]),
                 Parselets::fromSuffixParselets([
                     new ValueWithUnitParselet(),
+                    new CallableParselet(),
                     new PercentageParselet(),
                 ])
             );
@@ -218,6 +230,8 @@ class ExpressionExtension implements ExtensionInterface
                 new PhpValueEvaluator(),
                 new AccessEvaluator(),
                 new NullSafeEvaluator(),
+                new CallableEvaluator(),
+                new LambdaEvaluator(),
             ]);
 
             return $evaluators;
@@ -315,6 +329,8 @@ class ExpressionExtension implements ExtensionInterface
                 new ArrayAccessPrinter(),
                 new NullSafePrinter(),
                 new DataFramePrinter(),
+                new CallablePrinter(),
+                new LambdaPrinter(),
             ]);
         });
 
@@ -345,7 +361,7 @@ class ExpressionExtension implements ExtensionInterface
         });
 
         $container->register(ExpressionFunctions::class, function (Container $container) {
-            return new ExpressionFunctions([
+            $map = [
                 'mode' => new ModeFunction(),
                 'mean' => new MeanFunction(),
                 'min' => new MinFunction(),
@@ -367,7 +383,23 @@ class ExpressionExtension implements ExtensionInterface
                 'sum' => new SumFunction(),
                 'frame' => new FrameFunction(),
                 'contains' => new ContainsFunction(),
-            ]);
+            ];
+
+            foreach ($container->getParameter(self::PARAM_USER_FUNCTIONS) as $name => $lamdba) {
+                $lexer = $container->get(Lexer::class);
+                $parser = $container->get(Parser::class);
+                $lambda = $parser->parse($lexer->lex($lamdba));
+                if (!$lambda instanceof LambdaNode) {
+                    throw new \RuntimeException(sprintf(
+                        'Expression for user function "%s" must be a lambda of form `(param1, param2) => param1 + param2`',
+                        $name
+                    ));
+                }
+                $map[$name] = new UserFunction($lambda);
+            }
+
+
+            return new ExpressionFunctions($map);
         });
 
         $container->register(Lexer::class, function (Container $container) {
@@ -400,6 +432,7 @@ class ExpressionExtension implements ExtensionInterface
             self::PARAM_THEME => self::THEME_SOLARIZED,
             self::PARAM_MEMORY_UNIT_PREFIX => self::PREFIX_DECIMAL,
             self::PARAM_STRIP_TAILING_ZEROS => false,
+            self::PARAM_USER_FUNCTIONS => [],
         ]);
         $resolver->setAllowedTypes(self::PARAM_SYNTAX_HIGHLIGHTING, 'bool');
         $resolver->setAllowedTypes(self::PARAM_THEME, 'string');
