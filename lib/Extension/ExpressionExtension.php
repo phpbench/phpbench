@@ -92,6 +92,7 @@ use PhpBench\Expression\NodePrinters;
 use PhpBench\Expression\Parselet\ArithmeticOperatorParselet;
 use PhpBench\Expression\Parselet\ArrayAccessParselet;
 use PhpBench\Expression\Parselet\BooleanParselet;
+use PhpBench\Expression\Parselet\CallableParselet;
 use PhpBench\Expression\Parselet\ComparisonParselet;
 use PhpBench\Expression\Parselet\ConcatParselet;
 use PhpBench\Expression\Parselet\DisplayAsParselet;
@@ -198,6 +199,7 @@ class ExpressionExtension implements ExtensionInterface
                 ]),
                 Parselets::fromSuffixParselets([
                     new ValueWithUnitParselet(),
+                    new CallableParselet(),
                     new PercentageParselet(),
                 ])
             );

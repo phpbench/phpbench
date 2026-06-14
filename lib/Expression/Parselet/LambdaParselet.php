@@ -24,10 +24,10 @@ class LambdaParselet implements InfixParselet
     public function parse(Parser $parser, Node $left, Tokens $tokens): Node
     {
         $argList = $left;
-        $apply = $tokens->chomp();
+        $lambda = $tokens->chomp();
 
         if (!$argList instanceof ParenthesisNode) {
-            throw SyntaxError::forToken($tokens, $apply, sprintf(
+            throw SyntaxError::forToken($tokens, $lambda, sprintf(
                 'Left operand to lambda must be a parenthesized list of arguments, got: %s',
                 $left::class
             ));
@@ -36,7 +36,7 @@ class LambdaParselet implements InfixParselet
         $argList = $argList->expression();
 
         if (!$argList instanceof ArgumentListNode) {
-            throw SyntaxError::forToken($tokens, $apply, sprintf(
+            throw SyntaxError::forToken($tokens, $lambda, sprintf(
                 'Left operand to lambda must be a parenthesized list of arguments, got: %s',
                 $left::class
             ));
@@ -44,9 +44,9 @@ class LambdaParselet implements InfixParselet
 
         $expression = $parser->parseExpression($tokens);
 
-        return new LambdaNode(new ArgumentListNode(array_map(function (Node $node) use ($tokens, $apply) {
+        return new LambdaNode(new ArgumentListNode(array_map(function (Node $node) use ($tokens, $lambda) {
             if (!$node instanceof VariableNode) {
-                throw SyntaxError::forToken($tokens, $apply, sprintf(
+                throw SyntaxError::forToken($tokens, $lambda, sprintf(
                     'Invalid parameter of type: %s',
                     $node::class
                 ));
