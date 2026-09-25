@@ -41,7 +41,7 @@
         "php-cs-fixer/shim": "^3.9",
         "phpspec/prophecy": "^1.22",
         "phpstan/extension-installer": "^1.1",
-        "phpstan/phpstan": "^2.0",
+        "phpstan/phpstan": "^2.2.16",
         "phpstan/phpstan-phpunit": "^2.0",
         "phpunit/phpunit": "^11.5",
         "rector/rector": "^2.2",

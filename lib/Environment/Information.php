@@ -102,7 +102,6 @@ class Information implements ArrayAccess, IteratorAggregate
      */
     public function getIterator(): ArrayIterator
     {
-        /** @phpstan-ignore return.type */
         return new ArrayIterator($this->information);
     }
 
