@@ -23,7 +23,6 @@
         "ext-reflection": "*",
         "ext-spl": "*",
         "ext-tokenizer": "*",
-        "doctrine/annotations": "^2.0",
         "phpbench/container": "^2.2",
         "psr/log": "^1.1 || ^2.0 || ^3.0",
         "seld/jsonlint": "^1.1",
@@ -36,6 +35,7 @@
     },
     "require-dev": {
         "dantleech/invoke": "^2.0",
+        "doctrine/annotations": "^2.0",
         "ergebnis/composer-normalize": "^2.39",
         "jangregor/phpstan-prophecy": "^2.0",
         "php-cs-fixer/shim": "^3.9",
@@ -50,7 +50,8 @@
         "symfony/var-dumper": "^6.1 || ^7.0 || ^8.0"
     },
     "suggest": {
-        "ext-xdebug": "For Xdebug profiling extension."
+        "ext-xdebug": "For Xdebug profiling extension.",
+        "doctrine/annotations": "Required to configure benchmarks with docblock annotations (PHP attributes do not need it)."
     },
     "minimum-stability": "stable",
     "prefer-stable": true,

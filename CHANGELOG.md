@@ -4,6 +4,15 @@ CHANGELOG
 master
 ------
 
+B/C breaks:
+
+- `doctrine/annotations` is now an optional dependency. Projects using
+  docblock annotations must `composer require --dev doctrine/annotations`
+  (or migrate to PHP attributes), otherwise PHPBench fails with an error
+  when it finds a PHPBench annotation. The PHAR still bundles it.
+
+Improvements:
+
 - Conditionally show the baseline "difference" in the default expression
   report. #1154 @dantleech
 

@@ -6,6 +6,15 @@ of these settings (e.g. :ref:`configuration_runner_revs`,
 :ref:`configuration_runner_iterations`) can be set globaly in the
 :doc:`configuration`.
 
+.. note::
+
+    Annotations require the optional ``doctrine/annotations`` package
+    (bundled in the PHAR)::
+
+        $ composer require --dev doctrine/annotations
+
+    Attributes have no additional dependencies.
+
 .. contents::
     :depth: 1
     :local:

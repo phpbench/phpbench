@@ -155,15 +155,32 @@ class AnnotationReader
         'startuml' => true, 'enduml' => true,
     ];
 
-    private readonly DocParser $docParser;
+    /**
+     * Null when doctrine/annotations is not installed.
+     */
+    private readonly ?DocParser $docParser;
+
+    /**
+     * Pattern matching PHPBench annotations, used when doctrine/annotations
+     * is not installed.
+     */
+    private static ?string $annotationPattern = null;
 
     /**
      * Set import use to true in order to use imported annotations, otherwise
      * import the PHPBench annotations directly.
      *
+     * The doctrine/annotations package is optional, $doctrineAvailable is
+     * detected automatically when null.
      */
-    public function __construct(private readonly bool $importUse = false)
+    public function __construct(private readonly bool $importUse = false, ?bool $doctrineAvailable = null)
     {
+        if (!($doctrineAvailable ?? class_exists(DocParser::class))) {
+            $this->docParser = null;
+
+            return;
+        }
+
         $this->docParser = new DocParser();
         $this->docParser->setIgnoredAnnotationNames(self::$globalIgnoredNames);
     }
@@ -192,6 +209,12 @@ class AnnotationReader
 
     private function collectImports(ReflectionClass $class): void
     {
+        if (null === $this->docParser) {
+            $this->assertNoPhpBenchImports($class);
+
+            return;
+        }
+
         $imports = $this->importUse === true ? $this->getUseImports($class) : $this->getPhpBenchImports();
         $this->docParser->setImports($imports);
     }
@@ -243,6 +266,12 @@ class AnnotationReader
      */
     private function parse(?string $input, string $context = ''): array
     {
+        if (null === $this->docParser) {
+            $this->assertNoPhpBenchAnnotations($input ?? '', $context);
+
+            return [];
+        }
+
         try {
             $annotations = @$this->docParser->parse($input ?? '', $context);
         } catch (AnnotationException $e) {
@@ -258,5 +287,55 @@ class AnnotationReader
         }
 
         return $annotations;
+    }
+
+    /**
+     * Fail loudly rather than silently ignoring PHPBench annotations when
+     * doctrine/annotations is not installed.
+     *
+     * Mirrors the DocParser rules: names are case-insensitive and an
+     * annotation starts with an "@" preceded by whitespace, "*" or nothing.
+     */
+    private function assertNoPhpBenchAnnotations(string $input, string $context): void
+    {
+        self::$annotationPattern ??= sprintf(
+            '{(?<![^\s*])@(?:\\\\?PhpBench\\\\Benchmark\\\\Metadata\\\\Annotations\\\\)?(%s)(?![\w\\\\])}i',
+            implode('|', array_keys(self::$phpBenchImports))
+        );
+
+        if (!preg_match(self::$annotationPattern, $input, $matches)) {
+            return;
+        }
+
+        throw $this->doctrineMissing(sprintf('Found annotation @%s in %s', $matches[1], $context));
+    }
+
+    /**
+     * With imported annotations the docblock may use any alias
+     * (e.g. "@Bench\Revs" or "@R"), so detect the import instead.
+     */
+    private function assertNoPhpBenchImports(ReflectionClass $class): void
+    {
+        if ($this->importUse !== true || !$class->path) {
+            return;
+        }
+
+        $content = (string)file_get_contents($class->path);
+
+        if (!preg_match('#\buse\s+\\\\?PhpBench\\\\Benchmark\\\\Metadata\\\\(?:Annotations\b|\{[^}]*\bAnnotations\\\\)#i', $content)) {
+            return;
+        }
+
+        throw $this->doctrineMissing(sprintf('Benchmark %s imports PHPBench annotations', $class->class));
+    }
+
+    private function doctrineMissing(string $reason): CouldNotLoadMetadataException
+    {
+        return new CouldNotLoadMetadataException(sprintf(
+            '%s but the "doctrine/annotations" package is not installed. ' .
+            'Either install it (composer require --dev doctrine/annotations), migrate to PHP attributes, ' .
+            'or disable annotations with the "runner.annotations" option',
+            $reason
+        ));
     }
 }

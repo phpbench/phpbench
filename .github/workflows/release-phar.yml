@@ -26,6 +26,11 @@ jobs:
         with:
             composer-options: "--no-scripts --no-dev"
 
+      # doctrine/annotations is optional for Composer installs, but the PHAR
+      # users cannot add it themselves.
+      - name: Bundle doctrine/annotations
+        run: composer require doctrine/annotations --no-scripts --update-no-dev --no-interaction
+
       - name: Compile phpbench.phar
         run: bin/build-phar.sh
         env:
