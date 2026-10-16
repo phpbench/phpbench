@@ -85,6 +85,7 @@ EOT
         $options->setAllowedTypes(self::PARAM_AGGREGATE, 'array');
         $options->setAllowedTypes(self::PARAM_BREAK, 'array');
         $options->setAllowedTypes(self::PARAM_INCLUDE_BASELINE, 'bool');
+        $options->setAllowedTypes(self::PARAM_DERIVATIONS, 'array');
 
         $options->setNormalizer(self::PARAM_EXPRESSIONS, function (Options $options, array $expressions) use ($formatTime) {
             return array_merge([

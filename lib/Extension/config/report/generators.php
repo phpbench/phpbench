@@ -226,8 +226,8 @@ return [
                                 "component" => "bar_chart_aggregate",
                                 "x_partition" => ["subject_name", "variant_name"],
                                 "bar_partition" => ["suite_tag"],
-                                "y_expr" => "mode(partition['result_mem_peak'])",
-                                "y_error_margin" => "stdev(partition['result_mem_peak'])",
+                                "y_expr" => "if(partition?['result_mem_peak'], mode(partition['result_mem_peak']), 0)",
+                                "y_error_margin" => "if(partition?['result_mem_peak'], stdev(partition['result_mem_peak']), 0)",
                                 "y_axes_label" => "yValue as memory precision 1"
                             ]
                         ]
@@ -243,7 +243,7 @@ return [
                                 "partition" => ["subject_name", "variant_name"],
                                 "row" => [
                                     "subject" => "first(partition['subject_name']) ~ ' (' ~ first(partition['variant_name']) ~ ')'",
-                                    "memory" => "first(partition['result_mem_peak']) as memory",
+                                    "memory" => "if(partition?['result_mem_peak'], first(partition['result_mem_peak']) as memory, 'n/a')",
                                     "mode" => "mode(partition['result_time_avg']) as time",
                                     "rstdev" => "rstdev(partition['result_time_avg'])",
                                     "stdev" => "stdev(partition['result_time_avg']) as time"
@@ -282,8 +282,8 @@ return [
                                 "component" => "bar_chart_aggregate",
                                 "x_partition" => ["subject_name", "variant_name"],
                                 "bar_partition" => ["suite_tag"],
-                                "y_expr" => "mode(partition['result_mem_peak'])",
-                                "y_error_margin" => "stdev(partition['result_mem_peak'])",
+                                "y_expr" => "if(partition?['result_mem_peak'], mode(partition['result_mem_peak']), 0)",
+                                "y_error_margin" => "if(partition?['result_mem_peak'], stdev(partition['result_mem_peak']), 0)",
                                 "y_axes_label" => "yValue as memory precision 1"
                             ]
                         ]
@@ -312,7 +312,7 @@ return [
                                 'type' => 'expand',
                                 'partition' => 'suite_tag',
                                 'cols' => [
-                                    'Tag: {{ key }} ' => "mode(partition['result_mem_peak']) as memory",
+                                    'Tag: {{ key }} ' => "if(partition?['result_mem_peak'], mode(partition['result_mem_peak']) as memory, 'n/a')",
                                 ],
                             ],
                         ]

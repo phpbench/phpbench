@@ -55,12 +55,6 @@ parameters:
 			path: lib/Executor/MethodExecutorInterface.php
 
 		-
-			message: '#^Left side of && is always true\.$#'
-			identifier: booleanAnd.leftAlwaysTrue
-			count: 1
-			path: lib/Json/JsonDecoder.php
-
-		-
 			message: '#^Method PhpBench\\Json\\JsonDecoder\:\:decode\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -69,18 +63,6 @@ parameters:
 		-
 			message: '#^Method PhpBench\\Json\\JsonDecoder\:\:normalize\(\) has parameter \$jsonString with no type specified\.$#'
 			identifier: missingType.parameter
-			count: 1
-			path: lib/Json/JsonDecoder.php
-
-		-
-			message: '#^Result of && is always false\.$#'
-			identifier: booleanAnd.alwaysFalse
-			count: 1
-			path: lib/Json/JsonDecoder.php
-
-		-
-			message: '#^Strict comparison using \=\=\= between \*NEVER\* and ''"'' will always evaluate to false\.$#'
-			identifier: identical.alwaysFalse
 			count: 1
 			path: lib/Json/JsonDecoder.php
 
