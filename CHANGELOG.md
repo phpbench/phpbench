@@ -4,6 +4,8 @@ CHANGELOG
 master
 ------
 
+- Tolerate missing memory statistics when using the local executor with
+  `benchmark` reports #1158 @dantleech
 - Conditionally show the baseline "difference" in the default expression
   report. #1154 @dantleech
 

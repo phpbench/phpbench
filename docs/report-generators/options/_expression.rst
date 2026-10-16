@@ -38,3 +38,8 @@
     Type(s): ``bool``, Default: ``false``
 
   If the baseline should be included as additional rows, or if it should be inlined
+
+**derivations**:
+    Type(s): ``array``, Default: ``[]``
+
+  Derive new columns from existing columns
