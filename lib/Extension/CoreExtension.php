@@ -115,7 +115,7 @@ EOT
         });
 
         $container->register(TimeUnit::class, function (Container $container) {
-            return new TimeUnit(TimeUnit::MICROSECONDS, TimeUnit::MICROSECONDS);
+            return new TimeUnit(TimeUnit::NANOSECONDS, TimeUnit::NANOSECONDS);
         });
 
         $this->registerJson($container);

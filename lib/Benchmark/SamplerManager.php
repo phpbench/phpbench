@@ -66,7 +66,7 @@ class SamplerManager
 
     /**
      * Return mean time taken to execute the named sampler
-     * callable in microseconds.
+     * callable in nanoseconds.
      *
      * @param string $name
      * @param int $revs
@@ -81,9 +81,9 @@ class SamplerManager
             ));
         }
 
-        $start = microtime(true);
+        $start = hrtime(true);
         call_user_func($this->callables[$name], $revs);
 
-        return (microtime(true) - $start) / $revs * 1E6;
+        return (hrtime(true) - $start) / $revs * 1E6;
     }
 }
