@@ -46,7 +46,7 @@ class DebugExecutor implements BenchmarkExecutorInterface
             return $results;
         }
 
-        $contextHash = spl_object_hash($context);
+        $contextHash = spl_object_id($context);
 
         if (!isset($this->variantTimes[$contextHash])) {
             $this->variantTimes[$contextHash] = $config['times'];

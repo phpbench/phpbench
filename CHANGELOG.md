@@ -8,6 +8,8 @@ master
   `benchmark` reports #1158 @dantleech
 - Conditionally show the baseline "difference" in the default expression
   report. #1154 @dantleech
+- Fix PHP 8.6 deprecations
+- Drop PHP 8.2 support
 
 1.7.0
 -----

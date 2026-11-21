@@ -278,7 +278,7 @@ final class Runner
 
         try {
             foreach ($variant->getIterations() as $iteration) {
-                $rejectCount[spl_object_hash($iteration)] = 0;
+                $rejectCount[spl_object_id($iteration)] = 0;
                 $this->runIteration($executor, $executorConfig, $iteration, $subjectMetadata);
             }
         } catch (Exception $e) {
@@ -299,9 +299,9 @@ final class Runner
             $this->logger->variantStart($variant);
 
             foreach ($variant->getRejects() as $reject) {
-                $rejectCount[spl_object_hash($reject)]++;
+                $rejectCount[spl_object_id($reject)]++;
 
-                if ($subjectMetadata->getRetryLimit() && $rejectCount[spl_object_hash($reject)] > $subjectMetadata->getRetryLimit()) {
+                if ($subjectMetadata->getRetryLimit() && $rejectCount[spl_object_id($reject)] > $subjectMetadata->getRetryLimit()) {
                     throw new RetryLimitReachedException(sprintf(
                         'Retry limit of %s exceeded',
                         $subjectMetadata->getRetryLimit()
@@ -316,7 +316,7 @@ final class Runner
                 continue;
             }
 
-            $reject->setResult(new RejectionCountResult($rejectCount[spl_object_hash($reject)]));
+            $reject->setResult(new RejectionCountResult($rejectCount[spl_object_id($reject)]));
         }
     }
 
