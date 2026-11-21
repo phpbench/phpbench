@@ -25,7 +25,7 @@
         system,
         ...
       }: let 
-        php = (pkgs.php85.buildEnv {
+        php = (pkgs.php86.buildEnv {
           extensions = ({ enabled, all }: enabled ++ (with all; [
           ]));
           extraConfig = ''
