@@ -1,8 +1,8 @@
 CHANGELOG
 =========
 
-master
-------
+1.7.1
+-----
 
 - Tolerate missing memory statistics when using the local executor with
   `benchmark` reports #1158 @dantleech
