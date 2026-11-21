@@ -25,7 +25,7 @@
         system,
         ...
       }: let 
-        php = (pkgs.php85.buildEnv {
+        php = (pkgs.php86.buildEnv {
           extensions = ({ enabled, all }: enabled ++ (with all; [
           ]));
           extraConfig = ''
@@ -42,6 +42,7 @@
           buildInputs = [
             pkgs.bash
             pkgs.python3
+            # note using 8.5 for composer install until prophecy supports PHP 8.6
             pkgs.php85.packages.composer
             php
           ];

@@ -109,7 +109,7 @@ class AccessEvaluator implements NodeEvaluator
 
         $value = $accessValue->value();
 
-        if (!is_string($value) && !is_integer($value)) {
+        if (!is_string($value) && !is_int($value)) {
             throw new ExpressionError(sprintf(
                 'Array access expression must evaluate to either a string or an int, got "%s"',
                 gettype($value)
