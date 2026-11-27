@@ -12,6 +12,7 @@ use PhpBench\Tests\Util\Approval;
 use RuntimeException;
 use Symfony\Component\Console\Input\StringInput;
 
+use function _HumbugBox904bb52280f8\Amp\Promise\wait;
 use function json_last_error_msg;
 
 class CommandsTest extends IntegrationTestCase

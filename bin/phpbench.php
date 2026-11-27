@@ -1,7 +1,5 @@
 <?php
 
-use PhpBench\Exception\ConfigurationPreProcessingError;
-
 /*
  * This file is part of the PHPBench package
  *
